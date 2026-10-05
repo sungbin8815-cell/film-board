@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>제작 보드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>
+/* ============================================================
+   ① Firebase 설정 — 설정 가이드 4단계에서 복사한 값을 붙여넣으세요.
+      apiKey가 비어 있으면 '미리보기 모드'로 열려요 (이 브라우저에만 저장).
+   ============================================================ */
+window.FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+</script>
+<style>
+:root{
+  --bg:#0b0c10; --surface:#12141a; --surface2:#181b23; --raise:#1e222b; --line:#252a34; --line2:#30363f;
+  --ink:#eceef2; --muted:#a2a8b4; --faint:#6c7380;
+  --mint:#2ed3b7; --mint-ink:#062a24; --mint-soft:rgba(46,211,183,.12);
+  --ok:#4ade80; --warn:#fbbf24; --bad:#f87171;
+  --r:14px; --r-sm:10px;
+  --f:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum"}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--mint)}
+:focus-visible{outline:2px solid var(--mint);outline-offset:2px;border-radius:6px}
+[hidden]{display:none!important}
+.num{font-variant-numeric:tabular-nums}
+
+/* layout */
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;padding:18px 12px}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 16px}
+.brand .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--mint),#3b82f6);display:grid;place-items:center;font-weight:800;color:#04201b;font-size:13px;flex:none}
+.brand .t{min-width:0}
+.brand .t b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand .t span{font-size:12px;color:var(--faint)}
+.navlabel{font-size:11px;letter-spacing:.08em;color:var(--faint);padding:14px 10px 6px;font-weight:600}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;color:var(--muted);text-decoration:none;font-weight:500}
+.nav a:hover{background:var(--surface2);color:var(--ink)}
+.nav a.on{background:var(--raise);color:var(--ink)}
+.nav .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.nav .me{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--mint-ink);background:var(--mint);padding:1px 6px;border-radius:5px}
+.nav .ico{width:18px;text-align:center;color:var(--faint);flex:none}
+.side-foot{margin-top:auto;padding:12px 8px 4px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.side-foot label{font-size:11.5px;color:var(--faint)}
+.side-foot select{background:var(--surface2);border:1px solid var(--line2);border-radius:9px;padding:8px 10px}
+.main{min-width:0;padding:28px clamp(16px,4vw,44px) 80px}
+.topbar{display:none}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:fixed;inset:0 auto 0 0;width:270px;z-index:40;transform:translateX(-102%);transition:transform .2s}
+  .side.open{transform:none;box-shadow:0 0 0 100vmax rgba(0,0,0,.5)}
+  .topbar{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:30;background:rgba(11,12,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top))}
+  .topbar b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .main{padding-top:20px}
+}
+
+/* type */
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--faint);display:flex;gap:8px;align-items:center}
+h1{font-size:clamp(24px,3.4vw,32px);line-height:1.2;margin:6px 0 6px;letter-spacing:-.02em;font-weight:750;text-wrap:balance}
+h2{font-size:17px;margin:0;font-weight:700;letter-spacing:-.01em}
+.lead{color:var(--muted);margin:0;max-width:68ch}
+.muted{color:var(--muted)} .faint{color:var(--faint)}
+.pagehead{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+.pagehead .acts{display:flex;gap:8px;flex-wrap:wrap}
+.sechead{display:flex;align-items:center;gap:10px;margin:30px 0 12px;flex-wrap:wrap}
+.sechead .sp{flex:1}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--surface2);border-radius:10px;padding:8px 14px;font-weight:600;font-size:13.5px;white-space:nowrap}
+.btn:hover{border-color:var(--faint)}
+.btn-p{background:var(--mint);border-color:var(--mint);color:var(--mint-ink)}
+.btn-p:hover{filter:brightness(1.07)}
+.btn-g{background:transparent;border-color:transparent;color:var(--muted)}
+.btn-g:hover{color:var(--ink);background:var(--surface2)}
+.btn-d{background:transparent;color:var(--bad);border-color:rgba(248,113,113,.4)}
+.btn-sm{padding:5px 10px;font-size:12.5px;border-radius:8px}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;background:var(--raise);color:var(--muted);white-space:nowrap;border:1px solid transparent}
+.chip.c-ok{background:rgba(74,222,128,.12);color:var(--ok)}
+.chip.c-warn{background:rgba(251,191,36,.12);color:var(--warn)}
+.chip.c-bad{background:rgba(248,113,113,.12);color:var(--bad)}
+.chip.c-mint{background:var(--mint-soft);color:var(--mint)}
+.chip.c-line{background:transparent;border-color:var(--line2)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:20px}
+.tab{background:none;border:0;padding:10px 14px;color:var(--faint);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--ink);border-bottom-color:var(--pc,var(--mint))}
+.tab .n{font-size:11.5px;color:var(--faint);margin-left:4px;font-weight:500}
+.banner{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin-bottom:20px;font-size:13.5px}
+.banner b{font-weight:700}
+.banner .sp{flex:1}
+.lock{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.06)}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+@media (max-width:520px){.kpis{grid-template-columns:1fr 1fr}.kpi .v{font-size:19px}}
+.kpi{padding:16px 18px}
+.kpi .l{font-size:12.5px;color:var(--faint);font-weight:600}
+.kpi .v{font-size:24px;font-weight:750;letter-spacing:-.02em;margin-top:4px}
+.kpi .s{font-size:12.5px;color:var(--muted);margin-top:2px}
+.hero{padding:26px 28px;background:radial-gradient(120% 140% at 100% 0%,rgba(46,211,183,.10),transparent 55%),var(--surface)}
+.hero .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.syn{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.syn{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.syn{grid-template-columns:minmax(0,1fr)}}
+.syn .card{padding:16px}
+.syn .k{font-size:12px;font-weight:700;color:var(--mint);letter-spacing:.04em}
+.syn p{margin:6px 0 0;white-space:pre-wrap;word-break:break-word}
+.parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.pcard{padding:18px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;border-top:3px solid var(--pc)}
+.pcard:hover{border-color:var(--line2);border-top-color:var(--pc);background:var(--surface2)}
+.pcard .h{display:flex;align-items:center;gap:8px}
+.pcard .h b{font-size:16px}
+.pcard .secs{font-size:12.5px;color:var(--faint)}
+.pcard .f{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:auto}
+.empty{border:1.5px dashed var(--line2);border-radius:var(--r);padding:36px 20px;text-align:center;color:var(--faint)}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+.empty .btn{margin-top:14px}
+.text-block{padding:18px 20px;white-space:pre-wrap;word-break:break-word}
+
+/* grid / gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.gcard{overflow:hidden;display:flex;flex-direction:column;cursor:pointer;text-align:left;padding:0;width:100%}
+.gcard:hover{border-color:var(--line2)}
+.cover{aspect-ratio:4/3;background:var(--surface2);display:grid;place-items:center;overflow:hidden;color:var(--faint);font-size:12px;border-bottom:1px solid var(--line)}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.cover.contain img{object-fit:contain;background:#0e0f13}
+.cover .ph{font-size:28px;font-weight:800;color:var(--line2)}
+.gbody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:7px}
+.gbody .t{font-weight:700;font-size:15px;line-height:1.35}
+.gbody .chips{display:flex;flex-wrap:wrap;gap:4px}
+.gbody .ln{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap}
+.gbody .mt{font-size:12px;color:var(--faint)}
+.mood{columns:4 220px;column-gap:12px}
+.mood .m{break-inside:avoid;margin-bottom:12px;position:relative;border-radius:12px;overflow:hidden;cursor:pointer;background:var(--surface2);border:1px solid var(--line);display:block;width:100%;padding:0}
+.mood img{width:100%;display:block}
+.mood .cap{position:absolute;left:0;right:0;bottom:0;padding:24px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.75));font-size:13px;font-weight:600;text-align:left}
+.mood .noimg{aspect-ratio:1;display:grid;place-items:center;color:var(--faint)}
+.palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.sw{overflow:hidden;cursor:pointer;padding:0;text-align:left;width:100%}
+.sw .c{height:110px}
+.sw .i{padding:10px 12px}
+.sw .i b{display:block}
+.sw .i span{font-size:12px;color:var(--faint);text-transform:uppercase}
+
+/* storyboard */
+.scene{margin-bottom:22px}
+.scene-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.scene-h .sn{font-size:20px;font-weight:800;color:var(--pc);letter-spacing:-.01em}
+.scene-h .st{font-weight:700}
+.scene-h .sp{flex:1}
+.cuts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.cut{overflow:hidden;cursor:pointer;padding:0;text-align:left;width:100%;display:flex;flex-direction:column}
+.cut:hover{border-color:var(--line2)}
+.frame{background:var(--surface2);display:grid;place-items:center;overflow:hidden;border-bottom:1px solid var(--line);position:relative}
+.frame img{width:100%;height:100%;object-fit:cover}
+.frame .cn{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.6);padding:1px 8px;border-radius:6px;font-size:12px;font-weight:700}
+.frame .ph{font-size:12px;color:var(--faint)}
+.cut .b{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px}
+.cut .tags{display:flex;gap:4px;flex-wrap:wrap}
+.cut .tx{font-size:13.5px}
+.cut .dl{font-size:12.5px;color:var(--muted);font-style:italic;white-space:pre-wrap}
+.cut .ft{display:flex;justify-content:space-between;font-size:12px;color:var(--faint)}
+
+/* table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:12px;color:var(--faint);font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--surface)}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tbody tr.row{cursor:pointer}
+tbody tr.row:hover td{background:var(--surface2)}
+td.r,th.r{text-align:right;white-space:nowrap}
+tr.grp td{background:var(--bg);font-weight:700;font-size:12.5px;color:var(--muted);padding:8px 14px}
+tr.tot td{font-weight:700;background:var(--surface2)}
+td .sub{display:block;font-size:12px;color:var(--faint);margin-top:2px;white-space:pre-wrap}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(var(--cols,3),minmax(220px,1fr));gap:12px;overflow-x:auto}
+.bcol{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:8px;min-height:100px}
+.bcol h3{margin:4px 6px 4px;font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between}
+.bitem{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;text-align:left;width:100%;display:flex;flex-direction:column;gap:5px}
+.bitem:hover{border-color:var(--line2)}
+.bitem .mt{font-size:12px;color:var(--faint);display:flex;gap:8px;flex-wrap:wrap}
+
+/* schedule */
+.sched{display:flex;flex-direction:column;gap:10px}
+.call{display:grid;grid-template-columns:120px minmax(0,1fr);overflow:hidden;cursor:pointer;text-align:left;padding:0;width:100%}
+.call:hover{border-color:var(--line2)}
+.call .d{background:var(--surface2);padding:14px;display:flex;flex-direction:column;gap:2px;border-right:1px solid var(--line)}
+.call .d b{font-size:20px;letter-spacing:-.02em}
+.call .i{padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.call .row2{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.call.past{opacity:.5}
+@media (max-width:560px){.call{grid-template-columns:minmax(0,1fr)}.call .d{border-right:0;border-bottom:1px solid var(--line);flex-direction:row;gap:10px;align-items:baseline}}
+
+/* budget */
+.bud-row{display:grid;grid-template-columns:120px minmax(0,1fr) 130px 130px 130px;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+.bud-row:last-child{border-bottom:0}
+.bud-row.h{font-size:12px;color:var(--faint);font-weight:600;padding-top:12px;padding-bottom:10px}
+.bud-row .p{display:flex;gap:8px;align-items:center;font-weight:700}
+.bar{height:10px;border-radius:5px;background:var(--surface2);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bud-row input{width:100%;background:var(--surface2);border:1px solid var(--line2);border-radius:8px;padding:6px 8px;text-align:right}
+@media (max-width:760px){.bud-row{grid-template-columns:1fr 1fr}.bud-row .barc{grid-column:1/-1;order:5}.bud-row.h{display:none}}
+
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:60;display:flex;justify-content:flex-end}
+.drawer{width:min(560px,100%);height:100%;background:var(--surface);border-left:1px solid var(--line);display:flex;flex-direction:column}
+.drawer header{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.drawer header h3{margin:0;font-size:16px;flex:1}
+.drawer .body{flex:1;overflow:auto;padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:14px 14px;align-content:start}
+.drawer footer{display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--line);padding-bottom:max(14px,env(safe-area-inset-bottom))}
+.drawer footer .sp{flex:1}
+.fd{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fd.full{grid-column:1/-1}
+.fd>label,.fd>.lb{font-size:12.5px;font-weight:600;color:var(--muted)}
+.fd input,.fd select,.fd textarea{background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:9px 11px;width:100%;min-width:0}
+.fd input:focus,.fd select:focus,.fd textarea:focus{outline:none;border-color:var(--mint)}
+.fd textarea{min-height:88px;resize:vertical;line-height:1.5}
+.fd .hint{font-size:11.5px;color:var(--faint)}
+.fd .prev{border-radius:10px;overflow:hidden;border:1px solid var(--line);max-height:220px;display:grid;place-items:center;background:var(--bg)}
+.fd .prev img{max-width:100%;max-height:220px;display:block}
+.picks{display:flex;flex-wrap:wrap;gap:6px}
+.picks button{border:1px solid var(--line2);background:var(--bg);border-radius:8px;padding:5px 10px;font-size:13px;color:var(--muted)}
+.picks button.on{border-color:var(--mint);background:var(--mint-soft);color:var(--mint);font-weight:700}
+.colorrow{display:flex;gap:8px}
+.colorrow input[type=color]{width:52px;padding:2px;height:40px}
+.ro{grid-column:1/-1;display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px 14px;font-size:14px}
+.ro dt{color:var(--faint);font-size:13px}
+.ro dd{margin:0;white-space:pre-wrap;word-break:break-word}
+.ro img{max-width:100%;border-radius:10px}
+@media (max-width:560px){.drawer .body{grid-template-columns:minmax(0,1fr)}.ro{grid-template-columns:minmax(0,1fr)}}
+
+/* landing */
+.land{max-width:760px;margin:0 auto;padding:clamp(40px,8vh,90px) 20px 60px}
+.land h1{font-size:clamp(30px,5vw,44px)}
+.land .newp{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}
+.land .newp input{flex:1 1 260px;background:var(--surface);border:1px solid var(--line2);border-radius:12px;padding:12px 14px;font-size:15px}
+.land .btn{padding:12px 18px;font-size:14.5px;border-radius:12px}
+.recent{margin-top:40px}
+.recent a{display:flex;justify-content:space-between;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.recent a:hover{background:var(--surface2)}
+.recent a span{color:var(--faint);font-size:13px}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:40px}
+.feat div{padding:14px 16px;font-size:13px;color:var(--muted)}
+.feat b{display:block;color:var(--ink);margin-bottom:2px}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--raise);border:1px solid var(--line2);padding:10px 16px;border-radius:12px;z-index:90;font-size:13.5px;max-width:calc(100% - 32px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.guide ol{padding-left:20px;margin:0;display:flex;flex-direction:column;gap:10px}
+.guide code{background:var(--bg);border:1px solid var(--line);padding:1px 6px;border-radius:6px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ============================================================
+   양식 정의 — 파트와 섹션, 입력 칸을 여기서 바꿀 수 있어요.
+   ============================================================ */
+const f = (k, l, t = 'text', o = {}) => ({ k, l, t, ...o });
+const SIZES = ['ECU','CU','MCU','MS','KS','FS','LS','ELS','설정샷','인서트','OTS','POV','투샷'];
+const ANGLES = ['아이레벨','하이앵글','로우앵글','버드아이','더치앵글'];
+const MOVES = ['고정','팬','틸트','줌인','줌아웃','달리인','달리아웃','트래킹','핸드헬드','짐벌','슬라이더','드론'];
+const TOD = ['낮 · 실내','낮 · 실외','밤 · 실내','밤 · 실외','새벽','노을'];
+const MONEY_STATUS = ['논의 중','확정','취소'];
+
+function moneyFields(cats, extra = []) {
+  return [
+    f('title','항목','text',{req:1, full:1, col:1, ph:'예: 소니 FX3 대여'}),
+    f('cat','분류','select',{o:cats, col:1, chip:1}),
+    f('status','상태','select',{o:MONEY_STATUS, def:'논의 중', col:1, chip:1}),
+    f('qty','수량','number',{def:1, col:1}),
+    f('price','단가 (원)','money',{col:1, hint:'보유한 물건은 비워두면 0원'}),
+    f('source','구하는 방법','select',{o:['보유','대여','구매','협찬','섭외'], col:1}),
+    ...extra,
+    f('owner','담당','text',{col:1}),
+    f('need','필요한 날','date'),
+    f('memo','메모','textarea',{sub:1})
+  ];
+}
+const REF = (hint) => ({ id:'refs', name:'레퍼런스', view:'cards', cover:'image', fields:[
+  f('title','제목','text',{req:1, full:1, ph:'참고 작품 이름'}),
+  f('image','썸네일 이미지 링크','image',{full:1}),
+  f('link','영상·이미지 링크','url',{full:1, ph:'https://'}),
+  f('type','유형','select',{o:['영화','드라마','광고','MV','사진','음악','기타'], chip:1}),
+  f('scenes','관련 씬','text',{meta:1}),
+  f('point','참고 포인트','textarea',{full:1, line:1, ph:hint})
+]});
+
+const PARTS = [
+ { id:'directing', name:'연출', color:'#2ed3b7', desc:'이야기와 그림을 정하는 파트', sections:[
+   { id:'storyboard', name:'스토리보드', view:'storyboard', fields:[
+     f('scene','씬 번호','number',{req:1}), f('cut','컷 번호','number',{req:1}),
+     f('sceneTitle','씬 제목','text',{ph:'같은 씬의 첫 컷에만 적어도 돼요'}), f('tod','시간 · 공간','select',{o:TOD}),
+     f('image','콘티 그림 링크','image',{full:1}),
+     f('title','컷 내용','textarea',{req:1, full:1, ph:'화면에 보이는 것, 인물의 행동'}),
+     f('size','샷 사이즈','select',{o:SIZES}), f('angle','앵글','select',{o:ANGLES}),
+     f('move','카메라 무빙','multi',{o:MOVES, full:1}),
+     f('lens','렌즈 (mm)','number'), f('sec','시간 (초)','number'),
+     f('dialogue','대사 · 내레이션','textarea',{full:1}),
+     f('sound','사운드 · CG','text',{full:1}),
+     f('cast','출연','text'), f('status','상태','select',{o:['준비','촬영 완료','재촬영'], def:'준비'})
+   ]},
+   { id:'characters', name:'캐릭터', view:'cards', cover:'image', portrait:1, fields:[
+     f('title','이름','text',{req:1}), f('casting','캐스팅','select',{o:['미정','섭외 중','확정'], def:'미정', chip:1}),
+     f('image','사진 링크','image',{full:1}),
+     f('actor','배우','text',{meta:1}), f('age','나이','text'),
+     f('role','극 중 역할','text',{full:1, chip:1}),
+     f('look','외모 · 인상착의','textarea',{full:1, line:1}),
+     f('personality','성격 · 특징','textarea',{full:1}),
+     f('background','살아온 배경','textarea',{full:1}),
+     f('costume','의상 메모','textarea',{full:1})
+   ]},
+   { id:'locations', name:'로케이션', view:'cards', cover:'image', fields:[
+     f('title','장소명','text',{req:1}), f('status','상태','select',{o:['후보','답사 완료','확정','탈락'], def:'후보', chip:1}),
+     f('image','대표 사진 링크','image',{full:1}),
+     f('album','사진 폴더 링크','url',{full:1, ph:'구글 드라이브 폴더 등'}),
+     f('address','주소','text',{full:1, meta:1}),
+     f('scenes','사용할 씬','text',{chip:1}), f('date','답사일','date'),
+     f('env','촬영 환경','multi',{o:['채광 좋음','소음 적음','전력 사용 가능','주차 가능','허가 불필요','화장실 있음','대기 공간 있음'], full:1}),
+     f('caution','주의할 점','multi',{o:['소음 많음','유동인구 많음','허가 필요','전력 없음','시간 제한'], full:1}),
+     f('contact','섭외 연락처 · 조건','text',{full:1}),
+     f('memo','메모','textarea',{full:1, line:1})
+   ]},
+   { id:'mood', name:'무드보드', view:'mood', fields:[
+     f('title','제목','text',{req:1}), f('tags','분류','multi',{o:['색감','조명','공간','인물 · 의상','구도','분위기']}),
+     f('image','이미지 링크','image',{full:1, req:1}), f('source','출처','url',{full:1})
+   ]},
+   REF('어떤 점을 가져오고 싶은지'),
+   { id:'budget', name:'연출 지출', view:'table', money:1, group:'cat', fields: moneyFields(['배우 사례비','대본 · 인쇄','리허설','기타']) }
+ ]},
+ { id:'camera', name:'촬영', color:'#60a5fa', desc:'어떻게 찍을지 정하는 파트', sections:[
+   { id:'gear', name:'장비 리스트', view:'table', money:1, group:'cat', fields: moneyFields(
+       ['카메라','렌즈','삼각대 · 그립','짐벌 · 슬라이더','조명','모니터','저장장치 · 배터리','기타'],
+       [ f('vendor','대여처','text',{col:1}), f('pickup','픽업일','date'), f('ret','반납일','date'),
+         f('prep','준비 상태','select',{o:['준비 전','픽업 완료','반납 완료'], def:'준비 전', col:1}) ]) },
+   { id:'overhead', name:'부감도', view:'cards', cover:'image', contain:1, fields:[
+     f('title','셋업 이름','text',{req:1, ph:'예: #1 정류장 와이드'}), f('status','상태','select',{o:['초안','확정'], def:'초안', chip:1}),
+     f('image','부감도 이미지 링크','image',{full:1, hint:'종이에 그려 찍거나 아이패드 · 피그잼으로 그린 이미지'}),
+     f('location','장소','text',{meta:1}), f('scenes','씬 · 컷','text',{chip:1}),
+     f('camera','카메라 위치 · 방향','textarea',{full:1, line:1, ph:'C1: 정류장 맞은편, 인물 정면'}),
+     f('lens','렌즈 (mm)','number'), f('height','카메라 높이','select',{o:['로우','허리','아이레벨','하이','탑뷰']}),
+     f('blocking','인물 동선','textarea',{full:1}), f('lights','조명 배치','textarea',{full:1})
+   ]},
+   { id:'lighting', name:'조명 계획', view:'cards', cover:'image', contain:1, fields:[
+     f('title','씬','text',{req:1, ph:'예: S#3 편의점'}), f('tod','시간 · 공간','select',{o:TOD, chip:1}),
+     f('image','조명 다이어그램 링크','image',{full:1}),
+     f('mood','분위기','multi',{o:['하이키','로우키','자연광','네온','실루엣','따뜻함','차가움'], full:1}),
+     f('key','키 라이트','text',{full:1, line:1}), f('fill','필 라이트','text',{full:1}),
+     f('back','백 라이트','text',{full:1}), f('practical','실용광 (화면 속 조명)','text',{full:1}),
+     f('kelvin','색온도 (K)','number',{meta:1}), f('status','상태','select',{o:['초안','테스트 완료','확정'], def:'초안', chip:1}),
+     f('gear','사용 장비','text',{full:1})
+   ]},
+   REF('구도, 카메라 무빙, 조명에서 참고할 점'),
+   { id:'budget', name:'기타 지출', view:'table', money:1, group:'cat', fields: moneyFields(['소모품','교통 · 운반','기타']) }
+ ]},
+ { id:'art', name:'미술', color:'#f59e0b', desc:'공간, 소품, 의상을 책임지는 파트', sections:[
+   { id:'palette', name:'컬러 팔레트', view:'palette', fields:[
+     f('title','색 이름','text',{req:1, ph:'예: 새벽 블루'}), f('color','색','color',{def:'#3b82f6'}),
+     f('role','역할','select',{o:['메인','보조','포인트']}), f('usage','어디에 쓰나요','textarea',{full:1})
+   ]},
+   { id:'concept', name:'미술 컨셉', view:'cards', cover:'image', fields:[
+     f('title','공간 · 인물','text',{req:1, ph:'예: 지수의 방'}), f('kind','구분','select',{o:['공간','인물','소품'], chip:1}),
+     f('image','레퍼런스 이미지 링크','image',{full:1}),
+     f('desc','방향','textarea',{full:1, line:1}), f('must','꼭 있어야 할 것','textarea',{full:1}), f('avoid','치워야 할 것','textarea',{full:1})
+   ]},
+   { id:'props', name:'소품 · 의상 · 분장', view:'cards', cover:'image', money:1, fields: moneyFields(
+       ['소품','의상','분장 · 헤어','세트','기타'],
+       [ f('image','사진 링크','image',{full:1}), f('character','관련 인물','text',{meta:1}), f('scenes','관련 씬','text'),
+         f('prep','준비 상태','select',{o:['준비 전','준비 완료','현장 반입'], def:'준비 전'}) ]) },
+   REF('색감, 공간, 의상에서 참고할 점')
+ ]},
+ { id:'sound', name:'사운드', color:'#a78bfa', desc:'현장 녹음부터 음악까지 소리를 책임지는 파트', sections:[
+   { id:'recording', name:'녹음 계획', view:'table', fields:[
+     f('title','씬','text',{req:1, col:1}), f('method','녹음 방식','multi',{o:['동시녹음','후시녹음','앰비언스','폴리','내레이션'], col:1}),
+     f('mic','마이크','multi',{o:['붐 (샷건)','핀마이크','레코더 내장','카메라 마이크'], col:1}),
+     f('noise','현장 소음','select',{o:['조용함','보통','시끄러움'], col:1}),
+     f('owner','담당','text',{col:1}), f('status','상태','select',{o:['계획','녹음 완료','재녹음 필요'], def:'계획', col:1}),
+     f('note','주의사항','textarea',{full:1, sub:1})
+   ]},
+   { id:'music', name:'음악 · 효과음', view:'table', group:'use', fields:[
+     f('title','곡 · 소리','text',{req:1, col:1}), f('use','용도','select',{o:['BGM','효과음','앰비언스','엔딩곡']}),
+     f('scenes','사용 씬','text',{col:1}), f('mood','분위기','text',{col:1}),
+     f('license','라이선스','select',{o:['확인 전','무료 사용 가능','구매 필요','직접 제작','사용 불가'], def:'확인 전', col:1}),
+     f('status','상태','select',{o:['후보','확정','편집 반영'], def:'후보', col:1}),
+     f('link','출처 · 링크','url',{full:1, sub:1})
+   ]},
+   { id:'gear', name:'장비 · 지출', view:'table', money:1, group:'cat', fields: moneyFields(['녹음기','마이크','붐 · 액세서리','음원 구매','믹싱','기타']) },
+   REF('음악, 사운드 디자인에서 참고할 점')
+ ]},
+ { id:'edit', name:'편집', color:'#f472b6', desc:'촬영본을 작품으로 완성하는 파트', sections:[
+   { id:'progress', name:'편집 진행', view:'board', by:'status', fields:[
+     f('title','단계','text',{req:1}), f('order','순서','number'),
+     f('status','상태','select',{o:['대기','진행 중','피드백 대기','완료'], def:'대기'}),
+     f('version','버전','text',{meta:1}), f('owner','담당','text',{meta:1}), f('due','마감일','date',{meta:1}),
+     f('link','파일 링크','url',{full:1}), f('feedback','피드백','textarea',{full:1})
+   ]},
+   { id:'spec', name:'출력 사양', view:'table', fields:[
+     f('title','항목','text',{req:1, col:1}), f('value','기준','text',{col:1}), f('memo','메모','text',{col:1}), f('order','순서','number')
+   ]},
+   REF('편집 리듬, 색보정, 자막에서 참고할 점'),
+   { id:'budget', name:'편집 지출', view:'table', money:1, group:'cat', fields: moneyFields(['소프트웨어','폰트','음원 · 라이선스','저장장치','기타']) }
+ ]},
+ { id:'production', name:'제작', color:'#94a3b8', desc:'일정, 사람, 공통 비용을 관리하는 파트', sections:[
+   { id:'schedule', name:'촬영 일정', view:'schedule', fields:[
+     f('title','회차','text',{req:1, ph:'예: 1회차'}), f('date','날짜','date',{req:1}),
+     f('call','콜타임','time'), f('wrap','종료 예정','time'),
+     f('location','로케이션','text',{full:1}), f('meet','집합 장소','text',{full:1}),
+     f('scenes','촬영 씬','text',{full:1, ph:'S#1, S#3'}), f('crew','참여 인원','text',{full:1}),
+     f('prep','준비물','textarea',{full:1}), f('memo','날씨 · 메모','textarea',{full:1}),
+     f('status','상태','select',{o:['예정','완료','연기'], def:'예정'})
+   ]},
+   { id:'tasks', name:'할 일', view:'board', by:'status', fields:[
+     f('title','할 일','text',{req:1, full:1}),
+     f('status','상태','select',{o:['할 일','진행 중','완료'], def:'할 일'}),
+     f('part','파트','select',{o:['공통','연출','촬영','미술','사운드','편집','제작'], meta:1}),
+     f('owner','담당','text',{meta:1}), f('due','기한','date',{meta:1}), f('memo','메모','textarea',{full:1})
+   ]},
+   { id:'team', name:'팀 구성', view:'table', fields:[
+     f('title','이름','text',{req:1, col:1}), f('part','파트','multi',{o:['연출','제작','촬영','조명','미술','사운드','편집','배우'], col:1}),
+     f('role','역할','text',{col:1}), f('contact','연락처','text',{col:1})
+   ]},
+   { id:'budget', name:'제작 지출', view:'table', money:1, group:'cat', fields: moneyFields(['장소 대여','식비','교통 · 주차','보험 · 허가','소모품','기타']) }
+ ]}
+];
+const PART = Object.fromEntries(PARTS.map(p => [p.id, p]));
+const OVERVIEW_FIELDS = [
+  f('title','작품 제목','text',{req:1, full:1}),
+  f('logline','로그라인','textarea',{full:1, ph:'이 영상을 한 문장으로'}),
+  f('genre','장르 / 형식','text',{ph:'단편 드라마, MV …'}), f('ratio','화면비','select',{o:['16:9','9:16','1:1','4:5','2.35:1','1.85:1'], def:'16:9'}),
+  f('runtime','러닝타임 (분)','number'), f('total','총예산 (원)','money'),
+  f('deadline','마감일','date'), f('platform','제출처 / 공개처','text'),
+  f('syn1','시놉시스 · 기','textarea',{full:1}), f('syn2','시놉시스 · 승','textarea',{full:1}),
+  f('syn3','시놉시스 · 전','textarea',{full:1}), f('syn4','시놉시스 · 결','textarea',{full:1}),
+  f('intent','기획 의도','textarea',{full:1}), f('tone','톤 & 무드','textarea',{full:1}),
+  f('script','시나리오 링크','url',{full:1, hint:'구글 드라이브 PDF, 문서 링크 등'})
+];
+const STARTER = [
+  ...['러프 컷 (가편집)','1차 피드백','2차 편집','파인 컷','색보정','사운드 믹싱','자막 · CG','최종 검수','최종 출력']
+     .map((t,i)=>({part:'edit', section:'progress', data:{title:t, order:i+1, status:'대기'}})),
+  ...[['해상도','1920 × 1080'],['프레임레이트','23.976 fps'],['화면비','작품 개요와 동일'],['코덱 / 포맷','H.264 .mp4'],['음량 기준','-14 LUFS'],['자막','폰트, 크기, 위치'],['파일 이름 규칙','작품명_버전_날짜']]
+     .map(([t,v],i)=>({part:'edit', section:'spec', data:{title:t, value:v, order:i+1}}))
+];
+
+/* ============================================================
+   유틸
+   ============================================================ */
+const $root = document.getElementById('root');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const won = n => (Math.round(Number(n)||0)).toLocaleString('ko-KR') + '원';
+const LS = { get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+const today = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
+const parseD = s => { if(!s) return null; const [y,m,d] = String(s).split('-').map(Number); return y ? new Date(y, m-1, d) : null; };
+const dday = s => { const d = parseD(s); if(!d) return ''; const n = Math.round((d - today())/864e5); return n === 0 ? 'D-DAY' : n > 0 ? 'D-' + n : 'D+' + (-n); };
+const fmtD = s => { const d = parseD(s); if(!d) return ''; return (d.getMonth()+1) + '.' + String(d.getDate()).padStart(2,'0') + ' (' + '일월화수목금토'[d.getDay()] + ')'; };
+const mmss = s => { s = Math.round(Number(s)||0); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); };
+const uid = (n=10) => { const a = 'abcdefghijkmnpqrstuvwxyz23456789'; let s=''; const r = crypto.getRandomValues(new Uint8Array(n)); for(const x of r) s += a[x % a.length]; return s; };
+const arr = v => Array.isArray(v) ? v : (v ? [v] : []);
+function imgUrl(u){
+  u = String(u||'').trim(); if(!/^https?:\/\//i.test(u)) return '';
+  const m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]{10,})/);
+  if(m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1600';
+  return u;
+}
+const amount = d => (d.qty === '' || d.qty == null ? 1 : Number(d.qty)||0) * (Number(d.price)||0);
+const statusChip = s => ({'확정':'c-ok','촬영 완료':'c-ok','녹음 완료':'c-ok','완료':'c-ok','편집 반영':'c-ok','무료 사용 가능':'c-ok','반납 완료':'c-ok','현장 반입':'c-ok',
+  '논의 중':'c-warn','섭외 중':'c-warn','피드백 대기':'c-warn','구매 필요':'c-warn','답사 완료':'c-mint','진행 중':'c-mint','픽업 완료':'c-mint','준비 완료':'c-mint',
+  '재촬영':'c-bad','재녹음 필요':'c-bad','탈락':'c-bad','사용 불가':'c-bad','취소':'c-bad','연기':'c-bad'}[s] || '');
+let toastT;
+function toast(m){ let el = document.querySelector('.toast'); if(!el){ el = document.createElement('div'); el.className='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent = m; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(()=>el.hidden = true, 2600); }
+
+/* ============================================================
+   저장소 — Firebase가 있으면 Firestore, 없으면 이 브라우저(미리보기)
+   ============================================================ */
+const CFG = window.FIREBASE_CONFIG || {};
+const LIVE = !!(CFG.apiKey && CFG.projectId);
+
+function LocalStore(pid){
+  const key = 'board:' + pid;
+  let db = LS.get(key);
+  let cb = () => {};
+  const save = () => { LS.set(key, db); cb(clone()); };
+  const clone = () => ({ project: db.project, entries: Object.entries(db.entries).map(([id,e]) => ({id, ...e})) });
+  return {
+    async exists(){ return !!db; },
+    async create(project, seed){ db = { project, entries:{} }; for(const s of seed) db.entries[uid(12)] = { ...s, createdAt: Date.now() }; save(); },
+    listen(fn){ cb = fn; if(db) setTimeout(()=>cb(clone())); return ()=>{}; },
+    async setProject(patch){ db.project = { ...db.project, ...patch }; save(); },
+    async add(e){ db.entries[uid(12)] = { ...e, createdAt: Date.now(), updatedAt: Date.now() }; save(); },
+    async update(id, data){ db.entries[id] = { ...db.entries[id], data, updatedAt: Date.now() }; save(); },
+    async remove(id){ delete db.entries[id]; save(); }
+  };
+}
+
+async function FireStore(pid){
+  const V = '10.12.2';
+  const [{ initializeApp }, fs] = await Promise.all([
+    import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),
+    import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`)
+  ]);
+  const app = window.__fbApp || (window.__fbApp = initializeApp(CFG));
+  const db = fs.getFirestore(app);
+  const pref = fs.doc(db, 'projects', pid);
+  const ecol = fs.collection(db, 'projects', pid, 'entries');
+  return {
+    async exists(){ const s = await fs.getDoc(pref); return s.exists(); },
+    async create(project, seed){
+      await fs.setDoc(pref, project);
+      for(const s of seed) await fs.addDoc(ecol, { ...s, createdAt: Date.now() });
+    },
+    listen(fn){
+      let project, entries = null;
+      const emit = () => { if(project !== undefined && entries) fn({ project, entries }); };
+      const u1 = fs.onSnapshot(pref, s => { project = s.exists() ? s.data() : null; emit(); }, e => onErr(e));
+      const u2 = fs.onSnapshot(ecol, s => { entries = s.docs.map(d => ({ id: d.id, ...d.data() })); emit(); }, e => onErr(e));
+      return () => { u1(); u2(); };
+    },
+    async setProject(patch){ await fs.setDoc(pref, patch, { merge: true }); },
+    async add(e){ await fs.addDoc(ecol, { ...e, createdAt: Date.now(), updatedAt: Date.now() }); },
+    async update(id, data){ await fs.updateDoc(fs.doc(ecol, id), { data, updatedAt: Date.now() }); },
+    async remove(id){ await fs.deleteDoc(fs.doc(ecol, id)); }
+  };
+}
+function onErr(e){ console.error(e); toast('서버와 연결하지 못했어요. 인터넷 연결과 Firebase 설정을 확인해주세요.'); }
+
+/* ============================================================
+   상태 & 라우팅
+   ============================================================ */
+const S = { pid:null, store:null, project:{}, entries:[], loaded:false, unsub:null, myPart:null, route:{} };
+function parseRoute(){
+  const h = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
+  if(h[0] !== 'p' || !h[1]) return { page:'home' };
+  const r = { pid: h[1], page: h[2] || 'overview' };
+  if(r.page === 'part'){ r.part = PART[h[3]] ? h[3] : 'directing'; r.sec = h[4]; }
+  return r;
+}
+const link = (...p) => '#/p/' + S.pid + (p.length ? '/' + p.join('/') : '');
+const shareUrl = () => location.href.split('#')[0] + '#/p/' + S.pid;
+
+async function openProject(pid){
+  if(S.pid === pid && S.store) return;
+  if(S.unsub) S.unsub();
+  S.pid = pid; S.loaded = false; S.entries = []; S.project = {};
+  S.myPart = (LS.get('mypart') || {})[pid] || null;
+  try{ S.store = LIVE ? await FireStore(pid) : LocalStore(pid); }
+  catch(e){ console.error(e); $root.innerHTML = `<div class="land"><h1>불러오지 못했어요</h1><p class="lead">Firebase에 연결하지 못했어요. index.html 위쪽의 설정값을 확인해주세요.</p></div>`; return; }
+  S.unsub = S.store.listen(({project, entries}) => {
+    S.project = project; S.entries = entries; S.loaded = true;
+    if(project) rememberProject(pid, project.title);
+    render();
+  });
+  if(!LIVE && !(await S.store.exists())){ S.loaded = true; S.project = null; render(); }
+}
+function rememberProject(pid, title){
+  const list = (LS.get('recent') || []).filter(x => x.pid !== pid);
+  list.unshift({ pid, title: title || '제목 없는 프로젝트', at: Date.now() });
+  LS.set('recent', list.slice(0, 20));
+}
+function setMyPart(id){
+  S.myPart = id || null;
+  const m = LS.get('mypart') || {}; m[S.pid] = S.myPart; LS.set('mypart', m);
+  render();
+}
+const canEdit = part => !!S.myPart && (S.myPart === part || S.myPart === 'all');
+const canEditOverview = () => S.myPart === 'all' || S.myPart === 'directing';
+
+window.addEventListener('hashchange', route);
+function route(){
+  const sd = document.querySelector('.side'); if(sd) sd.classList.remove('open');
+  S.route = parseRoute(); S.resetScroll = true;
+  if(S.route.page === 'home'){ if(S.unsub) S.unsub(); S.pid = null; S.store = null; renderHome(); return; }
+  openProject(S.route.pid).then(render);
+  render();
+}
+
+/* ============================================================
+   화면 — 시작 화면
+   ============================================================ */
+function renderHome(){
+  document.title = '제작 보드';
+  const recent = LS.get('recent') || [];
+  $root.innerHTML = `
+  <div class="land">
+    ${!LIVE ? demoBanner() : ''}
+    <div class="eyebrow">TEAM PRODUCTION BOARD</div>
+    <h1>영상 제작 보드</h1>
+    <p class="lead">작품마다 보드를 하나씩 만들고 링크를 팀에 공유하세요. 링크가 있는 사람은 누구나 볼 수 있고, 각자 자기 파트를 골라서 채워요. 파트별 지출은 예산안에 자동으로 모여요.</p>
+    <form class="newp" id="newForm">
+      <input id="newTitle" placeholder="새 작품 제목 (예: 막차)" autocomplete="off" aria-label="새 작품 제목">
+      <button class="btn btn-p" type="submit">+ 새 프로젝트 만들기</button>
+    </form>
+    ${recent.length ? `<div class="recent"><div class="navlabel" style="padding-left:16px">최근에 연 프로젝트</div><div class="card">${recent.map(r=>`<a href="#/p/${esc(r.pid)}"><b>${esc(r.title)}</b><span>${new Date(r.at).toLocaleDateString('ko-KR')}</span></a>`).join('')}</div></div>` : ''}
+    <div class="feat">
+      <div class="card"><b>파트별 페이지</b>연출 · 촬영 · 미술 · 사운드 · 편집 · 제작</div>
+      <div class="card"><b>스토리보드 · 부감도</b>컷 카드와 셋업별 배치도</div>
+      <div class="card"><b>예산 자동 합계</b>파트에서 적은 지출이 한곳으로</div>
+    </div>
+  </div>`;
+  document.getElementById('newForm').onsubmit = async e => {
+    e.preventDefault();
+    const title = document.getElementById('newTitle').value.trim() || '제목 없는 프로젝트';
+    const pid = uid(14);
+    const store = LIVE ? await FireStore(pid) : LocalStore(pid);
+    try{
+      await store.create({ title, ratio:'16:9', createdAt: Date.now(), alloc:{} }, STARTER);
+      rememberProject(pid, title);
+      location.hash = '#/p/' + pid;
+      setTimeout(()=>openShare(), 400);
+    }catch(err){ onErr(err); }
+  };
+}
+const demoBanner = () => `<div class="banner"><span class="chip c-warn">미리보기 모드</span><span class="muted">지금은 이 브라우저에만 저장돼요. 팀과 함께 쓰려면 Firebase를 연결하세요.</span><span class="sp"></span><button class="btn btn-sm" data-act="guide">설정 방법</button></div>`;
+
+/* ============================================================
+   화면 — 프로젝트 레이아웃
+   ============================================================ */
+function render(){
+  if(S.route.page === 'home') return;
+  if(!S.loaded){ $root.innerHTML = `<div class="land"><p class="muted">불러오는 중…</p></div>`; return; }
+  if(S.project === null){ $root.innerHTML = `<div class="land"><h1>프로젝트를 찾을 수 없어요</h1><p class="lead">링크가 정확한지 확인해주세요.</p><p><a class="btn" href="#/">처음 화면으로</a></p></div>`; return; }
+  const P = S.project;
+  document.title = (P.title || '제작 보드') + ' · 제작 보드';
+  const r = S.route;
+  const nav = (href, label, on, extra='') => `<a href="${href}" class="${on?'on':''}">${extra}${label}</a>`;
+  const navParts = PARTS.map(p => `<a href="${link('part',p.id)}" class="${r.page==='part'&&r.part===p.id?'on':''}"><span class="dot" style="background:${p.color}"></span>${p.name}${S.myPart===p.id?'<span class="me">내 파트</span>':''}</a>`).join('');
+  let body = '';
+  if(r.page === 'budget') body = viewBudget();
+  else if(r.page === 'part') body = viewPart(PART[r.part], r.sec);
+  else body = viewOverview();
+  const sideOpen = document.querySelector('.side.open') ? 'open' : '';
+  const ae = document.activeElement, keepAlloc = ae && ae.dataset && ae.dataset.alloc, keepPos = keepAlloc ? ae.selectionStart : 0;
+  const sy = window.scrollY;
+  $root.innerHTML = `
+  <div class="app">
+    <aside class="side ${sideOpen}" id="side">
+      <div class="brand"><div class="mark">S#</div><div class="t"><b>${esc(P.title || '제목 없는 프로젝트')}</b><span>제작 보드</span></div></div>
+      <nav class="nav" aria-label="메뉴">
+        ${nav(link('overview'),'작품 개요', r.page==='overview','<span class="ico">◎</span>')}
+        ${nav(link('budget'),'예산안', r.page==='budget','<span class="ico">₩</span>')}
+        <div class="navlabel">파트</div>
+        ${navParts}
+      </nav>
+      <div class="side-foot">
+        <label for="mypart">내 파트 (편집할 파트)</label>
+        <select id="mypart">
+          <option value="">선택 안 함 (보기만)</option>
+          ${PARTS.map(p=>`<option value="${p.id}" ${S.myPart===p.id?'selected':''}>${p.name}</option>`).join('')}
+          <option value="all" ${S.myPart==='all'?'selected':''}>전체 (감독 · PD)</option>
+        </select>
+        <button class="btn btn-sm" data-act="share">링크 공유</button>
+        <a class="btn btn-sm btn-g" href="#/">다른 프로젝트</a>
+      </div>
+    </aside>
+    <div style="min-width:0">
+      <div class="topbar"><button class="btn btn-sm" data-act="menu" aria-label="메뉴 열기">☰</button><b>${esc(P.title || '제작 보드')}</b><button class="btn btn-sm" data-act="share">공유</button></div>
+      <main class="main">${!LIVE ? demoBanner() : ''}${body}</main>
+    </div>
+  </div>`;
+  const sel = document.getElementById('mypart');
+  if(sel) sel.onchange = () => setMyPart(sel.value);
+  window.scrollTo(0, S.resetScroll ? 0 : sy); S.resetScroll = false;
+  if(keepAlloc){ const i = document.querySelector(`[data-alloc="${keepAlloc}"]`); if(i){ i.focus(); try{ i.setSelectionRange(keepPos, keepPos); }catch(_){} } }
+}
+
+const ofPart = (p, sec) => S.entries.filter(e => e.part === p && (!sec || e.section === sec));
+const moneyEntries = () => S.entries.filter(e => { const p = PART[e.part]; const s = p && p.sections.find(x=>x.id===e.section); return s && s.money; });
+function partSpend(pid){
+  let fixed = 0, pending = 0;
+  for(const e of moneyEntries()) if(e.part === pid){ const a = amount(e.data||{}); if(e.data.status === '확정') fixed += a; else if(e.data.status !== '취소') pending += a; }
+  return { fixed, pending };
+}
+
+/* 작품 개요 */
+function viewOverview(){
+  const P = S.project;
+  const tot = PARTS.reduce((a,p)=>{ const s = partSpend(p.id); a.fixed += s.fixed; a.pending += s.pending; return a; }, {fixed:0, pending:0});
+  const total = Number(P.total)||0;
+  const next = ofPart('production','schedule').filter(e => parseD(e.data.date) >= today() && e.data.status !== '완료').sort((a,b)=>String(a.data.date).localeCompare(b.data.date))[0];
+  const syn = [['기','syn1'],['승','syn2'],['전','syn3'],['결','syn4']];
+  const chips = [P.genre, P.ratio, P.runtime ? P.runtime + '분' : '', P.platform].filter(Boolean).map(x=>`<span class="chip c-line">${esc(x)}</span>`).join('');
+  const cuts = ofPart('directing','storyboard');
+  const secTotal = cuts.reduce((a,e)=>a+(Number(e.data.sec)||0),0);
+  return `
+  <section class="card hero">
+    <div class="eyebrow">작품 개요 ${P.deadline ? `<span class="chip c-mint">${esc(dday(P.deadline))}</span>` : ''}</div>
+    <h1>${esc(P.title || '제목 없는 프로젝트')}</h1>
+    <p class="lead">${P.logline ? esc(P.logline) : '<span class="faint">로그라인을 적어주세요. 이 영상을 한 문장으로 설명한다면?</span>'}</p>
+    <div class="meta">${chips}${P.script ? `<a class="btn btn-sm" href="${esc(P.script)}" target="_blank" rel="noopener">시나리오 열기 ↗</a>` : ''}${canEditOverview() ? `<button class="btn btn-sm btn-p" data-act="editOverview">개요 편집</button>` : ''}</div>
+  </section>
+  ${!canEditOverview() ? `<p class="faint" style="font-size:12.5px;margin:8px 4px 0">작품 개요는 내 파트를 '연출' 또는 '전체'로 고르면 편집할 수 있어요.</p>` : ''}
+  <div class="kpis" style="margin-top:14px">
+    <div class="card kpi"><div class="l">총예산</div><div class="v num">${total ? won(total) : '—'}</div><div class="s">${total ? '남은 금액 ' + won(total - tot.fixed) : '개요 편집에서 입력'}</div></div>
+    <div class="card kpi"><div class="l">확정 지출</div><div class="v num">${won(tot.fixed)}</div><div class="s">논의 중 ${won(tot.pending)}</div></div>
+    <div class="card kpi"><div class="l">콘티</div><div class="v num">${cuts.length}컷</div><div class="s">총 ${mmss(secTotal)}${P.runtime ? ' / 목표 ' + P.runtime + '분' : ''}</div></div>
+    <div class="card kpi"><div class="l">다음 촬영</div><div class="v">${next ? esc(fmtD(next.data.date)) : '—'}</div><div class="s">${next ? esc((next.data.title||'') + (next.data.location ? ' · ' + next.data.location : '')) : '제작 > 촬영 일정에서 추가'}</div></div>
+  </div>
+  <div class="sechead"><h2>시놉시스</h2></div>
+  <div class="syn">${syn.map(([k,key])=>`<div class="card"><div class="k">${k}</div><p>${P[key] ? esc(P[key]) : '<span class="faint">—</span>'}</p></div>`).join('')}</div>
+  ${P.intent || P.tone ? `<div class="syn" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:12px">
+    ${P.intent ? `<div class="card"><div class="k">기획 의도</div><p>${esc(P.intent)}</p></div>` : ''}
+    ${P.tone ? `<div class="card"><div class="k">톤 &amp; 무드</div><p>${esc(P.tone)}</p></div>` : ''}</div>` : ''}
+  <div class="sechead"><h2>파트</h2><span class="faint" style="font-size:13px">내 파트를 고르고 들어가서 채워주세요</span></div>
+  <div class="parts">${PARTS.map(p => {
+    const n = ofPart(p.id).length; const s = partSpend(p.id);
+    return `<a class="card pcard" style="--pc:${p.color}" href="${link('part',p.id)}">
+      <div class="h"><span class="dot" style="width:9px;height:9px;border-radius:50%;background:${p.color}"></span><b>${p.name}</b>${S.myPart===p.id?'<span class="chip c-mint" style="margin-left:auto">내 파트</span>':''}</div>
+      <div class="secs">${p.sections.map(x=>x.name).join(' · ')}</div>
+      <div class="f"><span>항목 ${n}개</span><span class="num">확정 지출 ${won(s.fixed)}</span></div></a>`; }).join('')}</div>`;
+}
+
+/* 예산안 */
+function viewBudget(){
+  const P = S.project, alloc = P.alloc || {}, total = Number(P.total)||0;
+  const rows = PARTS.map(p => ({ p, ...partSpend(p.id), a: Number(alloc[p.id])||0 }));
+  const sum = rows.reduce((a,r)=>({fixed:a.fixed+r.fixed, pending:a.pending+r.pending, a:a.a+r.a}), {fixed:0,pending:0,a:0});
+  const canAlloc = S.myPart === 'all';
+  const filter = S.budgetFilter || '전체';
+  const items = moneyEntries().filter(e => filter === '전체' || e.data.status === filter);
+  const scale = Math.max(1, ...rows.map(r => Math.max(r.a, r.fixed + r.pending)));
+  return `
+  <div class="pagehead"><div><div class="eyebrow">예산안</div><h1>예산은 여기로 모여요</h1><p class="lead">각 파트에서 적은 지출이 실시간으로 합쳐져요. 상태가 '확정'인 항목만 확정 지출로 계산하고, '취소'는 빼요.</p></div></div>
+  <div class="kpis">
+    <div class="card kpi"><div class="l">총예산</div><div class="v num">${total ? won(total) : '—'}</div><div class="s">${total ? '' : '작품 개요에서 입력'}</div></div>
+    <div class="card kpi"><div class="l">확정 지출</div><div class="v num" style="color:var(--mint)">${won(sum.fixed)}</div><div class="s">${total ? Math.round(sum.fixed/total*100) + '% 사용' : ''}</div></div>
+    <div class="card kpi"><div class="l">논의 중 (예상)</div><div class="v num" style="color:var(--warn)">${won(sum.pending)}</div><div class="s">모두 확정되면 ${won(sum.fixed+sum.pending)}</div></div>
+    <div class="card kpi"><div class="l">남은 예산</div><div class="v num" style="color:${total && total-sum.fixed<0?'var(--bad)':'var(--ink)'}">${total ? won(total - sum.fixed) : '—'}</div><div class="s">${total ? '논의 중까지 빼면 ' + won(total - sum.fixed - sum.pending) : ''}</div></div>
+  </div>
+  <div class="sechead"><h2>파트별</h2><span class="sp"></span>
+    <span class="faint" style="font-size:12.5px"><span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--mint)"></span> 확정 &nbsp;<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--warn);opacity:.6"></span> 논의 중 &nbsp;│ 배정 예산</span></div>
+  <div class="card">
+    <div class="bud-row h"><span>파트</span><span>지출 / 배정</span><span style="text-align:right">확정</span><span style="text-align:right">논의 중</span><span style="text-align:right">배정 예산</span></div>
+    ${rows.map(r => {
+      const over = r.a && r.fixed + r.pending > r.a;
+      return `<div class="bud-row">
+        <a class="p" href="${link('part',r.p.id)}" style="color:inherit;text-decoration:none"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:${r.p.color}"></span>${r.p.name}</a>
+        <div class="barc"><div class="bar" style="position:relative">
+          <i style="width:${r.fixed/scale*100}%;background:var(--mint)"></i><i style="width:${r.pending/scale*100}%;background:var(--warn);opacity:.6"></i>
+          ${r.a ? `<span style="position:absolute;top:-3px;bottom:-3px;left:calc(${Math.min(100,r.a/scale*100)}% - 1px);width:2px;background:${over?'var(--bad)':'var(--ink)'}"></span>` : ''}
+        </div>${over ? `<div style="font-size:12px;color:var(--bad);margin-top:4px">배정 예산보다 ${won(r.fixed + r.pending - r.a)} 많아요</div>` : ''}</div>
+        <span class="num" style="text-align:right">${won(r.fixed)}</span>
+        <span class="num faint" style="text-align:right">${won(r.pending)}</span>
+        ${canAlloc ? `<input class="num" data-alloc="${r.p.id}" inputmode="numeric" value="${r.a||''}" placeholder="미정" aria-label="${r.p.name} 배정 예산">` : `<span class="num" style="text-align:right">${r.a ? won(r.a) : '<span class="faint">미정</span>'}</span>`}
+      </div>`; }).join('')}
+    <div class="bud-row" style="background:var(--surface2);font-weight:700;border-radius:0 0 var(--r) var(--r)"><span>합계</span><span class="faint" style="font-weight:500;font-size:12.5px">${total && sum.a ? (total - sum.a >= 0 ? '배정 안 한 예산 ' + won(total - sum.a) : '배정 합계가 총예산보다 ' + won(sum.a - total) + ' 많아요') : ''}</span><span class="num" style="text-align:right">${won(sum.fixed)}</span><span class="num" style="text-align:right">${won(sum.pending)}</span><span class="num" style="text-align:right">${sum.a ? won(sum.a) : '—'}</span></div>
+  </div>
+  ${canAlloc ? `<p class="faint" style="font-size:12.5px;margin:8px 4px">배정 예산 칸을 고치면 바로 저장돼요.</p>` : `<p class="faint" style="font-size:12.5px;margin:8px 4px">배정 예산은 내 파트를 '전체 (감독 · PD)'로 고르면 정할 수 있어요.</p>`}
+  <div class="sechead"><h2>전체 지출 내역</h2><span class="sp"></span>
+    <div style="display:flex;gap:4px">${['전체','확정','논의 중','취소'].map(x=>`<button class="btn btn-sm ${filter===x?'':'btn-g'}" data-bfilter="${x}">${x}</button>`).join('')}</div></div>
+  ${items.length ? `<div class="tbl-wrap"><table><thead><tr><th>항목</th><th>파트</th><th>분류</th><th>상태</th><th class="r">수량</th><th class="r">금액</th></tr></thead><tbody>
+    ${PARTS.map(p => { const its = items.filter(e=>e.part===p.id); if(!its.length) return '';
+      return `<tr class="grp"><td colspan="5"><span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${p.color};margin-right:6px"></span>${p.name}</td><td class="r num">${won(its.reduce((a,e)=>a+amount(e.data),0))}</td></tr>` +
+      its.map(e => `<tr class="row" data-open="${e.id}"><td>${esc(e.data.title)}<span class="sub">${esc(p.sections.find(s=>s.id===e.section)?.name||'')}</span></td><td>${p.name}</td><td>${esc(e.data.cat||'')}</td><td><span class="chip ${statusChip(e.data.status)}">${esc(e.data.status||'')}</span></td><td class="r num">${esc(e.data.qty||1)}</td><td class="r num">${won(amount(e.data))}</td></tr>`).join(''); }).join('')}
+  </tbody></table></div>` : `<div class="empty"><b>아직 지출이 없어요</b>각 파트의 장비 리스트, 소품, 지출 탭에 항목을 추가하면 여기에 모여요.</div>`}`;
+}
+
+/* 파트 */
+function viewPart(p, secId){
+  const sec = p.sections.find(s => s.id === secId) || p.sections[0];
+  const mine = canEdit(p.id);
+  const list = sortEntries(sec, ofPart(p.id, sec.id));
+  const lock = mine ? '' : `<div class="banner lock"><span class="chip c-warn">보기 전용</span><span class="muted">${S.myPart ? `지금 내 파트는 <b>${S.myPart==='all'?'전체':PART[S.myPart].name}</b>예요.` : '아직 내 파트를 고르지 않았어요.'} 이 파트를 쓰려면 내 파트를 <b>${p.name}</b>(으)로 바꾸세요.</span><span class="sp"></span><button class="btn btn-sm" data-setpart="${p.id}">${p.name}(으)로 바꾸기</button></div>`;
+  let content = '';
+  if(!list.length) content = `<div class="empty"><b>${sec.name}이(가) 비어 있어요</b>${mine ? '첫 항목을 추가해보세요.' : '이 파트 담당자가 채우면 여기에 보여요.'}${mine ? `<br><button class="btn btn-p" data-add>+ 추가</button>` : ''}</div>`;
+  else content = ({storyboard:vStory, cards:vCards, mood:vMood, palette:vPalette, table:vTable, board:vBoard, schedule:vSchedule}[sec.view])(sec, list, p);
+  const spend = sec.money ? list.filter(e=>e.data.status!=='취소').reduce((a,e)=>a+amount(e.data),0) : 0;
+  return `
+  <div style="--pc:${p.color}">
+    <div class="pagehead"><div><div class="eyebrow"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block"></span>파트</div><h1>${p.name}</h1><p class="lead">${p.desc}</p></div>
+      <div class="acts">${mine ? `<button class="btn btn-p" data-add>+ ${sec.name} 추가</button>` : ''}</div></div>
+    ${lock}
+    <div class="tabs" role="tablist">${p.sections.map(s => `<a class="tab ${s.id===sec.id?'on':''}" style="text-decoration:none" href="${link('part',p.id,s.id)}">${s.name}<span class="n">${ofPart(p.id,s.id).length || ''}</span></a>`).join('')}</div>
+    ${sec.money && list.length ? `<p class="faint" style="margin:-8px 0 14px;font-size:13px">이 탭의 금액 합계 <b class="num" style="color:var(--ink)">${won(spend)}</b> (취소 제외) · 예산안에 자동으로 반영돼요</p>` : ''}
+    ${content}
+  </div>`;
+}
+function sortEntries(sec, list){
+  const by = {
+    storyboard: (a,b) => (+a.data.scene||0)-(+b.data.scene||0) || (+a.data.cut||0)-(+b.data.cut||0),
+    schedule: (a,b) => String(a.data.date||'9').localeCompare(String(b.data.date||'9')),
+  }[sec.view];
+  return [...list].sort(by || ((a,b) => ((+a.data.order||999) - (+b.data.order||999)) || (a.createdAt||0)-(b.createdAt||0)));
+}
+const fval = (fd, v) => { if(v == null || v === '' || (Array.isArray(v) && !v.length)) return ''; if(fd.t==='money') return won(v); if(fd.t==='date') return fmtD(v); return arr(v).join(', '); };
+
+function vStory(sec, list){
+  const ratio = (S.project.ratio || '16:9').replace(':','/');
+  const scenes = {};
+  for(const e of list){ const k = +e.data.scene || 0; (scenes[k] = scenes[k] || []).push(e); }
+  const total = list.reduce((a,e)=>a+(Number(e.data.sec)||0),0);
+  return `<p class="faint" style="margin:-6px 0 16px;font-size:13px">씬 ${Object.keys(scenes).length}개 · 컷 ${list.length}개 · 예상 분량 <b class="num" style="color:var(--ink)">${mmss(total)}</b>${S.project.runtime ? ' / 목표 ' + S.project.runtime + ':00' : ''} · 화면비 ${esc(S.project.ratio||'16:9')}</p>` +
+  Object.entries(scenes).map(([no, cuts]) => {
+    const head = cuts.find(c => c.data.sceneTitle) || cuts[0];
+    const t = cuts.reduce((a,e)=>a+(Number(e.data.sec)||0),0);
+    return `<section class="scene"><div class="scene-h"><span class="sn">S#${String(no).padStart(2,'0')}</span><span class="st">${esc(head.data.sceneTitle||'')}</span>${head.data.tod?`<span class="chip">${esc(head.data.tod)}</span>`:''}<span class="sp"></span><span class="faint num" style="font-size:12.5px">${cuts.length}컷 · ${mmss(t)}</span></div>
+    <div class="cuts">${cuts.map(e => { const d = e.data, im = imgUrl(d.image);
+      return `<button class="card cut" data-open="${e.id}"><div class="frame" style="aspect-ratio:${ratio}">${im?`<img src="${esc(im)}" alt="" loading="lazy">`:'<span class="ph">콘티 그림 없음</span>'}<span class="cn">C${esc(d.cut)}</span></div>
+        <div class="b"><div class="tags">${[d.size,d.angle].filter(Boolean).map(x=>`<span class="chip">${esc(x)}</span>`).join('')}${arr(d.move).map(x=>`<span class="chip c-mint">${esc(x)}</span>`).join('')}</div>
+        <div class="tx">${esc(d.title)}</div>${d.dialogue?`<div class="dl">“${esc(d.dialogue)}”</div>`:''}
+        <div class="ft"><span>${esc(d.cast||'')}</span><span class="num">${d.sec? esc(d.sec)+'초':''} ${d.status&&d.status!=='준비'?`<span class="chip ${statusChip(d.status)}">${esc(d.status)}</span>`:''}</span></div></div></button>`; }).join('')}</div></section>`;
+  }).join('');
+}
+function vCards(sec, list){
+  return `<div class="gallery">${list.map(e => { const d = e.data, im = imgUrl(d[sec.cover||'image']);
+    const chips = sec.fields.filter(x=>x.chip).flatMap(x=>arr(d[x.k]).map(v=>`<span class="chip ${statusChip(v)}">${esc(v)}</span>`)).join('');
+    const lines = sec.fields.filter(x=>x.line).map(x=>d[x.k]).filter(Boolean).map(v=>`<div class="ln">${esc(v)}</div>`).join('');
+    const meta = sec.fields.filter(x=>x.meta).map(x=>fval(x,d[x.k])).filter(Boolean).map(esc).join(' · ');
+    const money = sec.money ? `<div class="mt num">${won(amount(d))}${d.qty>1?` (${esc(d.qty)}개)`:''}</div>` : '';
+    return `<button class="card gcard" data-open="${e.id}"><div class="cover ${sec.contain?'contain':''}" style="${sec.portrait?'aspect-ratio:3/4':''}">${im?`<img src="${esc(im)}" alt="" loading="lazy">`:`<span class="ph">${esc(String(d.title||'?').slice(0,1))}</span>`}</div>
+      <div class="gbody"><div class="t">${esc(d.title)}</div>${chips?`<div class="chips">${chips}</div>`:''}${lines}${meta?`<div class="mt">${meta}</div>`:''}${money}</div></button>`; }).join('')}</div>`;
+}
+function vMood(sec, list){
+  return `<div class="mood">${list.map(e => { const im = imgUrl(e.data.image);
+    return `<button class="m" data-open="${e.id}">${im?`<img src="${esc(im)}" alt="" loading="lazy">`:'<div class="noimg">이미지 없음</div>'}<div class="cap">${esc(e.data.title)}</div></button>`; }).join('')}</div>`;
+}
+function vPalette(sec, list){
+  return `<div class="palette">${list.map(e => { const d = e.data;
+    return `<button class="card sw" data-open="${e.id}"><div class="c" style="background:${/^#[0-9a-f]{3,8}$/i.test(d.color||'')?d.color:'#333'}"></div><div class="i"><b>${esc(d.title)}</b><span>${esc(d.color||'')}${d.role?' · '+esc(d.role):''}</span>${d.usage?`<div class="muted" style="font-size:12.5px;margin-top:4px">${esc(d.usage)}</div>`:''}</div></button>`; }).join('')}</div>`;
+}
+function vTable(sec, list){
+  const cols = sec.fields.filter(x => x.col);
+  const subs = sec.fields.filter(x => x.sub);
+  const row = e => `<tr class="row" data-open="${e.id}">${cols.map((c,i) => {
+    let v = e.data[c.k];
+    if(c.t === 'select' && (c.k==='status'||c.k==='license'||c.k==='prep')) v = v ? `<span class="chip ${statusChip(v)}">${esc(v)}</span>` : '';
+    else if(c.t === 'multi') v = arr(v).map(x=>`<span class="chip" style="margin:0 3px 3px 0">${esc(x)}</span>`).join('');
+    else v = esc(fval(c, v));
+    if(i === 0) v = `<b style="font-weight:600">${v}</b>` + subs.map(s=>e.data[s.k]?`<span class="sub">${esc(e.data[s.k])}</span>`:'').join('');
+    return `<td class="${c.t==='money'||c.t==='number'?'r num':''}">${v}</td>`; }).join('')}${sec.money?`<td class="r num"><b>${won(amount(e.data))}</b></td>`:''}</tr>`;
+  const ncol = cols.length + (sec.money ? 1 : 0);
+  let rows = '';
+  if(sec.group){
+    const g = {}; for(const e of list){ const k = e.data[sec.group] || '분류 없음'; (g[k] = g[k] || []).push(e); }
+    const order = (sec.fields.find(x=>x.k===sec.group)||{}).o || [];
+    rows = Object.keys(g).sort((a,b)=>(order.indexOf(a)+1||99)-(order.indexOf(b)+1||99)).map(k => `<tr class="grp"><td colspan="${ncol - (sec.money?1:0)}">${esc(k)} <span class="faint" style="font-weight:500">${g[k].length}</span></td>${sec.money?`<td class="r num">${won(g[k].filter(e=>e.data.status!=='취소').reduce((a,e)=>a+amount(e.data),0))}</td>`:''}</tr>` + g[k].map(row).join('')).join('');
+  } else rows = list.map(row).join('');
+  return `<div class="tbl-wrap"><table><thead><tr>${cols.map(c=>`<th class="${c.t==='money'||c.t==='number'?'r':''}">${esc(c.l)}</th>`).join('')}${sec.money?'<th class="r">금액</th>':''}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function vBoard(sec, list){
+  const fd = sec.fields.find(x => x.k === sec.by); const opts = fd.o;
+  return `<div class="board" style="--cols:${opts.length}">${opts.map(o => { const its = list.filter(e => (e.data[sec.by] || opts[0]) === o);
+    return `<div class="bcol"><h3><span>${esc(o)}</span><span>${its.length}</span></h3>${its.map(e => { const d = e.data; const meta = sec.fields.filter(x=>x.meta).map(x=>fval(x,d[x.k])).filter(Boolean);
+      return `<button class="bitem" data-open="${e.id}"><b style="font-weight:600">${esc(d.title)}</b>${meta.length?`<div class="mt">${meta.map(m=>`<span>${esc(m)}</span>`).join('')}</div>`:''}</button>`; }).join('') || '<div class="faint" style="font-size:12.5px;padding:4px 6px">없음</div>'}</div>`; }).join('')}</div>`;
+}
+function vSchedule(sec, list){
+  return `<div class="sched">${list.map(e => { const d = e.data; const past = parseD(d.date) && parseD(d.date) < today();
+    return `<button class="card call ${past||d.status==='완료'?'past':''}" data-open="${e.id}"><div class="d"><span class="faint" style="font-size:12px;font-weight:700">${esc(d.title)}</span><b>${esc(fmtD(d.date)||'날짜 미정')}</b><span class="chip ${past?'':'c-mint'}" style="align-self:flex-start">${esc(dday(d.date))}</span></div>
+      <div class="i"><b style="font-size:15.5px">${esc(d.location || '로케이션 미정')}</b><div class="row2">${d.call?`<span>콜 ${esc(d.call)}${d.wrap?' – '+esc(d.wrap):''}</span>`:''}${d.meet?`<span>집합 ${esc(d.meet)}</span>`:''}${d.scenes?`<span>씬 ${esc(d.scenes)}</span>`:''}</div>${d.crew?`<div class="muted" style="font-size:13px">${esc(d.crew)}</div>`:''}${d.prep?`<div class="faint" style="font-size:12.5px;white-space:pre-wrap">준비물 · ${esc(d.prep)}</div>`:''}</div></button>`; }).join('')}</div>`;
+}
+
+/* ============================================================
+   편집 창
+   ============================================================ */
+function fieldHTML(fd, v, id){
+  const val = v ?? fd.def ?? '';
+  const ph = esc(fd.ph || '');
+  let inp;
+  switch(fd.t){
+    case 'textarea': inp = `<textarea id="${id}" name="${fd.k}" placeholder="${ph}">${esc(val)}</textarea>`; break;
+    case 'select': inp = `<select id="${id}" name="${fd.k}"><option value=""></option>${fd.o.map(o=>`<option ${o===val?'selected':''}>${esc(o)}</option>`).join('')}</select>`; break;
+    case 'multi': inp = `<div class="picks" data-multi="${fd.k}" role="group" aria-label="${esc(fd.l)}">${fd.o.map(o=>`<button type="button" class="${arr(val).includes(o)?'on':''}" aria-pressed="${arr(val).includes(o)}" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`; break;
+    case 'color': inp = `<div class="colorrow"><input type="color" id="${id}" name="${fd.k}" value="${esc(/^#[0-9a-f]{6}$/i.test(val)?val:'#3b82f6')}"><input type="text" data-hex="${fd.k}" value="${esc(val)}" aria-label="색 코드"></div>`; break;
+    case 'image': { const u = imgUrl(val); inp = `<input id="${id}" name="${fd.k}" type="url" value="${esc(val)}" placeholder="https://" data-img><div class="prev" ${u?'':'hidden'}>${u?`<img src="${esc(u)}" alt="">`:''}</div>`; break; }
+    default: {
+      const type = {number:'number', money:'number', date:'date', time:'time', url:'url'}[fd.t] || 'text';
+      inp = `<input id="${id}" name="${fd.k}" type="${type}" ${type==='number'?'inputmode="numeric" min="0"':''} value="${esc(val)}" placeholder="${ph}" autocomplete="off">`;
+    }
+  }
+  const hint = fd.hint || (fd.t === 'image' ? '구글 드라이브 공유 링크(링크가 있는 모든 사용자)나 이미지 주소를 붙여넣으세요' : '');
+  const lab = fd.t === 'multi' ? `<span class="lb">${esc(fd.l)}</span>` : `<label for="${id}">${esc(fd.l)}${fd.req?' *':''}</label>`;
+  return `<div class="fd ${fd.full || fd.t==='textarea' || fd.t==='multi' || fd.t==='image' ? 'full':''}">${lab}${inp}${hint?`<span class="hint">${esc(hint)}</span>`:''}</div>`;
+}
+function openDrawer({ title, fields, data, editable, onSave, onDelete, chip }){
+  const ov = document.createElement('div'); ov.className = 'ov';
+  const body = editable
+    ? fields.map(fd => fieldHTML(fd, data[fd.k], 'fd-' + fd.k)).join('')
+    : `<dl class="ro">${fields.map(fd => { const v = data[fd.k]; if(fd.t === 'image'){ const u = imgUrl(v); return u ? `<dt>${esc(fd.l)}</dt><dd><img src="${esc(u)}" alt=""></dd>` : ''; }
+        if(fd.t === 'url' && v) return `<dt>${esc(fd.l)}</dt><dd><a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a></dd>`;
+        const t = fval(fd, v); return t ? `<dt>${esc(fd.l)}</dt><dd>${esc(t)}</dd>` : ''; }).join('')}</dl>`;
+  ov.innerHTML = `<div class="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle">
+    <header><h3 id="dtitle">${esc(title)}</h3>${chip||''}<button class="btn btn-g btn-sm" data-close aria-label="닫기">✕</button></header>
+    <form class="body" novalidate>${body}</form>
+    <footer>${editable && onDelete ? '<button class="btn btn-d" data-del type="button">삭제</button>' : ''}<span class="sp"></span><button class="btn btn-g" data-close type="button">${editable?'취소':'닫기'}</button>${editable?'<button class="btn btn-p" data-save type="button">저장</button>':''}</footer></div>`;
+  document.body.appendChild(ov);
+  const close = () => { ov.remove(); document.removeEventListener('keydown', key); };
+  const key = e => { if(e.key === 'Escape') close(); };
+  document.addEventListener('keydown', key);
+  ov.addEventListener('click', e => { if(e.target === ov || e.target.closest('[data-close]')) close(); });
+  const form = ov.querySelector('form');
+  form.querySelectorAll('.picks button').forEach(b => b.onclick = () => { b.classList.toggle('on'); b.setAttribute('aria-pressed', b.classList.contains('on')); });
+  form.querySelectorAll('[data-img]').forEach(inp => inp.oninput = () => { const u = imgUrl(inp.value); const p = inp.nextElementSibling; p.hidden = !u; p.innerHTML = u ? `<img src="${esc(u)}" alt="">` : ''; });
+  form.querySelectorAll('[data-hex]').forEach(t => { const c = form.querySelector(`[name="${t.dataset.hex}"]`); c.oninput = () => t.value = c.value; t.oninput = () => { if(/^#[0-9a-f]{6}$/i.test(t.value)) c.value = t.value; }; });
+  setTimeout(() => { const first = form.querySelector('input:not([type=color]),textarea,select'); if(first && editable) first.focus(); }, 40);
+  const del = ov.querySelector('[data-del]');
+  if(del){ let armed = false; del.onclick = async () => { if(!armed){ armed = true; del.textContent = '한 번 더 누르면 삭제'; return; } try{ await onDelete(); toast('삭제했어요'); close(); }catch(e){ onErr(e); } }; }
+  const save = ov.querySelector('[data-save]');
+  if(save) save.onclick = async () => {
+    const out = {};
+    for(const fd of fields){
+      if(fd.t === 'multi'){ out[fd.k] = [...form.querySelectorAll(`[data-multi="${fd.k}"] button.on`)].map(b=>b.dataset.v); continue; }
+      const el = form.querySelector(`[name="${fd.k}"]`); let v = el ? el.value.trim() : '';
+      if(fd.t === 'color'){ const h = form.querySelector(`[data-hex="${fd.k}"]`).value.trim(); v = /^#[0-9a-f]{6}$/i.test(h) ? h : el.value; }
+      if(fd.req && !v){ el.focus(); el.style.borderColor = 'var(--bad)'; toast(fd.l + '을(를) 입력해주세요'); return; }
+      if((fd.t === 'number' || fd.t === 'money') && v !== '') v = Number(v);
+      out[fd.k] = v;
+    }
+    save.disabled = true;
+    try{ await onSave(out); toast('저장했어요'); close(); }catch(e){ onErr(e); save.disabled = false; }
+  };
+}
+function openEntry(id, newIn){
+  let e, p, sec;
+  if(newIn){ p = newIn.p; sec = newIn.sec; e = { data:{} };
+    if(sec.view === 'storyboard'){ const cuts = ofPart(p.id, sec.id); const last = sortEntries(sec, cuts).pop(); e.data.scene = last ? last.data.scene : 1; e.data.cut = last ? (+last.data.cut||0) + 1 : 1; }
+    if(sec.fields.some(x=>x.k==='order')) e.data.order = ofPart(p.id, sec.id).length + 1;
+  } else { e = S.entries.find(x => x.id === id); if(!e) return; p = PART[e.part]; sec = p.sections.find(s => s.id === e.section); }
+  const editable = canEdit(p.id);
+  openDrawer({
+    title: newIn ? `${sec.name} 추가` : (e.data.title || sec.name),
+    chip: `<span class="chip" style="color:${p.color}">${p.name} · ${sec.name}</span>`,
+    fields: sec.fields, data: e.data, editable,
+    onSave: data => newIn ? S.store.add({ part: p.id, section: sec.id, data }) : S.store.update(id, data),
+    onDelete: newIn ? null : () => S.store.remove(id)
+  });
+}
+function openShare(){
+  const url = shareUrl();
+  const ov = document.createElement('div'); ov.className = 'ov';
+  ov.innerHTML = `<div class="drawer" role="dialog" aria-modal="true"><header><h3>팀에 공유하기</h3><button class="btn btn-g btn-sm" data-close>✕</button></header>
+    <div class="body" style="grid-template-columns:1fr"><div class="fd full"><label for="shareurl">프로젝트 링크</label><input id="shareurl" readonly value="${esc(url)}"></div>
+    <div class="fd full"><span class="hint">이 링크가 있는 사람은 누구나 보고 고칠 수 있어요. 팀 단톡방에만 공유하고, 공개된 곳에는 올리지 마세요.</span></div>
+    ${!LIVE ? `<div class="banner lock" style="margin:0"><span class="muted">지금은 미리보기 모드라 링크를 보내도 팀원에게는 내용이 안 보여요. Firebase를 연결한 뒤 공유하세요.</span></div>` : ''}
+    <div class="card" style="padding:14px 16px;font-size:13.5px"><b>팀원에게 알려줄 것</b><ol style="margin:8px 0 0;padding-left:18px;color:var(--muted)"><li>링크를 열고 왼쪽 아래에서 <b>내 파트</b>를 고르기</li><li>내 파트 페이지에서 항목 추가하기</li><li>돈이 드는 건 상태를 '확정'으로 바꾸면 예산안에 반영</li></ol></div></div>
+    <footer><span class="sp"></span><button class="btn btn-p" data-copy>링크 복사</button></footer></div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener('click', async e => {
+    if(e.target === ov || e.target.closest('[data-close]')) ov.remove();
+    if(e.target.closest('[data-copy]')){ try{ await navigator.clipboard.writeText(url); toast('링크를 복사했어요'); }catch(_){ const i = ov.querySelector('#shareurl'); i.select(); toast('링크를 선택했어요. 복사해서 붙여넣으세요'); } }
+  });
+}
+function openGuide(){
+  const ov = document.createElement('div'); ov.className = 'ov';
+  ov.innerHTML = `<div class="drawer guide" role="dialog" aria-modal="true"><header><h3>팀과 함께 쓰려면 (처음 한 번만)</h3><button class="btn btn-g btn-sm" data-close>✕</button></header>
+    <div class="body" style="grid-template-columns:1fr"><ol>
+      <li><b>Firebase 프로젝트 만들기</b><br><span class="muted">console.firebase.google.com → 프로젝트 추가 (애널리틱스는 꺼도 돼요)</span></li>
+      <li><b>Firestore 만들기</b><br><span class="muted">빌드 → Firestore Database → 데이터베이스 만들기 → 위치는 asia-northeast3 (서울)</span></li>
+      <li><b>보안 규칙 붙여넣기</b><br><span class="muted">Firestore → 규칙 탭에 함께 드린 <code>firestore.rules</code> 내용을 붙여넣고 게시</span></li>
+      <li><b>웹 앱 등록</b><br><span class="muted">프로젝트 설정 → 내 앱 → 웹(&lt;/&gt;) → 나오는 <code>firebaseConfig</code> 값을 index.html 맨 위 설정 칸에 붙여넣기</span></li>
+      <li><b>GitHub Pages에 올리기</b><br><span class="muted">GitHub 새 저장소(Public) → index.html 업로드 → Settings → Pages → Branch: main 저장 → 주소가 생겨요</span></li>
+      <li><b>새 프로젝트 만들고 링크 공유</b></li>
+    </ol></div><footer><span class="sp"></span><button class="btn" data-close>닫기</button></footer></div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener('click', e => { if(e.target === ov || e.target.closest('[data-close]')) ov.remove(); });
+}
+
+/* ============================================================
+   이벤트
+   ============================================================ */
+let allocT;
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act],[data-open],[data-add],[data-setpart],[data-bfilter]'); if(!t) { const side = document.getElementById('side'); if(side && side.classList.contains('open') && !e.target.closest('#side')) side.classList.remove('open'); return; }
+  if(t.dataset.open){ openEntry(t.dataset.open); return; }
+  if(t.hasAttribute('data-add')){ const p = PART[S.route.part]; const sec = p.sections.find(s=>s.id===S.route.sec) || p.sections[0]; openEntry(null, { p, sec }); return; }
+  if(t.dataset.setpart){ setMyPart(t.dataset.setpart); toast('내 파트를 ' + PART[t.dataset.setpart].name + '(으)로 바꿨어요'); return; }
+  if(t.dataset.bfilter){ S.budgetFilter = t.dataset.bfilter; render(); return; }
+  const a = t.dataset.act;
+  if(a === 'share') openShare();
+  else if(a === 'guide') openGuide();
+  else if(a === 'menu') document.getElementById('side').classList.toggle('open');
+  else if(a === 'editOverview') openDrawer({ title:'작품 개요 편집', fields: OVERVIEW_FIELDS, data: S.project, editable: true, onSave: d => S.store.setProject(d) });
+});
+document.addEventListener('input', e => {
+  const t = e.target; if(!t.dataset || !t.dataset.alloc) return;
+  clearTimeout(allocT);
+  allocT = setTimeout(async () => {
+    const alloc = { ...(S.project.alloc || {}) };
+    document.querySelectorAll('[data-alloc]').forEach(i => { const v = i.value.replace(/[^\d]/g,''); alloc[i.dataset.alloc] = v ? Number(v) : 0; });
+    try{ await S.store.setProject({ alloc }); toast('배정 예산을 저장했어요'); }catch(err){ onErr(err); }
+  }, 700);
+});
+document.addEventListener('keydown', e => { if(e.key === 'Enter' && e.target.matches('tr.row')) e.target.click(); });
+
+route();
+})();
+</script>
+</body>
+</html>
