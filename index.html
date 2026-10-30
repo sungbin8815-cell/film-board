@@ -174,6 +174,8 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stro
 .xmenu button{border:0;background:transparent;text-align:left;padding:9px 12px;border-radius:9px;font-size:13.5px;color:var(--ink)}
 .xmenu button:hover{background:var(--soft)}
 .xmenu button.warn{color:var(--warn)}
+.xmenu .ver{margin:2px 12px 6px;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.specs .ver{border-color:transparent!important;opacity:.7}
 .xmenu hr{border:0;border-top:1px solid var(--line);margin:4px 6px}
 .xmenu .copybox{min-height:90px;margin-top:6px}
 /* inside a tab every control is one row: label · control · value */
@@ -438,7 +440,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   .shots{padding:4px 10px;gap:8px} .shots .sl{display:none} .stools .btn .lab{display:none}
   .chipi .k,.fab .lab,.modeseg button svg{display:none} .ov-tl{top:8px;left:8px} .ov-tr{top:8px;right:8px} .ov-bl{left:8px;bottom:8px}
   .stage[data-mode="mon"] .ov-tr{display:none}
-  #vfbox{transform:translateX(44px)} .vfbox .vf-tools{right:-54px;top:22px;gap:4px} .vfbox .vf-tools button{width:46px;min-height:44px}
+  #vfbox{transform:translateX(51px)} .vfbox .vf-tools{right:-54px;top:22px;gap:4px} .vfbox .vf-tools button{width:46px;min-height:44px}
   .fclegend{font-size:9px;padding:5px 7px;gap:1px;bottom:26px} .fclegend b{display:none} .fclegend i{width:10px;height:7px}
 }
 /* the app is laid out for a phone held sideways; held upright it asks once to turn, and can be waved off */
@@ -541,6 +543,38 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 #craneBar .crg small{white-space:nowrap;font-size:11px;color:var(--muted);margin:0 2px 0 6px}
 #craneBar .fab{min-width:34px;justify-content:center}
 #craneBar .pname{font-family:var(--f-mono);font-size:12px}
+/* shot strip fold */
+.stog{flex:none;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--raise);border-radius:9px;padding:6px 8px;color:var(--ink2);font-family:var(--f-mono);font-size:12px}
+.stog svg{transition:transform .2s} .shots:not(.folded) .stog svg{transform:rotate(180deg)}
+.stog span{display:none} .shots.folded .stog span{display:inline}
+.shots.folded{padding-top:4px;padding-bottom:4px}
+.shots.folded .strip,.shots.folded .sl,.shots.folded .stools > :not(#addBtn){display:none}
+.shots.folded .stools{margin-left:auto}
+.snav{display:none;gap:4px} .shots.folded .snav{display:inline-flex}
+.snav button{width:36px;height:32px;border:1px solid var(--line);background:var(--raise);border-radius:9px;font-size:18px;color:var(--ink2)}
+.castpick i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.castpick button.out{opacity:.55}
+/* monitor move pad: a d-pad for dolly / truck and a boom pair, hold to move */
+.movepad{display:flex;align-items:flex-end;gap:8px;z-index:6}
+.movepad[hidden]{display:none}
+.mp-dir{display:grid;grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,40px);gap:3px}
+.mp-dir button:nth-child(1){grid-area:1/2} .mp-dir button:nth-child(2){grid-area:2/1} .mp-dir button:nth-child(3){grid-area:2/3} .mp-dir button:nth-child(4){grid-area:3/2}
+.mp-up{display:flex;flex-direction:column;gap:3px}
+.movepad button{width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.14);background:rgba(17,21,27,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--vf-ink);font-size:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;touch-action:none;user-select:none;-webkit-user-select:none}
+.movepad button small{font-size:9px;color:var(--vf-dim);margin-top:1px}
+.movepad button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+@media (orientation:landscape) and (max-height:520px){ .mp-dir{grid-template-columns:repeat(3,36px);grid-template-rows:repeat(3,36px)} .movepad button{width:36px;height:36px} }
+/* board: the storyboard alone, no tool rail, tool panel or shot strip beside it */
+.app.boarding .rail,.app.boarding .drawer,.app.boarding .shots{display:none}
+.app.boarding .bar{grid-column:1/-1}
+.app.boarding .boardov{grid-area:auto;grid-column:1/-1;grid-row:2/-1}
+/* upright phone: the monitor toggles sit in a row under the frame instead of over it */
+@media (max-width:719px) and (orientation:portrait){
+  .vfbox .vf-tools{position:static;flex-direction:row;justify-content:flex-end;gap:6px;order:9}
+  .vfbox .vf-tools button{width:auto;min-width:58px;min-height:40px;flex-direction:row;gap:5px;padding:0 10px}
+  .vfbox .vf-tools button::after{top:4px;right:4px}
+  .movepad{bottom:10px}
+}
 </style>
 </head>
 <body>
@@ -554,7 +588,6 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     </div>
     <div class="actions">
       <div class="hist"><button class="btn icon" id="undoBtn" title="실행 취소 (⌘Z)" aria-label="실행 취소" disabled><svg class="i" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button><button class="btn icon" id="redoBtn" title="다시 실행 (⌘⇧Z)" aria-label="다시 실행" disabled><svg class="i" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button></div>
-      <button class="btn sensorbtn" id="sensorBtn" title="카메라 센서 바꾸기"><span id="sensorName">센서 선택</span><span id="sensorShort">FF</span><small id="sensorDim"></small></button>
       <div class="vtoggle" role="group" aria-label="화면"><button id="editBtn" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg><span class="lab">편집</span></button><button id="boardBtn" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="4" width="7.5" height="7" rx="1.5"/><rect x="13" y="4" width="7.5" height="7" rx="1.5"/><rect x="3.5" y="13" width="7.5" height="7" rx="1.5"/><rect x="13" y="13" width="7.5" height="7" rx="1.5"/></svg><span class="lab">보드</span></button></div>
       <button class="btn primary" id="exportBtn" title="내보내기 · 공유" aria-haspopup="menu" aria-expanded="false"><svg class="i" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 14v4.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V14"/></svg><span class="lab">내보내기</span></button>
     </div>
@@ -563,6 +596,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
     <hr><button id="tourBtn" role="menuitem">사용법 보기</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.10.30 14:51</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -582,7 +616,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
         <div class="hud t"><span class="rec" id="hudL">S01</span><span id="hudR">16:9</span></div>
         <canvas id="view" aria-label="카메라에 찍히는 화면. 드래그하면 팬과 틸트, 두 손가락 위아래나 휠은 달리, 더블클릭은 초점 대상 조준."></canvas>
         <div class="hud b"><span id="monInfo"></span><span id="hudB"></span></div>
-        <div class="vf-tools"><button id="gThirds" aria-pressed="true" title="3분할 가이드 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>3×3</button><button id="gLens" aria-pressed="false" title="렌즈 왜곡 격자 켜기/끄기"><svg viewBox="0 0 24 24"><path d="M4 5q8-3 16 0q-3 7 0 14q-8 3-16 0q3-7 0-14z"/><path d="M12 3.6v16.8M5 12h14"/></svg>왜곡</button><button id="gLit" aria-pressed="true" title="물리 기반 조명으로 그리기 켜기/끄기"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>조명</button><button id="gFC" aria-pressed="false" title="폴스컬러 노출 표시 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 8h16M4 12h16M4 16h16"/></svg>폴스</button></div><div class="fclegend" id="fcLegend" hidden aria-label="폴스컬러 범례"><b>폴스컬러 · 18% 기준 스톱</b><span><i style="background:#e53935"></i>+5.3 이상 · 클리핑</span><span><i style="background:#f2d33a"></i>+4.5 · 하이라이트 끝</span><span><i style="background:#ec79b8"></i>+1 · 피부 밝은 쪽</span><span><i style="background:#3fae5a"></i>0 · 18% 회색</span><span><i style="background:#2f5fd0"></i>−4.5 · 어두운 끝</span><span><i style="background:#6b2c91"></i>−6 이하 · 블랙</span></div>
+        <div class="vf-tools"><button id="gThirds" aria-pressed="true" title="3분할 가이드 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>3×3</button><button id="gFC" aria-pressed="false" title="폴스컬러 노출 표시 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 8h16M4 12h16M4 16h16"/></svg>폴스</button></div><div class="fclegend" id="fcLegend" hidden aria-label="폴스컬러 범례"><b>폴스컬러 · 18% 기준 스톱</b><span><i style="background:#e53935"></i>+5.3 이상 · 클리핑</span><span><i style="background:#f2d33a"></i>+4.5 · 하이라이트 끝</span><span><i style="background:#ec79b8"></i>+1 · 피부 밝은 쪽</span><span><i style="background:#3fae5a"></i>0 · 18% 회색</span><span><i style="background:#2f5fd0"></i>−4.5 · 어두운 끝</span><span><i style="background:#6b2c91"></i>−6 이하 · 블랙</span></div>
       </div>
     </div>
     <div class="ov ov-tl"><div class="modeseg glass" id="modeSeg" role="group" aria-label="화면">
@@ -595,7 +629,6 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
       <button class="fab" id="aimA" title="카메라가 A 인물을 바라보게"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/></svg>A<span class="lab"> 바라보기</span></button>
       <button class="fab" id="aimB" title="카메라가 B 인물을 바라보게"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/></svg>B<span class="lab"> 바라보기</span></button>
       <span class="tsep"></span>
-      <button class="fab" id="heatBtn" aria-pressed="false" title="바닥이 받는 빛(lux)을 색으로"><svg class="i" viewBox="0 0 24 24"><path d="M4 18l4-6 4 3 4-7 4 4"/><path d="M4 21h16"/></svg>조도<span class="lab"> 맵</span></button>
       <button class="fab" id="fitBtn" title="카메라와 인물이 다 보이게"><svg class="i" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>맞춤</button>
     </div></div>
     <div class="ov ov-bc" id="placeBar" hidden><div class="toolbar glass">
@@ -609,6 +642,10 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
       <button class="fab" id="oPose" data-sj title="서기 / 앉기"><svg class="i" viewBox="0 0 24 24"><path d="M7 4v9h9l1 7M7 13l-1 7M10 9h7"/></svg><span class="lab">앉기</span></button>
       <button class="fab" id="oDup" data-p title="복제"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span class="lab">복제</span></button><button class="fab" id="oDel"><svg class="i" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></svg><span class="lab">삭제</span></button>
       <button class="fab" id="oClose" title="선택 해제"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
+    <div class="ov ov-bl movepad" id="movePad" hidden aria-label="카메라 이동 (누르고 있으면 움직여요)">
+      <div class="mp-dir"><button data-mv="f" aria-label="앞으로 (달리 인)">▲</button><button data-mv="l" aria-label="왼쪽 (트럭)">◀</button><button data-mv="r" aria-label="오른쪽 (트럭)">▶</button><button data-mv="b" aria-label="뒤로 (달리 아웃)">▼</button></div>
+      <div class="mp-up"><button data-mv="u" aria-label="위로 (붐 업)">↑<small>붐</small></button><button data-mv="d" aria-label="아래로 (붐 다운)">↓<small>붐</small></button></div>
+    </div>
     <div class="ov ov-bc" id="craneBar" hidden><div class="toolbar glass">
       <span class="pname" id="craneName"></span><span class="tsep"></span>
       <span class="crg"><small>스윙</small><button class="fab" data-cr="swing" data-d="-5" aria-label="스윙 왼쪽">◀</button><button class="fab" data-cr="swing" data-d="5" aria-label="스윙 오른쪽">▶</button></span>
@@ -624,12 +661,13 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     <div class="dh"><div class="ico" id="drawerIcon"></div><div class="tt"><h3 id="drawerTitle"></h3></div><button class="xbtn" id="drawerClose" aria-label="닫기"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="db">
       <section class="pane" data-pane="cam" hidden>
-        <div class="ptabs seg kr" role="tablist"><button data-tab="lens">렌즈</button><button data-tab="focus">초점</button><button data-tab="expo">노출</button><button data-tab="dist">거리</button><button data-tab="fmt">포맷</button></div>
+        <div class="ptabs seg kr" role="tablist"><button data-tab="lens">렌즈</button><button data-tab="focus">초점</button><button data-tab="expo">노출</button><button data-tab="dist">거리</button><button data-tab="fmt">센서</button></div>
         <div class="ptab" data-tab="lens">
           <div class="kit"><select id="kitSel" aria-label="렌즈 키트"></select></div>
           <div class="bigval"><output id="fOut"></output><span class="eq" id="eqOut"></span></div>
           <input type="range" id="fRange" min="0" max="1000" step="1" aria-label="초점거리">
           <div class="ticks" id="ticks"></div>
+          <div class="lh"><span class="mini">렌즈 바꿀 때</span><div class="seg kr" id="keepSeg"><button data-keep="1">샷 크기 유지</button><button data-keep="0">제자리</button></div></div>
           <p class="sum" id="lensSum"></p>
         </div>
         <div class="ptab" data-tab="focus">
@@ -652,6 +690,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
           <div class="cmp" id="cmpViz"></div>
         </div>
         <div class="ptab" data-tab="fmt">
+          <div class="kit"><select id="sensorSel" aria-label="카메라 센서"></select></div>
+          <p class="sum" id="sensorSum"></p>
           <div class="lh"><span class="mini">화면비</span><div class="seg" id="aspectSeg" role="group" aria-label="화면비"></div></div>
           <div class="lh"><span class="mini">프레임레이트</span><div class="seg" id="fpsSeg"></div></div>
         </div>
@@ -674,6 +714,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
         <div class="ptab" data-tab="cast"><div id="castList" class="castlist"></div></div>
         <div class="ptab" data-tab="room">
           <div class="lh"><span class="mini">방 크기</span><div class="seg kr" id="roomSeg"></div></div>
+          <div class="lh"><span class="mini">배경</span><div class="seg kr" id="bgSeg"><button data-bg="street">거리 풍경</button><button data-bg="none">없음</button></div></div>
           <div class="lh"><span class="mini">천장</span><div class="seg" id="ceilSeg"></div></div>
           <div class="lh"><span class="mini">벽 마감</span><div class="seg kr" id="finSeg"></div></div>
           <div class="roominfo" id="roomInfo"></div>
@@ -700,6 +741,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   </aside>
 
   <footer class="shots" aria-label="샷 순서">
+    <button class="stog" id="stripToggle" aria-expanded="true" aria-controls="strip" title="샷 목록 접기 · 펴기"><svg class="i" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg><span id="stripCur"></span></button>
+    <span class="snav" id="snav"><button data-nav="-1" aria-label="이전 샷">‹</button><button data-nav="1" aria-label="다음 샷">›</button></span>
     <div class="sl"><b>Shots</b><span id="sum"></span></div>
     <div class="strip" id="strip"></div>
     <div class="stools"><button class="btn sm primary addb" id="addBtn" title="새 샷 추가">＋ 샷</button><button class="btn sm" id="dupBtn" title="현재 샷 복제"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span class="lab">복제</span></button><button class="btn sm" id="delBtn" title="현재 샷 삭제"><svg class="i" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></svg><span class="lab">삭제</span></button></div>
@@ -718,7 +761,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   <div class="mc-main" id="mcMain">
     <div class="mc-brand"><div class="mc-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3"/></svg></div>
       <div><h1>FRAMECONTI</h1><p>3D 콘티와 샷리스트를 버튼과 드래그만으로.<br>렌즈 · 노출 · 조명 · 세트를 실제 수치로 계획해요.</p></div>
-      <div class="specs"><span>LENS</span><span>EXPOSURE</span><span>LIGHTING</span><span>SHOT LIST</span></div></div>
+      <div class="specs"><span>LENS</span><span>EXPOSURE</span><span>LIGHTING</span><span>SHOT LIST</span><span class="ver">v 2026.10.30 14:51</span></div></div>
     <div class="mc-btns">
       <button class="sbtn primary" id="mcNew"><span class="si"><svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="1.5"/><path d="M3.5 9l2-5 15 1.5-1.2 3.5M8.5 4.5l-1.5 4.5M13.5 5l-1.5 4"/></svg></span><span><b>새 프로젝트</b><small>예시 씬이나 빈 세트로 시작</small></span><span class="go">›</span></button>
       <button class="sbtn" id="mcLoad"><span class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="7" r="1.6"/><circle cx="12" cy="17" r="1.6"/><circle cx="7" cy="12" r="1.6"/><circle cx="17" cy="12" r="1.6"/></svg></span><span><b>프로젝트 불러오기</b><small>저장해 둔 콘티 롤 꺼내기</small></span><span class="go">›</span></button>
@@ -749,23 +792,6 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   <div class="mc-foot"><span>FRAMECONTI v12 · 테스트판</span><span>프로젝트는 이 브라우저에 저장돼요</span></div>
 </div>
 
-<div class="modal" id="sensorModal" hidden>
-  <div class="msheet" role="dialog" aria-modal="true" aria-labelledby="smTitle">
-    <h2 id="smTitle">카메라 센서 선택</h2>
-    <p class="hint">화각은 센서의 실제 크기와 렌즈 초점거리로 계산됩니다. 같은 50mm라도 센서가 작으면 더 좁게 찍혀요. 나중에 상단의 센서 버튼으로 바꿀 수 있습니다.</p>
-    <div class="sm-body">
-      <div class="sm-grid" id="smGrid"></div>
-      <div class="sm-side">
-        <svg id="smSvg" viewBox="0 0 220 150" aria-label="풀프레임과 비교한 센서 크기"></svg>
-        <div class="sm-info" id="smInfo"></div>
-        <div class="sm-custom"><span>직접 입력</span><input id="cW" type="number" step="0.01" min="2" max="80" aria-label="센서 가로 mm"> × <input id="cH" type="number" step="0.01" min="2" max="60" aria-label="센서 세로 mm"> mm <button class="btn sm" id="cApply">적용</button></div>
-        <div class="sub" style="border:0;padding:0"><div class="lh"><span>아나모픽 스퀴즈</span></div><div class="seg" id="sqSeg"></div></div>
-        <p class="hint" style="margin:0">수치는 제조사가 공개한 해당 촬영 모드의 유효 영역 기준이에요. 해상도·크롭 모드를 바꾸면 실제 영역도 달라지니, 다르면 직접 입력하세요.</p>
-      </div>
-    </div>
-    <div class="sm-actions" id="smActions"></div>
-  </div>
-</div>
 <div class="toast" id="toast" role="status"></div>
 <input type="file" id="fileIn" accept=".frameconti,application/json" hidden>
 
@@ -844,16 +870,35 @@ KITS.push(
   { id: 'cn7', name: 'Canon CN7x17 KAS S 17-120', type: 'zoom', cover: 'S35', circle: 31.1, range: [17, 120], T: { d: 2.95 } },
   { id: 'zk', name: 'Fujinon ZK 19-90', type: 'zoom', cover: 'S35', circle: 31.1, range: [19, 90], T: { d: 2.9 } },
   { id: 'eanam', name: 'Angénieux EZ-1 30-90 (S35)', type: 'zoom', cover: 'S35', circle: 31.1, range: [30, 90], T: { d: 2 } });
+// more cine sets
+KITS.push(
+  { id: 'panchro', name: 'Cooke Panchro/i Classic FF', type: 'prime', cover: 'FF', circle: 46.3, f: [18, 21, 25, 32, 40, 50, 65, 75, 100, 135, 152], T: { d: 2.2, 152: 3 } },
+  { id: 'vista', name: 'Tokina Vista Prime', type: 'prime', cover: 'VV', circle: 46.7, f: [18, 25, 35, 50, 85, 105, 135], T: { d: 1.5 } },
+  { id: 'pavo', name: 'DZOFilm Pavo 2x Anamorphic', type: 'prime', cover: 'S35', circle: 31.1, sq: 2, f: [28, 32, 40, 55, 75, 100], T: { d: 2.1 } },
+  { id: 'prem1945', name: 'Fujinon Premista 19-45', type: 'zoom', cover: 'FF', circle: 46.3, range: [19, 45], T: { d: 2.9 } });
+// photo (stills) lenses are marked in f-numbers, not T-stops: stop: 'f'
+KITS.push(
+  { id: 'gm', name: 'Sony G Master (FE)', stop: 'f', type: 'prime', cover: 'FF', circle: 43.3, f: [14, 20, 24, 35, 50, 85, 135], T: { d: 1.4, 14: 1.8, 20: 1.8, 50: 1.2, 135: 1.8 } },
+  { id: 'rfl', name: 'Canon RF L', stop: 'f', type: 'prime', cover: 'FF', circle: 43.3, f: [24, 35, 50, 85, 100, 135], T: { d: 1.2, 24: 1.4, 35: 1.4, 100: 2.8, 135: 1.8 } },
+  { id: 'art', name: 'Sigma Art DG DN', stop: 'f', type: 'prime', cover: 'FF', circle: 43.3, f: [14, 20, 24, 35, 50, 85, 105, 135], T: { d: 1.4, 35: 1.2 } },
+  { id: 'zs', name: 'Nikon NIKKOR Z S', stop: 'f', type: 'prime', cover: 'FF', circle: 43.3, f: [20, 24, 35, 50, 85, 135], T: { d: 1.8, 35: 1.2, 50: 1.2, 85: 1.2 } },
+  { id: 'batis', name: 'ZEISS Batis', stop: 'f', type: 'prime', cover: 'FF', circle: 43.3, f: [18, 25, 40, 85, 135], T: { d: 2, 18: 2.8, 85: 1.8, 135: 2.8 } },
+  { id: 'xf', name: 'Fujifilm XF (APS-C)', stop: 'f', type: 'prime', cover: 'APS-C', circle: 28.4, f: [16, 23, 33, 56, 90], T: { d: 1.4, 56: 1.2, 90: 2 } },
+  { id: 'gm2470', name: 'Sony FE 24-70 GM II', stop: 'f', type: 'zoom', cover: 'FF', circle: 43.3, range: [24, 70], T: { d: 2.8 } },
+  { id: 'gm1635', name: 'Sony FE 16-35 GM II', stop: 'f', type: 'zoom', cover: 'FF', circle: 43.3, range: [16, 35], T: { d: 2.8 } },
+  { id: 'rf70200', name: 'Canon RF 70-200 F2.8 L', stop: 'f', type: 'zoom', cover: 'FF', circle: 43.3, range: [70, 200], T: { d: 2.8 } });
 KITS.push({ id: 'fish', name: '피시아이 프라임 (등거리 투영)', type: 'prime', cover: 'FF', circle: 46.3, fish: true, f: [8, 10, 12, 15], T: { d: 2.8 } });
 // distortion tendency of each kit as a multiplier on the generic curve; anamorphics carry extra barrel. Estimates, not manufacturer measurements.
 const KIT_DIST = { s7: 0.9, summilux: 0.6, primo70: 0.7, xeen: 1.1, vespid: 1, gecko: 1.2, ultra12: 1.2, cn7: 1.4, zk: 1.2, eanam: 1.1, free: 1, sig: 0.6, supreme: 0.7, cp3: 0.9, sigma: 0.9, sumire: 1, ultra: 0.8, s4: 1, master: 1.3, cookeana: 1.5, orion: 1.8, optimo: 1.3, premista: 1 };
 const KIT = () => KITS.find(k => k.id === state.kit) || KITS[0];
 // minimum focus distance from the sensor plane. Zooms use their nominal MOD; primes follow from the line's typical maximum
 // magnification m (thin lens: distance = f·(2 + m + 1/m)). Estimates per lens family, not catalogue values.
-const KIT_MAG = { s7: 0.1, summilux: 0.1, primo70: 0.1, xeen: 0.12, vespid: 0.13, gecko: 2, free: 0.1, sig: 0.11, supreme: 0.11, cp3: 0.1, sigma: 0.1, sumire: 0.1, ultra: 0.1, s4: 0.1, master: 0.07, cookeana: 0.065, orion: 0.065, fish: 0.25 };
-const KIT_MODZ = { optimo: 1.22, premista: 0.8, ultra12: 1.24, cn7: 0.85, zk: 0.85, eanam: 0.6 };
+const KIT_MAG = { gm: 0.15, rfl: 0.15, art: 0.15, zs: 0.15, batis: 0.15, xf: 0.15, panchro: 0.1, vista: 0.1, pavo: 0.07, s7: 0.1, summilux: 0.1, primo70: 0.1, xeen: 0.12, vespid: 0.13, gecko: 2, free: 0.1, sig: 0.11, supreme: 0.11, cp3: 0.1, sigma: 0.1, sumire: 0.1, ultra: 0.1, s4: 0.1, master: 0.07, cookeana: 0.065, orion: 0.065, fish: 0.25 };
+const KIT_MODZ = { gm2470: 0.21, gm1635: 0.22, rf70200: 0.7, prem1945: 0.5, optimo: 1.22, premista: 0.8, ultra12: 1.24, cn7: 0.85, zk: 0.85, eanam: 0.6 };
 function kitMOD(k, f) { if (k.id === 'free') return 0; if (KIT_MODZ[k.id]) return KIT_MODZ[k.id]; const m = KIT_MAG[k.id] ?? 0.1; return Math.max(0.15, f * (2 + m + 1 / m) / 1000); }
 const maxT = (k, f) => !k.T ? STOPS[0] : (k.T[f] ?? k.T.d);
+// how a stop is written: cine lenses in T-stops, photo lenses in f-numbers
+const stopTxt = (N, k = KIT()) => k.stop === 'f' ? `f/${N}` : `T${N}`;
 // snap a focal length to what the kit can actually do
 function kitF(f, k = KIT()) {
   if (k.type === 'prime') return k.f.reduce((b, x) => Math.abs(Math.log(x / f)) < Math.abs(Math.log(b / f)) ? x : b, k.f[0]);
@@ -955,7 +1000,7 @@ function basis(P, yawD, pitchD, rollD = 0) {
 }
 const shotBasis = s => basis({ x: s.cam.x, y: s.cam.y, z: s.cam.z }, s.cam.pan, s.cam.tilt, s.cam.roll);
 function lookAngles(from, to) { const d = sub3(to, from); return { pan: Math.atan2(d.x, d.z) / DEG, tilt: Math.atan2(d.y, Math.hypot(d.x, d.z)) / DEG }; }
-const subjOf = (s, k) => k === 'B' && s.B.on ? s.B : s.A;
+const subjOf = (s, k) => k !== 'A' && s[k] && s[k].on ? s[k] : s.A;
 // AF follows its target (A, B, C, or "auto" = the subject nearest the frame centre); MF holds a set distance
 function afKey(s) { const t = s.afT || 'auto'; if (t !== 'auto' && (t === 'A' || (s[t] && s[t].on))) return t;
   const B = shotBasis(s); let best = 'A', bd = 1e9;
@@ -1011,7 +1056,7 @@ const SEGS = [['n0', 'n1', .10], ['ch', 'pv', .27], ['hiL', 'hiR', .17], ['shL',
   ['hiL', 'knL', .15], ['knL', 'anL', .11], ['hiR', 'knR', .15], ['knR', 'anR', .11], ['anL', 'toL', .08], ['anR', 'toR', .08]];
 const HEAD_R = 0.115;
 const J0H = J;
-/* ---------- cast: who A, B and C are (shared by every shot) and the body each one gets ---------- */
+/* ---------- cast: who A, B, C … are (shared by every shot) and the body each one gets ---------- */
 // heights are typical Korean averages by age group (man, woman); a child's head is large for its body, a senior stoops a little
 const CAST0 = { A: { who: 'f', age: 'adult', outfit: 0, skin: 0 }, B: { who: 'm', age: 'adult', outfit: 1, skin: 1 }, C: { who: 'dog', age: 'adult', size: 'm', outfit: 0, skin: 0 } };
 const HUMAN_H = { child: [1.22, 1.2], teen: [1.7, 1.6], adult: [1.75, 1.62], senior: [1.68, 1.55] };
@@ -1025,9 +1070,18 @@ const DOG_J = { ch: [0, 0.43, 0.2], hp: [0, 0.41, -0.22], nk: [0, 0.56, 0.31], h
 const DOG_SIT = { hp: [0, 0.18, -0.16], blL: [-0.09, 0.2, -0.16], blR: [0.09, 0.2, -0.16], bkL: [-0.09, 0.12, -0.02], bkR: [0.09, 0.12, -0.02], bpL: [-0.09, 0.03, 0.04], bpR: [0.09, 0.03, 0.04],
   ch: [0, 0.48, 0.12], nk: [0, 0.62, 0.2], hd: [0, 0.7, 0.27], sn: [0, 0.66, 0.39], flL: [-0.07, 0.4, 0.15], flR: [0.07, 0.4, 0.15], fpL: [-0.07, 0.03, 0.2], fpR: [0.07, 0.03, 0.2], t0: [0, 0.2, -0.22], t1: [0, 0.05, -0.42] };
 const DOG_SEGS = [['ch', 'hp', 0.2], ['ch', 'nk', 0.12], ['nk', 'hd', 0.1], ['hd', 'sn', 0.08], ['flL', 'fpL', 0.06], ['flR', 'fpR', 0.06], ['blL', 'bkL', 0.07], ['bkL', 'bpL', 0.055], ['blR', 'bkR', 0.07], ['bkR', 'bpR', 0.055], ['t0', 't1', 0.04]];
-const castOf = k => (state.cast && state.cast[k]) || CAST0[k];
-const keyOf = (s, sb) => sb === s.B ? 'B' : sb === s.C ? 'C' : 'A';
-const subjKeys = s => ['A', 'B', 'C'].filter(k => k === 'A' || (s[k] && s[k].on));
+// the cast: A, B and C always exist; D–H are added on demand (up to 8 people or dogs). Each shot keeps a slot per member with its place and whether it is in the shot.
+const CAST_KEYS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+const CAST_COL = { A: '#3E7BFA', B: '#C2412D', C: '#2F9E6B', D: '#9B5DE5', E: '#D9901A', F: '#139DB5', G: '#D9488F', H: '#7A8799' };
+const castKeys = () => CAST_KEYS.filter(k => CAST0[k] || (state.cast && state.cast[k]));
+const castOf = k => (state.cast && state.cast[k]) || CAST0[k] || { who: 'm', age: 'adult', outfit: 0, skin: 0 };
+const keyOf = (s, sb) => castKeys().find(k => s[k] === sb) || 'A';
+const subjKeys = s => castKeys().filter(k => k === 'A' || (s[k] && s[k].on));
+// where a member steps in: B faces A at 1.1m; the rest fan out beside A, 0.7m further round each time
+function castSlot(s, k) { const a = s.A, th = a.face * DEG;
+  if (k === 'B') return { on: false, x: +(a.x + Math.sin(th) * 1.1).toFixed(2), z: +(a.z + Math.cos(th) * 1.1).toFixed(2), face: (a.face + 180) % 360 };
+  const n = CAST_KEYS.indexOf(k) - 1, side = n % 2 ? -1 : 1, r = th + side * Math.PI / 2, d = 0.7 * Math.ceil(n / 2);
+  return { on: false, x: +(a.x + Math.sin(r) * d).toFixed(2), z: +(a.z + Math.cos(r) * d).toFixed(2), face: a.face }; }
 const castName = k => (castOf(k).name || '').trim() || k;
 const castType = k => { const c = castOf(k); return c.who === 'dog' ? DOG_SIZES[c.size || 'm'] : `${AGES[c.age || 'adult']} ${WHO[c.who]}`; };
 const castLabel = k => { const c = castOf(k); if ((c.name || '').trim()) return `${k} · ${c.name.trim()}`; return c.who === 'dog' ? `${k} · ${DOG_SIZES[c.size || 'm']}` : `${k} · ${AGES[c.age || 'adult']} ${WHO[c.who]}`; };
@@ -1055,14 +1109,25 @@ function skeleton(k, sb) {
 const headY = (s, sb) => skeleton(keyOf(s, sb), sb).eye;
 const subjCol = (k, s) => { const c = castOf(k); return c.who === 'dog' ? FURS[c.outfit % FURS.length] : OUTFITS[c.outfit % OUTFITS.length]; };
 
-// a 3D character: tapered capsule limbs, shaped torso, face with eyes, brows, nose, mouth and ears; hair by gender and age; dogs with snout, ears, tail and collar
+// characters are drawn like game characters: toon shading in three bands and a dark outline around every part
+function toonGrad() { if (!gl.toonGrad) { const t = new THREE.DataTexture(new Uint8Array([70, 70, 70, 255, 160, 160, 160, 255, 255, 255, 255, 255]), 3, 1);
+  t.minFilter = t.magFilter = THREE.NearestFilter; t.generateMipmaps = false; t.needsUpdate = true; t.userData.shared = true; gl.toonGrad = t; } return gl.toonGrad; }
+function toonOutline(g) {
+  const om = gl.outlineMat || (gl.outlineMat = Object.assign(new THREE.MeshBasicMaterial({ color: 0x0a0c10, side: THREE.BackSide }), { userData: { shared: true } }));
+  const walk = grp => [...grp.children].forEach(o => { if (o.isGroup) return walk(o); if (!o.isMesh || o.userData.noOutline) return;
+    const cyl = o.geometry.type === 'CylinderGeometry', sc = o.scale, size = Math.min(sc.x, sc.z, cyl ? 1 : sc.y); if (size < 0.012) return;
+    const e = new THREE.Mesh(o.geometry, om); e.position.copy(o.position); e.quaternion.copy(o.quaternion);
+    const f = 1 + 0.008 / size; e.scale.set(sc.x * f, cyl ? sc.y : sc.y * f, sc.z * f); grp.add(e); });
+  walk(g); return g;
+}
+// a 3D character: tapered capsule limbs, shaped torso, a large head with big eyes, cheeks and a smile; hair with bangs by gender and age; jacket collar, belt, soled shoes; dogs with snout, ears, tail and collar
 function glCharacter(s, k) {
   const sb = s[k], c = castOf(k), sk = skeleton(k, sb), g = new THREE.Group(), Gs = gl.geo.sph, Y = v3(0, 1, 0);
   g.position.set(sb.x, 0, sb.z); g.rotation.y = sb.face * DEG;
   const mat = (rgb, rough = 0.8) => { const key = rgb.map(v => v.toFixed(3)).join(',') + '/' + rough; let m = gl.charMats[key];
-    if (!m) { m = new THREE.MeshStandardMaterial({ roughness: rough }); m.color.setRGB(...rgb); m.userData.shared = true; gl.charMats[key] = m; } return m; };
+    if (!m) { m = new THREE.MeshToonMaterial({ gradientMap: toonGrad() }); m.color.setRGB(...rgb); m.userData.shared = true; gl.charMats[key] = m; } return m; };
   const P = n => typeof n === 'string' ? v3(...sk.J[n]) : n.clone();
-  const put = o => { o.castShadow = o.receiveShadow = true; g.add(o); return o; };
+  let into = g; const put = o => { o.castShadow = o.receiveShadow = true; into.add(o); return o; };
   const sph = (p, sc, m, q) => { const o = new THREE.Mesh(Gs, m); o.position.copy(P(p)); typeof sc === 'number' ? o.scale.setScalar(sc) : o.scale.set(...sc); if (q) o.quaternion.copy(q); return put(o); };
   const taperGeo = ratio => { const key = ratio.toFixed(2); let gg = gl.taper[key]; if (!gg) { gg = new THREE.CylinderGeometry(+key, 1, 1, 20, 1, true); gg.userData.shared = true; gl.taper[key] = gg; } return gg; };
   const limb = (a, b, r0, r1, m, caps = 3) => { const A = P(a), B = P(b), d = B.clone().sub(A), l = d.length(); if (l < 1e-4) return;
@@ -1081,7 +1146,7 @@ function glCharacter(s, k) {
       limb('bl' + sd, 'bk' + sd, 0.062 * S, 0.045 * S, m, 1); limb('bk' + sd, 'bp' + sd, 0.045 * S, 0.034 * S, m, 0); sph(off('bp' + sd, 0, 0, 0.015 * S), [0.04 * S, 0.03 * S, 0.05 * S], light); }
     limb('t0', 't1', 0.032 * S, 0.014 * S, m, 2);
     const col = new THREE.Mesh(gl.geo.torus, mat([0.75, 0.12, 0.1], 0.5)), nd = P('hd').sub(P('ch')).normalize(); col.position.copy(P('nk').lerp(P('ch'), 0.2)); col.quaternion.setFromUnitVectors(v3(0, 0, 1), nd); col.scale.setScalar(0.075 * S); put(col);
-    return g; }
+    return toonOutline(g); }
   const f = sk.f, age = sk.age, child = sk.child, skin = mat(SKINS[(c.skin || 0) % SKINS.length], 0.6), top = OUTFITS[c.outfit % OUTFITS.length], shirt = mat(top, 0.85);
   const pants = mat(top.reduce((a, v) => a + v, 0) > 1.4 ? [0.06, 0.08, 0.15] : [0.05, 0.05, 0.06], 0.9);
   const shoe = mat(child || age === 'teen' ? [0.82, 0.82, 0.8] : [0.03, 0.03, 0.03], 0.45), hair = mat(age === 'senior' ? [0.42, 0.41, 0.4] : child ? [0.06, 0.035, 0.02] : [0.025, 0.018, 0.014], 0.55);
@@ -1098,25 +1163,33 @@ function glCharacter(s, k) {
     along('an' + sd, 'to' + sd, 0.048 * wh, 0.04, shoe, 1.25); }
   if (skirt) { const tp = P('pv').add(v3(0, 0.06, 0)), knee = P('knL').add(P('knR')).multiplyScalar(0.5).add(v3(0, sit ? 0.04 : 0.06, 0)), d = knee.clone().sub(tp), l = d.length();
     const o = new THREE.Mesh(taperGeo(1.5), shirt); o.position.copy(tp).add(knee).multiplyScalar(0.5); o.quaternion.setFromUnitVectors(Y, d.normalize()); o.scale.set(0.15 * wh, l, sit ? 0.16 : 0.13); put(o); }
-  // head and face
-  const hd = P('hd'), at = (x, y, z) => hd.clone().add(v3(x, y, z)); sph(hd, [hr, hr * 1.12, hr * 1.04], skin);
+  // clothing details: a turned-up collar, a belt over trousers, white soles under the shoes
+  const darker = mat(top.map(v => v * 0.6), 0.85), sole = mat([0.88, 0.87, 0.84], 0.6);
+  { const col = new THREE.Mesh(gl.geo.torus, darker); col.position.copy(P('n0')).add(v3(0, -0.005, 0)); col.rotation.x = Math.PI / 2; col.scale.set(0.068 * ws, 0.06, 0.12); put(col); }
+  if (!skirt) { const belt = new THREE.Mesh(gl.geo.torus, mat([0.08, 0.06, 0.05], 0.5)); belt.position.copy(P('pv')).add(v3(0, 0.07, 0)); belt.rotation.x = Math.PI / 2; belt.scale.set(0.158 * wh, 0.112, 0.14); put(belt); }
+  for (const sd of ['L', 'R']) along(off('an' + sd, 0, -0.028, 0), off('to' + sd, 0, -0.03, 0.012), 0.052 * wh, 0.014, sole, 1.3);
+  // head and face, drawn 18% larger than life around the real head centre (eye height and framing stay true)
+  const hd = P('hd'), hg = new THREE.Group(); hg.position.copy(hd); hg.scale.setScalar(1.18); g.add(hg); into = hg;
+  const at = (x, y, z) => v3(x, y, z); sph(at(0, 0, 0), [hr, hr * 1.12, hr * 1.04], skin);
   for (const sx of [-1, 1]) { sph(at(sx * hr * 0.98, -0.005, -0.005), [0.02, 0.034, 0.016], skin);
-    sph(at(sx * 0.038, 0.018, hr * 0.86), 0.016, mat([0.95, 0.95, 0.93], 0.3)); sph(at(sx * 0.038, 0.018, hr * 0.86 + 0.011), 0.009, mat([0.02, 0.015, 0.01], 0.15));
+    sph(at(sx * 0.036, 0.012, hr * 0.84), [0.025, 0.031, 0.012], mat([0.97, 0.97, 0.95], 0.3)); sph(at(sx * 0.036, 0.008, hr * 0.84 + 0.01), [0.017, 0.022, 0.008], mat([0.03, 0.02, 0.015], 0.15));
+    const hl = sph(at(sx * 0.036 + 0.006, 0.02, hr * 0.84 + 0.017), 0.0055, mat([1, 1, 1], 0.1)); hl.userData.noOutline = true;
+    const ck = sph(at(sx * 0.058, -0.03, hr * 0.78), [0.018, 0.011, 0.008], mat(SKINS[(c.skin || 0) % SKINS.length].map((v, i) => i ? v * 0.72 : Math.min(1, v * 1.25)), 0.6)); ck.userData.noOutline = true;
     const brow = new THREE.Mesh(gl.geo.box, hair); brow.position.copy(at(sx * 0.04, 0.05, hr * 0.87)); brow.scale.set(0.034, 0.007, 0.01); brow.rotation.z = -sx * 0.12; put(brow); }
   sph(at(0, -0.012, hr * 0.98), [0.016, 0.022, 0.018], skin); sph(at(0, -0.055, hr * 0.9), [0.022, 0.005, 0.01], mat([0.36, 0.12, 0.1], 0.4));
   // hair by gender and age
   if (age === 'senior' && !f) sph(at(0, 0, -0.03), [hr * 1.03, hr * 0.98, hr * 0.96], hair);
   else sph(at(0, 0.028, -0.022), [hr * 1.05, hr * 1.04, hr * 1.0], hair);
+  if (!(age === 'senior' && !f)) sph(at(0, 0.072, hr * 0.5), [hr * 0.92, 0.038, hr * 0.48], hair);
   if (f && age !== 'senior') { sph(at(0, child ? -0.02 : -0.07, -0.055), [hr * 1.0, hr * (child ? 0.9 : 1.45), hr * 0.62], hair); sph(at(0, 0.075, 0.06), [hr * 0.88, 0.032, 0.045], hair); }
   if (f && child) for (const sx of [-1, 1]) sph(at(sx * hr * 1.08, 0.01, -0.03), 0.042, hair);
   if (f && age === 'senior') sph(at(0, 0.07, -0.085), 0.05, hair);
   if (!f && age === 'teen') sph(at(0, 0.065, 0.02), [hr * 0.95, 0.045, hr * 0.85], hair);
   if (age === 'senior') { const gm = mat([0.08, 0.07, 0.06], 0.3); for (const sx of [-1, 1]) { const r = new THREE.Mesh(gl.geo.torus, gm); r.position.copy(at(sx * 0.038, 0.018, hr * 0.96)); r.scale.setScalar(0.024); put(r); }
     const br = new THREE.Mesh(gl.geo.box, gm); br.position.copy(at(0, 0.022, hr * 0.98)); br.scale.set(0.03, 0.004, 0.004); put(br); }
-  return g;
+  return toonOutline(g);
 }
 
-const PILLARS = Array.from({ length: 8 }, (_, i) => { const a = i / 8 * Math.PI * 2 + 0.35; return { x: Math.sin(a) * 8.5, z: Math.cos(a) * 8.5 }; });
 const norm = v => { const l = Math.hypot(v.x, v.y, v.z) || 1; return { x: v.x / l, y: v.y / l, z: v.z / l }; };
 const dirFrom = (panD, tiltD) => { const p = panD * DEG, t = tiltD * DEG; return { x: Math.sin(p) * Math.cos(t), y: Math.sin(t), z: Math.cos(p) * Math.cos(t) }; };
 
@@ -1259,6 +1332,25 @@ function roomInfo() {
   const r = state.set && state.set.room; if (!r) return null;
   const side = Math.sqrt(r.py * PY); return { ...r, side, area: side * side, x0: -side / 2, x1: side / 2, z0: -side / 2, z1: side / 2 };
 }
+// outdoors: a street backdrop — a ring of trees 11–16 m out and buildings from 26 m — so a long lens visibly pulls the background in.
+// Fixed layout (seeded), the same for every shot; hidden when a room is set up or the backdrop is switched off.
+const BD_TREE = 11, BD_BLDG = 26;
+let bdCache = null;
+function backdropItems() {
+  if (bdCache) return bdCache; const r = hashRnd('backdrop'), out = [];
+  for (let i = 0; i < 18; i++) { const a = (i * 20 + r() * 8) * DEG, rad = BD_BLDG + r() * 7, w = 7 + r() * 5, d = 6 + r() * 4, h = 6 + Math.pow(r(), 1.6) * 16;
+    out.push({ k: 'bldg', x: Math.sin(a) * (rad + d / 2), z: Math.cos(a) * (rad + d / 2), w, d, h, yaw: a, tint: i % 4 }); }
+  for (let i = 0; i < 22; i++) { const a = (i * 360 / 22 + r() * 9) * DEG, rad = BD_TREE + r() * 5;
+    out.push({ k: 'tree', x: Math.sin(a) * rad, z: Math.cos(a) * rad, h: 4 + r() * 3, cr: 1.3 + r() * 0.8, tint: i % 3 }); }
+  return bdCache = out;
+}
+const backdropOn = () => !roomInfo() && (state.set.bg || 'street') !== 'none';
+// distance from the subject to the building line along the camera heading (the background the long lens squeezes)
+function backdropDistance(s, sb) {
+  if (!backdropOn()) return Infinity;
+  const h = shotBasis(s).fh, b = sb.x * h.x + sb.z * h.z, c = sb.x * sb.x + sb.z * sb.z - BD_BLDG * BD_BLDG;
+  return -b + Math.sqrt(Math.max(0, b * b - c));
+}
 const inRoom = (p, rm) => rm && p.x > rm.x0 && p.x < rm.x1 && p.z > rm.z0 && p.z < rm.z1 && p.y < rm.h + 0.01;
 // every solid in the set as an upright box (yaw follows the subject convention: forward = (sin, cos))
 // size of a placed piece: catalogue size × its own scale (sx · sd · sh); windows and doors size their opening and the flat grows to fit
@@ -1285,7 +1377,6 @@ function setBoxes() {
         for (const w of wins.filter(w => w.i === i).sort((a, b) => a.u - b.u)) { const c = w.u; if (c - w.half < u) continue;
           piece(u, c - w.half, 0, h, k++); piece(c - w.half, c + w.half, 0, w.y0, k++); piece(c - w.half, c + w.half, w.y1, h, k++); u = c + w.half; }
         piece(u, hi, 0, h, k++); }); }
-  else PILLARS.forEach((p, i) => out.push({ id: 'pil' + i, kind: 'pillar', name: '기둥', cx: p.x, cz: p.z, cy: 1.7, hx: 0.22, hy: 1.7, hz: 0.22, yaw: 0, rgb: [0.5, 0.5, 0.5] }));
   set.props.forEach(p => { if (placing && p.id === placing.src) return; const d = PROPS[p.type], dm = propDims(p);
     const main = { id: p.id, kind: d.wall ? 'flat' : 'prop', name: d.name, cx: p.x, cz: p.z, cy: dm.h / 2, hx: dm.w / 2, hy: dm.h / 2, hz: dm.d / 2, yaw: p.yaw || 0, rgb: d.wall ? FINISH[p.fin || 'white'].rgb : d.rgb, obj: p };
     // a window flat is four solid pieces around an open 1.0 × 1.05 m opening, so light and sun pass through the glass
@@ -1400,9 +1491,11 @@ function sunEnv(sn) {
   return { name: `햇빛 ${sn.month}월 ${hhmm(sn.hour)} · ${WEATHER[sn.wx || 'clear']}`, sky, sun: dn, K: skyK, sunK, az: (sn.north || 0) + p.az, el: e, pos: p };
 }
 const envNow = () => state.set.sun && state.set.sun.on ? sunEnv(state.set.sun) : (ENVS[state.set.env] || ENVS.studio);
+// lights belong to the shot, like the camera: each shot keeps its own rig of fixtures (a new shot starts from the current one's)
+const shotLights = (s = cur()) => s.lights || (s.lights = []);
 function lightCtx(s) {
   const set = state.set, rm = roomInfo(), WB = s.wb || 5600, env0 = envNow();
-  const lights = set.lights.map(l => {
+  const lights = shotLights(s).map(l => {
     const fx = FIX(l.fx), df = DIFFUSION[l.diff || 'none'], omni = fx.beam[0] >= 360, P = { x: l.x, y: l.y, z: l.z };
     const beam = omni ? 360 : clamp((l.beam ?? fx.beam[1]) + df.beamAdd, 5, 170);
     const D = l.track ? norm(sub3({ x: subjOf(s, l.track).x, y: headY(s, subjOf(s, l.track)) - 0.1, z: subjOf(s, l.track).z }, P)) : dirFrom(l.pan || 0, l.tilt || 0);
@@ -1459,7 +1552,7 @@ function shadeCol(L, E, alb) {
 // floor illuminance map (cached while nothing that affects light changes)
 let cellCache = { key: '', cells: null };
 function floorCells(L, s) {
-  const key = JSON.stringify([state.set, s.A, s.B, s.wb, L.rm ? 1 : [Math.round(s.A.x), Math.round(s.A.z)]]);
+  const key = JSON.stringify([state.set, shotLights(s), subjKeys(s).map(k => s[k]), s.wb, L.rm ? 1 : [Math.round(s.A.x), Math.round(s.A.z)]]);
   if (cellCache.key === key) return cellCache.cells;
   const rm = L.rm; let x0, x1, z0, z1, cs;
   if (rm) { x0 = rm.x0; x1 = rm.x1; z0 = rm.z0; z1 = rm.z1; cs = clamp(rm.side / 14, 0.3, 0.6); }
@@ -1837,7 +1930,7 @@ function renderScene(ctx, W, H, V, s, opt = {}) {
     const col = m.emit ? emitCol(m, L) : m.css ? m.css : L ? shadeCol(L, irr(L, ctr, n, ex, skipL), m.rgb) : flatCol(m.rgb, n);
     parts.push({ z, draw() { if (m.alpha) ctx.globalAlpha = m.alpha; poly(q, col, col, 0.6); ctx.globalAlpha = 1; } });
   } };
-  // room walls and pillars as tiled boxes (tiles let light fall off across a wall and keep depth sorting sane); furniture as models
+  // room walls as tiled boxes (tiles let light fall off across a wall and keep depth sorting sane); furniture as models
   const outline = L ? 'rgba(0,0,0,.28)' : C.ink, rmS = roomInfo();
   setBoxes().forEach(b => {
     if (b.kind === 'prop' || b.kind === 'flat') { if (!b.part) pushFaces(propFaces(b.obj), b.id); return; }
@@ -2099,7 +2192,7 @@ function glMeshes(faces, cast) {
     g.setAttribute('position', new THREE.Float32BufferAttribute(b.p, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(b.n, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(b.c, 3));
     const mesh = new THREE.Mesh(g, gl.mats[key]); mesh.castShadow = cast && (key.startsWith('std') || key.startsWith('metal')); mesh.receiveShadow = !key.startsWith('emit'); return mesh; });
 }
-// room, floor, walls, pillars and furniture (shared by every shot)
+// room, floor, walls and furniture (shared by every shot)
 function glBuildStatic() {
   const g = gl.parts.stat, rm = roomInfo(); clearGroup(g); gl.walls = []; gl.ceiling = null;
   const gm = new THREE.MeshStandardMaterial({ map: gl.ground, roughness: 0.95 }); gm.map.repeat.set(160, 160); gm.map._keep = true;
@@ -2109,13 +2202,31 @@ function glBuildStatic() {
   if (rm) { const wm = new THREE.MeshStandardMaterial({ map: gl.wood, roughness: 0.55 }); wm.map.repeat.set(rm.side / 1.2, rm.side / 1.2); wm.map._keep = true;
     const fl = new THREE.Mesh(new THREE.PlaneGeometry(rm.side, rm.side), wm); fl.rotation.x = -Math.PI / 2; fl.position.y = 0.001; fl.receiveShadow = true; g.add(fl);
     gl.ceiling = box({ cx: 0, cy: rm.h + 0.05, cz: 0, hx: rm.side / 2 + 0.12, hy: 0.05, hz: rm.side / 2 + 0.12 }, [0.8, 0.8, 0.78]); }
+  if (backdropOn()) glBackdrop(g);
   setBoxes().forEach(b => {
     if (b.kind === 'wall') { const mesh = box(b, b.rgb); gl.walls.push({ mesh, b }); (() => { // skirting board along the inside face
       if (b.cy - b.hy > 0.01) return; const i = b.wi, inward = [[0, -1], [0, 1], [-1, 0], [1, 0]][i], sk = { ...b, cy: 0.05, hy: 0.05, cx: b.cx + inward[0] * (b.hx + 0.008), cz: b.cz + inward[1] * (b.hz + 0.008), hx: inward[0] ? 0.008 : b.hx, hz: inward[1] ? 0.008 : b.hz };
       box(sk, [0.6, 0.58, 0.55]); })(); }
-    else if (b.kind === 'pillar') box(b, [0.42, 0.42, 0.41], { roughness: 0.95 });
     else if (!b.part) glMeshes(propFaces(b.obj), true).forEach(m => g.add(m));
   });
+}
+// street backdrop: facades tiled 3 m per window bay, low-poly trees; they take light and shadow but cast none into the set
+function glBackdrop(g) {
+  if (!gl.facade) { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d');
+    x.fillStyle = '#d8d4cc'; x.fillRect(0, 0, 64, 64); x.fillStyle = '#5d6670'; x.fillRect(14, 14, 36, 30); x.fillStyle = '#b9b4ab'; x.fillRect(12, 44, 40, 3);
+    gl.facade = new THREE.CanvasTexture(c); gl.facade.wrapS = gl.facade.wrapT = THREE.RepeatWrapping; gl.facade._keep = true; if ('colorSpace' in gl.facade) gl.facade.colorSpace = THREE.SRGBColorSpace; else gl.facade.encoding = THREE.sRGBEncoding; }
+  const tints = [[1, 0.97, 0.92], [0.78, 0.74, 0.7], [0.93, 0.86, 0.78], [0.62, 0.64, 0.66]].map(t => { const m = new THREE.MeshStandardMaterial({ map: gl.facade, roughness: 0.9 }); m.color.setRGB(...t); return m; });
+  const leaf = [[0.1, 0.2, 0.07], [0.14, 0.24, 0.08], [0.09, 0.17, 0.08]].map(t => { const m = new THREE.MeshStandardMaterial({ roughness: 0.95, flatShading: true }); m.color.setRGB(...t); return m; });
+  const bark = new THREE.MeshStandardMaterial({ roughness: 1 }); bark.color.setRGB(0.12, 0.09, 0.07);
+  for (const it of backdropItems()) {
+    if (it.k === 'bldg') { const geo = new THREE.BoxGeometry(it.w, it.h, it.d), uv = geo.attributes.uv;
+      // faces: ±x (depth wide), ±y (roof: one flat colour), ±z (width wide); 4 vertices each
+      for (let f = 0; f < 6; f++) { const wide = f < 2 ? it.d : it.w; for (let v = 0; v < 4; v++) { const i = f * 4 + v;
+        if (f === 2 || f === 3) uv.setXY(i, 0.05, 0.05); else uv.setXY(i, uv.getX(i) * Math.max(1, Math.round(wide / 3)), uv.getY(i) * Math.max(1, Math.round(it.h / 3))); } }
+      const m = new THREE.Mesh(geo, tints[it.tint]); m.position.set(it.x, it.h / 2, it.z); m.rotation.y = it.yaw; m.receiveShadow = true; g.add(m); }
+    else { const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.18, it.h * 0.5, 7), bark); tr.position.set(it.x, it.h * 0.25, it.z); g.add(tr);
+      const cr = new THREE.Mesh(new THREE.IcosahedronGeometry(it.cr, 1), leaf[it.tint]); cr.scale.y = 1.25; cr.position.set(it.x, it.h * 0.5 + it.cr * 0.9, it.z); cr.receiveShadow = true; g.add(cr); }
+  }
 }
 // fixtures with their real light: SpotLight / PointLight in candela, soft shadow radius from the source size
 function glBuildFixtures(L) {
@@ -2153,10 +2264,10 @@ function glMannequin(sb, shirt) {
 // keep the scene in step with the shot; parts rebuild only when what they depend on changes
 function glSync(s, world) {
   const L = lightCtx(s), set = state.set;
-  const k1 = JSON.stringify([set.room, set.props, placing && placing.src]); if (gl.keys.stat !== k1) { gl.keys.stat = k1; glBuildStatic(); }
-  const k2 = JSON.stringify([set.lights, set.room, set.props.map(p => [p.x, p.z]), L.lights.map(li => [li.D.x.toFixed(3), li.D.y.toFixed(3), li.D.z.toFixed(3)]), phone.matches]);
+  const k1 = JSON.stringify([set.room, set.props, placing && placing.src, set.bg]); if (gl.keys.stat !== k1) { gl.keys.stat = k1; glBuildStatic(); }
+  const k2 = JSON.stringify([shotLights(s), set.room, set.props.map(p => [p.x, p.z]), L.lights.map(li => [li.D.x.toFixed(3), li.D.y.toFixed(3), li.D.z.toFixed(3)]), phone.matches]);
   if (gl.keys.fix !== k2) { gl.keys.fix = k2; glBuildFixtures(L); }
-  const k3 = JSON.stringify([s.A, s.B, s.C, state.cast]); if (gl.keys.figs !== k3) { gl.keys.figs = k3; clearGroup(gl.parts.figs); subjKeys(s).forEach(k => gl.parts.figs.add(glCharacter(s, k))); }
+  const k3 = JSON.stringify([castKeys().map(k => s[k]), state.cast]); if (gl.keys.figs !== k3) { gl.keys.figs = k3; clearGroup(gl.parts.figs); subjKeys(s).forEach(k => gl.parts.figs.add(glCharacter(s, k))); }
   if (world) { const ev = shotRig(s), k4 = JSON.stringify([s.cam, s.f, state.kit, s.rig, s.move, ev.r.id, ev.ok, ev.geo, C.accent]);
     if (gl.keys.cam !== k4) { gl.keys.cam = k4; clearGroup(gl.parts.cam); glMeshes(rigFaces(s).concat(camFaces(s)), true).forEach(m => gl.parts.cam.add(m)); } }
   gl.parts.cam.visible = world;
@@ -2302,22 +2413,22 @@ function drawWorld() {
     after: (ctx, toC, scr) => {
       const P = SB.P;
       const seg = (a, b) => { const q1 = toC(a), q2 = toC(b); if (q1.z < 0.05 || q2.z < 0.05) return; const p1 = scr(q1), p2 = scr(q2); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); };
-      // lens height marker
-      ctx.strokeStyle = C.muted; ctx.lineWidth = 1; ctx.setLineDash([3, 3]); ctx.beginPath(); seg(P, { x: P.x, y: 0, z: P.z }); ctx.stroke(); ctx.setLineDash([]);
+      // lens height marker, only while the camera is picked
+      if (camSel) { ctx.strokeStyle = C.muted; ctx.lineWidth = 1; ctx.setLineDash([3, 3]); ctx.beginPath(); seg(P, { x: P.x, y: 0, z: P.z }); ctx.stroke(); ctx.setLineDash([]);
       const g = toC({ x: P.x, y: 0, z: P.z });
-      if (g.z > 0.1) { const gp = scr(g); ctx.fillStyle = C.ink; ctx.font = '500 10.5px "IBM Plex Mono", monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(` ${fmt(P.y, 2)}m`, gp.x + 4, gp.y); }
+      if (g.z > 0.1) { const gp = scr(g); ctx.fillStyle = C.ink; ctx.font = '500 10.5px "IBM Plex Mono", monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(` ${fmt(P.y, 2)}m`, gp.x + 4, gp.y); } }
       // frustum through the real (distorted) image edges, out to the focus plane
       const L = clamp(o.fd, 0.4, 60), Lx = L * 1.25;
       const corner = (sx, sy, d) => { const q = o.dirAt(sx, sy), w = add(add({ x: SB.r.x * q.x, y: SB.r.y * q.x, z: SB.r.z * q.x }, SB.u, q.y), SB.f, q.z);
         return add(P, w, q.z > 0.15 ? d / q.z : d); };
       const cs = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
       const border = []; cs.forEach(([a, b], i) => { const [c2, d2] = cs[(i + 1) % 4]; for (let j = 0; j < 12; j++) { const t = j / 12; border.push(corner(a + (c2 - a) * t, b + (d2 - b) * t, L)); } });
-      ctx.strokeStyle = C.accent; ctx.lineWidth = 1.2; ctx.globalAlpha = .75; ctx.beginPath();
+      ctx.strokeStyle = C.accent; ctx.lineWidth = 1; ctx.globalAlpha = camSel ? .6 : .32; ctx.beginPath();
       cs.forEach(([a, b]) => seg(P, corner(a, b, Lx)));
       border.forEach((p, i) => seg(p, border[(i + 1) % border.length]));
       ctx.stroke();
       const fq = border.map(toC);
-      if (fq.every(q => q.z > 0.05)) { ctx.globalAlpha = .08; ctx.fillStyle = C.accent; ctx.beginPath(); fq.map(scr).forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.fill();
+      if (camSel && fq.every(q => q.z > 0.05)) { ctx.globalAlpha = .05; ctx.fillStyle = C.accent; ctx.beginPath(); fq.map(scr).forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.fill();
         const up = scr(toC(corner(-1, 1, L))); ctx.globalAlpha = 1; ctx.fillStyle = C.accent; ctx.font = '500 10.5px "IBM Plex Mono", monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(`초점면 ${fmtM(o.fd)}`, up.x + 2, up.y - 2); }
       ctx.globalAlpha = 1;
       drawLights(ctx, toC, scr, s, LC);
@@ -2333,11 +2444,11 @@ function drawWorld() {
   ctx.font = '600 11px "IBM Plex Mono", monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
   subjKeys(s).forEach(k => { const sb = s[k]; const q = toC({ x: sb.x, y: skeleton(k, sb).top + 0.25, z: sb.z }); if (q.z < 0.2) return; const p = scr(q);
     const t = castName(k) === k ? k : `${k} ${castName(k)}`, w = Math.max(18, ctx.measureText(t).width + 10);
-    ctx.fillStyle = { A: '#3E7BFA', B: '#C2412D', C: '#2F9E6B' }[k]; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(p.x - w / 2, p.y - 17, w, 16, 5) : ctx.rect(p.x - w / 2, p.y - 17, w, 16); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillText(t, p.x, p.y - 3); });
-  if (showGrid) drawGridLabels(ctx, toC, scr, W, H);
+    ctx.fillStyle = CAST_COL[k]; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(p.x - w / 2, p.y - 17, w, 16, 5) : ctx.rect(p.x - w / 2, p.y - 17, w, 16); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillText(t, p.x, p.y - 3); });
+  if (showGrid && wDrag && wDrag.moved && !['orbit', 'pan', 'two'].includes(wDrag.t)) drawGridLabels(ctx, toC, scr, W, H);
   opts.after(ctx, toC, scr);
 }
-let showHeat = false, selObj = null, craneOn = false;
+let showHeat = false, selObj = null, craneOn = false, camSel = false;
 /* ---------- measured floor grid: spacing follows the zoom, bold lines carry metre labels, world X (red) and Z (blue) axes ---------- */
 // [minor, major] pairs: the first whose minor spacing is at least 18 px on screen wins
 const GRID_STEPS = [[0.05, 0.5], [0.1, 1], [0.25, 1], [0.5, 2], [1, 5], [2, 10], [5, 25], [10, 50]];
@@ -2437,7 +2548,7 @@ function drawCrane(ctx, toC, scr, s, r, g, k) {
 function drawHandles(ctx, toC, scr, s, SB) {
   worldHandles = []; const k = pad();
   // lights: grab the head to move it on the floor plan (height in the light panel)
-  state.set.lights.forEach(l => { const q = toC(l); if (q.z < 0.1) return; const p = scr(q), rr = Math.max(13, 0.3 * worldV.fp / q.z) * k;
+  shotLights(s).forEach(l => { const q = toC(l); if (q.z < 0.1) return; const p = scr(q), rr = Math.max(13, 0.3 * worldV.fp / q.z) * k;
     worldHandles.push({ t: 'light', id: l.id, hit: m => Math.hypot(m.x - p.x, m.y - p.y) < rr ? 1 : 99 }); });
   // furniture and flats: grab the top, the dot in front rotates the selected one
   state.set.props.forEach(o => { const d = propDims(o), q = toC({ x: o.x, y: d.h, z: o.z }); if (q.z < 0.1) return; const p = scr(q), sel = selObj && selObj.id === o.id;
@@ -2470,6 +2581,10 @@ function drawHandles(ctx, toC, scr, s, SB) {
   const P = SB.P, q0 = toC(P); if (q0.z < 0.2) return;
   const o0 = scr(q0), ppm = worldV.fp / q0.z, Lm = 78 / ppm, cw = ctx.canvas.clientWidth || 1e4, ch = ctx.canvas.clientHeight || 1e4;
   gizmoSpot = { x: o0.x, y: o0.y, r: 96 };
+  // the camera itself is a tap target: tapping it shows the move arrows and turn rings, tapping empty floor hides them again
+  worldHandles.push({ t: 'cam', hit: p => Math.hypot(p.x - o0.x, p.y - o0.y) < 16 * k ? 2 : 99 });
+  if (!camSel) { ctx.strokeStyle = C.accent; ctx.lineWidth = 2; ctx.globalAlpha = .9; ctx.beginPath(); ctx.arc(o0.x, o0.y, 11, 0, Math.PI * 2); ctx.stroke();
+    ctx.globalAlpha = 1; ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(o0.x, o0.y, 3.5, 0, Math.PI * 2); ctx.fill(); return; }
   const axes = [{ id: 'x', v: SB.rh, lab: 'X 트럭' }, { id: 'y', v: UP, lab: 'Y 붐' }, { id: 'z', v: SB.fh, lab: 'Z 달리' }];
   const rings = [
     { id: 'pan', R: Lm * 0.95, a: { x: 0, y: 0, z: 1 }, b: { x: 1, y: 0, z: 0 }, th0: SB.yaw * DEG, lab: '팬' },
@@ -2500,7 +2615,7 @@ function drawHandles(ctx, toC, scr, s, SB) {
   });
   ctx.fillStyle = C.sheet; ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(o0.x, o0.y, 4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 }
-const findObj = id => id === 'SUN' ? state.set.sun : id && id.startsWith('SUBJ_') ? cur()[id.slice(5)] : state.set.lights.find(o => o.id === id) || state.set.props.find(o => o.id === id);
+const findObj = id => id === 'SUN' ? state.set.sun : id && id.startsWith('SUBJ_') ? cur()[id.slice(5)] : shotLights().find(o => o.id === id) || state.set.props.find(o => o.id === id);
 function wLocal(e) { const r = $('#world').getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
 function groundHit(p, V) {
   const d = add(add(V.f, V.r, (p.x - V.W / 2) / V.fp), V.u, -(p.y - V.H / 2) / V.fp);
@@ -2569,7 +2684,7 @@ $('#craneBar').addEventListener('click', e => { const b = e.target.closest('butt
   if (!craneTake(s)) return; const k = b.dataset.cr; craneMove(s, { [k]: s.crane[k] + +b.dataset.d }); changed(true); });
 // floating bars: one while placing, one for the selected object (rotate, move, size, copy, delete)
 function syncBars() { syncCrane();
-  const pb = $('#placeBar'), ob = $('#objBar'), cb = $('#camBar'); pb.hidden = !placing; cb.hidden = !!placing || craneOn;
+  const pb = $('#placeBar'), ob = $('#objBar'), cb = $('#camBar'); pb.hidden = !placing; cb.hidden = !!placing || craneOn || mode === 'mon';
   if (placing) { $('#placeName').textContent = PROPS[placing.o.type].name; const st = $('#placeStat'); st.textContent = placing.why || '놓을 수 있어요'; st.className = 'pstat ' + (placing.why ? 'bad' : 'ok');
     $('#pOk').disabled = !!placing.why; $('#pRotL').disabled = $('#pRotR').disabled = !!(WALLED[placing.o.type] && roomInfo()); }
   const o = !placing && selObj && findObj(selObj.id), sun = selObj && selObj.id === 'SUN'; ob.hidden = !o || mode === 'mon' || (sun && !state.set.sun.on);
@@ -2587,7 +2702,7 @@ $('#oMove').onclick = () => { const o = findObj(selObj.id); startPlace(o.type, o
 $('#oDup').onclick = () => { const o = findObj(selObj.id); startPlace(o.type, null, o); };
 $('#oEdit').onclick = () => openPane(selObj.kind === 'prop' ? 'set' : selObj.kind === 'subj' ? 'shot' : 'light');
 $('#oPose').onclick = () => { const o = findObj(selObj.id); o.pose = o.pose === 'sit' ? 'stand' : 'sit'; changed(true, true); };
-$('#oDel').onclick = () => { if (selObj.kind === 'subj') { const k = selObj.k; selObj = null; toggleSub(k); syncBars(); return; } if (selObj.id === 'SUN') state.set.sun.on = false; else { const arr = selObj.kind === 'light' ? state.set.lights : state.set.props, o = findObj(selObj.id); arr.splice(arr.indexOf(o), 1); }
+$('#oDel').onclick = () => { if (selObj.kind === 'subj') { const k = selObj.k; selObj = null; toggleSub(k); syncBars(); return; } if (selObj.id === 'SUN') state.set.sun.on = false; else { const arr = selObj.kind === 'light' ? shotLights() : state.set.props, o = findObj(selObj.id); arr.splice(arr.indexOf(o), 1); }
   selObj = null; changed(true, true); syncBars(); };
 $('#oClose').onclick = () => { selObj = null; syncSet(); syncBars(); renderWorld(); };
 // AC-style floor tiles and the footprint while placing or dragging a piece
@@ -2615,8 +2730,8 @@ function drawSunAndCompass(ctx, toC, scr) {
   ctx.save(); ctx.strokeStyle = up ? 'rgba(255,200,90,.7)' : 'rgba(160,170,190,.6)'; ctx.setLineDash([4, 5]); ctx.lineWidth = 1.5; ctx.beginPath(); const qt = toC(T); if (qt.z > 0.05) { const pt = scr(qt); ctx.moveTo(pt.x, pt.y); ctx.lineTo(ps.x, ps.y); } ctx.stroke(); ctx.setLineDash([]);
   ctx.strokeStyle = up ? '#FFC24A' : '#9AA5B8'; ctx.lineWidth = 2.2; ctx.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; ctx.moveTo(ps.x + Math.cos(a) * (r + 3), ps.y + Math.sin(a) * (r + 3)); ctx.lineTo(ps.x + Math.cos(a) * (r + 8), ps.y + Math.sin(a) * (r + 8)); } ctx.stroke();
   ctx.fillStyle = up ? '#FFC24A' : '#9AA5B8'; ctx.beginPath(); ctx.arc(ps.x, ps.y, r, 0, Math.PI * 2); ctx.fill(); if (sel) { ctx.strokeStyle = C.accent; ctx.lineWidth = 3; ctx.stroke(); }
-  const t = `${hhmm(sn.hour)} · ${up ? '고도 ' + fmt(se.el, 0) + '°' : '해 짐'}`; ctx.font = '600 11px "IBM Plex Mono", monospace'; const tw = ctx.measureText(t).width;
-  ctx.fillStyle = 'rgba(17,21,27,.7)'; ctx.fillRect(ps.x - tw / 2 - 6, ps.y + r + 10, tw + 12, 18); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(t, ps.x, ps.y + r + 19); ctx.restore();
+  if (sel) { const t = `${hhmm(sn.hour)} · ${up ? '고도 ' + fmt(se.el, 0) + '°' : '해 짐'}`; ctx.font = '600 11px "IBM Plex Mono", monospace'; const tw = ctx.measureText(t).width;
+  ctx.fillStyle = 'rgba(17,21,27,.7)'; ctx.fillRect(ps.x - tw / 2 - 6, ps.y + r + 10, tw + 12, 18); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(t, ps.x, ps.y + r + 19); } ctx.restore();
   worldHandles.push({ t: 'sun', hit: m => Math.hypot(m.x - ps.x, m.y - ps.y) < r + 10 ? 0.5 : 99 }); }
 /* ---------- two-finger gestures: decide once whether it is a pinch or a same-direction drag, then stay with it ---------- */
 // pinch = viewer zoom only; vertical drag = camera dolly (or, if chosen in settings, moving the 3D view); twisting does nothing
@@ -2667,6 +2782,7 @@ wcv.addEventListener('pointerdown', e => {
   else if (best && best.t === 'clen') { const sa = { x: best.tp.x - best.o0.x, y: best.tp.y - best.o0.y }, len = Math.hypot(sa.x, sa.y);
     if (len < 6) return; wDrag = { t: 'clen', id: 'len', base, unit: { x: sa.x / len, y: sa.y / len }, ppm: len / best.Lm, cr0: { ...s.crane } }; }
   else if (best && best.t === 'arm') wDrag = { t: 'arm', base, v0: { ...viewer }, V };
+  else if (best && best.t === 'cam') wDrag = { t: 'camtap', base, v0: { ...viewer }, V };
   else if (best && best.t === 'subj') { const g = groundHit(p, V), sb = s[best.k]; wDrag = { t: 'subj', k: best.k, V, off: g ? { x: sb.x - g.x, z: sb.z - g.z } : { x: 0, z: 0 } }; }
   else if (best && best.t === 'face') wDrag = { t: 'face', k: best.k, V };
   else if (best && (best.t === 'light' || best.t === 'obj')) { const o = findObj(best.id), g = groundHit(p, V);
@@ -2692,7 +2808,7 @@ wcv.addEventListener('pointermove', e => {
   if (!wDrag.moved) return;
   if (wDrag.t === 'sun') { state.set.sun.hour = +clamp(wDrag.h0 + (e.clientX - wDrag.base.x) * 0.012, 4, 21).toFixed(3); changed(false); return; }
   const dx = wDrag.base ? e.clientX - wDrag.base.x : 0, dy = wDrag.base ? e.clientY - wDrag.base.y : 0;
-  if (wDrag.t === 'arm') wDrag.t = 'orbit'; // dragging the arm turns the view; a tap takes the crane in hand
+  if (wDrag.t === 'arm' || wDrag.t === 'camtap') wDrag.t = 'orbit'; // dragging the arm turns the view; a tap takes the crane in hand
   if (wDrag.t === 'cring') { const dth = (dx * wDrag.tg.x + dy * wDrag.tg.y) / wDrag.tl2 / DEG; craneMove(s, { [wDrag.id]: wDrag.cr0[wDrag.id] + dth }); changed(false); return; }
   if (wDrag.t === 'clen') { craneMove(s, { len: wDrag.cr0.len + (dx * wDrag.unit.x + dy * wDrag.unit.y) / wDrag.ppm }); changed(false); return; }
   if (wDrag.t === 'orbit') { viewer.az = wDrag.v0.az - dx * 0.4; viewer.el = clamp(wDrag.v0.el + dy * 0.3, -8, 89); renderWorld(); return; }
@@ -2715,6 +2831,8 @@ const endW = e => { ptrs.delete(e.pointerId); if (!wDrag) return; const d = wDra
   // a tap on a light or a piece of furniture opens its panel; a drag only moves it
   if (d.t === 'place') { if (!d.moved) confirmPlace(); return; }
   if (d.t === 'arm' && !d.moved) { craneToggle(); return; }
+  if (d.t === 'camtap' && !d.moved) { camSel = !camSel; selObj = null; syncSet(); syncBars(); renderWorld(); return; }
+  if (d.t === 'orbit' && !d.moved && (camSel || selObj)) { camSel = false; selObj = null; syncSet(); syncBars(); }
   if (d.t === 'subj' && !d.moved) { selObj = { id: 'SUBJ_' + d.k, kind: 'subj', k: d.k }; syncSet(); }
   if (d.t === 'objmove' && d.why && d.moved) toast(`${d.why} · 마지막으로 놓을 수 있던 자리에 두었어요`);
   syncBars();
@@ -2724,7 +2842,7 @@ wcv.addEventListener('pointerup', endW); wcv.addEventListener('pointercancel', e
 wcv.addEventListener('wheel', e => { e.preventDefault(); viewer.dist = clamp(viewer.dist * Math.exp(e.deltaY * 0.0012), 1.2, 160); renderWorld(); }, { passive: false });
 function framePts(s, withLights) {
   const pts = [{ x: s.cam.x, y: s.cam.y, z: s.cam.z }]; subjKeys(s).forEach(k => pts.push({ x: s[k].x, y: 1, z: s[k].z }));
-  if (withLights) state.set.lights.forEach(l => { if (Math.hypot(l.x - s.A.x, l.z - s.A.z) < 12) pts.push({ x: l.x, y: l.y, z: l.z }); });
+  if (withLights) shotLights(s).forEach(l => { if (Math.hypot(l.x - s.A.x, l.z - s.A.z) < 12) pts.push({ x: l.x, y: l.y, z: l.z }); });
   const c = pts.reduce((m, p) => ({ x: m.x + p.x / pts.length, y: m.y + p.y / pts.length, z: m.z + p.z / pts.length }), { x: 0, y: 0, z: 0 });
   return { c, r: Math.max(...pts.map(p => Math.hypot(p.x - c.x, p.z - c.z))), r3: Math.max(...pts.map(p => Math.hypot(p.x - c.x, p.y - c.y, p.z - c.z))) };
 }
@@ -2740,7 +2858,7 @@ function tweenViewer(to, ms = 460) {
 }
 function fitViewer(instant) {
   const s = cur(), { c, r3 } = framePts(s, false), st = wsz || sizeWorld(), k = Math.min(st.W, st.H) / Math.max(st.W, st.H * 0.8) * Math.tan(30 * DEG);
-  const to = { tx: c.x, ty: Math.max(0.9, c.y), tz: c.z, el: 24, az: s.cam.pan + 180 + 50, dist: (r3 * 1.15 + 0.9) / k, fov: 30 };
+  const to = { tx: c.x, ty: Math.max(0.9, c.y), tz: c.z, el: 8, az: s.cam.pan + 180 + 35, dist: (r3 * 0.8 + 0.4) / k, fov: 30 };
   if (instant) { Object.assign(viewer, to); renderWorld(); } else tweenViewer(to);
 }
 // top view: straight down with a long lens so the floor plan reads nearly to scale
@@ -2752,11 +2870,28 @@ const frameViewer = () => mode === 'top' ? topViewer() : mode === '3d' ? fitView
 function setMode(m) {
   if (m === mode) return; if (mode === '3d') view3d = { ...viewer }; mode = m;
   document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
-  $('#stage').dataset.mode = m; $('#worldwrap').hidden = m === 'mon'; $('#vf').hidden = m !== 'mon'; $('#pip').hidden = m === 'mon'; $('#heatBtn').hidden = m === 'mon'; $('#fitBtn').hidden = m === 'mon';
+  $('#stage').dataset.mode = m; $('#movePad').hidden = m !== 'mon'; syncBars(); $('#worldwrap').hidden = m === 'mon'; $('#vf').hidden = m !== 'mon'; $('#pip').hidden = m === 'mon'; $('#fitBtn').hidden = m === 'mon';
   wsz = null; vsz = null;
   renderAll();
   if (m === 'top') topViewer(); else if (m === '3d') { if (view3d) tweenViewer(view3d, 560); else fitViewer(); }
 }
+// monitor: hold a pad button and the camera moves while you watch the frame — dolly along its heading, truck sideways, boom up and down.
+// Speed follows the distance to the focus subject, so close-ups move gently.
+const mvKeys = new Set(); let mvRaf = 0, mvT = 0, mvWarned = false;
+function mvStep(t) {
+  if (!mvKeys.size) { mvRaf = 0; changed(true); return; }
+  const dt = mvT ? Math.min(0.05, (t - mvT) / 1000) : 0.016; mvT = t;
+  const s = cur(), SB = shotBasis(s), sb = s[afKey(s)], d = Math.hypot(s.cam.x - sb.x, s.cam.z - sb.z), v = clamp(d * 0.45, 0.25, 2.5) * dt;
+  const fw = (mvKeys.has('f') ? 1 : 0) - (mvKeys.has('b') ? 1 : 0), rt = (mvKeys.has('r') ? 1 : 0) - (mvKeys.has('l') ? 1 : 0), up = (mvKeys.has('u') ? 1 : 0) - (mvKeys.has('d') ? 1 : 0);
+  const f = fw > 0 && d < 0.35 ? 0 : fw; if (f !== fw && !mvWarned) { mvWarned = true; toast('피사체 바로 앞이라 더 다가갈 수 없어요'); }
+  s.cam.x = +(s.cam.x + (SB.fh.x * f + SB.rh.x * rt) * v).toFixed(4); s.cam.z = +(s.cam.z + (SB.fh.z * f + SB.rh.z * rt) * v).toFixed(4);
+  s.cam.y = +clamp(s.cam.y + up * v * 0.6, 0.05, 40).toFixed(4);
+  changed(false); mvRaf = requestAnimationFrame(mvStep);
+}
+$('#movePad').addEventListener('pointerdown', e => { const b = e.target.closest('[data-mv]'); if (!b) return; e.preventDefault(); capture(b, e.pointerId);
+  mvKeys.add(b.dataset.mv); b.classList.add('on'); if (!mvRaf) { mvT = 0; mvWarned = false; mvRaf = requestAnimationFrame(mvStep); } });
+const mvEnd = e => { const b = e.target.closest('[data-mv]'); if (!b) return; mvKeys.delete(b.dataset.mv); b.classList.remove('on'); };
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => $('#movePad').addEventListener(ev, mvEnd));
 $('#modeSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setMode(b.dataset.mode); });
 $('#fitBtn').onclick = frameViewer;
 
@@ -2764,8 +2899,9 @@ $('#fitBtn').onclick = frameViewer;
 /* ---------- monitor ---------- */
 function sizeView() {
   const st = $('#stage'), cv = $('#view'), asp = aspectV(), dpr = devicePixelRatio || 1;
-  // sideways phone: the monitor takes the full stage height; the overlays sit to its left and the toggles to its right
-  const side = shortH.matches, maxW = side ? st.clientWidth - 300 : st.clientWidth - 20, maxH = side ? st.clientHeight - 54 : st.clientHeight - 2 * 52 - 40;
+  // sideways phone: the monitor takes the full stage height; the view switch and move pad sit to its left (160px), the toggles to its right (58px).
+  // Upright: full width, with room for the move pad underneath.
+  const side = shortH.matches, maxW = side ? st.clientWidth - 230 : st.clientWidth - 16, maxH = side ? st.clientHeight - 50 : st.clientHeight - 64 - 150;
   let W = maxW, H = W / asp; if (H > maxH) { H = maxH; W = H * asp; }
   W = Math.floor(Math.max(80, W)); H = Math.floor(Math.max(50, H));
   cv.style.width = W + 'px'; cv.style.height = H + 'px'; cv.width = W * dpr; cv.height = H * dpr; $('#vfbox').style.width = W + 'px';
@@ -2778,7 +2914,7 @@ function drawMonitor() {
   const ctx = $('#view').getContext('2d'); ctx.setTransform(vsz.dpr, 0, 0, vsz.dpr, 0, 0);
   const s = cur(), V = renderShot(ctx, vsz.W, vsz.H, s, { af: true, thirds: showThirds, blur: state.blur, lensGrid: showLensGrid, lit: state.lit !== false, fc: showFC, slot: 'mon' }), o = V.o;
   const sz = autoSize(s, o), an = autoAngle(s), n = String(state.sel + 1).padStart(2, '0');
-  $('#hudL').textContent = `S${n} · ${sz || '—'} · ${fmt(s.f, s.f < 20 ? 1 : 0)}mm T${s.N}${an.dutch ? ' · DUTCH' : ''}`;
+  $('#hudL').textContent = `S${n} · ${sz || '—'} · ${fmt(s.f, s.f < 20 ? 1 : 0)}mm ${stopTxt(s.N)}${an.dutch ? ' · DUTCH' : ''}`;
   $('#hudR').textContent = `${state.aspect} · ${s.dur}s`;
   $('#hudB').textContent = `H ${fmt(o.hf / DEG)}° · ${SENSOR().name.split(' (')[0]}`;
   $('#monInfo').textContent = o.tooClose ? `초점 불가 · ${fmtM(o.want)} < 최소 ${fmtM(o.mod)}` : `${s.focus === 'M' ? 'MF' : 'AF · ' + afKey(s)} ${fmtM(o.fd)} · 심도 ${fmtM(o.near)}–${fmtM(o.far)}`;
@@ -2812,7 +2948,7 @@ function syncHud() {
   const pop = syncHud.last !== undefined && syncHud.last !== sz; syncHud.last = sz;
   $('#stageInfo').innerHTML = `<span class="chipi glass${pop ? ' pop' : ''}"><b>${sz || '—'}</b><span class="k">${sz ? SIZES[sz].ko : '인물이 카메라 뒤'}</span></span><span class="chipi glass"><b>${an.k}</b><span class="k">${an.ko}</span></span>` +
     (an.dutch ? `<span class="chipi glass"><b>DUTCH</b>${fmt(s.cam.roll, 0)}°</span>` : '') +
-    `<span class="chipi glass mono">${fmt(s.f, s.f < 20 ? 1 : 0)}mm T${s.N} · ↕${fmt(s.cam.y, 2)}m · ↔${fmtM(Math.hypot(s.cam.x - tg.x, s.cam.z - tg.z))}</span>` +
+    `<span class="chipi glass mono">${fmt(s.f, s.f < 20 ? 1 : 0)}mm ${stopTxt(s.N)} · ↕${fmt(s.cam.y, 2)}m · ↔${fmtM(Math.hypot(s.cam.x - tg.x, s.cam.z - tg.z))}</span>` +
     (o.tooClose ? `<span class="chipi glass bad">초점 불가 · 최소 ${fmtM(o.mod)}</span>` : '') +
     ((ev => Math.abs(ev) > 2.5 ? `<button class="chipi glass bad act" data-autoexp="1">노출 ${ev > 0 ? '+' : ''}${fmt(ev, 1)}스톱</button>` : '')(faceLight(s).ev));
   $('#aimB').disabled = !s.B.on;
@@ -2835,7 +2971,6 @@ vcv.addEventListener('wheel', e => { e.preventDefault(); const s = cur(), B = sh
 vcv.addEventListener('dblclick', () => aimAt(afKey(cur())));
 $('#gThirds').onclick = () => { showThirds = !showThirds; $('#gThirds').setAttribute('aria-pressed', showThirds); drawMonitor(); };
 let showLensGrid = false;
-$('#gLens').onclick = () => { showLensGrid = !showLensGrid; $('#gLens').setAttribute('aria-pressed', showLensGrid); drawMonitor(); };
 let aimT = 0;
 function aimAt(k) { const s = cur(); if (k === 'B' && !s.B.on) return; const sb = subjOf(s, k), la = lookAngles(s.cam, { x: sb.x, y: headY(s, sb) - (castOf(k).who === 'dog' ? 0 : 0.12), z: sb.z });
   const p0 = s.cam.pan, t0 = s.cam.tilt, dp = wrap180(la.pan - p0), dt = la.tilt - t0, st = performance.now(), ms = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 380;
@@ -2854,14 +2989,32 @@ const D_MIN = 0.15, D_MAX = 200;
 const d2r = d => Math.round(Math.log(d / D_MIN) / Math.log(D_MAX / D_MIN) * 1000), r2d = r => D_MIN * Math.pow(D_MAX / D_MIN, r / 1000);
 const roundF = f => f < 10 ? +f.toFixed(2) : f < 100 ? +f.toFixed(1) : Math.round(f);
 // change focal length within what the kit offers; the stop can't be faster than that lens opens
-function setF(nf) { const s = cur(); s.f = roundF(kitF(nf)); s.N = Math.max(s.N, maxT(KIT(), s.f)); }
+function setF(nf) { const s = cur(), f0 = s.f; s.f = roundF(kitF(nf)); s.N = Math.max(s.N, maxT(KIT(), s.f)); keepShot(s, f0); }
+// keep the shot size: the subject's image size goes with f / distance, so the camera stands at d·f/f₀ on the line to its aim point,
+// at the same lens height. Measured from where the change began, so a slider drag never drifts.
+let keepRef = null;
+function keepShot(s, f0) {
+  if (state.keepSize === false || s.f === f0) return;
+  if (!keepRef || keepRef.s !== s) { const B = shotBasis(s), d = depthTo(s, s[afKey(s)]);
+    keepRef = { s, f: f0, y: s.cam.y, fd: s.fd, d, T: { x: B.P.x + B.f.x * d, y: B.P.y + B.f.y * d, z: B.P.z + B.f.z * d }, h: { x: s.cam.x, z: s.cam.z } }; }
+  const R = keepRef, T = R.T, dy = R.y - T.y, want = R.d * s.f / R.f, h0 = Math.hypot(R.h.x - T.x, R.h.z - T.z);
+  const h = Math.sqrt(Math.max(0.3 * 0.3, want * want - dy * dy)), ux = h0 > 1e-6 ? (R.h.x - T.x) / h0 : 0, uz = h0 > 1e-6 ? (R.h.z - T.z) / h0 : 1;
+  s.cam.x = +(T.x + ux * h).toFixed(3); s.cam.z = +(T.z + uz * h).toFixed(3); s.cam.y = R.y;
+  const la = lookAngles({ x: s.cam.x, y: s.cam.y, z: s.cam.z }, T); s.cam.pan = +la.pan.toFixed(2); s.cam.tilt = +la.tilt.toFixed(2);
+  if (s.focus === 'M') s.fd = +(R.fd * Math.hypot(h, dy) / Math.hypot(h0, dy)).toFixed(2);
+}
+const keepDone = () => { const R = keepRef; keepRef = null; if (!R || state.keepSize === false) return; const s = cur(), d = Math.hypot(s.cam.x - R.h.x, s.cam.z - R.h.z), rm = roomInfo();
+  if (d > 0.05) toast(`샷 크기를 유지하려고 카메라를 ${s.f > R.f ? '뒤로' : '앞으로'} ${fmt(d, 1)}m 옮겼어요` + (rm && !inRoom(s.cam, rm) ? ' · 방 밖으로 나갔어요' : '')); };
 $('#fRange').addEventListener('input', e => { setF(roundF(r2f(+e.target.value))); changed(false); });
-$('#fRange').addEventListener('change', () => changed(true));
-$('#ticks').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { setF(+b.dataset.f); changed(true); } });
-// distance from the subject to the set's pillar ring along the camera's heading (the background it is shot against)
+$('#fRange').addEventListener('change', () => { keepDone(); changed(true); });
+$('#ticks').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { setF(+b.dataset.f); keepDone(); changed(true); } });
+$('#keepSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.keepSize = b.dataset.keep === '1'; changed(true);
+  toast(state.keepSize ? '렌즈를 바꾸면 카메라가 앞뒤로 움직여 인물 크기를 그대로 둬요 — 배경 압축이 보여요' : '렌즈를 바꿔도 카메라는 제자리예요 — 화각만 바뀌어요'); });
+// distance from the subject to the wall behind it along the camera's heading (the background it is shot against); outdoors it is far away
 function bgDistance(s, sb) {
-  const h = shotBasis(s).fh, R = 8.5, b = sb.x * h.x + sb.z * h.z, c = sb.x * sb.x + sb.z * sb.z - R * R, disc = b * b - c;
-  if (disc < 0) return Infinity; const t = -b + Math.sqrt(disc); return t > 0.3 ? t : Infinity;
+  const rm = roomInfo(); if (!rm) return backdropDistance(s, sb);
+  const h = shotBasis(s).fh, tx = h.x > 1e-6 ? (rm.x1 - sb.x) / h.x : h.x < -1e-6 ? (rm.x0 - sb.x) / h.x : Infinity, tz = h.z > 1e-6 ? (rm.z1 - sb.z) / h.z : h.z < -1e-6 ? (rm.z0 - sb.z) / h.z : Infinity;
+  const t = Math.min(tx, tz); return t > 0.3 ? t : Infinity;
 }
 // background compression: same-size objects shrink with distance, so the background's scale next to the subject is d / (d + B).
 // at(f) = the same subject size shot on focal length f: the camera stands at d·f/f₀
@@ -2870,8 +3023,8 @@ function compression(s, o) {
   const at = f => { const df = d * f / s.f; return { f, d: df, ratio: df / (df + B), bgH: 3 / (2 * (df + B) * (o.ih / 2 / f)) }; };
   return { ...at(s.f), d, B, far: !isFinite(Braw), at };
 }
-{ const grp = k => k.id === 'free' ? '기본' : k.fish || k.id === 'gecko' ? '특수' : k.sq ? '아나모픽' : k.type === 'zoom' ? '줌' : '구면 프라임';
-  $('#kitSel').innerHTML = ['기본', '구면 프라임', '아나모픽', '줌', '특수'].map(g => `<optgroup label="${g}">${KITS.filter(k => grp(k) === g).map(k => `<option value="${k.id}">${k.name}${k.sq ? ` · ${k.sq}x` : ''}${k.cover ? ` · ${k.cover}` : ''}</option>`).join('')}</optgroup>`).join(''); }
+{ const grp = k => k.id === 'free' ? '기본' : k.stop === 'f' ? (k.type === 'zoom' ? '사진 줌 (f값)' : '사진 단렌즈 (f값)') : k.fish || k.id === 'gecko' ? '특수' : k.sq ? '아나모픽' : k.type === 'zoom' ? '줌' : '구면 프라임';
+  $('#kitSel').innerHTML = ['기본', '구면 프라임', '아나모픽', '줌', '사진 단렌즈 (f값)', '사진 줌 (f값)', '특수'].map(g => `<optgroup label="${g}">${KITS.filter(k => grp(k) === g).map(k => `<option value="${k.id}">${k.name}${k.sq ? ` · ${k.sq}x` : ''}${k.cover ? ` · ${k.cover}` : ''}${k.T ? ` · ${stopTxt(k.T.d, k)}` : ''}</option>`).join('')}</optgroup>`).join(''); }
 $('#kitSel').addEventListener('change', e => { const prev = KIT(); state.kit = e.target.value; const k = KIT();
   if (k.sq) state.squeeze = k.sq; else if (prev.sq) state.squeeze = 1;
   state.shots.forEach(s => { s.f = roundF(kitF(s.f, k)); s.N = Math.max(s.N, maxT(k, s.f)); });
@@ -2892,7 +3045,7 @@ function kitFocals() {
 }
 function buildTicks() {
   const S = SENSOR(), crop = FF_DIAG / Math.hypot(S.w, S.h);
-  $('#ticks').innerHTML = kitFocals().map(f => `<button data-f="${f}" title="35mm 환산 ${Math.round(f * crop)}mm · 최대 T${maxT(KIT(), f)}">${f}</button>`).join('');
+  $('#ticks').innerHTML = kitFocals().map(f => `<button data-f="${f}" title="35mm 환산 ${Math.round(f * crop)}mm · 최대 ${stopTxt(maxT(KIT(), f))}">${f}</button>`).join('');
 }
 
 /* ---------- exposure ---------- */
@@ -2913,7 +3066,7 @@ function syncExposure() {
   $('#shLab').textContent = `셔터 1/${shutterSpeed(s.shutter ?? 180)}`; document.querySelectorAll('#shSeg button').forEach(b => b.textContent = `${b.dataset.sh}°`);
   mark('#isoSeg', 'iso', s.iso ?? 800); mark('#shSeg', 'sh', s.shutter ?? 180); mark('#ndSeg', 'nd', s.nd ?? 0); mark('#wbSeg', 'wb', s.wb || 5600);
   const ev = fl.ev, tFit = s.N * Math.pow(2, ev / 2), kmax = maxT(KIT(), s.f), m = $('#expMeter');
-  m.textContent = Math.abs(ev) < 0.3 ? '노출 적정' : `노출 ${ev > 0 ? '+' : ''}${fmt(ev, 1)}스톱 · 적정 T${fmt(Math.max(tFit, kmax), 1)}${tFit < kmax ? ' (렌즈 한계)' : ''}`;
+  m.textContent = Math.abs(ev) < 0.3 ? '노출 적정' : `노출 ${ev > 0 ? '+' : ''}${fmt(ev, 1)}스톱 · 적정 ${stopTxt(fmt(Math.max(tFit, kmax), 1))}${tFit < kmax ? ' (렌즈 한계)' : ''}`;
   m.className = Math.abs(ev) > 2 ? 'warn-t' : Math.abs(ev) < 0.3 ? 'ok-t' : '';
 }
 
@@ -2938,13 +3091,13 @@ const FX_GROUPS = [['텅스텐 · HMI', ['tung650', 'tung1k', 'tung2k', 'tung5k'
 $('#fxAdd').innerHTML = `<div class="cat">자연광</div><div class="addgrid"><button data-fx="SUN" class="sunbtn"><span><b>햇빛 (태양)</b><small>계절 · 시간 · 날씨 · 방위</small></span></button></div>` + FX_GROUPS.map(([t, ids]) => `<div class="cat">${t}</div><div class="addgrid">${ids.map(id => { const f = FIX(id);
   return `<button data-fx="${id}"><span><b>${f.name.replace(/ \(.*\)/, '')}</b><small>${Math.round(f.lm / 100) / 10}k lm · ${Array.isArray(f.K) ? f.K[0] + '–' + f.K[1] : f.K}K</small></span></button>`; }).join('')}</div>`).join('');
 groupTabs($('#fxAdd'));
-$('#fxAdd').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+$('#fxAdd').addEventListener('click', e => { const b = e.target.closest('button[data-fx]'); if (!b) return;
   if (b.dataset.fx === 'SUN') { state.set.sun.on = true; selObj = { id: 'SUN', kind: 'light' }; changed(true, true); toast('햇빛을 켰어요. 계절과 시각을 바꾸거나 3D에서 해를 끌어 보세요'); return; }
   const s = cur(), k = afKey(s), sb = s[k];
   // start as a 45° key from the camera's left, 2.5 m off the subject
   const a = Math.atan2(s.cam.x - sb.x, s.cam.z - sb.z) - 45 * DEG, fx = FIX(b.dataset.fx);
   const l = { id: 'L' + Date.now().toString(36), fx: fx.id, diff: 'none', x: +(sb.x + Math.sin(a) * 2.5).toFixed(2), y: fx.id === 'bulb' ? 1.0 : 2.2, z: +(sb.z + Math.cos(a) * 2.5).toFixed(2), track: fx.id === 'bulb' ? null : k, dim: 0.5, pan: 0, tilt: -20 };
-  state.set.lights.push(l); selObj = { id: l.id, kind: 'light' }; changed(true, true); toast(`${josa(fx.name, '을', '를')} 놓았어요. 3D 세트에서 끌어 옮기세요`); });
+  shotLights().push(l); selObj = { id: l.id, kind: 'light' }; changed(true, true); toast(`${josa(fx.name, '을', '를')} 놓았어요. 3D 세트에서 끌어 옮기세요`); });
 $('#lightList').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { selObj = { id: b.dataset.id, kind: 'light' }; syncSet(); syncBars(); renderWorld(); } });
 $('#propList').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { selObj = { id: b.dataset.id, kind: 'prop' }; syncSet(); syncBars(); renderWorld(); } });
 $('#roomSeg').innerHTML = [0, 3, 5, 10, 15, 20, 30].map(v => `<button data-py="${v}">${v ? v + '평' : '없음 (야외)'}</button>`).join('');
@@ -2952,6 +3105,7 @@ $('#ceilSeg').innerHTML = [2.4, 2.7, 3.0, 3.6, 4.5].map(v => `<button data-h="${
 $('#finSeg').innerHTML = Object.entries(FINISH).map(([k, v]) => `<button data-fin="${k}">${v.name}</button>`).join('');
 $('#roomSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const py = +b.dataset.py, r = state.set.room;
   state.set.room = py ? { py, h: r ? r.h : 2.7, fin: r ? r.fin : 'white' } : null; changed(true, true); frameViewer(); });
+$('#bgSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { state.set.bg = b.dataset.bg; changed(true, true); } });
 $('#ceilSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b && state.set.room) { state.set.room.h = +b.dataset.h; changed(true, true); } });
 $('#finSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b && state.set.room) { state.set.room.fin = b.dataset.fin; changed(true, true); } });
 const PROP_GROUPS = [['거실 · 침실', ['sofa', 'armchair', 'table', 'bed', 'tv', 'shelf', 'rug', 'plant']], ['카페 · 주방', ['cafe', 'chair', 'counter', 'stool', 'kitchen', 'fridge', 'desk']],
@@ -2959,7 +3113,7 @@ const PROP_GROUPS = [['거실 · 침실', ['sofa', 'armchair', 'table', 'bed', '
 $('#propAdd').innerHTML = PROP_GROUPS.map(([t, ids]) => `<div class="cat">${t}</div><div class="addgrid">${ids.map(k => { const v = PROPS[k];
   return `<button data-prop="${k}"><span><b>${v.name}</b><small>${v.w}×${v.d}×${v.h}m</small></span></button>`; }).join('')}</div>`).join('');
 groupTabs($('#propAdd'));
-$('#propAdd').addEventListener('click', e => { const b = e.target.closest('button'); if (b) startPlace(b.dataset.prop); });
+$('#propAdd').addEventListener('click', e => { const b = e.target.closest('button[data-prop]'); if (b) startPlace(b.dataset.prop); });
 let editLock = null; // the edit pane whose slider is being dragged is not rebuilt mid-drag
 const rangeRow = (k, lab, min, max, step, v, out) => `<div class="xrow"><label for="ed_${k}">${lab}</label><input type="range" id="ed_${k}" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${v}"><output>${out}</output></div>`;
 ['#lightEdit', '#propEdit'].forEach(id => {
@@ -2973,7 +3127,7 @@ const rangeRow = (k, lab, min, max, step, v, out) => `<div class="xrow"><label f
     if (d.season) o.month = +d.season; if (d.wx) o.wx = d.wx;
     if (d.tod) { const p = sunPos(o.month, 12); o.hour = +clamp({ rise: p.rise + 0.05, morning: p.noon - 3, noon: p.noon, golden: p.set - 0.6, blue: p.set + 0.4 }[d.tod], 4, 21).toFixed(3); }
     if (d.size) { o.sx = o.sd = o.sh = +d.size; }
-    if (d.del) { const arr = selObj.kind === 'light' ? state.set.lights : state.set.props; arr.splice(arr.indexOf(o), 1); selObj = null; changed(true, true); return; }
+    if (d.del) { const arr = selObj.kind === 'light' ? shotLights() : state.set.props; arr.splice(arr.indexOf(o), 1); selObj = null; changed(true, true); return; }
     if (d.diff) o.diff = d.diff; if (d.track !== undefined) { o.track = d.track || null; if (!o.track) { const L = lightCtx(cur()), li = L.lights.find(x => x.l === o); if (li) { o.pan = +(Math.atan2(li.D.x, li.D.z) / DEG).toFixed(1); o.tilt = +(Math.asin(li.D.y) / DEG).toFixed(1); } } }
     if (d.fin) o.fin = d.fin; if (d.rot) o.yaw = ((o.yaw || 0) + 90) % 360;
     if (d.snap) snapPlace(o, { x: o.x, z: o.z });
@@ -3001,7 +3155,7 @@ function syncSet() {
   const sn = set.sun, se = sn.on ? sunEnv(sn) : null;
   $('#lightList').innerHTML = (sn.on ? `<button data-id="SUN" aria-pressed="${!!selObj && selObj.id === 'SUN'}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(se.sunK)}"></i>햇빛</span><span>${sn.month}월 ${hhmm(sn.hour)} · 고도 ${fmt(se.el, 0)}° · ${se.el > 0 ? se.sunK + 'K' : '해 짐'}</span></button>` : '') + L.lights.map(li => `<button data-id="${li.l.id}" aria-pressed="${!!selObj && selObj.id === li.l.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(li.K)}"></i>${FIX(li.l.fx).name}</span><span>${Math.round((li.l.dim ?? 1) * 100)}% · ${li.K}K · ${DIFFUSION[li.l.diff || 'none'].name}</span></button>`).join('') || (sn.on ? '' : '<p class="hint" style="margin:0">아직 조명이 없어요. 아래에서 하나 추가하세요.</p>');
   document.querySelectorAll('#envSeg button').forEach(b => b.disabled = sn.on); $('#envHint').hidden = !sn.on;
-  const sl = selObj && selObj.kind === 'light' && set.lights.find(l => l.id === selObj.id);
+  const sl = selObj && selObj.kind === 'light' && shotLights(s).find(l => l.id === selObj.id);
   if (editLock === '#lightEdit') {} else if (selObj && selObj.id === 'SUN' && sn.on) { const p = se.pos, L0 = lux(irr(L, { x: s.A.x, y: 0, z: s.A.z }, UP, null));
     $('#lightEdit').innerHTML = `<div class="edit sunedit"><h4>${'<button class="btn sm ghost" data-back>← 목록</button>'}햇빛</h4>
       ${rangeRow('month', '월', 1, 12, 1, sn.month, sn.month + '월')}
@@ -3026,6 +3180,8 @@ function syncSet() {
   document.querySelectorAll('#roomSeg button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.py === (rm ? rm.py : 0)));
   document.querySelectorAll('#ceilSeg button').forEach(b => { b.setAttribute('aria-pressed', !!rm && +b.dataset.h === rm.h); b.disabled = !rm; });
   document.querySelectorAll('#finSeg button').forEach(b => { b.setAttribute('aria-pressed', !!rm && b.dataset.fin === rm.fin); b.disabled = !rm; });
+  $('#ceilSeg').parentElement.hidden = $('#finSeg').parentElement.hidden = !rm; $('#bgSeg').parentElement.hidden = !!rm;
+  document.querySelectorAll('#bgSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.bg === (set.bg || 'street')));
   if (rm) { const camIn = inRoom(s.cam, rm), outL = L.lights.filter(x => !x.inRoom).length;
     $('#roomInfo').innerHTML = `${rm.py}평 · ${fmt(rm.side, 2)} × ${fmt(rm.side, 2)}m · 천장 ${rm.h}m · 창 ${L.nWin || 0}개` +
       (camIn ? '' : '<br><span class="warn-t">카메라가 방 밖에 있어요</span>') + (outL ? `<br><span class="warn-t">방 밖 조명 ${outL}개는 벽에 막혀요</span>` : ''); }
@@ -3043,16 +3199,13 @@ function syncSet() {
       ${d.wall ? `<div class="lh"><span>마감</span><div class="seg kr">${Object.entries(FINISH).map(([k, v]) => `<button data-fin="${k}" aria-pressed="${(sp.fin || 'white') === k}">${v.name}</button>`).join('')}</div></div>` : ''}
       <div class="row">${d.wall && rm ? '<button class="btn sm" data-snap="1">가까운 벽에 붙이기</button>' : ''}<button class="btn sm warn" data-del="1">삭제</button></div></div>`; }
   else $('#propEdit').innerHTML = '';
-  $('#heatBtn').setAttribute('aria-pressed', showHeat);
 }
-$('#rigList').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { cur().rig = b.dataset.rig; changed(true); } });
+$('#rigList').addEventListener('click', e => { const b = e.target.closest('button[data-rig]'); if (b) { cur().rig = b.dataset.rig; changed(true); } });
 $('#rigStat').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const s = cur();
   if (b.id === 'rigCrane') return craneToggle();
   if (b.id === 'rigAuto') { s.rig = 'auto'; craneOn = false; changed(true); syncBars(); }
   if (b.id === 'rigFit') { const rg = rigRange(RIG(s.rig)); s.cam.y = +clamp(s.cam.y, rg.min, rg.max).toFixed(2); changed(true); } });
-$('#heatBtn').onclick = () => { showHeat = !showHeat; renderWorld(); syncSet(); toast(showHeat ? '바닥 조도 맵을 켰어요. 파랑 1 lux에서 빨강 10,000 lux까지예요' : '조도 맵을 껐어요'); };
 let showFC = false;
-$('#gLit').onclick = () => { state.lit = !(state.lit !== false); $('#gLit').setAttribute('aria-pressed', state.lit); changed(true, true); };
 $('#gFC').onclick = () => { showFC = !showFC; $('#gFC').setAttribute('aria-pressed', showFC); $('#fcLegend').hidden = !showFC; drawMonitor(); };
 
 /* ---------- sync panels ---------- */
@@ -3062,14 +3215,16 @@ function syncPanels() {
   $('#fRange').value = f2r(s.f);
   $('#eqOut').textContent = `35mm 환산 ${Math.round(o.eq)}mm · 수평 ${fmt(o.hf / DEG)}°${state.squeeze > 1 ? ` · 스퀴즈 ${state.squeeze}x` : ''}`;
   document.querySelectorAll('#ticks button').forEach(b => b.setAttribute('aria-pressed', Math.abs(+b.dataset.f - s.f) < 0.01));
+  document.querySelectorAll('#keepSeg button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.keep === '1') === (state.keepSize !== false)));
   const st = stopsFor(s); $('#nRange').max = st.length - 1;
-  $('#nRange').value = st.reduce((bi, x, i) => Math.abs(x - s.N) < Math.abs(st[bi] - s.N) ? i : bi, 0); $('#nOut').textContent = `T${s.N}`;
+  $('#nRange').value = st.reduce((bi, x, i) => Math.abs(x - s.N) < Math.abs(st[bi] - s.N) ? i : bi, 0); $('#nOut').textContent = stopTxt(s.N);
   // only what needs saying: a lens kit that doesn't cover the sensor
   const kt = KIT(), recD = Math.hypot(o.iw / (state.squeeze || 1), o.ih), ls = $('#lensSum'), vig = kt.id !== 'free' && recD > kt.circle;
   if (act !== $('#kitSel')) $('#kitSel').value = kt.id;
   ls.textContent = vig ? `이미지 서클(${kt.circle}mm)보다 센서가 커서 코너가 어두워져요` : ''; ls.classList.toggle('warn-t', vig);
   document.querySelectorAll('#focusSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.fo === (s.focus === 'M' ? 'M' : 'AF')));
   $('#afRow').hidden = s.focus === 'M';
+  const afKeys = ['auto', ...subjKeys(s)]; if ($('#afSeg').dataset.keys !== afKeys.join()) { $('#afSeg').dataset.keys = afKeys.join(); $('#afSeg').innerHTML = afKeys.map(k => `<button data-af="${k}">${k === 'auto' ? '가운데' : k}</button>`).join(''); }
   document.querySelectorAll('#afSeg button').forEach(b => { const k = b.dataset.af; b.setAttribute('aria-pressed', (s.afT || 'auto') === k); b.disabled = k !== 'auto' && k !== 'A' && !(s[k] && s[k].on); });
   $('#fdOut').textContent = fmtM(o.fd); $('#fdRange').value = d2r(clamp(o.fd, D_MIN, D_MAX));
   const fs = $('#focusSum');
@@ -3093,7 +3248,7 @@ function syncPanels() {
   $('#durOut').textContent = s.dur + '초';
   if (act !== $('#title')) $('#title').value = state.title;
   $('#exampleTag').hidden = !state.example;
-  $('#sensorName').textContent = S.name; $('#sensorShort').textContent = S.w >= 40 ? 'LF' : S.w >= 33 ? 'FF' : S.w >= 21 ? 'S35' : S.w >= 15 ? 'MFT' : 'S16'; $('#sensorDim').textContent = `${fmt(S.w, 2)} × ${fmt(S.h, 2)}mm · 크롭 ${fmt(FF_DIAG / Math.hypot(S.w, S.h), 2)}x${state.squeeze > 1 ? ` · 아나모픽 ${state.squeeze}x` : ''}`;
+  syncSensorSel();
   syncExposure(); syncSet();
 }
 
@@ -3103,21 +3258,30 @@ $('#moves').addEventListener('click', e => { const b = e.target.closest('button'
 $('#aspectSeg').innerHTML = ASPECTS.map(a => `<button data-aspect="${a.k}">${a.k}</button>`).join('');
 $('#aspectSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.aspect = b.dataset.aspect; vsz = null; changed(true, true); });
 /* ---------- casting ---------- */
-// B joins facing A; C (by default a dog) joins at A's side looking the same way
-function toggleSub(k) { const s = cur(), sb = s[k]; sb.on = !sb.on;
-  if (sb.on) { const th = s.A.face * DEG;
-    if (k === 'B') Object.assign(sb, { x: +(s.A.x + Math.sin(th) * 1.1).toFixed(2), z: +(s.A.z + Math.cos(th) * 1.1).toFixed(2), face: (s.A.face + 180) % 360 });
-    else { const r = th + Math.PI / 2; Object.assign(sb, { x: +(s.A.x + Math.sin(r) * 0.7).toFixed(2), z: +(s.A.z + Math.cos(r) * 0.7).toFixed(2), face: s.A.face }); } }
+// B joins facing A; the others stand in a half ring beside A, each a step further round, looking the same way
+function toggleSub(k) { const s = cur(), sb = s[k] || (s[k] = castSlot(s, k)); sb.on = !sb.on;
+  if (sb.on) Object.assign(sb, castSlot(s, k), { on: true });
   else if (s.afT === k) s.afT = 'auto';
   changed(true, true); }
+function addCast() {
+  const k = CAST_KEYS.find(x => !castKeys().includes(x)); if (!k) { toast('인물은 8명까지 넣을 수 있어요'); return; }
+  const n = CAST_KEYS.indexOf(k); state.cast[k] = { who: n % 2 ? 'f' : 'm', age: 'adult', outfit: n % OUTFITS.length, skin: n % SKINS.length };
+  state.shots.forEach(sh => { if (!sh[k]) sh[k] = castSlot(sh, k); }); castK = k; toggleSub(k);
+}
+function removeCast(k) {
+  if (CAST0[k]) return; delete state.cast[k];
+  state.shots.forEach(sh => { delete sh[k]; if (sh.afT === k) sh.afT = 'auto'; }); state.shots.forEach(sh => shotLights(sh).forEach(l => { if (l.track === k) l.track = 'A'; }));
+  castK = 'A'; selObj = null; changed(true, true); syncBars(); toast(`${k}를 캐스트에서 뺐어요`, { label: '되돌리기', action: undo });
+}
 const linCss = rgb => `rgb(${rgb.map(v => enc(Math.min(1, v * 1.25))).join(',')})`;
 let castK = 'A';
 function syncCast() { const s = cur(); const ae = document.activeElement; if (ae && ae.classList && ae.classList.contains('cname')) return; // don't rebuild under the cursor
   // one person at a time behind A / B / C buttons, so the tab fits
-  const pick = `<div class="seg kr wide castpick">${['A', 'B', 'C'].map(k => `<button data-ck="${k}" aria-pressed="${k === castK}">${k}${castName(k) !== k ? ' ' + esc(castName(k)) : ''}${k === 'A' || s[k].on ? '' : ' +'}</button>`).join('')}</div>`;
+  if (!castKeys().includes(castK)) castK = 'A';
+  const pick = `<div class="seg kr wide castpick">${castKeys().map(k => `<button data-ck="${k}" aria-pressed="${k === castK}" class="${k === 'A' || (s[k] && s[k].on) ? '' : 'out'}"><i style="background:${CAST_COL[k]}"></i>${k}</button>`).join('')}${castKeys().length < CAST_KEYS.length ? '<button data-addcast="1" aria-label="인물 추가">＋</button>' : ''}</div>`;
   $('#castList').innerHTML = pick + [castK].map(k => { const c = castOf(k), sb = s[k], on = k === 'A' || sb.on, dog = c.who === 'dog', pal = dog ? FURS : OUTFITS;
     return `<div class="castcard${on ? '' : ' off'}" data-k="${k}">
-      <div class="ch"><span class="badge b${k}">${k}</span>${on ? `<input class="cname" maxlength="12" placeholder="${c.who === 'dog' ? '이름 (예: 콩이)' : '배역 이름 (예: 지수)'}" value="${esc(c.name || '')}" aria-label="${k} 이름">` : `<b>${castType(k)}</b>`}${k === 'A' ? '' : `<button class="btn sm" data-on="1">${on ? '빼기' : '이 샷에 넣기'}</button>`}</div>
+      <div class="ch"><span class="badge" style="background:${CAST_COL[k]}">${k}</span>${on ? `<input class="cname" maxlength="12" placeholder="${c.who === 'dog' ? '이름 (예: 콩이)' : '배역 이름 (예: 지수)'}" value="${esc(c.name || '')}" aria-label="${k} 이름">` : `<b>${castType(k)}</b>`}${k === 'A' ? '' : `<button class="btn sm" data-on="1">${on ? '이 샷에서 빼기' : '이 샷에 넣기'}</button>`}${CAST0[k] ? '' : `<button class="btn sm warn" data-rmcast="1" aria-label="${k} 삭제">삭제</button>`}</div>
       ${on ? `
       <div class="seg kr">${Object.entries(WHO).map(([w, n]) => `<button data-who="${w}" aria-pressed="${c.who === w}">${n}</button>`).join('')}</div>
       ${dog ? `<div class="seg kr">${Object.entries(DOG_SIZES).map(([z, n]) => `<button data-dsize="${z}" aria-pressed="${(c.size || 'm') === z}">${n}</button>`).join('')}</div>`
@@ -3128,7 +3292,7 @@ function syncCast() { const s = cur(); const ae = document.activeElement; if (ae
 $('#castList').addEventListener('input', e => { const t = e.target; if (!t.classList.contains('cname')) return; const k = t.closest('.castcard').dataset.k;
   (state.cast[k] = state.cast[k] || { ...CAST0[k] }).name = t.value; save(); syncHud(); syncBars(); renderWorld(); updateSum(); });
 $('#castList').addEventListener('change', e => { if (e.target.classList.contains('cname')) { e.target.blur(); changed(true, true); } });
-$('#castList').addEventListener('click', e => { const b = e.target.closest('button'), card = e.target.closest('.castcard'); if (b && b.dataset.ck) { castK = b.dataset.ck; syncCast(); return; } if (!b || !card) return;
+$('#castList').addEventListener('click', e => { const b = e.target.closest('button'), card = e.target.closest('.castcard'); if (b && b.dataset.ck) { castK = b.dataset.ck; syncCast(); return; } if (b && b.dataset.addcast) return addCast(); if (b && b.dataset.rmcast) return removeCast(card.dataset.k); if (!b || !card) return;
   const k = card.dataset.k, s = cur(), d = b.dataset, c = state.cast[k] = state.cast[k] || { ...CAST0[k] };
   if (d.on) { toggleSub(k); return; }
   if (d.who) { if (c.who !== d.who) c.outfit = 0; c.who = d.who; } if (d.age) c.age = d.age; if (d.dsize) c.size = d.dsize;
@@ -3155,7 +3319,7 @@ function buildStrip() {
 }
 function updateCurrentCard() { const el = $(`.card[data-id="${cur().id}"]`); if (!el) return buildStrip();
   drawThumb(el.querySelector('canvas'), cur()); el.querySelector('.m').innerHTML = cardMeta(cur()); updateSum(); }
-function updateSum() { const t = state.shots.reduce((a, s) => a + s.dur, 0), tt = `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
+function updateSum() { syncStripCur(); const t = state.shots.reduce((a, s) => a + s.dur, 0), tt = `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
   $('#sum').textContent = `${state.shots.length}컷 · ${tt}`;
   $('#sceneMeta').textContent = [`${state.shots.length}컷 · 총 ${tt}`, `${fpsNow()}fps`, SENSOR().name.split(' (')[0], state.aspect, KIT().id === 'free' ? '자유 렌즈' : KIT().name].filter(Boolean).join(' · '); }
 $('#strip').addEventListener('click', e => { const c = e.target.closest('.card[data-id]'); if (c) select(state.shots.findIndex(s => s.id === c.dataset.id)); });
@@ -3163,7 +3327,7 @@ $('#strip').addEventListener('keydown', e => { const c = e.target.closest('.card
 if (window.Sortable) Sortable.create($('#strip'), { animation: 150, handle: '.grip', filter: '.add', draggable: '.card[data-id]', ghostClass: 'sortable-ghost',
   onEnd() { const id = cur().id, order = [...$('#strip').querySelectorAll('.card[data-id]')].map(el => el.dataset.id);
     state.shots.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id)); state.sel = state.shots.findIndex(s => s.id === id); save(); histCommit(); buildStrip(); renderAll(); } });
-function select(i) { state.sel = clamp(i, 0, state.shots.length - 1); save();
+function select(i) { state.sel = clamp(i, 0, state.shots.length - 1); save(); syncStripCur();
   document.querySelectorAll('.card[data-id]').forEach((el, j) => el.setAttribute('aria-current', j === state.sel)); renderAll(); if (view === 'edit') frameViewer();
   const el = document.querySelector('.card[aria-current="true"]'), st = $('#strip'); if (el) st.scrollLeft = el.offsetLeft - st.offsetLeft - st.clientWidth / 2 + el.clientWidth / 2; }
 const nextOrder = () => Math.max(0, ...state.shots.map(x => x.order || 0)) + 1;
@@ -3177,7 +3341,7 @@ $('#delBtn').onclick = () => { if (state.shots.length === 1) state.shots[0] = ne
 const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function specList(s) { const o = optics(s), sz = autoSize(s, o), an = autoAngle(s), mv = MOVES.find(m => m.k === s.move);
   const dist = o.fish ? '피시아이' : `왜곡 ${o.k > 0 ? '+' : ''}${fmt(o.k * 100, 1)}%`, cp = compression(s, o);
-  const text = [sz ? `${sz} ${SIZES[sz].ko}` : '—', an.ko + (an.dutch ? ' · 더치' : ''), `${fmt(s.f, s.f < 20 ? 1 : 0)}mm T${s.N}`, `H ${fmt(o.hf / DEG)}°`, `높이 ${fmt(s.cam.y, 2)}m`];
+  const text = [sz ? `${sz} ${SIZES[sz].ko}` : '—', an.ko + (an.dutch ? ' · 더치' : ''), `${fmt(s.f, s.f < 20 ? 1 : 0)}mm ${stopTxt(s.N)}`, `H ${fmt(o.hf / DEG)}°`, `높이 ${fmt(s.cam.y, 2)}m`];
   if (o.fish || Math.abs(o.k) >= 0.005) text.push(dist);
   const rg = shotRig(s); text.push(rg.r.name + (rg.ok ? '' : ' ✕'));
   const cast = subjKeys(s).map(k => castName(k)).join('·');
@@ -3194,7 +3358,7 @@ function buildBoard() {
     renderShot(ctx, W, H, state.shots[+cv.dataset.i], { blur: state.blur, lit: state.lit !== false, slot: 'board' }); });
 }
 function updateBoardIfOpen() { if (view === 'board') buildBoard(); }
-function setView(v) { view = v; $('#boardBtn').setAttribute('aria-pressed', v === 'board'); $('#editBtn').setAttribute('aria-pressed', v === 'edit'); $('#boardView').hidden = v !== 'board';
+function setView(v) { view = v; $('.app').classList.toggle('boarding', v === 'board'); if (v === 'board') { openPane(null); craneOn = false; } $('#boardBtn').setAttribute('aria-pressed', v === 'board'); $('#editBtn').setAttribute('aria-pressed', v === 'edit'); $('#boardView').hidden = v !== 'board';
   if (v === 'board') buildBoard(); else { vsz = null; wsz = null; renderAll(); } }
 $('#boardBtn').onclick = () => setView('board'); $('#editBtn').onclick = () => setView('edit');
 // one menu for everything that leaves the app: copy, CSV, print, link, files, plus help and reset
@@ -3211,9 +3375,9 @@ function shotTable() {
   const S = SENSOR();
   const head = ['샷', '인물', '사이즈', '앵글', '초점거리', '조리개', '셔터', '수평 화각', '왜곡', '배경 확대비', '카메라 높이', '팬/틸트/롤', '초점 거리', '무빙', '길이(초)', '액션', '대사', '메모'];
   const rows = state.shots.map((s, i) => { const sp = specList(s);
-    return [`S${String(i + 1).padStart(2, '0')}`, sp.cast, sp.text[0], sp.text[1], fmt(s.f, s.f < 20 ? 1 : 0) + 'mm', 'T' + s.N, `${s.shutter ?? 180}° (1/${shutterSpeed(s.shutter ?? 180)})`, fmt(sp.o.hf / DEG) + '°', sp.dist, `${fmt(sp.cp.ratio, 2)}× (배경 +${fmtM(sp.cp.B)})`, fmt(s.cam.y, 2) + 'm',
+    return [`S${String(i + 1).padStart(2, '0')}`, sp.cast, sp.text[0], sp.text[1], fmt(s.f, s.f < 20 ? 1 : 0) + 'mm', stopTxt(s.N), `${s.shutter ?? 180}° (1/${shutterSpeed(s.shutter ?? 180)})`, fmt(sp.o.hf / DEG) + '°', sp.dist, `${fmt(sp.cp.ratio, 2)}× (배경 +${fmtM(sp.cp.B)})`, fmt(s.cam.y, 2) + 'm',
       `${fmt(s.cam.pan, 0)}° / ${fmt(s.cam.tilt, 0)}° / ${fmt(s.cam.roll, 0)}°`, fmtM(sp.o.fd), sp.mv.ko, s.dur, s.action, s.dialogue, s.note].map(v => String(v ?? '').replace(/\s+/g, ' ')); });
-  const cast = ['A', 'B', 'C'].filter(k => k === 'A' || state.shots.some(x => x[k] && x[k].on)).map(k => `${k}${castName(k) !== k ? ' ' + castName(k) : ''} (${castType(k)})`).join(', ');
+  const cast = castKeys().filter(k => k === 'A' || state.shots.some(x => x[k] && x[k].on)).map(k => `${k}${castName(k) !== k ? ' ' + castName(k) : ''} (${castType(k)})`).join(', ');
   const meta = [state.title, `${fpsNow()}fps`, `배역: ${cast}`, `센서: ${S.name} ${fmt(S.w, 2)}×${fmt(S.h, 2)}mm · ${state.aspect}${state.squeeze > 1 ? ` · 아나모픽 ${state.squeeze}x` : ''} · 렌즈: ${KIT().name}`];
   return { meta, head, rows };
 }
@@ -3244,9 +3408,19 @@ function rentalText() {
   const rm = roomInfo(), env = envNow();
   return `\n\n카메라 장비\n` + Object.values(groups).map(g => `${g.r.name}\t${g.shots.join(', ')}`).join('\n') +
     `\n\n조명 (${rm ? `${rm.py}평 실내, 천장 ${rm.h}m, ${FINISH[rm.fin].name}` : `야외 · ${env.name}`})\n` +
-    state.set.lights.map(l => `${FIX(l.fx).name}\t${Math.round((l.dim ?? 1) * 100)}%\t${DIFFUSION[l.diff || 'none'].name}\t높이 ${fmt(l.y, 2)}m`).join('\n') +
+    [...new Map(state.shots.flatMap(sh => shotLights(sh)).map(l => [l.id, l])).values()].map(l => `${FIX(l.fx).name}\t${Math.round((l.dim ?? 1) * 100)}%\t${DIFFUSION[l.diff || 'none'].name}\t높이 ${fmt(l.y, 2)}m`).join('\n') +
     (state.set.props.length ? `\n\n세트 가구\n` + state.set.props.map(o => PROPS[o.type].name).join(', ') : '');
 }
+// the shot strip folds down to one slim row so the stage gets the height back; remembered per device
+function stripFold(fold) {
+  $('.shots').classList.toggle('folded', fold); $('#stripToggle').setAttribute('aria-expanded', !fold);
+  try { localStorage.setItem('framecontis.strip', fold ? '0' : '1'); } catch (e) {}
+  syncStripCur(); wsz = null; vsz = null; requestAnimationFrame(() => { fitApp(); renderAll(); });
+}
+function syncStripCur() { $('#stripCur').textContent = `S${String(state.sel + 1).padStart(2, '0')} / ${state.shots.length}컷`; }
+$('#snav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) select(state.sel + +b.dataset.nav); });
+$('#stripToggle').onclick = () => stripFold(!$('.shots').classList.contains('folded'));
+try { if (localStorage.getItem('framecontis.strip') === '0') { $('.shots').classList.add('folded'); $('#stripToggle').setAttribute('aria-expanded', 'false'); } } catch (e) {}
 let resetArm = null;
 $('#resetBtn').onclick = () => { const b = $('#resetBtn');
   if (!resetArm) { b.textContent = '모두 지울까요? 한 번 더'; b.classList.add('warn'); resetArm = setTimeout(() => { resetArm = null; b.textContent = '처음부터 새로 시작'; b.classList.remove('warn'); }, 3500); return; }
@@ -3263,6 +3437,7 @@ function placeShot(o) {
   if (o.aim === 'AB') h = Math.max(h, (Math.hypot(o.A.x - o.B.x, o.A.z - o.B.z) + 0.9) / asp);
   const dist = h / 2 / tanV, T = { x: tgt.x, y: S.c, z: tgt.z }, el = o.elev * DEG, az = o.az * DEG;
   const P = { x: T.x + dist * Math.cos(el) * Math.sin(az), y: Math.max(0.12, T.y + dist * Math.sin(el)), z: T.z + dist * Math.cos(el) * Math.cos(az) };
+  if (o.eye) P.y = 1.55; // eye level: the lens at standing eye height, tilted to the frame centre
   const la = lookAngles(P, T);
   return newShot({ cam: { x: +P.x.toFixed(2), y: +P.y.toFixed(2), z: +P.z.toFixed(2), pan: +la.pan.toFixed(1), tilt: +la.tilt.toFixed(1), roll: o.roll || 0 },
     f: roundF(o.ff * imageArea().iw / ff.iw), N: o.N, focus: 'AF', afT: o.focus || 'auto', fd: 3, iso: 800, wb: 4300, move: o.move || 'static', dur: o.dur,
@@ -3271,8 +3446,8 @@ function placeShot(o) {
 function sampleShots() {
   const A2 = { x: -0.55, z: 0, face: 90 }, B2 = { on: true, x: 0.55, z: 0, face: 270 };
   return [
-    placeShot({ size: 'EWS', elev: 28, ff: 24, az: 200, aim: 'A', N: 5.6, move: 'crane', dur: 5, A: { x: -0.55, z: 0, face: 180 }, B: { ...B2, face: 200 },
-      action: '해 질 녘 카페 테라스 외경. 기둥 사이로 지수(A)와 민호(B)가 작게 보인다.', note: '매직아워. 크레인 하강하며 시작.' }),
+    placeShot({ size: 'FS', eye: true, elev: 0, ff: 35, az: 200, aim: 'AB', N: 4, dur: 5, A: { x: -0.55, z: 0, face: 180 }, B: { ...B2, face: 200 },
+      action: '해 질 녘 카페 테라스. 지수(A)와 민호(B)가 나란히 서 있다.', note: '매직아워. 아이레벨 풀샷으로 시작.' }),
     placeShot({ size: 'MS', elev: 0, ff: 35, az: 180, aim: 'AB', N: 2.8, dur: 6, A: A2, B: B2, action: '마주 선 두 사람. 어색한 침묵.', note: '앰비언스만. 음악 없음.' }),
     placeShot({ size: 'MCU', elev: 0, ff: 85, az: 75, aim: 'A', N: 2, dur: 4, A: A2, B: B2, action: '민호 어깨 너머로 지수.', dialogue: '지수: 우리, 여기까지 하자.' }),
     placeShot({ size: 'CU', elev: -10, ff: 85, az: 300, aim: 'B', focus: 'B', N: 2, dur: 3, A: A2, B: B2, action: '민호의 반응. 시선을 피한다.', dialogue: '민호: ……그래.' }),
@@ -3282,46 +3457,19 @@ function sampleShots() {
   ];
 }
 
-/* ---------- sensor setup ---------- */
-let pick = null, pickSq = 1;
-function openSensor(first) {
-  pick = { ...SENSOR() }; pickSq = state.squeeze || 1;
-  $('#smGrid').innerHTML = SENSORS.map(s => `<button data-sid="${s.id}"><b>${s.name}</b><small>${s.mode} · ${fmt(s.w, 2)}×${fmt(s.h, 2)}mm</small></button>`).join('');
-  $('#sqSeg').innerHTML = SQUEEZES.map(q => `<button data-sq="${q}">${q === 1 ? '구면 1x' : q + 'x'}</button>`).join('');
-  $('#smActions').innerHTML = first ? `<button class="btn primary" id="smGo">이 센서로 시작</button>`
-    : `<button class="btn" id="smCancel">취소</button><button class="btn" id="smKeep">적용 · 초점거리 유지</button><button class="btn primary" id="smConv">적용 · 같은 화각이 되게 환산</button>`;
-  $('#sensorModal').hidden = false; syncSensor();
-  const go = conv => { const oldIw = imageArea().iw; state.sensor = { ...pick }; state.squeeze = pickSq; $('#sensorModal').hidden = true;
-    if (first && state.example) { state.shots = sampleShots(); normalizeState(); }
-    if (first && state.example) state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); });
-    else if (conv) { const k = imageArea().iw / oldIw; state.shots.forEach(s => s.f = roundF(s.f * k)); }
-    state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); });
-    buildTicks(); save(); vsz = null; buildStrip(); renderAll(); updateBoardIfOpen(); if (first) fitViewer('fit');
-    toast(`${pick.name} 센서로 설정했어요`); };
-  if (first) $('#smGo').onclick = () => go(false);
-  else { $('#smCancel').onclick = () => { $('#sensorModal').hidden = true; }; $('#smKeep').onclick = () => go(false); $('#smConv').onclick = () => go(true); }
-  setTimeout(() => { const b = document.querySelector(`[data-sid="${pick.id}"]`) || $('#cW'); b.focus(); }, 30);
-}
-function syncSensor() {
-  document.querySelectorAll('[data-sid]').forEach(b => b.setAttribute('aria-pressed', b.dataset.sid === pick.id));
-  document.querySelectorAll('[data-sq]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.sq === pickSq));
-  $('#cW').value = pick.w; $('#cH').value = pick.h;
-  const diag = Math.hypot(pick.w, pick.h), crop = FF_DIAG / diag, k = Math.min(4.4, 200 / Math.max(36, pick.w), 130 / Math.max(24, pick.h)), cx = 110, cy = 75;
-  const area = imageArea(pick, pickSq), aw = area.iw / pickSq, ah = area.ih;
-  $('#smSvg').innerHTML = `<rect x="${cx - 18 * k}" y="${cy - 12 * k}" width="${36 * k}" height="${24 * k}" fill="none" stroke="var(--muted)" stroke-dasharray="4 3"/>
-    <text x="${cx - 18 * k + 3}" y="${cy - 12 * k - 4}" font-size="9" fill="var(--muted)" font-family="IBM Plex Mono, monospace">풀프레임 36×24</text>
-    <rect x="${cx - pick.w / 2 * k}" y="${cy - pick.h / 2 * k}" width="${pick.w * k}" height="${pick.h * k}" fill="color-mix(in srgb, var(--accent) 14%, transparent)" stroke="var(--accent)" stroke-width="1.5"/>
-    <rect x="${cx - aw / 2 * k}" y="${cy - ah / 2 * k}" width="${aw * k}" height="${ah * k}" fill="none" stroke="var(--ink)" stroke-width="1"/>
-    <text x="${cx}" y="${cy + ah / 2 * k - 4}" font-size="9" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono, monospace">${state.aspect} 기록 영역</text>`;
-  const fov50 = 2 * Math.atan(area.iw / 2 / 50) / DEG;
-  $('#smInfo').innerHTML = `${esc(pick.name)}<br>${fmt(pick.w, 2)} × ${fmt(pick.h, 2)}mm · 대각 ${fmt(diag, 2)}mm<br>크롭 팩터 ${fmt(crop, 2)}x · 허용 착란원 ${fmt(diag / 1500, 3)}mm<br>50mm 수평 화각 ${fmt(fov50)}° (35mm 환산 ${Math.round(50 * crop)}mm)`;
-}
-$('#smGrid').addEventListener('click', e => { const b = e.target.closest('[data-sid]'); if (!b) return; pick = { ...SENSORS.find(s => s.id === b.dataset.sid) }; syncSensor(); });
-$('#sqSeg').addEventListener('click', e => { const b = e.target.closest('[data-sq]'); if (!b) return; pickSq = +b.dataset.sq; syncSensor(); });
-$('#cApply').onclick = () => { const w = +$('#cW').value, h = +$('#cH').value; if (!(w >= 2 && w <= 80 && h >= 2 && h <= 60)) { toast('가로 2–80mm, 세로 2–60mm 사이로 입력하세요'); return; }
-  pick = { id: 'custom', name: `직접 입력 ${fmt(w, 2)}×${fmt(h, 2)}`, mode: '사용자 지정', w, h }; syncSensor(); };
-$('#sensorBtn').onclick = () => openSensor(false);
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#sensorModal').hidden && state.sensor) $('#sensorModal').hidden = true; });
+/* ---------- sensor: picked in the camera panel (센서 tab); a new project starts on full frame ---------- */
+$('#sensorSel').innerHTML = SENSORS.map(x => `<option value="${x.id}">${x.name} · ${fmt(x.w, 2)}×${fmt(x.h, 2)}mm</option>`).join('');
+// changing the sensor keeps each shot's focal length (the view gets wider or tighter); the toast offers to convert for the same view instead
+$('#sensorSel').addEventListener('change', e => { const nx = SENSORS.find(x => x.id === e.target.value); if (!nx) return;
+  const oldIw = imageArea().iw, before = state.shots.map(sh => sh.f); state.sensor = { ...nx };
+  state.shots.forEach(sh => { sh.f = roundF(kitF(sh.f)); sh.N = Math.max(sh.N, maxT(KIT(), sh.f)); }); buildTicks(); vsz = null; changed(true, true);
+  toast(`${nx.name.split(' (')[0]} 센서로 바꿨어요`, { label: '같은 화각으로 환산', ms: 6000, action: () => { const k = imageArea().iw / oldIw;
+    state.shots.forEach((sh, i) => { sh.f = roundF(kitF(before[i] * k)); sh.N = Math.max(sh.N, maxT(KIT(), sh.f)); }); buildTicks(); changed(true, true); } }); });
+function syncSensorSel() { const S = SENSOR(), sel = $('#sensorSel');
+  if (!sel.querySelector(`option[value="${S.id}"]`)) sel.insertAdjacentHTML('beforeend', `<option value="${S.id}">${S.name}</option>`); // an older project's custom size
+  if (document.activeElement !== sel) sel.value = S.id;
+  $('#sensorSum').textContent = `크롭 ${fmt(FF_DIAG / Math.hypot(S.w, S.h), 2)}x · ${S.mode}`; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && pane) openPane(null); });
 
 /* ---------- glue ---------- */
 let tt; function toast(m, o = {}) { const t = $('#toast'); t.textContent = m; t.classList.toggle('act', !!o.action);
@@ -3368,8 +3516,8 @@ document.addEventListener('keydown', e => {
   if (placing && !inField) { if (e.key === 'Escape') { cancelPlace(); return; } if (e.key === 'r' || e.key === 'R') { rotPlace(e.shiftKey ? -90 : 90); return; } if (e.key === 'Enter') { confirmPlace(); return; } }
   if ((e.metaKey || e.ctrlKey) && !inField && $('#startScreen').hidden) {
     if (e.key.toLowerCase() === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; } if (e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); return; } }
-  if (e.key === 'Escape' && pane && $('#sensorModal').hidden) { openPane(null); return; }
-  if (inField || !$('#sensorModal').hidden) return;
+  if (e.key === 'Escape' && pane) { openPane(null); return; }
+  if (inField) return;
   if (e.key === 'ArrowRight') { select(state.sel + 1); e.preventDefault(); }
   if (e.key === 'ArrowLeft') { select(state.sel - 1); e.preventDefault(); }
 });
@@ -3380,10 +3528,11 @@ let rz; new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(() => { vsz
 
 /* ---------- guided tour ---------- */
 const TOUR = [
-  { t: '카메라를 움직여 보세요', gizmo: true, p: '두 손가락을 위로 밀면 카메라가 앞으로, 아래로 당기면 뒤로 달리해요. 핀치는 3D 화면 확대예요. 화살표를 끌면 좌우(빨강 트럭)·높이(초록 붐)로 옮겨요.' },
-  { t: '고리를 돌려 방향 잡기', p: '방향은 고리로만 돌려요. 노랑 고리는 팬, 청록은 틸트, 보라는 롤이에요. "A 바라보기"를 누르면 인물 쪽으로 알아서 돌아가요.', el: '#aimA' },
-  { t: '찍히는 화면 확인', p: '오른쪽 아래 작은 모니터나 위의 "모니터"를 누르면 렌즈로 본 화면이에요. 샷 사이즈와 앵글은 자동으로 판정돼요.', el: '#pip' },
-  { t: '렌즈 · 조명 · 세트 꾸미기', p: '도구 버튼을 누르면 패널이 열려요. 조명과 가구는 3D에서 끌어 옮기고, 한 번 탭하면 설정이 열려요.', el: '#rail' },
+  { t: '카메라를 움직여 보세요', gizmo: true, p: '3D에서 카메라를 한 번 누르면 화살표와 고리가 나와요. 화살표를 끌면 좌우(빨강 트럭)·높이(초록 붐)로 옮기고, 두 손가락을 위로 밀면 앞으로, 아래로 당기면 뒤로 달리해요. 빈 바닥을 누르면 다시 숨어요.' },
+  { t: '고리를 돌려 방향 잡기', p: '노랑 고리는 팬, 청록은 틸트, 보라는 롤이에요. "A 바라보기"를 누르면 인물 쪽으로 알아서 돌아가요.', el: '#aimA' },
+  { t: '찍히는 화면 확인', p: '오른쪽 아래 작은 모니터나 위의 "모니터"를 누르면 렌즈로 본 화면이에요. 모니터에서는 왼쪽 패드를 누르고 있으면 카메라가 앞뒤·좌우·위아래로 움직여요.', el: '#pip' },
+  { t: '센서 바꾸기', p: '처음엔 풀프레임 센서로 시작해요. 왼쪽 "카메라"를 누르고 맨 오른쪽 "센서" 탭에서 다른 카메라 센서를 고르면 화각과 심도가 그 센서 기준으로 바뀌어요. 바꾼 뒤 뜨는 "같은 화각으로 환산"을 누르면 화면 크기가 그대로 유지돼요.', el: '#rail button[data-pane="cam"]' },
+  { t: '조명 · 세트 꾸미기', p: '도구 버튼을 누르면 패널이 열려요. 조명은 카메라처럼 샷마다 따로 놓이고, 새 샷은 지금 샷의 조명을 이어받아요. 조명과 가구는 3D에서 끌어 옮기고, 한 번 누르면 설정이 열려요.', el: '#rail' },
   { t: '샷을 쌓아 콘티 완성', p: '아래 "＋ 샷"으로 다음 컷을 만들고, 위의 "보드"로 콘티 전체를 한눈에 봐요.', el: '#addBtn' },
 ];
 let tourI = -1, tourLoop = false;
@@ -3404,7 +3553,7 @@ function tourPlace() {
     Object.assign(co.style, { top: below ? 'auto' : '', bottom: below ? '12px' : '', width: '', left: '', right: '', transform: '', overflowY: '' });
     if (below && r) { const room = sg.bottom - (r.y + r.h) - 12; co.style.maxHeight = Math.max(120, room) + 'px'; } else co.style.maxHeight = ''; }
   requestAnimationFrame(tourPlace); }
-function tour(i) { document.querySelectorAll('.spot').forEach(e => e.classList.remove('spot')); tourI = i;
+function tour(i) { document.querySelectorAll('.spot').forEach(e => e.classList.remove('spot')); tourI = i; if (i === 0) { camSel = true; renderWorld(); }
   if (i < 0 || i >= TOUR.length) { $('#coach').hidden = true; $('#tourRing').hidden = true; try { localStorage.setItem('framecontis.tour', '1'); } catch (e) {} return; }
   const st = TOUR[i]; $('#coachT').textContent = st.t; $('#coachP').textContent = st.p; $('#coachN').textContent = `${i + 1} / ${TOUR.length}`;
   $('#coachNext').textContent = i === TOUR.length - 1 ? '시작하기' : '다음'; $('#coach').hidden = false;
@@ -3413,7 +3562,7 @@ $('#addBtn').onclick = addShot;
 $('#coachNext').onclick = () => tour(tourI + 1); $('#coachSkip').onclick = () => tour(-1);
 $('#tourBtn').onclick = () => { xMenu(false); openPane(null); if (mode !== '3d') setMode('3d'); tour(0); };
 function maybeTour() { let seen = null; try { seen = localStorage.getItem('framecontis.tour'); } catch (e) {}
-  if (seen) return; const wait = () => $('#sensorModal').hidden ? setTimeout(() => tour(0), 500) : setTimeout(wait, 400); wait(); }
+  if (seen) return; setTimeout(() => tour(0), 500); }
 
 /* ---------- projects: each scene is saved on its own; an index lists them for the start screen ---------- */
 const IDX = 'framecontis.projects', PK = id => 'framecontis.p.' + id;
@@ -3457,16 +3606,21 @@ function saveProject() { if (!projId) return; state.schema = SCHEMA;
   const row = { id: projId, title: state.title || '제목 없는 씬', shots: state.shots.length, updated: Date.now(), sensor: SENSOR().name.split(' (')[0] };
   return store.put(projId, state, row).catch(e => store.fail(e)); }
 // data version: bump when the saved shape changes and add the step here
-const SCHEMA = 4;
+const SCHEMA = 6;
 function normalizeState() {
   if (!state.set) state.set = sampleSet();
   if (!state.set.sun) state.set.sun = { on: false, month: 10, hour: 17.6, north: 0, wx: 'clear' };
-  state.set.lights = state.set.lights || []; state.set.props = state.set.props || [];
-  if (state.lit === undefined) state.lit = true;
+  state.set.props = state.set.props || [];
+  state.lit = true; // the flat-light preview switch is gone: always physically lit
   if (!state.cast) state.cast = JSON.parse(JSON.stringify(CAST0));
   if (!state.shots.length) state.shots = sampleShots();
   state.shots.forEach(sh => { if (sh.focus !== 'M' && sh.focus !== 'AF') { sh.afT = sh.focus === 'B' ? 'B' : 'auto'; sh.focus = 'AF'; } }); // v2 → 3: A/B focus became AF with a target
   state.shots.forEach(sh => { if (!sh.C) sh.C = { on: false, x: +(sh.A.x - 0.8).toFixed(2), z: +(sh.A.z + 0.4).toFixed(2), face: sh.A.face }; });
+  // v5 → 6: lights moved from the set into each shot; every shot starts with the set's old lights
+  if (state.set.lights) { const old = state.set.lights; state.shots.forEach(sh => { if (!sh.lights) sh.lights = JSON.parse(JSON.stringify(old)); }); delete state.set.lights; }
+  state.shots.forEach(sh => { if (!sh.lights) sh.lights = []; });
+  // v4 → 5: extra cast members (D–H); every shot gets a slot for each, out of the shot unless placed
+  castKeys().forEach(k => state.shots.forEach(sh => { if (!sh[k]) sh[k] = castSlot(sh, k); }));
   // v3 → 4: frame rate, scene heading, and per-shot takes / audio / lens type / shooting order
   if (!state.fps) state.fps = 24;
   state.meta = { sceneNo: '', location: '', ie: 'INT', dn: 'DAY', ...(state.meta || {}) };
@@ -3483,13 +3637,15 @@ async function openProject(id) { let st = null; try { st = await store.get(id); 
   if (!st || !Array.isArray(st.shots)) { toast('이 기기에 없는 프로젝트예요'); setHash(''); showStart(); return false; }
   state = st; normalizeState(); projId = id; sharedView = false; hideStart(); afterLoad(); setHash('#/p/' + id); toast(`"${state.title}" 열었어요`); return true; }
 function newProject(title, example) {
-  state = { title: title || '새 씬', aspect: '16:9', sensor: null, squeeze: 1, breathing: true, blur: true, example, sel: 0, kit: 'free', lit: true, shots: [],
+  state = { title: title || '새 씬', aspect: '16:9', sensor: { ...SENSORS[0] }, squeeze: 1, breathing: true, blur: true, example, sel: 0, kit: 'free', lit: true, shots: [],
     set: example ? sampleSet() : { env: 'magic', room: null, sun: { on: true, month: 10, hour: 17.5, north: 0, wx: 'clear' }, lights: [], props: [] }, cast: JSON.parse(JSON.stringify(CAST0)) };
-  state.shots = example ? sampleShots() : [newShot({ f: 35 })];
+  state.shots = example ? sampleShots() : [placeShot({ size: 'FS', eye: true, elev: 0, ff: 35, az: 180, aim: 'A', N: 2.8, dur: 3, A: { x: 0, z: 0, face: 180 }, B: { on: false, x: 1.1, z: 0, face: 270 } })];
   state.meta = example ? { sceneNo: '12', location: '카페 테라스', ie: 'EXT', dn: 'DAY' } : { sceneNo: '', location: '', ie: 'INT', dn: 'DAY' };
   if (!example) state.shots[0].iso = 800;
-  normalizeState(); projId = newId(); sharedView = false; hideStart(); afterLoad(); saveProject(); setHash('#/p/' + projId);
-  openSensor(true); maybeTour(); }
+  normalizeState();
+  if (example) state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); });
+  projId = newId(); sharedView = false; hideStart(); afterLoad(); saveProject(); setHash('#/p/' + projId); fitViewer('fit');
+  maybeTour(); }
 
 /* ---------- undo / redo: snapshots of the scene (selection excluded), 50 deep; a drag is recorded once, on release ---------- */
 let undoS = [], redoS = [], lastSnap = null;
@@ -3605,10 +3761,21 @@ function fitExposure(s) {
   r -= 2 * Math.log2(N / s.N); s.N = N;
   if (Math.abs(r) > 0.4) { const want2 = (s.iso || 800) / Math.pow(2, r); s.iso = ISOS.reduce((b, x) => Math.abs(Math.log(x / want2)) < Math.abs(Math.log(b / want2)) ? x : b, ISOS[0]); } }
 function autoExpose(s = cur()) { fitExposure(s);
-  changed(true); toast(`T${s.N} · ISO ${s.iso} · ND${(s.nd * 0.3).toFixed(1)}로 맞췄어요`); }
+  changed(true); toast(`${stopTxt(s.N)} · ISO ${s.iso} · ND${(s.nd * 0.3).toFixed(1)}로 맞췄어요`); }
 $('#autoExpBtn').onclick = () => autoExpose();
 
-if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]') && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+// installed app: look for a new version on every launch and whenever the app comes back to the front; when one takes over, offer a reload
+let swReg = null;
+if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]') && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) {
+  const hadSW = !!navigator.serviceWorker.controller;
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => { swReg = r; r.update().catch(() => {}); }).catch(() => {}));
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && swReg) swReg.update().catch(() => {}); });
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (!hadSW) return;
+    if (!$('#startScreen').hidden) location.reload(); else toast('새 버전이 도착했어요', { action: () => location.reload(), label: '새로고침', ms: 15000 }); });
+}
+$('#updBtn').onclick = () => { xMenu(false);
+  if (!swReg) { location.reload(); return; }
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.10.30 14:51'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
