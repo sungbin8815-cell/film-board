@@ -96,9 +96,13 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stro
 #world.grabbing{cursor:grabbing}
 .vf{background:var(--vf);display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
 .vfbox{position:relative;display:flex;flex-direction:column;gap:6px}
+.surround{position:absolute;pointer-events:none;filter:brightness(.38) saturate(.7)}
+.vfbox canvas#view{box-shadow:0 0 0 1px rgba(255,255,255,.55),0 0 24px rgba(0,0,0,.7)}
 .vfbox canvas{touch-action:none;cursor:crosshair;border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
 .hud{font-family:var(--f-mono);font-size:11px;color:var(--vf-ink);display:flex;justify-content:space-between;gap:8px;letter-spacing:.03em;white-space:nowrap;overflow:hidden;pointer-events:none}
 .hud.b{color:var(--vf-dim)}
+.vfbox .hud{position:absolute;left:10px;right:10px;z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 6px rgba(0,0,0,.6)}
+.vfbox .hud.t{top:7px} .vfbox .hud.b{bottom:7px;color:var(--vf-ink)}
 .hud .rec{display:inline-flex;align-items:center;gap:6px;overflow:hidden;text-overflow:ellipsis}
 .hud .rec::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--rec);box-shadow:0 0 8px var(--rec)}
 .hud .warn{color:#F07A66}
@@ -143,6 +147,12 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stro
 .pstat{font-size:11.5px;padding-right:4px;white-space:nowrap}
 .pstat.ok{color:var(--ok)} .pstat.bad{color:var(--warn)}
 #objBar .fab{padding:6px 8px}
+#objBar{display:flex;flex-direction:column;align-items:center;gap:6px}
+#objBar[hidden]{display:none}
+.posebar{display:flex;gap:4px;padding:4px;border-radius:12px;max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none}
+.posebar[hidden]{display:none}
+.posebar button{border:0;background:transparent;color:var(--ink);font-size:12.5px;padding:6px 10px;border-radius:8px;white-space:nowrap}
+.posebar button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .addgrid button.sunbtn::before{content:"☀";background:rgba(255,194,74,.2);color:#D9901A}
 .sunedit{border-color:#FFC24A}
 .frow{display:flex;gap:8px} .fld{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);font-weight:500;width:92px} .fld.grow{flex:1;width:auto}
@@ -201,6 +211,7 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stro
 .sw{display:flex;gap:7px;flex-wrap:wrap}
 .sw button{width:24px;height:24px;border-radius:50%;border:2px solid var(--sheet);box-shadow:0 0 0 1px var(--line);padding:0}
 .sw button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--accent)}
+.sw.gels{gap:5px;flex-wrap:nowrap} .sw.gels button{width:21px;height:21px;flex:none}
 
 /* drawer */
 .drawer{grid-area:drawer;width:396px;border-left:1px solid var(--line);background:var(--sheet);display:flex;flex-direction:column;min-height:0;z-index:20}
@@ -397,7 +408,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 @keyframes spot{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 70%,transparent)}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--accent) 20%,transparent)}}
 
 /* phone: stage on top, strip and tool bar along the bottom, tools open as a bottom sheet */
-@media (max-width:719px){
+@media (max-width:719px) and (orientation:portrait){
   .app{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto auto;grid-template-areas:"bar" "stage" "shots" "rail"}
   .bar{padding:7px 10px;gap:6px} .actions{gap:5px}
   .brand b,.vsep,.tag,.sensorbtn small,.vtoggle .lab,#exportBtn .lab{display:none}
@@ -440,7 +451,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   .shots{padding:4px 10px;gap:8px} .shots .sl{display:none} .stools .btn .lab{display:none}
   .chipi .k,.fab .lab,.modeseg button svg{display:none} .ov-tl{top:8px;left:8px} .ov-tr{top:8px;right:8px} .ov-bl{left:8px;bottom:8px}
   .stage[data-mode="mon"] .ov-tr{display:none}
-  #vfbox{transform:translateX(51px)} .vfbox .vf-tools{right:-54px;top:22px;gap:4px} .vfbox .vf-tools button{width:46px;min-height:44px}
+  .vfbox .vf-tools{right:8px;top:28px;gap:4px} .vfbox .vf-tools button{width:46px;min-height:44px}
   .fclegend{font-size:9px;padding:5px 7px;gap:1px;bottom:26px} .fclegend b{display:none} .fclegend i{width:10px;height:7px}
 }
 /* the app is laid out for a phone held sideways; held upright it asks once to turn, and can be waved off */
@@ -557,13 +568,17 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 /* monitor move pad: a d-pad for dolly / truck and a boom pair, hold to move */
 .movepad{display:flex;align-items:flex-end;gap:8px;z-index:6}
 .movepad[hidden]{display:none}
-.mp-dir{display:grid;grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,40px);gap:3px}
-.mp-dir button:nth-child(1){grid-area:1/2} .mp-dir button:nth-child(2){grid-area:2/1} .mp-dir button:nth-child(3){grid-area:2/3} .mp-dir button:nth-child(4){grid-area:3/2}
+.mp-joy{position:relative;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:radial-gradient(circle,rgba(255,255,255,.06),rgba(17,21,27,.7) 70%);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);touch-action:none;user-select:none;-webkit-user-select:none}
+.mp-joy::before{content:"";position:absolute;inset:14px;border-radius:50%;border:1px dashed rgba(255,255,255,.12)}
+.mp-thumb{position:absolute;left:50%;top:50%;width:50px;height:50px;margin:-25px 0 0 -25px;border-radius:50%;background:rgba(240,244,250,.9);box-shadow:0 4px 14px rgba(0,0,0,.45);pointer-events:none;transition:transform .12s}
+.mp-joy.on .mp-thumb{background:var(--accent);transition:none}
+.movepad.subj .mp-up{display:none}
+.app.dock .movepad,.app.dock .vfbox .vf-tools{display:none!important}
 .mp-up{display:flex;flex-direction:column;gap:3px}
 .movepad button{width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.14);background:rgba(17,21,27,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--vf-ink);font-size:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;touch-action:none;user-select:none;-webkit-user-select:none}
 .movepad button small{font-size:9px;color:var(--vf-dim);margin-top:1px}
 .movepad button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-@media (orientation:landscape) and (max-height:520px){ .mp-dir{grid-template-columns:repeat(3,36px);grid-template-rows:repeat(3,36px)} .movepad button{width:36px;height:36px} }
+@media (orientation:landscape) and (max-height:520px){ .mp-joy{width:108px;height:108px} .movepad button{width:36px;height:36px} }
 /* board: the storyboard alone, no tool rail, tool panel or shot strip beside it */
 .app.boarding .rail,.app.boarding .drawer,.app.boarding .shots{display:none}
 .app.boarding .bar{grid-column:1/-1}
@@ -575,6 +590,46 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   .vfbox .vf-tools button::after{top:4px;right:4px}
   .movepad{bottom:10px}
 }
+
+.edit h4 .hdel{margin-left:auto}
+.xrow.two{grid-template-columns:84px minmax(0,1fr) 40px minmax(0,1fr) 40px;gap:6px}
+input[type=range].hue{background:linear-gradient(90deg,#f00,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,#f00);border-radius:6px;height:8px}
+.vrmrow{gap:6px} .vrmrow .vrmname{flex:1;min-width:0;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.addgrid button[data-fam]{flex-direction:row;align-items:center;justify-content:space-between;gap:6px}
+.addgrid button[data-fam] > span{display:flex;flex-direction:column;gap:1px;min-width:0}
+.addgrid .go{font-style:normal;color:var(--muted);font-size:17px;line-height:1}
+.fxpath{display:flex;align-items:center;gap:8px;margin:0 0 6px} .fxpath b{font-size:13px}
+.addgrid.sizes{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}
+.modsel{flex:1;min-width:0;background:var(--raise);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:5px 8px;font-size:12.5px;font-family:var(--f-body)}
+/* toggles inside panels read as buttons: unpressed in ink with a hairline, the chosen one filled */
+.ptab .lh > .seg button,.edit .seg button{color:var(--ink);opacity:.82}
+.ptab .lh > .seg button:hover,.edit .seg button:hover{opacity:1;background:var(--raise)}
+.ptab .lh > .seg button[aria-pressed="true"],.edit .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);opacity:1;box-shadow:none;font-weight:600}
+.seg button:disabled{opacity:.3!important;cursor:default}
+.modrow{gap:6px} .modrow .seg{flex:none!important} .modrow .seg button{flex:none!important;padding:5px 8px!important}
+.modal[hidden]{display:none}
+.aisheet{max-width:820px;height:100%;max-height:640px;gap:8px;padding:12px 14px;overflow:hidden}
+.aihead{display:flex;align-items:center;gap:10px} .aihead h2{font-size:16px;flex:none} .aihead .seg{margin-left:auto} .aihead .xbtn{flex:none}
+.aishots{flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:none;flex:none}
+.aishots button{flex:none}
+.aisheet .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+#aiText{flex:1;min-height:0;width:100%;resize:none;background:var(--raise);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font-family:var(--f-mono);font-size:11.5px;line-height:1.5}
+.airow{display:flex;align-items:center;gap:6px;flex:none} .airow .mini{flex:1;min-width:0;margin:0;font-size:11px;color:var(--muted);line-height:1.35}
+@media (orientation:landscape) and (max-height:520px){ .aisheet{max-height:none} #aiText{font-size:10.5px;line-height:1.45;padding:8px} .modal{padding:8px max(12px,env(safe-area-inset-right,0px)) 8px max(12px,env(safe-area-inset-left,0px))} }
+/* older browsers without color-mix(): solid panels instead of tinted glass */
+@supports not (background:color-mix(in srgb,red 50%,blue)){
+  .glass,.bhead{background:var(--sheet)} .modal{background:rgba(5,7,10,.72)} .rigstat{background:var(--raise)}
+  .btn.primary,.modeseg button[aria-pressed="true"]{box-shadow:none} .card[aria-current="true"]{box-shadow:0 0 0 2px var(--accent)} .dofbar .zone{background:var(--accent);opacity:.3}
+}
+.ptab.editing .objlist{display:none}
+/* sideways phones: placed lights and furniture in two compact columns, focal lengths tighter, so long lists still fit */
+@media (orientation:landscape) and (max-height:520px),(max-width:719px) and (orientation:portrait){
+  .ptab:not(.editing) .objlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+  .objlist button{flex-direction:column;align-items:flex-start;justify-content:center;gap:0;padding:4px 8px;min-height:0;min-width:0}
+  .objlist button > span{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11.5px!important;line-height:1.3}
+  .objlist button > span + span{font-size:10px!important;color:var(--muted)}
+}
+@media (orientation:landscape) and (max-height:520px) and (max-width:720px){ .ticks{gap:3px} .ticks button{padding:2px 5px;font-size:11px} }
 </style>
 </head>
 <body>
@@ -593,10 +648,11 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     </div>
   </header>
   <div class="xmenu glass" id="xMenu" role="menu" hidden>
+    <button id="aiBtn" role="menuitem">AI 실사 프롬프트 (ChatGPT · Higgsfield)</button><hr>
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
     <hr><button id="tourBtn" role="menuitem">사용법 보기</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.10.30 14:51</p>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.10.30 16:59</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -612,6 +668,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     <div class="sharedbar glass" id="sharedBar" hidden><span><b>공유받은 프로젝트</b> · 아직 저장 전이에요</span><button class="btn sm primary" id="saveSharedBtn">내 프로젝트로 저장</button></div>
     <div class="layer" id="worldwrap"><canvas id="world" aria-label="3D 세트. 빈 곳을 드래그하면 시점이 돌아가고, 핀치나 휠로 확대, 두 손가락을 위아래로 밀면 카메라가 앞뒤로 달리합니다. 카메라의 화살표와 고리를 끌면 카메라가 움직입니다."></canvas></div>
     <div class="layer vf" id="vf" hidden>
+      <canvas id="viewBg" class="surround" aria-hidden="true" hidden></canvas>
       <div class="vfbox" id="vfbox">
         <div class="hud t"><span class="rec" id="hudL">S01</span><span id="hudR">16:9</span></div>
         <canvas id="view" aria-label="카메라에 찍히는 화면. 드래그하면 팬과 틸트, 두 손가락 위아래나 휠은 달리, 더블클릭은 초점 대상 조준."></canvas>
@@ -635,15 +692,14 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
       <span class="pname" id="placeName"></span><span class="pstat" id="placeStat"></span><span class="tsep"></span>
       <button class="fab" id="pRotL" title="왼쪽으로 90° (Shift+R)"><svg class="i" viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 1.5 7.5"/><path d="M4 4v5h5"/></svg></button><button class="fab" id="pRotR" title="오른쪽으로 90° (R)"><svg class="i" viewBox="0 0 24 24"><path d="M20 9a8 8 0 1 0-1.5 7.5"/><path d="M20 4v5h-5"/></svg></button>
       <button class="btn sm primary" id="pOk"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>놓기</button><button class="btn sm ghost" id="pCancel">취소</button></div></div>
-    <div class="ov ov-bc" id="objBar" hidden><div class="toolbar glass">
+    <div class="ov ov-bc" id="objBar" hidden><div class="posebar glass" id="poseBar" data-sj></div><div class="toolbar glass">
       <span class="pname" id="objName"></span><span class="tsep"></span>
       <button class="fab" id="oRotL" data-p title="왼쪽으로 90°"><svg class="i" viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 1.5 7.5"/><path d="M4 4v5h5"/></svg></button><button class="fab" id="oRotR" data-p title="오른쪽으로 90°"><svg class="i" viewBox="0 0 24 24"><path d="M20 9a8 8 0 1 0-1.5 7.5"/><path d="M20 4v5h-5"/></svg></button>
       <button class="fab" id="oMove" data-p title="옮기기"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg><span class="lab">옮기기</span></button><button class="fab" id="oEdit"><svg class="i" viewBox="0 0 24 24"><path d="M4 9V4h5M20 15v5h-5M4 4l7 7M20 20l-7-7"/></svg><span class="lab">크기</span></button>
-      <button class="fab" id="oPose" data-sj title="서기 / 앉기"><svg class="i" viewBox="0 0 24 24"><path d="M7 4v9h9l1 7M7 13l-1 7M10 9h7"/></svg><span class="lab">앉기</span></button>
       <button class="fab" id="oDup" data-p title="복제"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span class="lab">복제</span></button><button class="fab" id="oDel"><svg class="i" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></svg><span class="lab">삭제</span></button>
       <button class="fab" id="oClose" title="선택 해제"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
-    <div class="ov ov-bl movepad" id="movePad" hidden aria-label="카메라 이동 (누르고 있으면 움직여요)">
-      <div class="mp-dir"><button data-mv="f" aria-label="앞으로 (달리 인)">▲</button><button data-mv="l" aria-label="왼쪽 (트럭)">◀</button><button data-mv="r" aria-label="오른쪽 (트럭)">▶</button><button data-mv="b" aria-label="뒤로 (달리 아웃)">▼</button></div>
+    <div class="ov ov-bl movepad" id="movePad" hidden aria-label="이동 조이스틱">
+      <div class="mp-joy" id="joy" role="application" aria-label="조이스틱: 끄는 방향으로 움직여요"><i class="mp-thumb" id="joyThumb"></i></div>
       <div class="mp-up"><button data-mv="u" aria-label="위로 (붐 업)">↑<small>붐</small></button><button data-mv="d" aria-label="아래로 (붐 다운)">↓<small>붐</small></button></div>
     </div>
     <div class="ov ov-bc" id="craneBar" hidden><div class="toolbar glass">
@@ -756,12 +812,19 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 
 <div class="rothint" id="rotHint" role="dialog" aria-labelledby="rotT"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="15" y="6" width="18" height="32" rx="3"/><path d="M8 30a16 16 0 0 0 14 12M40 18A16 16 0 0 0 26 6"/><path d="M22 42l-3-3M22 42l-3 3M26 6l3-3M26 6l3 3"/></svg>
   <b id="rotT">휴대폰을 가로로 돌려 주세요</b><p>프레임콘티는 가로 화면에 맞춰져 있어요.<br>3D 세트와 모니터가 훨씬 넓게 보여요.</p><button class="btn ghost" id="rotOk">세로로 계속 쓰기</button></div>
+<input type="file" id="vrmFile" accept=".vrm" hidden>
+<div class="modal" id="aiModal" hidden role="dialog" aria-labelledby="aiT"><div class="msheet aisheet">
+  <div class="aihead"><h2 id="aiT">AI 실사 프롬프트</h2><div class="seg kr" id="aiKind"><button data-k="img">이미지 · ChatGPT</button><button data-k="vid">영상 · Higgsfield</button></div><button class="xbtn" id="aiClose" aria-label="닫기"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="seg aishots" id="aiShots"></div>
+  <textarea id="aiText" readonly spellcheck="false" aria-label="프롬프트"></textarea>
+  <div class="airow"><p class="mini" id="aiTip"></p><button class="btn sm" id="aiImg">참고 프레임 저장</button><button class="btn sm" id="aiAll">전체 샷 복사</button><button class="btn sm primary" id="aiCopy">이 샷 복사</button></div>
+</div></div>
 <div class="mc" id="startScreen" hidden>
   <canvas id="pano" aria-hidden="true"></canvas><div class="mc-shade"></div>
   <div class="mc-main" id="mcMain">
     <div class="mc-brand"><div class="mc-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3"/></svg></div>
       <div><h1>FRAMECONTI</h1><p>3D 콘티와 샷리스트를 버튼과 드래그만으로.<br>렌즈 · 노출 · 조명 · 세트를 실제 수치로 계획해요.</p></div>
-      <div class="specs"><span>LENS</span><span>EXPOSURE</span><span>LIGHTING</span><span>SHOT LIST</span><span class="ver">v 2026.10.30 14:51</span></div></div>
+      <div class="specs"><span>LENS</span><span>EXPOSURE</span><span>LIGHTING</span><span>SHOT LIST</span><span class="ver">v 2026.10.30 16:59</span></div></div>
     <div class="mc-btns">
       <button class="sbtn primary" id="mcNew"><span class="si"><svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="1.5"/><path d="M3.5 9l2-5 15 1.5-1.2 3.5M8.5 4.5l-1.5 4.5M13.5 5l-1.5 4"/></svg></span><span><b>새 프로젝트</b><small>예시 씬이나 빈 세트로 시작</small></span><span class="go">›</span></button>
       <button class="sbtn" id="mcLoad"><span class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="7" r="1.6"/><circle cx="12" cy="17" r="1.6"/><circle cx="7" cy="12" r="1.6"/><circle cx="17" cy="12" r="1.6"/></svg></span><span><b>프로젝트 불러오기</b><small>저장해 둔 콘티 롤 꺼내기</small></span><span class="go">›</span></button>
@@ -797,7 +860,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
-<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+<script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/", "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@2.1.0/lib/three-vrm.module.min.js" } }</script>
 <script type="module">import * as THREE from 'three'; window.THREE = THREE; dispatchEvent(new Event('three-ready'));</script>
 <script>
 const $ = s => document.querySelector(s);
@@ -933,7 +997,8 @@ if (!state.set.sun) state.set.sun = { on: false, month: 10, hour: 17.6, north: 0
 state.set.lights = state.set.lights || []; state.set.props = state.set.props || [];
 if (state.lit === undefined) state.lit = true;
 const SENSOR = () => state.sensor || SENSORS[0];
-const aspectV = () => (ASPECTS.find(a => a.k === state.aspect) || ASPECTS[0]).v;
+let aspOverride = 0; // set only while the monitor's surround view renders
+const aspectV = () => aspOverride || (ASPECTS.find(a => a.k === state.aspect) || ASPECTS[0]).v;
 let view = 'edit', showThirds = true, mode = '3d';
 const cur = () => state.shots[state.sel];
 let saveT;
@@ -1056,6 +1121,32 @@ const SEGS = [['n0', 'n1', .10], ['ch', 'pv', .27], ['hiL', 'hiR', .17], ['shL',
   ['hiL', 'knL', .15], ['knL', 'anL', .11], ['hiR', 'knR', .15], ['knR', 'anR', .11], ['anL', 'toL', .08], ['anR', 'toR', .08]];
 const HEAD_R = 0.115;
 const J0H = J;
+/* ---------- poses: limb angles in degrees (thigh/upper arm forward of straight down, knee/elbow bend), torso lean ---------- */
+// legs: [thigh, knee] per side; arms: [upper arm, elbow, outward]; lean tips the upper body forward about the pelvis; drop lowers the hips
+const POSES = {
+  stand: { name: '서기' }, sit: { name: '앉기' },
+  walk: { name: '걷기', legs: { L: [22, 6], R: [-16, 18] }, arms: { L: [-18, 12, 4], R: [20, 16, 4] }, lean: 3 },
+  run: { name: '뛰기', legs: { L: [48, 55], R: [-28, 95] }, arms: { L: [-40, 95, 6], R: [45, 95, 6] }, lean: 12 },
+  squat: { name: '쪼그려', legs: { L: [100, 128], R: [96, 124] }, arms: { L: [55, 25, 10], R: [55, 25, 10] }, lean: 32 },
+  wave: { name: '손 들기', legs: { L: [0, 0], R: [0, 0] }, arms: { L: [4, 8, 4], R: [165, 25, 22] }, lean: 0 },
+  point: { name: '가리키기', legs: { L: [4, 2], R: [-4, 2] }, arms: { L: [4, 8, 4], R: [82, 0, 8] }, lean: 0 },
+  lie: { name: '눕기' },
+};
+const LIE_Z = 0.9; // a lying figure: on its back, feet toward where it faces, head about 0.8 m behind its spot
+function poseLimbs(J, P) {
+  const v = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]), dir = d => [Math.sin(d * DEG), -Math.cos(d * DEG)]; // (z, y) of a limb d° forward of straight down
+  const pv = J.pv, lean = (P.lean || 0) * DEG, up = ['n0', 'n1', 'hd', 'shL', 'shR', 'ch', 'elL', 'elR', 'haL', 'haR'];
+  const arm = {}; for (const sd of ['L', 'R']) arm[sd] = [v(J['sh' + sd], J['el' + sd]), v(J['el' + sd], J['ha' + sd])];
+  for (const n of up) { const y = J[n][1] - pv[1], z = J[n][2] - pv[2]; J[n] = [J[n][0], pv[1] + y * Math.cos(lean) - z * Math.sin(lean), pv[2] + y * Math.sin(lean) + z * Math.cos(lean)]; }
+  for (const sd of ['L', 'R']) { const hi = J['hi' + sd], th = v(hi, J['kn' + sd]), sh = v(J['kn' + sd], J['an' + sd]), toe = J['to' + sd].map((x, i) => x - J['an' + sd][i]), [a, b] = P.legs[sd];
+    const d1 = dir(a), d2 = dir(a - b); J['kn' + sd] = [hi[0], hi[1] + d1[1] * th, hi[2] + d1[0] * th]; const kn = J['kn' + sd];
+    J['an' + sd] = [hi[0], kn[1] + d2[1] * sh, kn[2] + d2[0] * sh]; J['to' + sd] = J['an' + sd].map((x, i) => x + toe[i]);
+    const s0 = J['sh' + sd], [ua, eb, out] = P.arms[sd], sx = sd === 'L' ? -1 : 1, e1 = dir(ua + lean / DEG), e2 = dir(ua + eb + lean / DEG), [l1, l2] = arm[sd], o = Math.sin(out * DEG);
+    J['el' + sd] = [s0[0] + sx * o * l1, s0[1] + e1[1] * l1 * Math.cos(out * DEG), s0[2] + e1[0] * l1]; const el = J['el' + sd];
+    J['ha' + sd] = [el[0] + sx * o * l2 * 0.5, el[1] + e2[1] * l2, el[2] + e2[0] * l2]; }
+  // stand on the ground: the lowest ankle sits at ankle height
+  const dy = Math.min(J.anL[1], J.anR[1]) - 0.09; for (const n in J) J[n] = [J[n][0], J[n][1] - dy, J[n][2]];
+}
 /* ---------- cast: who A, B, C … are (shared by every shot) and the body each one gets ---------- */
 // heights are typical Korean averages by age group (man, woman); a child's head is large for its body, a senior stoops a little
 const CAST0 = { A: { who: 'f', age: 'adult', outfit: 0, skin: 0 }, B: { who: 'm', age: 'adult', outfit: 1, skin: 1 }, C: { who: 'dog', age: 'adult', size: 'm', outfit: 0, skin: 0 } };
@@ -1103,7 +1194,10 @@ function skeleton(k, sb) {
       for (const sd of ['L', 'R']) { const h = J['hi' + sd]; J['kn' + sd] = [h[0], h[1] + 0.03, h[2] + thigh]; J['an' + sd] = [h[0], h[1] + 0.03 - shin, h[2] + thigh + 0.03];
         J['to' + sd] = [h[0], J['an' + sd][1] - 0.05, J['an' + sd][2] + 0.17 * ky]; J['ha' + sd] = [h[0] * 1.5, h[1] + 0.1, h[2] + thigh * 0.62];
         J['el' + sd] = [J['sh' + sd][0] * 1.08, (J['sh' + sd][1] + J['ha' + sd][1]) / 2 - 0.02, J['ha' + sd][2] * 0.3]; } }
-    sk = { dog: false, f, age, child, J, wsh, whp, segs: SEGS.map(([a, b, w]) => [a, b, w * (child ? 0.82 : 1) * (f ? 0.93 : 1)]), headR, top: J.hd[1] + headR * 1.15, eye: J.hd[1] + 0.02, half: [0.21 * wsh, 0.14 * ky + (sit ? 0.2 : 0)] }; }
+    if (POSES[sb.pose] && POSES[sb.pose].legs) poseLimbs(J, POSES[sb.pose]);
+    if (sb.pose === 'lie') for (const n in J) J[n] = [J[n][0], J[n][2] + 0.12, LIE_Z - J[n][1]];
+    const half = sb.pose === 'lie' ? [0.24 * wsh, 0.95 * ky] : [0.21 * wsh, 0.14 * ky + (sit ? 0.2 : sb.pose === 'run' || sb.pose === 'walk' || sb.pose === 'squat' ? 0.15 : 0)];
+    sk = { dog: false, f, age, child, J, wsh, whp, segs: SEGS.map(([a, b, w]) => [a, b, w * (child ? 0.82 : 1) * (f ? 0.93 : 1)]), headR, top: Math.max(...Object.values(J).map(v => v[1])) + headR * 1.15, eye: J.hd[1] + 0.02, half }; }
   skelCache.set(key, sk); return sk;
 }
 const headY = (s, sb) => skeleton(keyOf(s, sb), sb).eye;
@@ -1122,6 +1216,10 @@ function toonOutline(g) {
 }
 // a 3D character: tapered capsule limbs, shaped torso, a large head with big eyes, cheeks and a smile; hair with bangs by gender and age; jacket collar, belt, soled shoes; dogs with snout, ears, tail and collar
 function glCharacter(s, k) {
+  { const c = castOf(k), vc = c.vrm && c.who !== 'dog' && vrmGet(c.vrm, k); if (vc) return vrmFigure(vc, s, k); }
+  if (s[k].pose === 'lie' && castOf(k).who !== 'dog') { // built standing, then laid on its back: (x, y, z) → (x, z + 0.12, LIE_Z − y), as in skeleton()
+    const sb = s[k], o = new THREE.Group(), inner = glCharacter({ ...s, [k]: { ...sb, pose: 'stand', x: 0, z: 0, face: 0 } }, k);
+    inner.rotation.x = -Math.PI / 2; inner.position.set(0, 0.12, LIE_Z); o.add(inner); o.position.set(sb.x, 0, sb.z); o.rotation.y = sb.face * DEG; return o; }
   const sb = s[k], c = castOf(k), sk = skeleton(k, sb), g = new THREE.Group(), Gs = gl.geo.sph, Y = v3(0, 1, 0);
   g.position.set(sb.x, 0, sb.z); g.rotation.y = sb.face * DEG;
   const mat = (rgb, rough = 0.8) => { const key = rgb.map(v => v.toFixed(3)).join(',') + '/' + rough; let m = gl.charMats[key];
@@ -1326,6 +1424,12 @@ const PROPS = {
   stool: { name: '바 스툴', w: 0.4, d: 0.4, h: 0.75, rgb: [0.12, 0.12, 0.13] }, kitchen: { name: '주방 싱크대', w: 2.4, d: 0.6, h: 0.9, rgb: [0.78, 0.77, 0.74] },
   fridge: { name: '냉장고', w: 0.7, d: 0.7, h: 1.8, rgb: [0.7, 0.71, 0.72] }, tv: { name: 'TV + 거실장', w: 1.6, d: 0.45, h: 1.2, rgb: [0.42, 0.32, 0.22] },
   plant: { name: '화분', w: 0.5, d: 0.5, h: 1.5, rgb: [0.18, 0.32, 0.14] }, rug: { name: '러그', w: 2.0, d: 1.4, h: 0.012, rgb: [0.45, 0.2, 0.15] },
+  tree: { name: '나무', w: 2.6, d: 2.6, h: 5.2, rgb: [0.16, 0.3, 0.1] }, bush: { name: '덤불', w: 1.3, d: 0.9, h: 0.95, rgb: [0.14, 0.28, 0.1] },
+  rock: { name: '바위', w: 1.1, d: 0.9, h: 0.6, rgb: [0.42, 0.41, 0.39] }, fence: { name: '나무 펜스', w: 2.4, d: 0.1, h: 1.1, rgb: [0.5, 0.38, 0.26] },
+  parasol: { name: '파라솔', w: 2.4, d: 2.4, h: 2.45, rgb: [0.85, 0.82, 0.72] }, picnic: { name: '피크닉 테이블', w: 1.8, d: 1.6, h: 0.76, rgb: [0.5, 0.36, 0.22] },
+  bench: { name: '공원 벤치', w: 1.6, d: 0.62, h: 0.85, rgb: [0.48, 0.33, 0.2] }, lamp: { name: '가로등', w: 0.5, d: 1.2, h: 4.2, rgb: [0.12, 0.13, 0.14] },
+  bike: { name: '자전거', w: 0.6, d: 1.75, h: 1.05, rgb: [0.55, 0.1, 0.08] }, cone: { name: '라바콘', w: 0.36, d: 0.36, h: 0.72, rgb: [0.95, 0.35, 0.05] },
+  bin: { name: '쓰레기통', w: 0.5, d: 0.5, h: 0.95, rgb: [0.2, 0.3, 0.22] }, hydrant: { name: '소화전', w: 0.4, d: 0.4, h: 0.8, rgb: [0.72, 0.08, 0.06] },
   car: { name: '승용차', w: 1.85, d: 4.6, h: 1.45, rgb: [0.06, 0.1, 0.2] }, apple: { name: '애플박스', w: 0.5, d: 0.3, h: 0.2, rgb: [0.55, 0.4, 0.25] },
 };
 function roomInfo() {
@@ -1418,20 +1522,128 @@ const FIXTURES = [
   { id: 'cob300', name: 'LED COB 300W급', K: 5600, lm: 22000, beam: [30, 60], size: 0.2, w: 350 },
   { id: 'cob600', name: 'LED COB 600W급', K: 5600, lm: 45000, beam: [30, 60], size: 0.3, w: 720 },
   { id: 'hmi18', name: 'HMI 1.8K', K: 5600, lm: 90000, beam: [18, 60], size: 0.3, w: 1800 },
-  { id: 'panel', name: 'LED 소프트 패널', K: [2800, 10000], lm: 9000, beam: [105, 105], size: 0.7, w: 450 },
-  { id: 'tube', name: 'LED 튜브 1.2m', K: [2700, 10000], lm: 1600, beam: [160, 160], size: 1.2, w: 50 },
+  { id: 'panel', name: 'LED 패널 4×1', K: [2800, 10000], lm: 9000, beam: [105, 105], size: 0.7, w: 450 , rgb: true },
+  { id: 'tube', name: 'LED 튜브 4ft (일반)', K: [2700, 10000], lm: 1600, beam: [160, 160], size: 1.2, w: 50 , rgb: true },
   { id: 'tung650', name: '텅스텐 프레넬 650W', K: 3200, lm: 7800, beam: [15, 60], size: 0.12, w: 650 },
   { id: 'tung5k', name: '텅스텐 프레넬 5K', K: 3200, lm: 65000, beam: [12, 55], size: 0.35, w: 5000 },
   { id: 'cob120', name: 'LED COB 120W급', K: 5600, lm: 9000, beam: [30, 60], size: 0.15, w: 135 },
   { id: 'cob1200', name: 'LED COB 1200W급', K: 5600, lm: 95000, beam: [30, 55], size: 0.4, w: 1400 },
   { id: 'hmi4k', name: 'HMI 4K 파', K: 5600, lm: 200000, beam: [10, 50], size: 0.4, w: 4000 },
-  { id: 'skypanel', name: 'LED 소프트 패널 대형 (S60급)', K: [2800, 10000], lm: 13000, beam: [110, 110], size: 0.75, w: 450 },
+  { id: 'skypanel', name: 'LED 소프트 패널 (S60급)', K: [2800, 10000], lm: 13000, beam: [110, 110], size: 0.75, w: 450 , rgb: true },
   { id: 'kino', name: '형광 4뱅크 4ft (키노급)', K: [3200, 5600], lm: 10000, beam: [110, 110], size: 1.25, w: 220 },
   { id: 'china', name: '차이나볼 (250W 상당)', K: 3200, lm: 3200, beam: [360, 360], size: 0.6, w: 250 },
   { id: 'balloon', name: '벌룬 라이트 2K', K: [3200, 5600], lm: 40000, beam: [360, 360], size: 1.6, w: 2000 },
   { id: 'bulb', name: '실용등 전구 (60W 상당)', K: 2700, lm: 800, beam: [360, 360], size: 0.1, w: 9 },
+  { id: 'bulb40', name: '실용등 전구 (40W 상당)', K: 2700, lm: 450, beam: [360, 360], size: 0.09, w: 5 },
+  { id: 'bulb100', name: '실용등 전구 (100W 상당)', K: 2700, lm: 1600, beam: [360, 360], size: 0.12, w: 14 },
+  { id: 'tung300', name: '텅스텐 프레넬 300W', K: 3200, lm: 3600, beam: [15, 60], size: 0.1, w: 300 },
+  { id: 'dedo', name: '데도라이트 150W', K: 3200, lm: 1900, beam: [4, 56], size: 0.07, w: 150 },
+  { id: 'pavo2', name: '파보튜브 2ft (15X급)', K: [2700, 12000], lm: 850, beam: [160, 160], size: 0.6, w: 18 , rgb: true },
+  { id: 'pavo4', name: '파보튜브 4ft (30X급)', K: [2700, 12000], lm: 1700, beam: [160, 160], size: 1.2, w: 36 , rgb: true },
+  { id: 'pavo8', name: '파보튜브 8ft (60X급)', K: [2700, 12000], lm: 3400, beam: [160, 160], size: 2.4, w: 72 , rgb: true },
+  { id: 'leko', name: '엘립소이달 750W', K: 3200, lm: 11000, beam: [19, 50], size: 0.12, w: 750, gobo: true },
+  { id: 'leko575', name: '엘립소이달 575W', K: 3200, lm: 8000, beam: [19, 50], size: 0.1, w: 575, gobo: true },
+  { id: 'tung100', name: '텅스텐 프레넬 100W', K: 3200, lm: 1200, beam: [15, 60], size: 0.06, w: 100 },
+  { id: 'tung200', name: '텅스텐 프레넬 200W', K: 3200, lm: 2400, beam: [15, 60], size: 0.08, w: 200 },
+  { id: 'tung10k', name: '텅스텐 프레넬 10K', K: 3200, lm: 130000, beam: [12, 50], size: 0.45, w: 10000 },
+  { id: 'dedo100', name: '데도라이트 100W', K: 3200, lm: 1250, beam: [4, 56], size: 0.05, w: 100 },
+  { id: 'red800', name: '오픈페이스 800W (레드헤드)', K: 3200, lm: 12000, beam: [40, 80], size: 0.15, w: 800 },
+  { id: 'blonde2k', name: '오픈페이스 2K (블론드)', K: 3200, lm: 30000, beam: [40, 80], size: 0.25, w: 2000 },
+  { id: 'hmi200', name: 'HMI 200W', K: 5600, lm: 10000, beam: [15, 55], size: 0.12, w: 200 },
+  { id: 'hmi575', name: 'HMI 575W', K: 5600, lm: 29000, beam: [15, 55], size: 0.15, w: 575 },
+  { id: 'hmi800', name: 'HMI 800W', K: 5600, lm: 40000, beam: [15, 60], size: 0.18, w: 800 },
+  { id: 'hmi12', name: 'HMI 1.2K', K: 5600, lm: 60000, beam: [15, 60], size: 0.22, w: 1200 },
+  { id: 'hmi25', name: 'HMI 2.5K', K: 5600, lm: 125000, beam: [12, 55], size: 0.3, w: 2500 },
+  { id: 'hmi6k', name: 'HMI 6K', K: 5600, lm: 300000, beam: [10, 50], size: 0.45, w: 6000 },
+  { id: 'hmi12k', name: 'HMI 12K', K: 5600, lm: 600000, beam: [10, 50], size: 0.55, w: 12000 },
+  { id: 'hmi18k', name: 'HMI 18K', K: 5600, lm: 900000, beam: [10, 50], size: 0.6, w: 18000 },
+  { id: 'led5', name: 'RGB 포켓 LED 5W', K: [2700, 10000], lm: 250, beam: [120, 120], size: 0.05, w: 5, rgb: true },
+  { id: 'led10', name: 'RGB 포켓 LED 10W', K: [2700, 10000], lm: 600, beam: [120, 120], size: 0.08, w: 10, rgb: true },
+  { id: 'led30', name: 'LED 30W 바이컬러', K: [2700, 6500], lm: 2200, beam: [30, 60], size: 0.1, w: 30 },
+  { id: 'cob60c', name: 'LED COB 컬러 60W급 (60c)', K: [2300, 10000], lm: 4000, beam: [55, 55], size: 0.12, w: 60, rgb: true },
+  { id: 'cob150c', name: 'LED COB 컬러 150W급 (150c)', K: [2300, 10000], lm: 10000, beam: [55, 55], size: 0.15, w: 150, rgb: true },
+  { id: 'cob300c', name: 'LED COB 컬러 300W급 (300c)', K: [2300, 10000], lm: 18000, beam: [55, 55], size: 0.2, w: 350, rgb: true },
+  { id: 'cob600c', name: 'LED COB 컬러 600W급 (600c)', K: [2300, 10000], lm: 38000, beam: [55, 55], size: 0.3, w: 720, rgb: true },
+  { id: 'cob60', name: 'LED COB 60W급', K: 5600, lm: 4500, beam: [30, 60], size: 0.12, w: 60 },
+  { id: 'cob200', name: 'LED COB 200W급', K: 5600, lm: 15000, beam: [30, 60], size: 0.18, w: 200 },
+  { id: 'panel1x1', name: 'LED 패널 1×1', K: [2800, 10000], lm: 3000, beam: [100, 100], size: 0.3, w: 50, rgb: true },
+  { id: 'panel2x1', name: 'LED 패널 2×1', K: [2800, 10000], lm: 6000, beam: [100, 100], size: 0.6, w: 100, rgb: true },
+  { id: 's30', name: 'LED 소프트 패널 (S30급)', K: [2800, 10000], lm: 6500, beam: [110, 110], size: 0.55, w: 220, rgb: true },
+  { id: 's120', name: 'LED 소프트 패널 (S120급)', K: [2800, 10000], lm: 26000, beam: [110, 110], size: 1.2, w: 800, rgb: true },
+  { id: 's360', name: 'LED 소프트 패널 (S360급)', K: [2800, 10000], lm: 52000, beam: [110, 110], size: 1.8, w: 1500, rgb: true },
+  { id: 'kino2', name: '형광 2뱅크 2ft (키노급)', K: [3200, 5600], lm: 2400, beam: [110, 110], size: 0.6, w: 60 },
+  { id: 'balloon4k', name: '벌룬 라이트 4K', K: [3200, 5600], lm: 80000, beam: [360, 360], size: 2.0, w: 4000 },
+  { id: 'bulb25', name: '실용등 전구 (25W 상당)', K: 2700, lm: 220, beam: [360, 360], size: 0.08, w: 3 },
+  { id: 'bulb150', name: '실용등 전구 (150W 상당)', K: 2700, lm: 2600, beam: [360, 360], size: 0.13, w: 22 },
+  { id: 'china60', name: '차이나볼 (60W 상당)', K: 2700, lm: 800, beam: [360, 360], size: 0.45, w: 60 },
+  { id: 'china150', name: '차이나볼 (150W 상당)', K: 3000, lm: 2000, beam: [360, 360], size: 0.5, w: 150 },
+  { id: 'china500', name: '차이나볼 (500W 상당)', K: 3200, lm: 6400, beam: [360, 360], size: 0.75, w: 500 },
 ];
+// colour: a gel (or an RGB fixture's colour mode) passes these fractions of red, green and blue, so a deep blue costs most of the light
+const GELS = { none: { name: '없음' }, red: { name: '빨강', t: [1, 0.04, 0.04] }, orange: { name: '주황', t: [1, 0.35, 0.05] }, yellow: { name: '노랑', t: [1, 0.85, 0.1] },
+  green: { name: '초록', t: [0.1, 1, 0.15] }, cyan: { name: '청록', t: [0.05, 0.8, 1] }, blue: { name: '파랑', t: [0.08, 0.2, 1] }, purple: { name: '보라', t: [0.45, 0.08, 1] }, magenta: { name: '마젠타', t: [1, 0.08, 0.7] } };
+// RGB fixtures (tubes, soft panels) mix colour in the light itself: hue and saturation over the white set by the colour temperature.
+// Unlike a gel they lose little light; only deep blues and violets, where the eye is least sensitive, come out noticeably dimmer.
+const hueLin = h => { const f = n => { const k = (n + h / 60) % 6; return 1 - Math.max(0, Math.min(k, 4 - k, 1)); }; return [f(5), f(3), f(1)].map(v => v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)); };
+function rgbMode(wb, hue, sat) {
+  const t = hueLin(hue).map(v => 1 - sat + sat * v), c = wb.map((v, i) => v * t[i]), Y = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  return c.map(v => v / Math.max(Y, 0.3)); // luminance back to the white level, but never more than about 3× gain
+}
+// an RGB fixture's gel mode mixes the gel's colour itself, so like HSI it loses far less light than a real gel
+function ledGel(wb, t) { const c = wb.map((v, i) => v * t[i]), Y = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; return c.map(v => v / Math.max(Y, 0.3)); }
+// gobo patterns for the ellipsoidal spot: white passes light (window panes, blinds, leaves, a breakup)
+const GOBOS = { none: '원형', win: '창문', blind: '블라인드', leaf: '나뭇잎', break: '브레이크업' };
+// the catalogue as folders: a category, then a family of fixtures, then its sizes (tag = the short label on the size button)
+const FAMILIES = [
+  ['텅스텐', '프레넬', ['tung100', 'tung200', 'tung300', 'tung650', 'tung1k', 'tung2k', 'tung5k', 'tung10k']], ['텅스텐', '데도라이트', ['dedo100', 'dedo']],
+  ['텅스텐', '오픈페이스', ['red800', 'blonde2k']], ['텅스텐', '엘립소이달 (패턴)', ['leko575', 'leko']],
+  ['HMI', 'HMI', ['hmi200', 'hmi575', 'hmi800', 'hmi12', 'hmi18', 'hmi25', 'hmi4k', 'hmi6k', 'hmi12k', 'hmi18k']],
+  ['LED', '소형 LED', ['led5', 'led10', 'led30']], ['LED', 'LED COB 데이라이트', ['cob60', 'cob120', 'cob200', 'cob300', 'cob600', 'cob1200']], ['LED', 'LED COB 컬러 (CCT·HSI)', ['cob60c', 'cob150c', 'cob300c', 'cob600c']],
+  ['소프트', 'LED 튜브', ['pavo2', 'pavo4', 'pavo8', 'tube']], ['소프트', 'LED 패널', ['panel1x1', 'panel2x1', 'panel']],
+  ['소프트', '대형 소프트 패널', ['s30', 'skypanel', 's120', 's360']], ['소프트', '키노플로', ['kino2', 'kino']], ['소프트', '벌룬', ['balloon', 'balloon4k']],
+  ['실용등', '전구', ['bulb25', 'bulb40', 'bulb', 'bulb100', 'bulb150']], ['실용등', '차이나볼', ['china60', 'china150', 'china', 'china500']],
+  ['그립', '실크', ['silk44', 'silk66', 'silk88', 'silk1212']], ['그립', '플래그', ['flag1824', 'flag2436', 'flag44']], ['그립', '네트', ['net1s', 'net2s', 'net144', 'net244']],
+];
+const FIX_TAG = { pavo2: '파보 2ft', pavo4: '파보 4ft', pavo8: '파보 8ft', tube: '일반 4ft', panel1x1: '1×1', panel2x1: '2×1', panel: '4×1', s30: 'S30급', skypanel: 'S60급', s120: 'S120급', s360: 'S360급',
+  kino2: '2ft 2뱅크', kino: '4ft 4뱅크', cob60c: '60c', cob150c: '150c', cob300c: '300c', cob600c: '600c', led30: '30W 바이컬러', led5: '5W RGB', led10: '10W RGB' };
+const wTxt = w => w >= 1000 ? (w / 1000) + 'K' : w + 'W';
+const fixTag = id => FIX_TAG[id] || (GRIPS[id] ? GRIPS[id].tag : /^(bulb|china)/.test(id) ? FIX(id).name.match(/\((\d+W)/)[1] : wTxt(FIX(id).w));
+// grip: frames on stands between a light and the set. A silk softens and cuts what passes through (about a stop), a flag throws a
+// shadow, a net cuts without softening (single ½ stop, double 1 stop). Sizes in metres (4×4 = 4 ft ≈ 1.2 m).
+const GRIPS = { silk44: { name: '실크 4×4', kind: 'silk', w: 1.2, h: 1.2, tag: '4×4' }, silk66: { name: '실크 6×6', kind: 'silk', w: 1.8, h: 1.8, tag: '6×6' },
+  silk88: { name: '실크 8×8', kind: 'silk', w: 2.4, h: 2.4, tag: '8×8' }, silk1212: { name: '실크 12×12', kind: 'silk', w: 3.6, h: 3.6, tag: '12×12' },
+  flag1824: { name: '플래그 18×24', kind: 'flag', w: 0.45, h: 0.6, tag: '18×24″' }, flag2436: { name: '플래그 24×36', kind: 'flag', w: 0.6, h: 0.9, tag: '24×36″' },
+  flag44: { name: '플로피 4×4', kind: 'flag', w: 1.2, h: 1.2, tag: '4×4' },
+  net1s: { name: '싱글 네트 18×24', kind: 'net', w: 0.45, h: 0.6, tag: '싱글 18×24″', t: 0.7 }, net2s: { name: '더블 네트 18×24', kind: 'net', w: 0.45, h: 0.6, tag: '더블 18×24″', t: 0.5 },
+  net144: { name: '싱글 네트 4×4', kind: 'net', w: 1.2, h: 1.2, tag: '싱글 4×4', t: 0.7 }, net244: { name: '더블 네트 4×4', kind: 'net', w: 1.2, h: 1.2, tag: '더블 4×4', t: 0.5 },
+  // made earlier as "black"; read as double nets
+  black44: { name: '더블 네트 4×4', kind: 'net', w: 1.2, h: 1.2, tag: '더블 4×4', t: 0.5 }, black88: { name: '더블 네트 8×8', kind: 'net', w: 2.4, h: 2.4, tag: '더블 8×8', t: 0.5 } };
+const isGrip = l => !!GRIPS[l.fx];
+const fixName = id => GRIPS[id] ? GRIPS[id].name : FIX(id).name;
+// a grip frame as an oriented thin box (its face looks along pan/tilt), for shadow and silk tests
+function gripBox(g) { const G = GRIPS[g.fx], t = (g.tilt || 0) * DEG, hy = G.h / 2 * Math.abs(Math.cos(t)) + 0.01, hz = 0.02 + G.h / 2 * Math.abs(Math.sin(t));
+  return { id: g.id, kind: 'grip', cx: g.x, cy: g.y, cz: g.z, hx: G.w / 2, hy, hz, yaw: g.pan || 0 }; }
 const FIX = id => FIXTURES.find(f => f.id === id) || FIXTURES[0];
+// what goes on the front of a fixture. Beam angle can only be changed where the hardware allows it: a fresnel's spot/flood
+// (tungsten, HMI, dedo, open face — through barn doors or a diffusion frame) or a fresnel attachment on a COB; everything else
+// has the beam its reflector, box or grid gives it. trans = share of the light that gets through, size = new source size (m).
+const MODS = {
+  barn: { name: '반도어', trans: 1, size: 0, spot: true }, fdiff: { name: '디퓨전 프레임', trans: 0.6, size: 0.6, spot: true, beamAdd: 25 }, chimera: { name: '소프트박스 (키메라)', trans: 0.45, size: 0.9, beam: 110 },
+  refl: { name: '리플렉터 55°', trans: 1, size: 0, beam: 55 }, hyper: { name: '하이퍼 리플렉터 26°', trans: 0.95, size: 0, beam: 26 }, fresatt: { name: '프레넬 어태치', trans: 0.7, size: 0.18, range: [15, 45] },
+  dome: { name: '소프트박스 (라이트 돔)', trans: 0.5, size: 0.9, beam: 110 }, domegrid: { name: '소프트박스 + 그리드', trans: 0.38, size: 0.9, beam: 45 }, lantern: { name: '랜턴 (잼볼)', trans: 0.6, size: 0.9, omni: true },
+  open: { name: '기본 디퓨저', trans: 1, size: 0 }, grid: { name: '그리드 (허니콤)', trans: 0.7, size: 0, beam: 50 }, pbox: { name: '소프트박스', trans: 0.6, size: 0.4, beam: 100 },
+};
+const MOD_SETS = { fresnel: ['barn', 'fdiff', 'chimera'], cob: ['refl', 'hyper', 'fresatt', 'dome', 'domegrid', 'lantern'], panel: ['open', 'grid', 'pbox'], tube: ['open', 'grid'] };
+const modsFor = fx => MOD_SETS[fixKind(fx.id)] || [];
+// the modifier on a light; older projects stored diff: none / diff / box
+function modOf(l, fx = FIX(l.fx)) { const set = modsFor(fx); if (!set.length) return null; if (set.includes(l.mod)) return { id: l.mod, ...MODS[l.mod] };
+  const old = { fresnel: { diff: 'fdiff', box: 'chimera' }, cob: { diff: 'dome', box: 'dome' }, panel: { box: 'pbox' } }[fixKind(fx.id)] || {}, id = old[l.diff] || set[0]; return { id, ...MODS[id] }; }
+// beam (full angle) and whether it can be adjusted, for this light with its modifier
+function beamOf(l, fx = FIX(l.fx)) { const md = modOf(l, fx);
+  if (fx.beam[0] >= 360 || (md && md.omni)) return { beam: 360 };
+  const r = md && md.range ? md.range : (!md || md.spot) && fx.beam[0] < fx.beam[1] ? fx.beam : null;
+  if (r) return { beam: clamp(l.beam ?? r[1], r[0], r[1]) + (md && md.beamAdd || 0), range: r, v: clamp(l.beam ?? r[1], r[0], r[1]) };
+  return { beam: md && md.beam ? md.beam : fx.beam[1] }; }
 const DIFFUSION = { none: { name: '하드', trans: 1, beamAdd: 0, size: 0 }, diff: { name: '디퓨전 1장', trans: 0.6, beamAdd: 25, size: 0.6 }, box: { name: '소프트박스', trans: 0.45, beamAdd: 70, size: 0.9 } };
 // illuminance on a horizontal surface (lux) from the sky and sun
 const ENVS = {
@@ -1495,18 +1707,25 @@ const envNow = () => state.set.sun && state.set.sun.on ? sunEnv(state.set.sun) :
 const shotLights = (s = cur()) => s.lights || (s.lights = []);
 function lightCtx(s) {
   const set = state.set, rm = roomInfo(), WB = s.wb || 5600, env0 = envNow();
-  const lights = shotLights(s).map(l => {
-    const fx = FIX(l.fx), df = DIFFUSION[l.diff || 'none'], omni = fx.beam[0] >= 360, P = { x: l.x, y: l.y, z: l.z };
-    const beam = omni ? 360 : clamp((l.beam ?? fx.beam[1]) + df.beamAdd, 5, 170);
+  const grips = shotLights(s).filter(isGrip), cuts = grips.filter(g => GRIPS[g.fx].kind !== 'flag').map(g => ({ b: gripBox(g), G: GRIPS[g.fx] })), solid = grips.filter(g => GRIPS[g.fx].kind === 'flag').map(gripBox);
+  const lights = shotLights(s).filter(l => !isGrip(l)).map(l => {
+    const fx = FIX(l.fx), md = modOf(l, fx), df = { trans: md ? md.trans : 1, size: md ? md.size : 0 }, bm = beamOf(l, fx), omni = bm.beam >= 360, P = { x: l.x, y: l.y, z: l.z };
+    const beam = omni ? 360 : clamp(bm.beam, 5, 170);
     const D = l.track ? norm(sub3({ x: subjOf(s, l.track).x, y: headY(s, subjOf(s, l.track)) - 0.1, z: subjOf(s, l.track).z }, P)) : dirFrom(l.pan || 0, l.tilt || 0);
-    const flux = fx.lm * (l.dim ?? 1) * df.trans, a = beam / 2 * DEG, fld = Math.min(a * 1.35, Math.PI * 0.95);
+    // silks and nets between the light and the subject it lights: a silk cuts about a stop and the source grows to the silk's size;
+    // a net only cuts (single ½ stop, double 1 stop)
+    const tgt = subjOf(s, l.track || 'A'), hit = cuts.filter(c => { const t = segBox(c.b, P, { x: tgt.x, y: headY(s, tgt), z: tgt.z }); return t !== null && t > 0 && t < 1; });
+    const sk = hit.find(c => c.G.kind === 'silk'), cut = hit.reduce((m, c) => m * (c.G.kind === 'silk' ? 0.5 : c.G.t), 1);
+    const flux = fx.lm * (l.dim ?? 1) * df.trans * cut, a = beam / 2 * DEG, fld = Math.min(a * 1.35, Math.PI * 0.95);
     // luminous intensity (cd) on the beam axis: flux spread over the cone's solid angle
     const I0 = omni ? flux / (4 * Math.PI) : flux / (2 * Math.PI * (1 - Math.cos((a + fld) / 2)));
-    const size = Math.max(fx.size, df.size), K = Array.isArray(fx.K) ? (l.K ?? 5600) : fx.K, samples = [];
+    const size = Math.max(fx.size, df.size, sk ? sk.b.hx * 2 : 0), K = Array.isArray(fx.K) ? (l.K ?? 5600) : fx.K, samples = [];
     if (size > 0.25) { const ax = norm(cross(D, Math.abs(D.y) > 0.95 ? { x: 1, y: 0, z: 0 } : UP)), ay = cross(ax, D);
       for (let i = 0; i < 4; i++) { const t = i / 4 * Math.PI * 2 + 0.4; samples.push(add(add(P, ax, Math.cos(t) * size * 0.35), ay, Math.sin(t) * size * 0.35)); } }
     else samples.push(P);
-    return { l, P, D, I0, a, fld, omni, flux, K, col: wbf(K, WB), samples, inRoom: inRoom(P, rm) };
+    const wb = wbf(K, WB), gel = GELS[l.gel] && GELS[l.gel].t, cm = fx.rgb ? l.cmode || 'cct' : 'cct';
+    const col = cm === 'rgb' ? rgbMode(wb, l.hue ?? 0, (l.sat ?? 100) / 100) : cm === 'gel' && gel ? ledGel(wb, gel) : !fx.rgb && gel ? wb.map((v, i) => v * gel[i]) : wb;
+    return { l, P, D, I0, a, fld, omni, flux, K, col, samples, size, cuts: hit.map(c => c.b.id), cut, inRoom: inRoom(P, rm) };
   });
   // interreflection inside a closed room (integrating-sphere estimate): E = Φ·ρ̄ / (A·(1 − ρ̄))
   let Eind = 0, indCol = [1, 1, 1], rho = 0, Atot = 0;
@@ -1521,7 +1740,7 @@ function lightCtx(s) {
   if (rm && nWin) { DF = 0.8 * roomWindows(rm).reduce((m, w) => m + 2 * w.half * (w.y1 - w.y0), 0) * 65 / (Atot * (1 - rho * rho)); Eday = env0.sky * DF / 100;
     if (Eday > 0) { indCol = [0, 1, 2].map(i => (indCol[i] * Eind + envCol[i] * Eday) / (Eind + Eday)); Eind += Eday; } }
   const ceil = rm ? [{ id: 'ceil', kind: 'ceil', cx: 0, cz: 0, cy: rm.h + 0.06, hx: rm.side / 2 + 0.12, hy: 0.06, hz: rm.side / 2 + 0.12, yaw: 0 }] : [];
-  return { lights, boxes: setBoxes().concat(figBoxes(s), ceil), rm, env, envCol, sunCol: wbf(env0.sunK || env0.K, WB), sunDir: env.sun ? dirFrom(env0.az, env0.el) : null, Eind, indCol, rho, Atot, nWin, DF, Eday, X: expo(s), fc: false };
+  return { lights, grips, boxes: setBoxes().concat(figBoxes(s), ceil, solid), rm, env, envCol, sunCol: wbf(env0.sunK || env0.K, WB), sunDir: env.sun ? dirFrom(env0.az, env0.el) : null, Eind, indCol, rho, Atot, nWin, DF, Eday, X: expo(s), fc: false };
 }
 function blocked(boxes, a, b, ex) { for (const bx of boxes) { if (bx.id === ex) continue; const t = segBox(bx, a, b); if (t !== null && t > 0.0005 && t < 0.999) return true; } return false; }
 // irradiance (lux per colour channel, white-balanced) at P with surface normal n: inverse-square + Lambert cosine + shadows
@@ -1678,6 +1897,35 @@ function propFaces(o) {
       B(-W + 0.12, 0.6, D - 0.005, -W + 0.42, 0.72, D + 0.01, { rgb: [0.85, 0.85, 0.8] }); B(W - 0.42, 0.6, D - 0.005, W - 0.12, 0.72, D + 0.01, { rgb: [0.85, 0.85, 0.8] });
       B(-W + 0.1, 0.62, -D - 0.01, -W + 0.4, 0.72, -D + 0.005, { css: '#E5483A' }); B(W - 0.4, 0.62, -D - 0.01, W - 0.1, 0.72, -D + 0.005, { css: '#E5483A' });
       for (const [sx, sz] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) mCyl(out, F, 'x', [sx > 0 ? W - 0.2 : -W - 0.02, 0.33, sz * (D - 0.8)], 0.33, 0.33, 0.22, 16, { ...MAT.black, cap0: MAT.grey, cap1: MAT.grey }); break; }
+    // outdoor
+    case 'tree': { const rnd = hashRnd(o.id), bark = { rgb: [0.24, 0.17, 0.11] }, leaf = [base, { rgb: [0.2, 0.36, 0.13] }, { rgb: [0.12, 0.24, 0.08] }];
+      mCyl(out, F, 'y', [0, 0, 0], 0.2, 0.13, 2.6, 10, bark, 0);
+      for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2 + rnd(), r = i ? 0.55 + rnd() * 0.3 : 0; mSphere(out, fp3(F, Math.cos(a) * r, 3.4 + rnd() * 0.9 + (i ? 0 : 0.5), Math.sin(a) * r), 0.8 + rnd() * 0.35, leaf[i % 3], 7); }
+      break; }
+    case 'bush': { const rnd = hashRnd(o.id); for (let i = 0; i < 4; i++) mSphere(out, fp3(F, (i - 1.5) * 0.3, 0.38 + rnd() * 0.1, (rnd() - 0.5) * 0.25), 0.36 + rnd() * 0.12, i % 2 ? base : { rgb: [0.2, 0.36, 0.13] }, 6); break; }
+    case 'rock': mSphere(out, fp3(F, -0.12, 0.12, 0), 0.42, base, 5); mSphere(out, fp3(F, 0.25, 0.05, 0.1), 0.3, dark, 5); break;
+    case 'fence': for (const x of [-W + 0.05, 0, W - 0.05]) B(x - 0.05, 0, -D, x + 0.05, d.h, D, dark);
+      for (const y of [0.25, 0.65, 0.95]) B(-W, y, -0.03, W, y + 0.1, 0.03, base); break;
+    case 'parasol': mCyl(out, F, 'y', [0, 0, 0], 0.025, 0.025, 2.2, 8, MAT.metal, 0); mCyl(out, F, 'y', [0, 0, 0], 0.28, 0.28, 0.06, 14, MAT.black);
+      mCyl(out, F, 'y', [0, 2.0, 0], 1.2, 0.04, 0.42, 16, { ...base, two: true }, 0); break;
+    case 'picnic': { const wd = base; B(-W, 0.72, -0.4, W, 0.76, 0.4, wd); for (const sz of [-1, 1]) B(-W, 0.42, sz * 0.62 - 0.14, W, 0.46, sz * 0.62 + 0.14, wd);
+      for (const sx of [-1, 1]) { const x = sx * (W - 0.25); B(x - 0.04, 0, -0.1, x + 0.04, 0.72, 0.1, dark); B(x - 0.04, 0.38, -D, x + 0.04, 0.42, D, dark);
+        for (const sz of [-1, 1]) mRod(out, fp3(F, x, 0, sz * 0.7), fp3(F, x, 0.72, sz * 0.1), 0.06, dark); } break; }
+    case 'bench': { const iron = { rgb: [0.08, 0.08, 0.09] }; for (const sx of [-1, 1]) { B(sx * (W - 0.12) - 0.03, 0, -D, sx * (W - 0.12) + 0.03, 0.45, D - 0.1, iron); B(sx * (W - 0.12) - 0.03, 0.45, -D, sx * (W - 0.12) + 0.03, d.h, -D + 0.06, iron); }
+      for (let i = 0; i < 4; i++) B(-W, 0.42, -D + 0.08 + i * 0.12, W, 0.46, -D + 0.17 + i * 0.12, base);
+      for (let i = 0; i < 3; i++) B(-W, 0.55 + i * 0.1, -D, W, 0.62 + i * 0.1, -D + 0.04, base); break; }
+    case 'lamp': mCyl(out, F, 'y', [0, 0, 0], 0.12, 0.09, 0.4, 12, base); mCyl(out, F, 'y', [0, 0.4, 0], 0.06, 0.045, 3.75, 10, base, 0);
+      mRod(out, fp3(F, 0, 4.1, 0), fp3(F, 0, 4.12, 0.55), 0.05, base); B(-0.14, 3.98, 0.45, 0.14, 4.1, 0.75, base); B(-0.12, 3.96, 0.48, 0.12, 3.98, 0.72, { rgb: [0.9, 0.88, 0.78] }); break;
+    case 'bike': { const tyre = { ...MAT.black, cap0: MAT.black, cap1: MAT.black };
+      for (const sz of [-1, 1]) mCyl(out, F, 'x', [-0.02, 0.34, sz * 0.52], 0.34, 0.34, 0.04, 18, tyre);
+      const P = (y, z) => fp3(F, 0, y, z), bb = P(0.3, 0), seat = P(0.85, -0.18), head = P(0.85, 0.38), rear = P(0.34, -0.52), front = P(0.34, 0.52);
+      for (const [a, b] of [[bb, seat], [bb, head], [seat, head], [bb, rear], [seat, rear], [head, front]]) mRod(out, a, b, 0.035, base);
+      B(-0.06, 0.88, -0.28, 0.06, 0.93, -0.08, MAT.black); mRod(out, P(0.98, 0.34), P(0.85, 0.38), 0.03, MAT.metal); B(-0.27, 0.97, 0.3, 0.27, 1.0, 0.36, MAT.black); break; }
+    case 'cone': B(-W, 0, -D, W, 0.03, D, base); mCyl(out, F, 'y', [0, 0.03, 0], 0.14, 0.025, 0.69, 14, base, 2);
+      mCyl(out, F, 'y', [0, 0.32, 0], 0.085, 0.07, 0.1, 14, { rgb: [0.9, 0.9, 0.88] }, 0); break;
+    case 'bin': mCyl(out, F, 'y', [0, 0, 0], 0.22, 0.25, 0.88, 16, base); mCyl(out, F, 'y', [0, 0.88, 0], 0.26, 0.24, 0.07, 16, dark); break;
+    case 'hydrant': mCyl(out, F, 'y', [0, 0, 0], 0.17, 0.17, 0.05, 12, base); mCyl(out, F, 'y', [0, 0.05, 0], 0.11, 0.11, 0.6, 12, base);
+      mCyl(out, F, 'y', [0, 0.65, 0], 0.13, 0.05, 0.15, 12, base); for (const sx of [-1, 1]) mCyl(out, F, 'x', [sx > 0 ? 0.1 : -0.2, 0.45, 0], 0.045, 0.045, 0.1, 10, dark); break;
     case 'apple': B(-W, 0, -D, W, d.h, D, base); for (const sx of [-1, 1]) B(sx * W - 0.004, 0.12, -0.08, sx * W + 0.004, 0.16, 0.08, MAT.black); break;
   }
   if (scaled) out.forEach(f => { f.n = norm(f.n); if (f.vn) f.vn = f.vn.map(norm); });
@@ -1685,7 +1933,9 @@ function propFaces(o) {
 }
 
 // light fixtures with their stand (or a ceiling pipe when they hang near the ceiling)
-const fixKind = id => ({ tung650: 'fresnel', tung1k: 'fresnel', tung2k: 'fresnel', tung5k: 'fresnel', hmi18: 'fresnel', hmi4k: 'fresnel', cob120: 'cob', cob300: 'cob', cob600: 'cob', cob1200: 'cob', panel: 'panel', skypanel: 'panel', kino: 'panel', tube: 'tube', bulb: 'bulb', china: 'china', balloon: 'balloon' }[id] || 'cob');
+const fixKind = id => ({ tung650: 'fresnel', tung1k: 'fresnel', tung2k: 'fresnel', tung5k: 'fresnel', hmi18: 'fresnel', hmi4k: 'fresnel', cob120: 'cob', cob300: 'cob', cob600: 'cob', cob1200: 'cob', cob60c: 'cob', cob150c: 'cob', cob300c: 'cob', cob600c: 'cob', led30: 'cob', panel: 'panel', skypanel: 'panel', kino: 'panel', tube: 'tube', pavo2: 'tube', pavo4: 'tube', pavo8: 'tube', bulb: 'bulb', bulb40: 'bulb', bulb100: 'bulb', tung300: 'fresnel', dedo: 'fresnel', leko: 'leko', leko575: 'leko', tung100: 'fresnel', tung200: 'fresnel', tung10k: 'fresnel', dedo100: 'fresnel', red800: 'fresnel', blonde2k: 'fresnel',
+  hmi200: 'fresnel', hmi575: 'fresnel', hmi800: 'fresnel', hmi12: 'fresnel', hmi25: 'fresnel', hmi6k: 'fresnel', hmi12k: 'fresnel', hmi18k: 'fresnel', panel1x1: 'panel', panel2x1: 'panel', led5: 'panel', led10: 'panel', s30: 'panel', s120: 'panel', s360: 'panel', kino2: 'panel',
+  balloon4k: 'balloon', bulb25: 'bulb', bulb150: 'bulb', china60: 'china', china150: 'china', china500: 'china', china: 'china', balloon: 'balloon' }[id] || 'cob');
 function surfaceBelow(x, z, y) { let top = 0;
   for (const p of state.set.props) { const d = propDims(p), b = { cx: p.x, cz: p.z, cy: d.h / 2, hx: d.w / 2, hy: d.h / 2, hz: d.d / 2, yaw: p.yaw || 0 }, l = toBox(b, { x, y: 0, z });
     if (Math.abs(l.x) < b.hx && Math.abs(l.z) < b.hz && d.h < y) top = Math.max(top, d.h); }
@@ -1696,8 +1946,19 @@ function standFaces(out, x, z, top) {
   mRod(out, { x, y: j - 0.06, z }, { x, y: mid, z }, 0.034, MAT.metal); mRod(out, { x, y: mid, z }, { x, y: top, z }, 0.024, MAT.metal);
   mBox(out, yawFrame({ x, y: 0, z }, 0), -0.025, mid - 0.04, -0.025, 0.025, mid, 0.025, MAT.black);
 }
+// a grip frame on a C-stand: the cloth (silk: white translucent; flag and black: solid black), a metal frame, an arm down to the stand
+function gripFaces(g) {
+  const G = GRIPS[g.fx], out = [], F = dirFrame({ x: g.x, y: g.y, z: g.z }, dirFrom(g.pan || 0, g.tilt || 0)), w = G.w / 2, h = G.h / 2, Q = (x, y) => fp3(F, x, y, 0);
+  const cloth = G.kind === 'silk' ? { rgb: [0.92, 0.92, 0.9], alpha: true, two: true } : G.kind === 'net' ? { rgb: [0.06, 0.06, 0.07], alpha: true, two: true } : { rgb: [0.02, 0.02, 0.025], two: true };
+  mQuad(out, [Q(-w, -h), Q(w, -h), Q(w, h), Q(-w, h)], cloth);
+  for (const [a, b] of [[[-w, -h], [w, -h]], [[w, -h], [w, h]], [[w, h], [-w, h]], [[-w, h], [-w, -h]]]) mRod(out, Q(a[0], a[1]), Q(b[0], b[1]), G.w > 1.5 ? 0.025 : 0.012, MAT.metal);
+  const bot = Q(0, -h); if (bot.y > 0.3) { mRod(out, bot, { x: bot.x, y: Math.max(0.3, bot.y - 0.15), z: bot.z }, 0.012, MAT.metal); standFaces(out, bot.x, bot.z, Math.max(0.3, bot.y - 0.15)); }
+  return out;
+}
 function fixtureFaces(li) {
-  const l = li.l, fx = FIX(l.fx), kind = fixKind(fx.id), P = li.P, out = [], em = { emit: li.K, col: li.col }, df = l.diff || 'none', rm = roomInfo();
+  const l = li.l, fx = FIX(l.fx), kind = fixKind(fx.id), P = li.P, out = [], em = { emit: li.K, col: li.col }, md = modOf(l, fx), mid = md ? md.id : '', rm = roomInfo();
+  // how the front looks: barn doors / reflector bare, a diffusion frame, or a box; a lantern is a glowing ball
+  const df = /^(chimera|dome|domegrid|pbox)$/.test(mid) ? 'box' : mid === 'fdiff' ? 'diff' : mid === 'lantern' ? 'lantern' : 'none';
   if (kind === 'bulb') { // a practical lamp: bulb under a shade, stem down to the table or floor it stands on
     const F0 = yawFrame({ x: P.x, y: 0, z: P.z }, 0), surf = surfaceBelow(P.x, P.z, P.y - 0.1);
     mCyl(out, F0, 'y', [0, P.y - 0.035, 0], 0.035, 0.035, 0.07, 10, em);
@@ -1711,14 +1972,14 @@ function fixtureFaces(li) {
       else { const sx = P.x + 1.6, mt = { x: sx, y: top.y, z: P.z }; mRod(out, top, mt, 0.025, MAT.metal); standFaces(out, sx, P.z, top.y); } }
     else { mRod(out, { x: P.x, y: 0.5, z: P.z }, { x: P.x, y: P.y - Rr, z: P.z }, 0.06, MAT.metal); standFaces(out, P.x, P.z, 0.55); }
     return out; }
-  if (kind === 'tube') { const F0 = yawFrame({ x: P.x, y: 0, z: P.z }, l.pan || 0);
-    mCyl(out, F0, 'y', [0, P.y - 0.6, 0], 0.02, 0.02, 1.2, 8, em, 0);
-    mCyl(out, F0, 'y', [0, P.y - 0.63, 0], 0.024, 0.024, 0.03, 8, MAT.black); mCyl(out, F0, 'y', [0, P.y + 0.6, 0], 0.024, 0.024, 0.03, 8, MAT.black);
-    standFaces(out, P.x, P.z, P.y - 0.63); return out; }
+  if (kind === 'tube') { const F0 = yawFrame({ x: P.x, y: 0, z: P.z }, l.pan || 0), h = fx.size / 2;
+    mCyl(out, F0, 'y', [0, P.y - h, 0], 0.02, 0.02, fx.size, 8, em, 0);
+    mCyl(out, F0, 'y', [0, P.y - h - 0.03, 0], 0.024, 0.024, 0.03, 8, MAT.black); mCyl(out, F0, 'y', [0, P.y + h, 0], 0.024, 0.024, 0.03, 8, MAT.black);
+    standFaces(out, P.x, P.z, P.y - h - 0.03); return out; }
   const F = dirFrame(P, li.D), yf = yawFrame(P, Math.atan2(li.D.x, li.D.z) / DEG);
   const B = (x0, y0, z0, x1, y1, z1, m) => mBox(out, F, x0, y0, z0, x1, y1, z1, m);
   let R = 0.12, front = 0.12;
-  if (kind === 'fresnel') { R = { tung650: 0.09, tung1k: 0.12, tung5k: 0.21, hmi4k: 0.2 }[fx.id] || 0.15; const body = { rgb: fx.id === 'hmi18' ? [0.3, 0.31, 0.32] : [0.08, 0.15, 0.3] };
+  if (kind === 'fresnel') { R = { tung100: 0.05, tung200: 0.06, tung300: 0.07, dedo100: 0.045, dedo: 0.05, tung650: 0.09, tung1k: 0.12, tung5k: 0.21, tung10k: 0.27, hmi200: 0.08, hmi575: 0.1, hmi800: 0.11, hmi12: 0.13, hmi25: 0.17, hmi4k: 0.2, hmi6k: 0.25, hmi12k: 0.3, hmi18k: 0.33, red800: 0.11, blonde2k: 0.15 }[fx.id] || 0.15; const body = { rgb: /^hmi/.test(fx.id) ? [0.3, 0.31, 0.32] : [0.08, 0.15, 0.3] };
     mCyl(out, F, 'z', [0, 0, -0.17], R, R, 0.29, 18, { ...body, cap1: MAT.black });
     mCyl(out, F, 'z', [0, 0, 0.12], R * 0.82, R * 0.82, 0.006, 18, { ...MAT.black, cap1: em }, 2); // fresnel lens
     B(-R * 0.55, R - 0.01, -0.15, R * 0.55, R + 0.05, 0.06, MAT.black); // vent hood
@@ -1728,17 +1989,22 @@ function fixtureFaces(li) {
       for (const [sx, sy, Ll] of [[0, 1, R * 1.25], [0, -1, R * 1.25], [1, 0, R * 0.9], [-1, 0, R * 0.9]]) { const tx = -sy, ty = sx;
         const e1 = [sx * R + tx * R, sy * R + ty * R], e2 = [sx * R - tx * R, sy * R - ty * R], o = [sx * Ll * sn, sy * Ll * sn, Ll * c];
         mQuad(out, [fp3(F, e1[0], e1[1], z0), fp3(F, e2[0], e2[1], z0), fp3(F, e2[0] + o[0], e2[1] + o[1], z0 + o[2]), fp3(F, e1[0] + o[0], e1[1] + o[1], z0 + o[2])], MAT.black); } } }
-  else if (kind === 'cob') { R = 0.12; const big = fx.id === 'cob1200' ? 1.4 : fx.id === 'cob120' ? 0.75 : 1; B(-0.11 * big, -0.12 * big, -0.2, 0.11 * big, 0.12 * big, 0.03, MAT.grey); R *= big;
+  else if (kind === 'leko') { R = 0.1; // ellipsoidal: reflector housing, a gate with shutter handles, a long lens barrel
+    mCyl(out, F, 'z', [0, 0, -0.26], 0.1, 0.12, 0.2, 16, { rgb: [0.07, 0.07, 0.08], cap1: MAT.black });
+    for (const [sx, sy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) B(sx * 0.12 - 0.012, sy * 0.12 - 0.012, -0.08, sx * 0.12 + 0.012 + sx * 0.04, sy * 0.12 + 0.012 + sy * 0.04, -0.05, MAT.metal);
+    mCyl(out, F, 'z', [0, 0, -0.06], 0.075, 0.075, 0.24, 14, { rgb: [0.07, 0.07, 0.08], cap1: em }, 2); front = 0.18; }
+  else if (kind === 'cob') { R = 0.12; const big = { cob1200: 1.4, cob120: 0.75, cob60: 0.6, cob200: 0.85, led30: 0.5, led5: 0.3, led10: 0.38 }[fx.id] || 1; B(-0.11 * big, -0.12 * big, -0.2, 0.11 * big, 0.12 * big, 0.03, MAT.grey); R *= big;
     for (let i = 0; i < 4; i++) B(-0.1, -0.11 + i * 0.065, -0.24, 0.1, -0.09 + i * 0.065, -0.2, MAT.black); // cooling fins
     mCyl(out, F, 'z', [0, 0, 0.03], 0.045, 0.045, 0.004, 14, { ...MAT.black, cap1: em }, 2); // COB chip
     front = 0.03;
     if (df === 'none') { mCyl(out, F, 'z', [0, 0, 0.03], 0.06, 0.17, 0.15, 16, { rgb: [0.62, 0.63, 0.65], two: true }, 0); front = 0.18; } }
-  else { const [pw, ph] = fx.id === 'skypanel' ? [0.36, 0.19] : fx.id === 'kino' ? [0.63, 0.25] : [0.32, 0.32]; R = Math.max(pw, ph) + 0.01;
-    B(-pw, -ph, -0.05, pw, ph, 0, fx.id === 'kino' ? MAT.black : { ...MAT.black, front: em }); B(-0.1, -0.1, -0.08, 0.1, 0.1, -0.05, MAT.grey); front = 0;
-    if (fx.id === 'kino') for (let i = 0; i < 4; i++) mCyl(out, F, 'x', [-pw + 0.04, -ph + (i + 0.5) * ph / 2, 0.025], 0.016, 0.016, 2 * pw - 0.08, 8, em, 0);
-    if (fx.id === 'skypanel') B(-pw, ph, -0.05, pw, ph + 0.03, -0.01, MAT.grey); }
+  else { const [pw, ph] = { skypanel: [0.36, 0.19], s30: [0.3, 0.16], s120: [0.62, 0.19], s360: [0.9, 0.4], kino: [0.63, 0.25], kino2: [0.32, 0.13], panel1x1: [0.16, 0.16], panel2x1: [0.32, 0.16], led5: [0.06, 0.04], led10: [0.08, 0.05], panel: [0.62, 0.16] }[fx.id] || [0.32, 0.32]; R = Math.max(pw, ph) + 0.01;
+    B(-pw, -ph, -0.05, pw, ph, 0, /^kino/.test(fx.id) ? MAT.black : { ...MAT.black, front: em }); B(-0.1, -0.1, -0.08, 0.1, 0.1, -0.05, MAT.grey); front = 0;
+    if (fx.id === 'kino' || fx.id === 'kino2') for (let i = 0, n = fx.id === 'kino' ? 4 : 2; i < n; i++) mCyl(out, F, 'x', [-pw + 0.04, -ph + (i + 0.5) * 2 * ph / n, 0.025], 0.016, 0.016, 2 * pw - 0.08, 8, em, 0);
+    if (/^(skypanel|s30|s120|s360)$/.test(fx.id)) B(-pw, ph, -0.05, pw, ph + 0.03, -0.01, MAT.grey); }
   // light modifiers
-  if (df === 'box') mCyl(out, F, 'z', [0, 0, front], kind === 'panel' ? 0.42 : 0.1, kind === 'panel' ? 0.5 : 0.45, kind === 'panel' ? 0.22 : 0.5, 8, { ...MAT.black, two: true, cap1: { ...em, dim: 0.6 } }, 2);
+  if (df === 'lantern') mSphere(out, fp3(F, 0, 0, front + 0.45), 0.45, { emit: li.K, col: li.col, dim: 0.5 }, 9);
+  else if (df === 'box') mCyl(out, F, 'z', [0, 0, front], kind === 'panel' ? 0.42 : 0.1, kind === 'panel' ? 0.5 : 0.45, kind === 'panel' ? 0.22 : 0.5, 8, { ...MAT.black, two: true, cap1: { ...em, dim: 0.6 } }, 2);
   else if (df === 'diff') { const z = front + 0.3, h = 0.32, Q = (x, y) => fp3(F, x, y, z);
     mQuad(out, [Q(-h, -h), Q(h, -h), Q(h, h), Q(-h, h)], { emit: li.K, col: li.col, dim: 0.5, alpha: 0.85 });
     for (const [a, b] of [[[-h, -h], [h, -h]], [[h, -h], [h, h]], [[h, h], [-h, h]], [[-h, h], [-h, -h]]]) mRod(out, Q(a[0], a[1]), Q(b[0], b[1]), 0.02, MAT.black); }
@@ -1749,7 +2015,7 @@ function fixtureFaces(li) {
   const yy = P.y + sg * arm;
   if (hang) { mRod(out, { x: P.x, y: yy, z: P.z }, { x: P.x, y: rm.h, z: P.z }, 0.03, MAT.metal); mBox(out, yawFrame({ x: P.x, y: 0, z: P.z }, 0), -0.04, rm.h - 0.06, -0.04, 0.04, rm.h, 0.04, MAT.black); }
   else standFaces(out, P.x, P.z, yy);
-  if ((fx.id === 'hmi18' || fx.id === 'hmi4k' || fx.id === 'cob1200') && !hang) mBox(out, yawFrame({ x: P.x + 0.55, y: 0, z: P.z + 0.2 }, 20), -0.17, 0, -0.12, 0.17, 0.22, 0.12, MAT.grey); // ballast
+  if ((/^hmi/.test(fx.id) && fx.w >= 1200 || fx.id === 'cob1200') && !hang) mBox(out, yawFrame({ x: P.x + 0.55, y: 0, z: P.z + 0.2 }, 20), -0.17, 0, -0.12, 0.17, 0.22, 0.12, MAT.grey); // ballast
   return out;
 }
 
@@ -2121,7 +2387,9 @@ function initGL() {
   if (THREE.ColorManagement && 'enabled' in THREE.ColorManagement) THREE.ColorManagement.enabled = false;
   try {
     const canvas = document.createElement('canvas'), R = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
-    if (!R.capabilities.isWebGL2 && !R.extensions.get('EXT_color_buffer_half_float')) { R.dispose(); return null; }
+    // HDR render target: half float where the GPU can draw into it, otherwise plain 8-bit (some older Android and iOS GPUs) rather than a black frame
+    const hdr = R.capabilities.isWebGL2 ? (R.extensions.has('EXT_color_buffer_float') || R.extensions.has('EXT_color_buffer_half_float')) : !!R.extensions.get('EXT_color_buffer_half_float');
+    rtType = hdr ? THREE.HalfFloatType : THREE.UnsignedByteType;
     if (rev < 155) R.physicallyCorrectLights = true; // physical light units are the default from r155
     if ('outputColorSpace' in R) R.outputColorSpace = THREE.LinearSRGBColorSpace; else R.outputEncoding = THREE.LinearEncoding; R.toneMapping = THREE.NoToneMapping; R.setPixelRatio(1);
     R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFShadowMap;
@@ -2173,7 +2441,7 @@ function initGL() {
 }
 const v3 = (x, y, z) => new THREE.Vector3(x, y, z);
 function clearGroup(g) { while (g.children.length) { const c = g.children.pop();
-  c.traverse(o => { if (o.geometry && !o.geometry.userData.shared) o.geometry.dispose(); if (o.material && !o.material.userData.shared) { if (o.material.map && !o.material.map._keep) o.material.map.dispose(); o.material.dispose(); } if (o.isLight && typeof o.dispose === 'function') o.dispose(); }); } }
+  c.traverse(o => { if (o.geometry && !o.geometry.userData.shared) o.geometry.dispose(); if (o.material) [].concat(o.material).forEach(m => { if (m.userData.shared) return; if (m.map && !m.map._keep) m.map.dispose(); m.dispose(); }); if (o.isLight && typeof o.dispose === 'function') o.dispose(); }); } }
 const hexLin = h => { const n = parseInt(h.slice(1), 16), c = v => { v /= 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return [c(n >> 16 & 255), c(n >> 8 & 255), c(n & 255)]; };
 // the face lists from the model builders → a few merged meshes, one per material kind, wound to match each face's normal
 function glMeshes(faces, cast) {
@@ -2210,6 +2478,19 @@ function glBuildStatic() {
     else if (!b.part) glMeshes(propFaces(b.obj), true).forEach(m => g.add(m));
   });
 }
+// gobo slides drawn once each: white passes light, black blocks it; the round gate edge comes from the spot's cone
+function goboTex(id) {
+  gl.gobos = gl.gobos || {}; if (gl.gobos[id]) return gl.gobos[id];
+  const n = 256, c = document.createElement('canvas'); c.width = c.height = n; const x = c.getContext('2d'), r = hashRnd('gobo' + id);
+  x.fillStyle = id === 'none' ? '#fff' : '#000'; x.fillRect(0, 0, n, n); x.fillStyle = '#fff';
+  if (id === 'win') { const m = 22, w = (n - 3 * m) / 2; for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) x.fillRect(m + i * (w + m), m + j * (w + m), w, w); }
+  if (id === 'blind') for (let y = 8; y < n; y += 24) x.fillRect(0, y, n, 13);
+  if (id === 'leaf') { x.fillRect(0, 0, n, n); x.fillStyle = '#000';
+    for (let i = 0; i < 70; i++) { x.beginPath(); x.ellipse(r() * n, r() * n, 8 + r() * 22, 4 + r() * 9, r() * Math.PI, 0, Math.PI * 2); x.fill(); } }
+  if (id === 'break') { x.fillRect(0, 0, n, n); x.fillStyle = '#000';
+    for (let i = 0; i < 26; i++) { x.beginPath(); const cx = r() * n, cy = r() * n, k = 5 + Math.floor(r() * 4); for (let j = 0; j < k; j++) { const a = j / k * Math.PI * 2, rr = 12 + r() * 26; x.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } x.fill(); } }
+  const t = new THREE.CanvasTexture(c); if ('colorSpace' in t) t.colorSpace = THREE.SRGBColorSpace; t._keep = true; return gl.gobos[id] = t;
+}
 // street backdrop: facades tiled 3 m per window bay, low-poly trees; they take light and shadow but cast none into the set
 function glBackdrop(g) {
   if (!gl.facade) { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d');
@@ -2231,18 +2512,23 @@ function glBackdrop(g) {
 // fixtures with their real light: SpotLight / PointLight in candela, soft shadow radius from the source size
 function glBuildFixtures(L) {
   const g = gl.parts.fix; clearGroup(g); gl.lights = []; gl.glows = [];
-  const casters = new Set(L.lights.filter(li => !li.omni).sort((a, b) => b.I0 - a.I0).slice(0, phone.matches ? 3 : 4).map(li => li.l.id));
+  // a gobo needs the light's shadow map to project through, so gobo spots always cast
+  const goboOn = li => FIX(li.l.fx).gobo && (li.l.gobo || 'win') !== 'none';
+  const casters = new Set(L.lights.filter(li => !li.omni).sort((a, b) => goboOn(b) - goboOn(a) || b.I0 - a.I0).slice(0, small() ? 3 : 4).map(li => li.l.id));
   L.lights.forEach(li => {
     glMeshes(fixtureFaces(li), false).forEach(m => g.add(m));
-    const P = li.P, fx = FIX(li.l.fx), size = Math.max(fx.size, DIFFUSION[li.l.diff || 'none'].size); let lt;
+    const P = li.P, size = li.size; let lt;
     if (li.omni) lt = new THREE.PointLight(0xffffff, li.I0, 0, 2);
     else { lt = new THREE.SpotLight(0xffffff, li.I0, 0, Math.min(li.fld, 1.55), clamp(1 - li.a / li.fld, 0, 1), 2); lt.target.position.set(P.x + li.D.x, P.y + li.D.y, P.z + li.D.z); g.add(lt.target);
-      if (casters.has(li.l.id)) { lt.castShadow = true; const ms = phone.matches ? 512 : 1024; lt.shadow.mapSize.set(ms, ms); lt.shadow.bias = -0.0004; lt.shadow.normalBias = 0.02; lt.shadow.radius = 1 + size * 7; lt.shadow.camera.near = 0.15; lt.shadow.camera.far = 45; } }
+      if (casters.has(li.l.id)) { lt.castShadow = true; const ms = small() ? 512 : 1024; lt.shadow.mapSize.set(ms, ms); lt.shadow.bias = -0.0004; lt.shadow.normalBias = 0.02; lt.shadow.radius = 1 + size * 7; lt.shadow.camera.near = 0.15; lt.shadow.camera.far = 45;
+        if (goboOn(li)) { lt.map = goboTex(li.l.gobo || 'win'); lt.shadow.radius = 1.5; } } }
     lt.position.set(P.x, P.y, P.z); g.add(lt); gl.lights.push(lt);
     const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: gl.glow, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
     const off = li.omni ? 0 : 0.14, sz = clamp(size * 1.6, 0.3, 1.6); sp.position.set(P.x + li.D.x * off, P.y + li.D.y * off, P.z + li.D.z * off); sp.scale.set(sz, sz, 1);
     sp.userData.k = 0.25 + 0.75 * (li.l.dim ?? 1); g.add(sp); gl.glows.push(sp);
   });
+  // grip frames: a flag is solid and casts a shadow; silks and nets are see-through cloth that act on the light instead
+  L.grips.forEach(gp => glMeshes(gripFaces(gp), GRIPS[gp.fx].kind === 'flag').forEach(m => g.add(m)));
 }
 // mannequins: capsule limbs, ellipsoid chest and pelvis, head with hair, nose and eyes so the facing reads at a glance
 function glMannequin(sb, shirt) {
@@ -2285,9 +2571,10 @@ function glCamera(B, tx, ty, near, far) {
   gl.cam.updateMatrixWorld(true);
   gl.cam.projectionMatrix.makePerspective(-tx * near, tx * near, ty * near, -ty * near, near, far); gl.cam.projectionMatrixInverse.copy(gl.cam.projectionMatrix).invert();
 }
+let rtType = 0;
 function glRT(kind, w, h) { let rt = gl.rts[kind];
   if (!rt || rt.width !== w || rt.height !== h) { if (rt) rt.dispose();
-    rt = gl.rts[kind] = new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, depthTexture: new THREE.DepthTexture(w, h) }); }
+    rt = gl.rts[kind] = new THREE.WebGLRenderTarget(w, h, { type: rtType, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, depthTexture: new THREE.DepthTexture(w, h) }); }
   return rt; }
 // render into an HDR target, then expose / tone / distort into the shared canvas; the caller copies the bottom-left ow×oh region
 function glDraw(kind, rw, rh, ow, oh, u) {
@@ -2373,11 +2660,98 @@ function renderShot(ctx, W, H, s, opt = {}) {
   const V = glShot(ctx, W, H, s, opt); shotOverlay(ctx, W, H, s, V, opt); return V;
 }
 
+/* ---------- VRM characters: a cast slot can wear a .vrm model (VRoid Studio, VRoid Hub …) instead of the built-in figure ---------- */
+// The file stays on this device (IndexedDB 'frameconti-vrm'); the project keeps only its id, so a shared link or project file on
+// another device falls back to the built-in figure. The loader (GLTFLoader + three-vrm) is fetched the first time it is needed.
+const vrmDb = (() => { let p = null;
+  const open = () => p || (p = new Promise(res => { if (!window.indexedDB) return res(null); let rq; try { rq = indexedDB.open('frameconti-vrm', 1); } catch (e) { return res(null); }
+    rq.onupgradeneeded = () => rq.result.createObjectStore('files'); rq.onsuccess = () => res(rq.result); rq.onerror = () => res(null); rq.onblocked = () => res(null); }));
+  const run = async (mode, fn) => { const db = await open(); if (!db) throw new Error('no IndexedDB');
+    return new Promise((res, rej) => { const t = db.transaction('files', mode), r = fn(t.objectStore('files')); t.oncomplete = () => res(r && r.result); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); }); };
+  return { put: (id, v) => run('readwrite', s => s.put(v, id)), get: id => run('readonly', s => s.get(id)) };
+})();
+let vrmLib = null;
+const vrmLoadLib = () => vrmLib || (vrmLib = Promise.all([import('three/addons/loaders/GLTFLoader.js'), import('@pixiv/three-vrm')])
+  .then(([g, v]) => ({ GLTFLoader: g.GLTFLoader, ...v })).catch(e => { vrmLib = null; throw e; }));
+async function vrmParse(buf) {
+  const L = await vrmLoadLib(), loader = new L.GLTFLoader(); loader.register(p => new L.VRMLoaderPlugin(p));
+  const gltf = await loader.parseAsync(buf, ''), vrm = gltf.userData.vrm; if (!vrm) throw new Error('VRM 파일이 아니에요');
+  L.VRMUtils.removeUnnecessaryVertices(gltf.scene); L.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+  if (vrm.meta && vrm.meta.metaVersion === '0') L.VRMUtils.rotateVRM0(vrm); // VRM 0.x faces −Z; turn it to face +Z like the cast
+  // MToon's own shader doesn't compile with spot-light shadows on three r160, so each surface becomes the app's toon material
+  // (same texture, colour and transparency); MToon's outline pass is dropped. The model is reused from shot to shot, so the
+  // scene clean-up must never dispose it.
+  const toon = new Map(), conv = m => { if (!m) return m; if (toon.has(m)) return toon.get(m);
+    const n = m.isMToonMaterial === undefined && !m.uniforms ? m : new THREE.MeshToonMaterial({ map: m.map || null, gradientMap: toonGrad(), transparent: !!m.transparent, alphaTest: m.alphaTest || 0, side: m.side, depthWrite: m.depthWrite });
+    if (n !== m) { if (m.color) n.color.copy(m.color); if (m.isOutline || (m.userData && m.userData.vrmOutline) || m.name && /outline/i.test(m.name)) n.visible = false; }
+    n.userData.shared = true; toon.set(m, n); return n; };
+  vrm.scene.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; o.frustumCulled = false; o.material = Array.isArray(o.material) ? o.material.map(conv) : conv(o.material); }
+    if (o.geometry) o.geometry.userData.shared = true; });
+  // rest measurements in the model's own units: eye height and ankle height when standing
+  vrmPose(vrm, 'stand'); vrm.scene.updateMatrixWorld(true); const w = vrmBoneY(vrm);
+  return { vrm, eye: w.eye, foot: w.foot, name: (vrm.meta && (vrm.meta.name || vrm.meta.title)) || '' };
+}
+function vrmBoneY(vrm) {
+  const h = vrm.humanoid, y = n => { const b = h.getRawBoneNode(n); return b ? b.getWorldPosition(new THREE.Vector3()).y : null; };
+  const foot = Math.min(y('leftFoot') ?? 0, y('rightFoot') ?? 0), head = y('head') ?? 1.4, eyeB = y('leftEye');
+  return { foot, eye: eyeB != null && eyeB > head ? eyeB : head + (head - foot) * 0.05 };
+}
+// one parsed copy per cast slot (two slots may wear the same file); returns it once ready, otherwise starts loading and returns null
+const vrmCache = {};
+function vrmGet(id, k) {
+  const key = id + '|' + k, c = vrmCache[key]; if (c) return c.state === 'ready' ? c : null;
+  vrmCache[key] = { state: 'loading' };
+  vrmDb.get(id).then(rec => { if (!rec) { vrmCache[key] = { state: 'missing' }; return; }
+    return vrmParse(rec.buf).then(r => { vrmCache[key] = { state: 'ready', ...r }; if (gl) gl.keys.figs = null; renderAll(); }); })
+    .catch(e => { console.warn('VRM', e); vrmCache[key] = { state: 'error' }; });
+  return null;
+}
+const vrmState = (id, k) => (vrmCache[id + '|' + k] || {}).state;
+// poses on the normalized humanoid rig, from the same angle table as the built-in figures (POSES): thighs swing forward of
+// straight down, knees bend back, upper arms hang from the T-pose and swing forward, elbows bend forward, the spine leans
+const VRM_REST = { stand: { legs: { L: [0, 0], R: [0, 0] }, arms: { L: [2, 6, 8], R: [2, 6, 8] }, lean: 0 },
+  sit: { legs: { L: [88, 88], R: [88, 88] }, arms: { L: [38, 45, 10], R: [38, 45, 10] }, lean: 4 } };
+function vrmPose(vrm, pose) {
+  const h = vrm.humanoid; h.resetNormalizedPose();
+  const P = VRM_REST[pose] || (POSES[pose] && POSES[pose].legs ? POSES[pose] : VRM_REST.stand), X = new THREE.Vector3(1, 0, 0), Y = new THREE.Vector3(0, 1, 0), Z = new THREE.Vector3(0, 0, 1);
+  const set = (n, ...rots) => { const b = h.getNormalizedBoneNode(n); if (!b) return; const q = new THREE.Quaternion();
+    for (const [ax, deg] of rots) q.premultiply(new THREE.Quaternion().setFromAxisAngle(ax, deg * DEG)); b.quaternion.copy(q); };
+  for (const sd of ['L', 'R']) { const side = sd === 'L' ? 'left' : 'right', sx = sd === 'L' ? -1 : 1, [a, b] = P.legs[sd], [ua, eb, out] = P.arms[sd];
+    set(side + 'UpperLeg', [X, -a]); set(side + 'LowerLeg', [X, b]); set(side + 'Foot', [X, clamp(a - b, -45, 45)]);
+    set(side + 'UpperArm', [Z, sx * (90 - out)], [X, -ua]); set(side + 'LowerArm', [Y, sx * eb]); }
+  const lean = P.lean || 0; set('spine', [X, lean * 0.5]); set('chest', [X, lean * 0.5]);
+  // vrm.update carries the pose to the raw bones and runs the model's constraints (twist bones in sleeves); hair springs settle at rest
+  vrm.update(0); vrm.scene.updateMatrixWorld(true); if (vrm.nodeConstraintManager) vrm.nodeConstraintManager.update(); if (vrm.springBoneManager) vrm.springBoneManager.reset();
+}
+// the figure for a shot: the model posed, scaled so its eyes sit at this cast member's eye height, feet on the floor; lying = laid on its back
+function vrmFigure(vc, s, k) {
+  const sb = s[k], vrm = vc.vrm, lie = sb.pose === 'lie', sc = skeleton(k, { pose: 'stand' }).eye / Math.max(0.2, vc.eye);
+  vrm.scene.removeFromParent(); vrm.scene.position.set(0, 0, 0); vrm.scene.scale.setScalar(sc);
+  vrmPose(vrm, lie ? 'stand' : sb.pose || 'stand'); vrm.scene.updateMatrixWorld(true);
+  vrm.scene.position.y = vc.foot * sc - vrmBoneY(vrm).foot;
+  const o = new THREE.Group(), inner = new THREE.Group(); inner.add(vrm.scene); o.add(inner);
+  if (lie) { inner.rotation.x = -Math.PI / 2; inner.position.set(0, 0.12, LIE_Z); }
+  o.position.set(sb.x, 0, sb.z); o.rotation.y = sb.face * DEG; return o;
+}
+// picking a file for a cast slot: check it parses, keep it on this device, put it on the slot
+async function vrmImport(file, k) {
+  if (!/\.vrm$/i.test(file.name)) return toast('.vrm 파일을 골라 주세요');
+  if (file.size > 80e6) return toast('파일이 너무 커요 (80MB까지)');
+  toast('VRM 캐릭터를 불러오는 중…', { ms: 20000 });
+  try { const buf = await file.arrayBuffer(), r = await vrmParse(buf), id = 'v' + Date.now().toString(36), name = (r.name || file.name.replace(/\.vrm$/i, '')).slice(0, 24);
+    await vrmDb.put(id, { name, buf, size: file.size, added: Date.now() });
+    vrmCache[id + '|' + k] = { state: 'ready', ...r };
+    const c = state.cast[k] = state.cast[k] || { ...CAST0[k] }; c.vrm = id; c.vrmName = name; if (c.who === 'dog') c.who = 'f';
+    if (gl) gl.keys.figs = null; changed(true, true); toast(`${castName(k)}에게 '${name}' 캐릭터를 입혔어요`);
+  } catch (e) { console.warn('VRM import', e); toast(/IndexedDB/.test(e.message) ? '이 브라우저에는 캐릭터 파일을 저장할 수 없어요' : 'VRM 파일을 읽지 못했어요. VRoid Studio에서 VRM으로 내보낸 파일인지 확인해 주세요', { ms: 6000 }); }
+}
 /* ---------- 3D set view ---------- */
 const viewer = { tx: 0, ty: 1, tz: -1.5, az: 235, el: 28, dist: 9, fov: 30 };
 let wsz = null, worldHandles = [], wDrag = null, worldV = null, view3d = null;
 const ptrs = new Map(), coarse = matchMedia('(pointer: coarse)'), pad = () => coarse.matches ? 1.8 : 1;
-const phone = matchMedia('(max-width: 719px)'), shortH = matchMedia('(orientation: landscape) and (max-height: 520px)');
+// phone = upright phone layout; shortH = any phone held sideways (also narrow ones like the iPhone SE); small = either, for lighter rendering
+const phone = matchMedia('(max-width: 719px) and (orientation: portrait)'), shortH = matchMedia('(orientation: landscape) and (max-height: 520px)');
+const small = () => phone.matches || shortH.matches;
 // the app is exactly as tall as what is visible: follows the on-screen keyboard and browser bars, and never lets the page itself scroll
 function fitApp() { const vv = window.visualViewport, h = Math.round(vv ? vv.height : innerHeight); document.documentElement.style.setProperty('--app-h', h + 'px'); if (scrollX || scrollY) scrollTo(0, 0); }
 fitApp(); addEventListener('resize', fitApp); addEventListener('orientationchange', () => setTimeout(fitApp, 250));
@@ -2652,13 +3026,13 @@ function snapPlace(o, g) { const rm = roomInfo();
     return; }
   o.x = Math.round(g.x / GRID) * GRID; o.z = Math.round(g.z / GRID) * GRID; }
 function startPlace(type, src, copy) {
-  if (mode === 'mon') setMode('3d'); if (phone.matches) openPane(null);
+  if (mode === 'mon') setMode('3d'); if (small()) openPane(null);
   const s = cur(), a = s.A.face * DEG, o = src ? { ...src } : copy ? { ...copy, id: 'P' + Date.now().toString(36), x: copy.x + 0.5, z: copy.z + 0.5 }
     : { id: 'P' + Date.now().toString(36), type, x: s.A.x + Math.sin(a) * 1.6, z: s.A.z + Math.cos(a) * 1.6, yaw: Math.round(((s.A.face + 180) % 360) / 90) * 90 % 360, fin: 'white' };
   placing = { o, src: src ? src.id : null }; snapPlace(o, o); placing.why = placeCheck(o, placing.src); selObj = null;
   if (!src && placing.why) for (let r = 0.5; r < 6 && placing.why; r += 0.5) for (let k = 0; k < 8 && placing.why; k++) { snapPlace(o, { x: s.A.x + Math.sin(k * Math.PI / 4) * r, z: s.A.z + Math.cos(k * Math.PI / 4) * r }); placing.why = placeCheck(o, null); }
   gl && (gl.keys.stat = null); syncSet(); syncBars(); renderWorld();
-  toast(phone.matches ? '바닥을 눌러 위치를 고르고 "놓기"를 누르세요' : '마우스로 위치를 고르고 클릭해서 놓으세요 · R 회전 · Esc 취소'); }
+  toast(coarse.matches ? '바닥을 눌러 위치를 고르고 "놓기"를 누르세요' : '마우스로 위치를 고르고 클릭해서 놓으세요 · R 회전 · Esc 취소'); }
 function movePlace(g) { if (!placing || !g) return; snapPlace(placing.o, g); placing.why = placeCheck(placing.o, placing.src); syncBars(); renderWorld(); }
 function rotPlace(d) { if (!placing || (WALLED[placing.o.type] && roomInfo())) return; placing.o.yaw = ((placing.o.yaw || 0) + d + 360) % 360; placing.why = placeCheck(placing.o, placing.src); syncBars(); renderWorld(); }
 function confirmPlace() { if (!placing) return; if (placing.why) { toast(`${placing.why} · 다른 곳을 골라 주세요`); if (navigator.vibrate) navigator.vibrate(30); return; }
@@ -2684,24 +3058,26 @@ $('#craneBar').addEventListener('click', e => { const b = e.target.closest('butt
   if (!craneTake(s)) return; const k = b.dataset.cr; craneMove(s, { [k]: s.crane[k] + +b.dataset.d }); changed(true); });
 // floating bars: one while placing, one for the selected object (rotate, move, size, copy, delete)
 function syncBars() { syncCrane();
-  const pb = $('#placeBar'), ob = $('#objBar'), cb = $('#camBar'); pb.hidden = !placing; cb.hidden = !!placing || craneOn || mode === 'mon';
+  const pb = $('#placeBar'), ob = $('#objBar'), cb = $('#camBar'), mk = mvSubj(); pb.hidden = !placing; cb.hidden = !!placing || craneOn || mode === 'mon' || !!mk;
+  $('#movePad').hidden = !(mode === 'mon' || mk) || view !== 'edit'; $('#movePad').classList.toggle('subj', !!mk);
   if (placing) { $('#placeName').textContent = PROPS[placing.o.type].name; const st = $('#placeStat'); st.textContent = placing.why || '놓을 수 있어요'; st.className = 'pstat ' + (placing.why ? 'bad' : 'ok');
     $('#pOk').disabled = !!placing.why; $('#pRotL').disabled = $('#pRotR').disabled = !!(WALLED[placing.o.type] && roomInfo()); }
   const o = !placing && selObj && findObj(selObj.id), sun = selObj && selObj.id === 'SUN'; ob.hidden = !o || mode === 'mon' || (sun && !state.set.sun.on);
   if (!ob.hidden) { const isP = selObj.kind === 'prop', isS = selObj.kind === 'subj';
-    $('#objName').textContent = sun ? '햇빛' : isS ? castLabel(selObj.k) : isP ? PROPS[o.type].name : FIX(o.fx).name.replace(/ \(.*\)/, '');
+    $('#objName').textContent = sun ? '햇빛' : isS ? castLabel(selObj.k) : isP ? PROPS[o.type].name : fixName(o.fx).replace(/ \(.*\)/, '');
     document.querySelectorAll('#objBar [data-p]').forEach(b => b.hidden = !isP && !(isS && (b.id === 'oRotL' || b.id === 'oRotR')));
-    document.querySelectorAll('#objBar [data-sj]').forEach(b => b.hidden = !isS); if (isS) $('#oPose .lab').textContent = o.pose === 'sit' ? '서기' : '앉기';
+    document.querySelectorAll('#objBar [data-sj]').forEach(b => b.hidden = !isS); if (isS) { const dog = castOf(selObj.k).who === 'dog';
+      $('#poseBar').innerHTML = Object.entries(POSES).filter(([p]) => !dog || p === 'stand' || p === 'sit').map(([p, v]) => `<button data-pose="${p}" aria-pressed="${(o.pose || 'stand') === p}">${v.name}</button>`).join(''); }
     $('#oEdit .lab').textContent = isP ? '크기' : '설정'; $('#oDel .lab').textContent = sun ? '끄기' : isS ? '빼기' : '삭제'; $('#oDel').hidden = isS && selObj.k === 'A';
     $('#oRotL').disabled = $('#oRotR').disabled = !!(isP && WALLED[o.type] && roomInfo()); ob.style.bottom = (cb.offsetHeight + 22) + 'px'; }
-  $('#pip').classList.toggle('dim', !pb.hidden || (phone.matches && !ob.hidden)); }
+  $('#pip').classList.toggle('dim', !pb.hidden || (small() && !ob.hidden)); }
 $('#pRotL').onclick = () => rotPlace(-90); $('#pRotR').onclick = () => rotPlace(90); $('#pOk').onclick = confirmPlace; $('#pCancel').onclick = cancelPlace;
 const rotObj = d => { const o = findObj(selObj.id); if (selObj.kind === 'subj') { o.face = Math.round((o.face + d / 2 + 360) % 360); changed(true, true); return; } const y0 = o.yaw || 0; o.yaw = (y0 + d + 360) % 360; const why = placeCheck(o, o.id); if (why) { o.yaw = y0; toast(`돌리면 ${why}`); return; } changed(true, true); syncBars(); };
 $('#oRotL').onclick = () => rotObj(-90); $('#oRotR').onclick = () => rotObj(90);
 $('#oMove').onclick = () => { const o = findObj(selObj.id); startPlace(o.type, o); };
 $('#oDup').onclick = () => { const o = findObj(selObj.id); startPlace(o.type, null, o); };
 $('#oEdit').onclick = () => openPane(selObj.kind === 'prop' ? 'set' : selObj.kind === 'subj' ? 'shot' : 'light');
-$('#oPose').onclick = () => { const o = findObj(selObj.id); o.pose = o.pose === 'sit' ? 'stand' : 'sit'; changed(true, true); };
+$('#poseBar').addEventListener('click', e => { const b = e.target.closest('[data-pose]'), o = selObj && findObj(selObj.id); if (!b || !o) return; o.pose = b.dataset.pose; changed(true, true); });
 $('#oDel').onclick = () => { if (selObj.kind === 'subj') { const k = selObj.k; selObj = null; toggleSub(k); syncBars(); return; } if (selObj.id === 'SUN') state.set.sun.on = false; else { const arr = selObj.kind === 'light' ? shotLights() : state.set.props, o = findObj(selObj.id); arr.splice(arr.indexOf(o), 1); }
   selObj = null; changed(true, true); syncBars(); };
 $('#oClose').onclick = () => { selObj = null; syncSet(); syncBars(); renderWorld(); };
@@ -2870,28 +3246,41 @@ const frameViewer = () => mode === 'top' ? topViewer() : mode === '3d' ? fitView
 function setMode(m) {
   if (m === mode) return; if (mode === '3d') view3d = { ...viewer }; mode = m;
   document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
-  $('#stage').dataset.mode = m; $('#movePad').hidden = m !== 'mon'; syncBars(); $('#worldwrap').hidden = m === 'mon'; $('#vf').hidden = m !== 'mon'; $('#pip').hidden = m === 'mon'; $('#fitBtn').hidden = m === 'mon';
+  $('#stage').dataset.mode = m; syncBars(); $('#worldwrap').hidden = m === 'mon'; $('#vf').hidden = m !== 'mon'; $('#pip').hidden = m === 'mon'; $('#fitBtn').hidden = m === 'mon';
   wsz = null; vsz = null;
   renderAll();
   if (m === 'top') topViewer(); else if (m === '3d') { if (view3d) tweenViewer(view3d, 560); else fitViewer(); }
 }
-// monitor: hold a pad button and the camera moves while you watch the frame — dolly along its heading, truck sideways, boom up and down.
-// Speed follows the distance to the focus subject, so close-ups move gently.
-const mvKeys = new Set(); let mvRaf = 0, mvT = 0, mvWarned = false;
+// a game-style joystick: in the monitor it drives the camera (dolly forward/back, truck sideways; ↑↓ boom),
+// in 3D with a person picked it walks that person across the floor relative to your view, turning them to face the way they go.
+// Speed grows with how far the thumb is pushed; for the camera it also follows the distance to the subject, so close-ups move gently.
+const mvKeys = new Set(), joy = { x: 0, y: 0, on: false }; let mvRaf = 0, mvT = 0, mvWarned = false;
+function mvSubj() { return mode === '3d' && selObj && selObj.kind === 'subj' && !placing ? selObj.k : null; }
 function mvStep(t) {
-  if (!mvKeys.size) { mvRaf = 0; changed(true); return; }
-  const dt = mvT ? Math.min(0.05, (t - mvT) / 1000) : 0.016; mvT = t;
-  const s = cur(), SB = shotBasis(s), sb = s[afKey(s)], d = Math.hypot(s.cam.x - sb.x, s.cam.z - sb.z), v = clamp(d * 0.45, 0.25, 2.5) * dt;
-  const fw = (mvKeys.has('f') ? 1 : 0) - (mvKeys.has('b') ? 1 : 0), rt = (mvKeys.has('r') ? 1 : 0) - (mvKeys.has('l') ? 1 : 0), up = (mvKeys.has('u') ? 1 : 0) - (mvKeys.has('d') ? 1 : 0);
+  if (!mvKeys.size && !joy.on) { mvRaf = 0; changed(true, true); return; }
+  const dt = mvT ? Math.min(0.05, (t - mvT) / 1000) : 0.016; mvT = t; const s = cur(), k = mvSubj();
+  const fw = -joy.y, rt = joy.x, up = (mvKeys.has('u') ? 1 : 0) - (mvKeys.has('d') ? 1 : 0);
+  if (k) { const sb = s[k], vb = viewerBasis(1, 1), y = Math.atan2(vb.f.x, vb.f.z), fh = { x: Math.sin(y), z: Math.cos(y) }, rh = { x: Math.cos(y), z: -Math.sin(y) };
+    const mx = fh.x * fw + rh.x * rt, mz = fh.z * fw + rh.z * rt, m = Math.hypot(mx, mz);
+    if (m > 0.05) { const v = 1.4 * dt; sb.x = +(sb.x + mx * v).toFixed(3); sb.z = +(sb.z + mz * v).toFixed(3); sb.face = Math.round((Math.atan2(mx, mz) / DEG + 360) % 360); }
+    renderWorld(); syncBars(); mvRaf = requestAnimationFrame(mvStep); return; }
+  const SB = shotBasis(s), sb = s[afKey(s)], d = Math.hypot(s.cam.x - sb.x, s.cam.z - sb.z), v = clamp(d * 0.45, 0.25, 2.5) * dt;
   const f = fw > 0 && d < 0.35 ? 0 : fw; if (f !== fw && !mvWarned) { mvWarned = true; toast('피사체 바로 앞이라 더 다가갈 수 없어요'); }
   s.cam.x = +(s.cam.x + (SB.fh.x * f + SB.rh.x * rt) * v).toFixed(4); s.cam.z = +(s.cam.z + (SB.fh.z * f + SB.rh.z * rt) * v).toFixed(4);
   s.cam.y = +clamp(s.cam.y + up * v * 0.6, 0.05, 40).toFixed(4);
   changed(false); mvRaf = requestAnimationFrame(mvStep);
 }
+const mvGo = () => { if (!mvRaf) { mvT = 0; mvWarned = false; mvRaf = requestAnimationFrame(mvStep); } };
 $('#movePad').addEventListener('pointerdown', e => { const b = e.target.closest('[data-mv]'); if (!b) return; e.preventDefault(); capture(b, e.pointerId);
-  mvKeys.add(b.dataset.mv); b.classList.add('on'); if (!mvRaf) { mvT = 0; mvWarned = false; mvRaf = requestAnimationFrame(mvStep); } });
+  mvKeys.add(b.dataset.mv); b.classList.add('on'); mvGo(); });
 const mvEnd = e => { const b = e.target.closest('[data-mv]'); if (!b) return; mvKeys.delete(b.dataset.mv); b.classList.remove('on'); };
 ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => $('#movePad').addEventListener(ev, mvEnd));
+const joySet = e => { const r = $('#joy').getBoundingClientRect(), R = r.width / 2 - 16; let x = (e.clientX - r.left - r.width / 2) / R, y = (e.clientY - r.top - r.height / 2) / R;
+  const m = Math.hypot(x, y); if (m > 1) { x /= m; y /= m; } joy.x = Math.abs(x) < 0.12 ? 0 : x; joy.y = Math.abs(y) < 0.12 ? 0 : y;
+  $('#joyThumb').style.transform = `translate(${x * R}px, ${y * R}px)`; };
+$('#joy').addEventListener('pointerdown', e => { e.preventDefault(); capture($('#joy'), e.pointerId); joy.on = true; $('#joy').classList.add('on'); joySet(e); mvGo(); });
+$('#joy').addEventListener('pointermove', e => { if (joy.on) joySet(e); });
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => $('#joy').addEventListener(ev, () => { joy.on = false; joy.x = joy.y = 0; $('#joy').classList.remove('on'); $('#joyThumb').style.transform = ''; }));
 $('#modeSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setMode(b.dataset.mode); });
 $('#fitBtn').onclick = frameViewer;
 
@@ -2899,10 +3288,14 @@ $('#fitBtn').onclick = frameViewer;
 /* ---------- monitor ---------- */
 function sizeView() {
   const st = $('#stage'), cv = $('#view'), asp = aspectV(), dpr = devicePixelRatio || 1;
-  // sideways phone: the monitor takes the full stage height; the view switch and move pad sit to its left (160px), the toggles to its right (58px).
-  // Upright: full width, with room for the move pad underneath.
-  const side = shortH.matches, maxW = side ? st.clientWidth - 230 : st.clientWidth - 16, maxH = side ? st.clientHeight - 50 : st.clientHeight - 64 - 150;
+  // sideways phone: the monitor takes the whole stage like the 3D and top views. Upright: full width, with room for the move pad underneath.
+  // with a panel open on a phone, the monitor moves into the space the panel leaves, so lens and exposure changes show at once
+  const side = shortH.matches, dr = $('#drawer'), dock = (phone.matches || side) && !dr.hidden, dw = dock && side ? dr.offsetWidth : 0, dh = dock && !side ? dr.offsetHeight : 0;
+  $('#app').classList.toggle('dock', dock);
+  // the frame is as large as the stage allows at the shot's aspect ratio; the readouts sit on the picture and the controls float over the edges
+  const maxW = side ? (dock ? st.clientWidth - dw - 12 : st.clientWidth) : st.clientWidth - (phone.matches ? 0 : 16), maxH = side ? st.clientHeight : dock ? st.clientHeight - dh - 12 : st.clientHeight - (phone.matches ? 150 : 16);
   let W = maxW, H = W / asp; if (H > maxH) { H = maxH; W = H * asp; }
+  $('#vfbox').style.transform = dw ? `translateX(${-dw / 2}px)` : dh ? `translateY(${-dh / 2}px)` : '';
   W = Math.floor(Math.max(80, W)); H = Math.floor(Math.max(50, H));
   cv.style.width = W + 'px'; cv.style.height = H + 'px'; cv.width = W * dpr; cv.height = H * dpr; $('#vfbox').style.width = W + 'px';
   return { W, H, dpr };
@@ -2919,6 +3312,22 @@ function drawMonitor() {
   $('#hudB').textContent = `H ${fmt(o.hf / DEG)}° · ${SENSOR().name.split(' (')[0]}`;
   $('#monInfo').textContent = o.tooClose ? `초점 불가 · ${fmtM(o.want)} < 최소 ${fmtM(o.mod)}` : `${s.focus === 'M' ? 'MF' : 'AF · ' + afKey(s)} ${fmtM(o.fd)} · 심도 ${fmtM(o.near)}–${fmtM(o.far)}`;
   $('#monInfo').classList.toggle('warn', o.tooClose);
+  drawSurround(s, o);
+}
+// surround view, as on a cine monitor: the stage around the frame shows, dimmed, what lies just outside it, so the monitor fills the screen.
+// Rendered at half resolution through a sensor stretched to the stage, with the same focal length, so the frame sits exactly in its middle.
+function drawSurround(s, o) {
+  const bg = $('#viewBg'); if (!gl || o.fish) { bg.hidden = true; return; }
+  const st = $('#stage').getBoundingClientRect(), fr = $('#view').getBoundingClientRect(), cx = fr.left + fr.width / 2 - st.left, cy = fr.top + fr.height / 2 - st.top;
+  const hw = Math.ceil(Math.max(cx, st.width - cx)), hh = Math.ceil(Math.max(cy, st.height - cy)); if (hw * 2 <= fr.width + 2 && hh * 2 <= fr.height + 2) { bg.hidden = true; return; }
+  const k = 0.5 * (devicePixelRatio || 1), W = hw * 2, H = hh * 2;
+  if (bg.width !== Math.round(W * k) || bg.height !== Math.round(H * k)) { bg.width = Math.round(W * k); bg.height = Math.round(H * k); }
+  Object.assign(bg.style, { width: W + 'px', height: H + 'px', left: (cx - hw) + 'px', top: (cy - hh) + 'px' }); bg.hidden = false;
+  const sens = state.sensor, sq = state.squeeze || 1;
+  const sw = W * o.iw / fr.width / sq, sh = H * o.ih / fr.height; // an upright stage swaps them back the way imageArea() turns the camera on its side
+  try { state.sensor = W >= H ? { ...SENSOR(), w: sw, h: sh } : { ...SENSOR(), w: sh, h: sw }; aspOverride = W / H;
+    const ctx = bg.getContext('2d'); ctx.setTransform(k, 0, 0, k, 0, 0); renderShot(ctx, W, H, s, { labels: false, move: false, lit: true, blur: false, slot: 'sur' }); }
+  finally { state.sensor = sens; aspOverride = 0; }
 }
 // small live monitor in the corner of the 3D and top views
 function drawPip() {
@@ -3003,13 +3412,16 @@ function keepShot(s, f0) {
   const la = lookAngles({ x: s.cam.x, y: s.cam.y, z: s.cam.z }, T); s.cam.pan = +la.pan.toFixed(2); s.cam.tilt = +la.tilt.toFixed(2);
   if (s.focus === 'M') s.fd = +(R.fd * Math.hypot(h, dy) / Math.hypot(h0, dy)).toFixed(2);
 }
-const keepDone = () => { const R = keepRef; keepRef = null; if (!R || state.keepSize === false) return; const s = cur(), d = Math.hypot(s.cam.x - R.h.x, s.cam.z - R.h.z), rm = roomInfo();
-  if (d > 0.05) toast(`샷 크기를 유지하려고 카메라를 ${s.f > R.f ? '뒤로' : '앞으로'} ${fmt(d, 1)}m 옮겼어요` + (rm && !inRoom(s.cam, rm) ? ' · 방 밖으로 나갔어요' : '')); };
-$('#fRange').addEventListener('input', e => { setF(roundF(r2f(+e.target.value))); changed(false); });
+// what the pull-back did is noted under the lens buttons, never over the picture
+let keepMsg = null;
+const keepDone = () => { const R = keepRef; keepRef = null; if (!R || state.keepSize === false) return; const s = cur(), d = Math.hypot(s.cam.x - R.h.x, s.cam.z - R.h.z), rm = roomInfo(), sb = s[afKey(s)];
+  keepMsg = d > 0.05 ? { s, t: `카메라 ${s.f > R.f ? '뒤로' : '앞으로'} ${fmt(d, 1)}m · 피사체까지 ${fmt(Math.hypot(s.cam.x - sb.x, s.cam.z - sb.z), 1)}m` + (rm && !inRoom(s.cam, rm) ? ' · 방 밖이에요' : ''), warn: !!(rm && !inRoom(s.cam, rm)) } : null; };
+// changing the lens shows the picture right away: the monitor opens beside the panel
+const lensView = () => { if (mode !== 'mon' && view === 'edit') setMode('mon'); };
+$('#fRange').addEventListener('input', e => { lensView(); setF(roundF(r2f(+e.target.value))); changed(false); });
 $('#fRange').addEventListener('change', () => { keepDone(); changed(true); });
-$('#ticks').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { setF(+b.dataset.f); keepDone(); changed(true); } });
-$('#keepSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.keepSize = b.dataset.keep === '1'; changed(true);
-  toast(state.keepSize ? '렌즈를 바꾸면 카메라가 앞뒤로 움직여 인물 크기를 그대로 둬요 — 배경 압축이 보여요' : '렌즈를 바꿔도 카메라는 제자리예요 — 화각만 바뀌어요'); });
+$('#ticks').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { lensView(); setF(+b.dataset.f); keepDone(); changed(true); } });
+$('#keepSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.keepSize = b.dataset.keep === '1'; keepMsg = null; changed(true); });
 // distance from the subject to the wall behind it along the camera's heading (the background it is shot against); outdoors it is far away
 function bgDistance(s, sb) {
   const rm = roomInfo(); if (!rm) return backdropDistance(s, sb);
@@ -3086,18 +3498,45 @@ function groupTabs(box, prefer) {
   bar.onclick = e => { const b = e.target.closest('button'); if (b) { box.dataset.g = b.dataset.g; show(); } };
   show();
 }
-const FX_GROUPS = [['텅스텐 · HMI', ['tung650', 'tung1k', 'tung2k', 'tung5k', 'hmi18', 'hmi4k']], ['LED 포인트', ['cob120', 'cob300', 'cob600', 'cob1200']],
-  ['소프트 라이트', ['panel', 'skypanel', 'kino', 'tube', 'balloon']], ['실용등', ['bulb', 'china']]];
-$('#fxAdd').innerHTML = `<div class="cat">자연광</div><div class="addgrid"><button data-fx="SUN" class="sunbtn"><span><b>햇빛 (태양)</b><small>계절 · 시간 · 날씨 · 방위</small></span></button></div>` + FX_GROUPS.map(([t, ids]) => `<div class="cat">${t}</div><div class="addgrid">${ids.map(id => { const f = FIX(id);
-  return `<button data-fx="${id}"><span><b>${f.name.replace(/ \(.*\)/, '')}</b><small>${Math.round(f.lm / 100) / 10}k lm · ${Array.isArray(f.K) ? f.K[0] + '–' + f.K[1] : f.K}K</small></span></button>`; }).join('')}</div>`).join('');
-groupTabs($('#fxAdd'));
-$('#fxAdd').addEventListener('click', e => { const b = e.target.closest('button[data-fx]'); if (!b) return;
+// adding a light works like folders: a category row, the families in it, then the sizes of the family you open
+const FX_CATS = ['햇빛', ...new Set(FAMILIES.map(f => f[0]))];
+let fxCat = '텅스텐', fxFam = null;
+const lmTxt = lm => lm >= 1000 ? (lm >= 10000 ? Math.round(lm / 1000) : Math.round(lm / 100) / 10) + 'k lm' : lm + ' lm';
+function renderFxAdd() {
+  const bar = `<div class="seg kr gtabs">${FX_CATS.map(c => `<button data-cat="${c}" aria-pressed="${c === fxCat}">${c}</button>`).join('')}</div>`;
+  let body;
+  if (fxCat === '햇빛') body = `<div class="addgrid"><button data-fx="SUN" class="sunbtn"><span><b>햇빛 (태양)</b><small>계절 · 시간 · 날씨 · 방위</small></span></button></div>`;
+  else if (fxFam) { const f = FAMILIES.find(x => x[1] === fxFam && x[0] === fxCat), grip = fxCat === '그립';
+    body = `<div class="fxpath"><button class="btn sm ghost" data-up="1">← ${fxCat}</button><b>${f[1]}</b></div><div class="addgrid sizes">${f[2].map(id => { const g = GRIPS[id], x = !g && FIX(id);
+      return `<button data-fx="${id}"><span><b>${fixTag(id)}</b><small>${g ? `${fmt(g.w, 1)}×${fmt(g.h, 1)}m` : `${lmTxt(x.lm)}${x.rgb ? ' · RGB' : ''}`}</small></span></button>`; }).join('')}</div>${grip ? '<p class="hint">고른 조명(없으면 가장 센 조명)과 인물 사이에 세워져요</p>' : ''}`; }
+  else body = `<div class="addgrid">${FAMILIES.filter(f => f[0] === fxCat).map(f => { const ids = f[2];
+    return `<button data-fam="${f[1]}"><span><b>${f[1]}</b><small>${ids.length > 1 ? fixTag(ids[0]) + ' – ' + fixTag(ids[ids.length - 1]) : fixTag(ids[0])} · ${ids.length}종</small></span><i class="go">›</i></button>`; }).join('')}</div>`;
+  $('#fxAdd').innerHTML = bar + body;
+}
+renderFxAdd();
+$('#fxAdd').addEventListener('click', e => {
+  const c = e.target.closest('[data-cat]'); if (c) { fxCat = c.dataset.cat; fxFam = null; renderFxAdd(); return; }
+  const fm = e.target.closest('[data-fam]'); if (fm) { fxFam = fm.dataset.fam; renderFxAdd(); return; }
+  if (e.target.closest('[data-up]')) { fxFam = null; renderFxAdd(); return; }
+  const b = e.target.closest('button[data-fx]'); if (!b) return;
   if (b.dataset.fx === 'SUN') { state.set.sun.on = true; selObj = { id: 'SUN', kind: 'light' }; changed(true, true); toast('햇빛을 켰어요. 계절과 시각을 바꾸거나 3D에서 해를 끌어 보세요'); return; }
+  if (GRIPS[b.dataset.fx]) return addGrip(b.dataset.fx);
   const s = cur(), k = afKey(s), sb = s[k];
   // start as a 45° key from the camera's left, 2.5 m off the subject
   const a = Math.atan2(s.cam.x - sb.x, s.cam.z - sb.z) - 45 * DEG, fx = FIX(b.dataset.fx);
-  const l = { id: 'L' + Date.now().toString(36), fx: fx.id, diff: 'none', x: +(sb.x + Math.sin(a) * 2.5).toFixed(2), y: fx.id === 'bulb' ? 1.0 : 2.2, z: +(sb.z + Math.cos(a) * 2.5).toFixed(2), track: fx.id === 'bulb' ? null : k, dim: 0.5, pan: 0, tilt: -20 };
+  const l = { id: 'L' + Date.now().toString(36), fx: fx.id, mod: modsFor(fx)[0], x: +(sb.x + Math.sin(a) * 2.5).toFixed(2), y: fixKind(fx.id) === 'bulb' ? 1.0 : 2.2, z: +(sb.z + Math.cos(a) * 2.5).toFixed(2), track: fixKind(fx.id) === 'bulb' ? null : k, dim: 0.5, pan: 0, tilt: -20 };
   shotLights().push(l); selObj = { id: l.id, kind: 'light' }; changed(true, true); toast(`${josa(fx.name, '을', '를')} 놓았어요. 3D 세트에서 끌어 옮기세요`); });
+// a grip goes between a light and the subject it lights: the selected light, otherwise the brightest one; it faces that light
+function gripPlace(g, s = cur()) {
+  const L = lightCtx(s), sel = selObj && L.lights.find(li => li.l.id === selObj.id), li = sel || L.lights.slice().sort((a, b) => b.I0 - a.I0)[0], G = GRIPS[g.fx];
+  const sb = li && li.l.track ? subjOf(s, li.l.track) : s[afKey(s)], T = { x: sb.x, y: headY(s, sb), z: sb.z };
+  const P = li ? li.P : { x: T.x + 2, y: 2.2, z: T.z + 2 }, f = G.kind === 'flag' ? 0.6 : 0.45; // silks and nets sit nearer the light, a flag nearer the subject
+  g.x = +(P.x + (T.x - P.x) * f).toFixed(2); g.y = +(P.y + (T.y - P.y) * f).toFixed(2); g.z = +(P.z + (T.z - P.z) * f).toFixed(2);
+  const la = lookAngles({ x: g.x, y: g.y, z: g.z }, P); g.pan = +la.pan.toFixed(1); g.tilt = +la.tilt.toFixed(1);
+  if (G.kind === 'flag') g.y = +(g.y + G.h * 0.3).toFixed(2); // set a little high, so it cuts the top of the beam (the usual first cut) rather than the face
+}
+function addGrip(id) { const g = { id: 'G' + Date.now().toString(36), fx: id }; gripPlace(g); shotLights().push(g); selObj = { id: g.id, kind: 'light' }; changed(true, true);
+  toast(`${josa(GRIPS[id].name, '을', '를')} 세웠어요. 3D에서 끌어 옮기세요`); }
 $('#lightList').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { selObj = { id: b.dataset.id, kind: 'light' }; syncSet(); syncBars(); renderWorld(); } });
 $('#propList').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { selObj = { id: b.dataset.id, kind: 'prop' }; syncSet(); syncBars(); renderWorld(); } });
 $('#roomSeg').innerHTML = [0, 3, 5, 10, 15, 20, 30].map(v => `<button data-py="${v}">${v ? v + '평' : '없음 (야외)'}</button>`).join('');
@@ -3109,7 +3548,7 @@ $('#bgSeg').addEventListener('click', e => { const b = e.target.closest('button'
 $('#ceilSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b && state.set.room) { state.set.room.h = +b.dataset.h; changed(true, true); } });
 $('#finSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b && state.set.room) { state.set.room.fin = b.dataset.fin; changed(true, true); } });
 const PROP_GROUPS = [['거실 · 침실', ['sofa', 'armchair', 'table', 'bed', 'tv', 'shelf', 'rug', 'plant']], ['카페 · 주방', ['cafe', 'chair', 'counter', 'stool', 'kitchen', 'fridge', 'desk']],
-  ['세트 구조물', ['flat', 'flatdoor', 'flatwin', 'apple']], ['차량', ['car']]];
+  ['세트 구조물', ['flat', 'flatdoor', 'flatwin', 'apple']], ['야외 · 자연', ['tree', 'bush', 'rock', 'fence', 'parasol', 'picnic']], ['야외 · 거리', ['bench', 'lamp', 'bike', 'cone', 'bin', 'hydrant', 'car']]];
 $('#propAdd').innerHTML = PROP_GROUPS.map(([t, ids]) => `<div class="cat">${t}</div><div class="addgrid">${ids.map(k => { const v = PROPS[k];
   return `<button data-prop="${k}"><span><b>${v.name}</b><small>${v.w}×${v.d}×${v.h}m</small></span></button>`; }).join('')}</div>`).join('');
 groupTabs($('#propAdd'));
@@ -3119,7 +3558,7 @@ const rangeRow = (k, lab, min, max, step, v, out) => `<div class="xrow"><label f
 ['#lightEdit', '#propEdit'].forEach(id => {
   $(id).addEventListener('input', e => { const el = e.target.closest('[data-k]'); if (!el || !selObj) return; const o = findObj(selObj.id); if (!o) return;
     const k = el.dataset.k, v = +el.value, pct = ['dim', 'sx', 'sd', 'sh'].includes(k); o[k] = pct ? v / 100 : v; editLock = id;
-    el.nextElementSibling.textContent = k === 'hour' ? hhmm(v) : k === 'month' ? v + '월' : v + ({ dim: '%', sx: '%', sd: '%', sh: '%', y: 'm', K: 'K', ww: 'm', wh: 'm', sill: 'm', dw: 'm', dh: 'm' }[k] || '°'); changed(false); });
+    el.nextElementSibling.textContent = k === 'hour' ? hhmm(v) : k === 'month' ? v + '월' : v + ({ dim: '%', sx: '%', sd: '%', sh: '%', y: 'm', K: 'K', ww: 'm', wh: 'm', sat: '%', sill: 'm', dw: 'm', dh: 'm' }[k] || '°'); changed(false); });
   $(id).addEventListener('change', e => { if (e.target.closest('[data-k]')) { editLock = null; changed(true); } });
   $(id).addEventListener('click', e => { const b = e.target.closest('button'); if (!b || !selObj) return;
     if (b.hasAttribute('data-back')) { selObj = null; syncSet(); syncBars(); renderWorld(); return; } const o = findObj(selObj.id); if (!o) return; const d = b.dataset;
@@ -3128,7 +3567,7 @@ const rangeRow = (k, lab, min, max, step, v, out) => `<div class="xrow"><label f
     if (d.tod) { const p = sunPos(o.month, 12); o.hour = +clamp({ rise: p.rise + 0.05, morning: p.noon - 3, noon: p.noon, golden: p.set - 0.6, blue: p.set + 0.4 }[d.tod], 4, 21).toFixed(3); }
     if (d.size) { o.sx = o.sd = o.sh = +d.size; }
     if (d.del) { const arr = selObj.kind === 'light' ? shotLights() : state.set.props; arr.splice(arr.indexOf(o), 1); selObj = null; changed(true, true); return; }
-    if (d.diff) o.diff = d.diff; if (d.track !== undefined) { o.track = d.track || null; if (!o.track) { const L = lightCtx(cur()), li = L.lights.find(x => x.l === o); if (li) { o.pan = +(Math.atan2(li.D.x, li.D.z) / DEG).toFixed(1); o.tilt = +(Math.asin(li.D.y) / DEG).toFixed(1); } } }
+    if (d.diff) o.diff = d.diff; if (d.gobo) o.gobo = d.gobo; if (d.gel) o.gel = d.gel; if (d.gripfit) gripPlace(o); if (d.cmode) o.cmode = d.cmode; if (d.track !== undefined) { o.track = d.track || null; if (!o.track) { const L = lightCtx(cur()), li = L.lights.find(x => x.l === o); if (li) { o.pan = +(Math.atan2(li.D.x, li.D.z) / DEG).toFixed(1); o.tilt = +(Math.asin(li.D.y) / DEG).toFixed(1); } } }
     if (d.fin) o.fin = d.fin; if (d.rot) o.yaw = ((o.yaw || 0) + 90) % 360;
     if (d.snap) snapPlace(o, { x: o.x, z: o.z });
     changed(true, true); });
@@ -3153,7 +3592,7 @@ function syncSet() {
   document.querySelectorAll('#envSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.env === set.env));
   const L = lightCtx(s);
   const sn = set.sun, se = sn.on ? sunEnv(sn) : null;
-  $('#lightList').innerHTML = (sn.on ? `<button data-id="SUN" aria-pressed="${!!selObj && selObj.id === 'SUN'}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(se.sunK)}"></i>햇빛</span><span>${sn.month}월 ${hhmm(sn.hour)} · 고도 ${fmt(se.el, 0)}° · ${se.el > 0 ? se.sunK + 'K' : '해 짐'}</span></button>` : '') + L.lights.map(li => `<button data-id="${li.l.id}" aria-pressed="${!!selObj && selObj.id === li.l.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(li.K)}"></i>${FIX(li.l.fx).name}</span><span>${Math.round((li.l.dim ?? 1) * 100)}% · ${li.K}K · ${DIFFUSION[li.l.diff || 'none'].name}</span></button>`).join('') || (sn.on ? '' : '<p class="hint" style="margin:0">아직 조명이 없어요. 아래에서 하나 추가하세요.</p>');
+  $('#lightList').innerHTML = (sn.on ? `<button data-id="SUN" aria-pressed="${!!selObj && selObj.id === 'SUN'}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(se.sunK)}"></i>햇빛</span><span>${sn.month}월 ${hhmm(sn.hour)} · 고도 ${fmt(se.el, 0)}° · ${se.el > 0 ? se.sunK + 'K' : '해 짐'}</span></button>` : '') + L.grips.map(g => `<button data-id="${g.id}" aria-pressed="${!!selObj && selObj.id === g.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${{ silk: '#e8e8e4', net: '#555', flag: '#111' }[GRIPS[g.fx].kind]}"></i>${GRIPS[g.fx].name}</span><span>그립 · 높이 ${fmt(g.y, 1)}m</span></button>`).join('') + L.lights.map(li => `<button data-id="${li.l.id}" aria-pressed="${!!selObj && selObj.id === li.l.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' || GELS[li.l.gel] && GELS[li.l.gel].t ? lightCss(li.col) : kelvinCss(li.K)}"></i>${FIX(li.l.fx).name}</span><span>${Math.round((li.l.dim ?? 1) * 100)}% · ${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' ? 'RGB ' + Math.round(li.l.hue ?? 0) + '°' : GELS[li.l.gel] && GELS[li.l.gel].t ? GELS[li.l.gel].name : li.K + 'K'} · ${(modOf(li.l) || { name: fixKind(li.l.fx) === 'leko' ? '패턴 ' + GOBOS[li.l.gobo || 'win'] : '맨 전구' }).name}</span></button>`).join('') || (sn.on ? '' : '<p class="hint" style="margin:0">아직 조명이 없어요. 아래에서 하나 추가하세요.</p>');
   document.querySelectorAll('#envSeg button').forEach(b => b.disabled = sn.on); $('#envHint').hidden = !sn.on;
   const sl = selObj && selObj.kind === 'light' && shotLights(s).find(l => l.id === selObj.id);
   if (editLock === '#lightEdit') {} else if (selObj && selObj.id === 'SUN' && sn.on) { const p = se.pos, L0 = lux(irr(L, { x: s.A.x, y: 0, z: s.A.z }, UP, null));
@@ -3163,17 +3602,27 @@ function syncSet() {
       <div class="lh"><span>날씨</span><div class="seg kr">${Object.entries(WEATHER).map(([k, n]) => `<button data-wx="${k}" aria-pressed="${(sn.wx || 'clear') === k}">${n}</button>`).join('')}</div></div>
       ${rangeRow('north', '북쪽', 0, 345, 15, sn.north || 0, (sn.north || 0) + '°')}
       <div class="row"><button class="btn sm warn" data-del="1">햇빛 끄기</button></div></div>`; }
-  else if (sl) { const fx = FIX(sl.fx), li = L.lights.find(x => x.l === sl), sb = s[afKey(s)];
+  else if (sl && isGrip(sl)) { const G = GRIPS[sl.fx], li = L.lights.find(x => x.cuts.includes(sl.id));
+    $('#lightEdit').innerHTML = `<div class="edit"><h4><button class="btn sm ghost" data-back>← 목록</button>${G.name}<button class="btn sm warn hdel" data-del="1">삭제</button></h4>
+      ${rangeRow('y', '높이', 0.3, 6, 0.05, sl.y, fmt(sl.y, 2) + 'm')}
+      <div class="xrow two"><label>팬 · 틸트</label><input type="range" data-k="pan" min="-180" max="180" step="1" value="${sl.pan || 0}" aria-label="팬"><output>${Math.round(sl.pan || 0)}°</output><input type="range" data-k="tilt" min="-90" max="90" step="1" value="${sl.tilt || 0}" aria-label="틸트"><output>${Math.round(sl.tilt || 0)}°</output></div>
+      <div class="row"><button class="btn sm" data-gripfit="1">조명과 인물 사이로</button></div>
+      <p class="sum">${G.kind === 'flag' ? '빛을 가려 그림자를 만들어요 (그림자 계산 조명 기준)' : !li ? '아직 지나가는 조명이 없어요 — 조명과 인물 사이에 두세요'
+        : `${fixName(li.l.fx).replace(/ \(.*\)/, '')} 빛을 ${G.kind === 'silk' ? '1스톱 줄이고 부드럽게 퍼뜨려요' : G.t < 0.6 ? '1스톱 줄여요 (빛의 질은 그대로)' : '½스톱 줄여요 (빛의 질은 그대로)'}`}</p></div>`; }
+  else if (sl) { const fx = FIX(sl.fx), li = L.lights.find(x => x.l === sl), sb = s[afKey(s)], md = modOf(sl, fx), bm = beamOf(sl, fx);
     const dS = Math.hypot(sl.x - sb.x, sl.y - headY(s, sb), sl.z - sb.z), Eon = li.I0 / (dS * dS);
-    $('#lightEdit').innerHTML = `<div class="edit"><h4><button class="btn sm ghost" data-back>← 목록</button>${fx.name}</h4>
-      ${rangeRow('dim', '밝기', 5, 100, 1, Math.round((sl.dim ?? 1) * 100), Math.round((sl.dim ?? 1) * 100) + '%')}
-      ${rangeRow('y', '높이', 0.2, 8, 0.05, sl.y, fmt(sl.y, 2) + 'm')}
-      ${fx.beam[0] < fx.beam[1] ? rangeRow('beam', '빔 각 (스팟↔플러드)', fx.beam[0], fx.beam[1], 1, sl.beam ?? fx.beam[1], (sl.beam ?? fx.beam[1]) + '°') : ''}
-      ${Array.isArray(fx.K) ? rangeRow('K', '색온도', fx.K[0], fx.K[1], 100, sl.K ?? 5600, (sl.K ?? 5600) + 'K') : ''}
-      ${fx.beam[0] < 360 ? `<div class="lh"><span>확산</span><div class="seg kr">${Object.entries(DIFFUSION).map(([k, v]) => `<button data-diff="${k}" aria-pressed="${(sl.diff || 'none') === k}">${v.name}</button>`).join('')}</div></div>
+    $('#lightEdit').innerHTML = `<div class="edit"><h4><button class="btn sm ghost" data-back>← 목록</button>${fx.name}<button class="btn sm warn hdel" data-del="1">삭제</button></h4>
+      <div class="xrow two"><label>밝기 · 높이</label><input type="range" data-k="dim" min="5" max="100" step="1" value="${Math.round((sl.dim ?? 1) * 100)}" aria-label="밝기"><output>${Math.round((sl.dim ?? 1) * 100)}%</output><input type="range" data-k="y" min="0.2" max="8" step="0.05" value="${sl.y}" aria-label="높이"><output>${fmt(sl.y, 1)}m</output></div>
+      ${md || fx.rgb ? `<div class="lh modrow"><span>${md && fx.rgb ? '앞 · 모드' : md ? '앞에 다는 것' : '모드'}</span>${md ? `<select class="modsel" data-mod="1" aria-label="모디파이어">${modsFor(fx).map(id => `<option value="${id}"${md.id === id ? ' selected' : ''}>${MODS[id].name}</option>`).join('')}</select>` : ''}${fx.rgb ? `<div class="seg kr">${[['cct', 'CCT'], ['rgb', 'HSI'], ['gel', '젤']].map(([k, n]) => `<button data-cmode="${k}" aria-pressed="${(sl.cmode || 'cct') === k}">${n}</button>`).join('')}</div>` : ''}</div>` : ''}
+      ${bm.range ? rangeRow('beam', md && md.id === 'fresatt' ? '빔 각 (어태치)' : '스팟 ↔ 플러드', bm.range[0], bm.range[1], 1, bm.v, bm.v + '°') : ''}
+      ${fx.rgb && sl.cmode === 'rgb' ? `<div class="xrow two"><label>색상 · 채도</label><input type="range" class="hue" data-k="hue" min="0" max="359" step="1" value="${sl.hue ?? 0}" aria-label="색상"><output>${Math.round(sl.hue ?? 0)}°</output><input type="range" data-k="sat" min="0" max="100" step="1" value="${sl.sat ?? 100}" aria-label="채도"><output>${Math.round(sl.sat ?? 100)}%</output></div>`
+        : Array.isArray(fx.K) && !(fx.rgb && sl.cmode === 'gel') ? rangeRow('K', '색온도', fx.K[0], fx.K[1], 100, sl.K ?? 5600, (sl.K ?? 5600) + 'K') : ''}
+      ${fx.rgb && sl.cmode !== 'gel' ? '' : `<div class="lh"><span>젤</span><div class="sw gels">${Object.entries(GELS).map(([k, v]) => `<button data-gel="${k}" aria-pressed="${(sl.gel || 'none') === k}" title="${v.name}" aria-label="컬러 ${v.name}" style="background:${v.t ? linCss(v.t) : kelvinCss(Array.isArray(fx.K) ? sl.K ?? 5600 : fx.K)}"></button>`).join('')}</div></div>`}
+      ${fx.gobo ? `<div class="lh"><span>패턴</span><div class="seg kr">${Object.entries(GOBOS).map(([k, v]) => `<button data-gobo="${k}" aria-pressed="${(sl.gobo || 'win') === k}">${v}</button>`).join('')}</div></div>` : ''}
+      ${bm.beam < 360 ? `
       <div class="lh"><span>방향</span><div class="seg kr"><button data-track="A" aria-pressed="${sl.track === 'A'}">A 추적</button><button data-track="B" aria-pressed="${sl.track === 'B'}" ${s.B.on ? '' : 'disabled'}>B 추적</button><button data-track="" aria-pressed="${!sl.track}">고정</button></div></div>
-      ${!sl.track ? rangeRow('pan', '팬', -180, 180, 1, sl.pan || 0, Math.round(sl.pan || 0) + '°') + rangeRow('tilt', '틸트', -90, 30, 1, sl.tilt || 0, Math.round(sl.tilt || 0) + '°') : ''}` : ''}
-      <div class="row"><button class="btn sm warn" data-del="1">이 조명 삭제</button></div></div>`; }
+      ${!sl.track ? `<div class="xrow two"><label>팬 · 틸트</label><input type="range" data-k="pan" min="-180" max="180" step="1" value="${sl.pan || 0}" aria-label="팬"><output>${Math.round(sl.pan || 0)}°</output><input type="range" data-k="tilt" min="-90" max="30" step="1" value="${sl.tilt || 0}" aria-label="틸트"><output>${Math.round(sl.tilt || 0)}°</output></div>` : ''}` : ''}
+</div>`; }
   else $('#lightEdit').innerHTML = '';
   // room
   const rm = roomInfo();
@@ -3199,6 +3648,7 @@ function syncSet() {
       ${d.wall ? `<div class="lh"><span>마감</span><div class="seg kr">${Object.entries(FINISH).map(([k, v]) => `<button data-fin="${k}" aria-pressed="${(sp.fin || 'white') === k}">${v.name}</button>`).join('')}</div></div>` : ''}
       <div class="row">${d.wall && rm ? '<button class="btn sm" data-snap="1">가까운 벽에 붙이기</button>' : ''}<button class="btn sm warn" data-del="1">삭제</button></div></div>`; }
   else $('#propEdit').innerHTML = '';
+  document.querySelectorAll('.ptab').forEach(t => t.classList.toggle('editing', !!t.querySelector('.edit'))); // for browsers without :has()
 }
 $('#rigList').addEventListener('click', e => { const b = e.target.closest('button[data-rig]'); if (b) { cur().rig = b.dataset.rig; changed(true); } });
 $('#rigStat').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const s = cur();
@@ -3221,7 +3671,8 @@ function syncPanels() {
   // only what needs saying: a lens kit that doesn't cover the sensor
   const kt = KIT(), recD = Math.hypot(o.iw / (state.squeeze || 1), o.ih), ls = $('#lensSum'), vig = kt.id !== 'free' && recD > kt.circle;
   if (act !== $('#kitSel')) $('#kitSel').value = kt.id;
-  ls.textContent = vig ? `이미지 서클(${kt.circle}mm)보다 센서가 커서 코너가 어두워져요` : ''; ls.classList.toggle('warn-t', vig);
+  const km = keepMsg && keepMsg.s === s ? keepMsg : null;
+  ls.textContent = vig ? `이미지 서클(${kt.circle}mm)보다 센서가 커서 코너가 어두워져요` : km ? km.t : state.keepSize !== false ? '렌즈를 바꾸면 카메라가 앞뒤로 움직여 인물 크기를 지켜요' : '렌즈를 바꿔도 카메라는 그대로예요'; ls.classList.toggle('warn-t', vig || !!(km && km.warn));
   document.querySelectorAll('#focusSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.fo === (s.focus === 'M' ? 'M' : 'AF')));
   $('#afRow').hidden = s.focus === 'M';
   const afKeys = ['auto', ...subjKeys(s)]; if ($('#afSeg').dataset.keys !== afKeys.join()) { $('#afSeg').dataset.keys = afKeys.join(); $('#afSeg').innerHTML = afKeys.map(k => `<button data-af="${k}">${k === 'auto' ? '가운데' : k}</button>`).join(''); }
@@ -3273,21 +3724,25 @@ function removeCast(k) {
   state.shots.forEach(sh => { delete sh[k]; if (sh.afT === k) sh.afT = 'auto'; }); state.shots.forEach(sh => shotLights(sh).forEach(l => { if (l.track === k) l.track = 'A'; }));
   castK = 'A'; selObj = null; changed(true, true); syncBars(); toast(`${k}를 캐스트에서 뺐어요`, { label: '되돌리기', action: undo });
 }
+const lightCss = c => { const m = Math.max(...c); return `rgb(${c.map(v => enc(v / m)).join(',')})`; };
 const linCss = rgb => `rgb(${rgb.map(v => enc(Math.min(1, v * 1.25))).join(',')})`;
-let castK = 'A';
+$('#lightEdit').addEventListener('change', e => { const m = e.target.closest('select[data-mod]'), o = m && selObj && findObj(selObj.id); if (!o) return; o.mod = m.value; delete o.diff; delete o.beam; changed(true, true); });
+let castK = 'A', vrmFor = 'A';
+$('#vrmFile').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (f) vrmImport(f, vrmFor); });
 function syncCast() { const s = cur(); const ae = document.activeElement; if (ae && ae.classList && ae.classList.contains('cname')) return; // don't rebuild under the cursor
   // one person at a time behind A / B / C buttons, so the tab fits
   if (!castKeys().includes(castK)) castK = 'A';
   const pick = `<div class="seg kr wide castpick">${castKeys().map(k => `<button data-ck="${k}" aria-pressed="${k === castK}" class="${k === 'A' || (s[k] && s[k].on) ? '' : 'out'}"><i style="background:${CAST_COL[k]}"></i>${k}</button>`).join('')}${castKeys().length < CAST_KEYS.length ? '<button data-addcast="1" aria-label="인물 추가">＋</button>' : ''}</div>`;
   $('#castList').innerHTML = pick + [castK].map(k => { const c = castOf(k), sb = s[k], on = k === 'A' || sb.on, dog = c.who === 'dog', pal = dog ? FURS : OUTFITS;
     return `<div class="castcard${on ? '' : ' off'}" data-k="${k}">
-      <div class="ch"><span class="badge" style="background:${CAST_COL[k]}">${k}</span>${on ? `<input class="cname" maxlength="12" placeholder="${c.who === 'dog' ? '이름 (예: 콩이)' : '배역 이름 (예: 지수)'}" value="${esc(c.name || '')}" aria-label="${k} 이름">` : `<b>${castType(k)}</b>`}${k === 'A' ? '' : `<button class="btn sm" data-on="1">${on ? '이 샷에서 빼기' : '이 샷에 넣기'}</button>`}${CAST0[k] ? '' : `<button class="btn sm warn" data-rmcast="1" aria-label="${k} 삭제">삭제</button>`}</div>
+      <div class="ch"><span class="badge" style="background:${CAST_COL[k]}">${k}</span>${on ? `<input class="cname" maxlength="12" placeholder="${c.who === 'dog' ? '이름 (예: 콩이)' : '배역 이름 (예: 지수)'}" value="${esc(c.name || '')}" aria-label="${k} 이름">` : `<b>${castType(k)}</b>`}${on && c.who !== 'dog' && !c.vrm ? '<button class="btn sm" data-vrmpick="1" title="VRoid 등에서 만든 .vrm 캐릭터를 입혀요">VRM 불러오기</button>' : ''}${k === 'A' ? '' : `<button class="btn sm" data-on="1">${on ? '이 샷에서 빼기' : '이 샷에 넣기'}</button>`}${CAST0[k] ? '' : `<button class="btn sm warn" data-rmcast="1" aria-label="${k} 삭제">삭제</button>`}</div>
       ${on ? `
       <div class="seg kr">${Object.entries(WHO).map(([w, n]) => `<button data-who="${w}" aria-pressed="${c.who === w}">${n}</button>`).join('')}</div>
       ${dog ? `<div class="seg kr">${Object.entries(DOG_SIZES).map(([z, n]) => `<button data-dsize="${z}" aria-pressed="${(c.size || 'm') === z}">${n}</button>`).join('')}</div>`
         : `<div class="seg kr">${Object.entries(AGES).map(([a, n]) => `<button data-age="${a}" aria-pressed="${(c.age || 'adult') === a}">${n}</button>`).join('')}</div>`}
-      <div class="lh"><span class="mini">${dog ? '털색' : '옷'}</span><div class="sw">${pal.map((rgb, i) => `<button data-outfit="${i}" aria-pressed="${c.outfit % pal.length === i}" style="background:${linCss(rgb)}" aria-label="${dog ? FUR_NAMES[i] : '옷 색 ' + (i + 1)}"></button>`).join('')}</div></div>
-      ${dog ? '' : `<div class="lh"><span class="mini">피부</span><div class="sw">${SKINS.map((rgb, i) => `<button data-skin="${i}" aria-pressed="${(c.skin || 0) === i}" style="background:${linCss(rgb)}" aria-label="피부 톤 ${i + 1}"></button>`).join('')}</div></div>`}` : ''}
+      ${!dog && c.vrm ? `<div class="lh vrmrow"><span class="mini">3D 모델</span><span class="vrmname">${esc(c.vrmName || 'VRM')}${{ loading: ' · 불러오는 중', missing: ' · 이 기기에 없음', error: ' · 읽기 실패' }[vrmState(c.vrm, k)] || ''}</span><button class="btn sm" data-vrmpick="1">바꾸기</button><button class="btn sm ghost" data-vrmoff="1">기본</button></div>` : ''}
+      ${c.vrm && !dog ? '' : `<div class="lh"><span class="mini">${dog ? '털색' : '옷'}</span><div class="sw">${pal.map((rgb, i) => `<button data-outfit="${i}" aria-pressed="${c.outfit % pal.length === i}" style="background:${linCss(rgb)}" aria-label="${dog ? FUR_NAMES[i] : '옷 색 ' + (i + 1)}"></button>`).join('')}</div></div>
+      ${dog ? '' : `<div class="lh"><span class="mini">피부</span><div class="sw">${SKINS.map((rgb, i) => `<button data-skin="${i}" aria-pressed="${(c.skin || 0) === i}" style="background:${linCss(rgb)}" aria-label="피부 톤 ${i + 1}"></button>`).join('')}</div></div>`}`}` : ''}
     </div>`; }).join(''); }
 $('#castList').addEventListener('input', e => { const t = e.target; if (!t.classList.contains('cname')) return; const k = t.closest('.castcard').dataset.k;
   (state.cast[k] = state.cast[k] || { ...CAST0[k] }).name = t.value; save(); syncHud(); syncBars(); renderWorld(); updateSum(); });
@@ -3295,6 +3750,8 @@ $('#castList').addEventListener('change', e => { if (e.target.classList.contains
 $('#castList').addEventListener('click', e => { const b = e.target.closest('button'), card = e.target.closest('.castcard'); if (b && b.dataset.ck) { castK = b.dataset.ck; syncCast(); return; } if (b && b.dataset.addcast) return addCast(); if (b && b.dataset.rmcast) return removeCast(card.dataset.k); if (!b || !card) return;
   const k = card.dataset.k, s = cur(), d = b.dataset, c = state.cast[k] = state.cast[k] || { ...CAST0[k] };
   if (d.on) { toggleSub(k); return; }
+  if (d.vrmpick) { vrmFor = k; $('#vrmFile').value = ''; $('#vrmFile').click(); return; }
+  if (d.vrmoff) { delete c.vrm; delete c.vrmName; if (gl) gl.keys.figs = null; changed(true, true); return; }
   if (d.who) { if (c.who !== d.who) c.outfit = 0; c.who = d.who; } if (d.age) c.age = d.age; if (d.dsize) c.size = d.dsize;
   if (d.outfit) c.outfit = +d.outfit; if (d.skin) c.skin = +d.skin; if (d.pose) s[k].pose = d.pose;
   changed(true, true); });
@@ -3408,7 +3865,7 @@ function rentalText() {
   const rm = roomInfo(), env = envNow();
   return `\n\n카메라 장비\n` + Object.values(groups).map(g => `${g.r.name}\t${g.shots.join(', ')}`).join('\n') +
     `\n\n조명 (${rm ? `${rm.py}평 실내, 천장 ${rm.h}m, ${FINISH[rm.fin].name}` : `야외 · ${env.name}`})\n` +
-    [...new Map(state.shots.flatMap(sh => shotLights(sh)).map(l => [l.id, l])).values()].map(l => `${FIX(l.fx).name}\t${Math.round((l.dim ?? 1) * 100)}%\t${DIFFUSION[l.diff || 'none'].name}\t높이 ${fmt(l.y, 2)}m`).join('\n') +
+    [...new Map(state.shots.flatMap(sh => shotLights(sh).filter(l => !isGrip(l))).map(l => [l.id, l])).values()].map(l => `${FIX(l.fx).name}\t${Math.round((l.dim ?? 1) * 100)}%\t${(modOf(l) || { name: '—' }).name}\t높이 ${fmt(l.y, 2)}m`).join('\n') +
     (state.set.props.length ? `\n\n세트 가구\n` + state.set.props.map(o => PROPS[o.type].name).join(', ') : '');
 }
 // the shot strip folds down to one slim row so the stage gets the height back; remembered per device
@@ -3428,6 +3885,133 @@ $('#resetBtn').onclick = () => { const b = $('#resetBtn');
   state.shots = [newShot({ f: roundF(35 * imageArea().iw / 36) })]; state.sel = 0; state.title = '새 씬'; state.example = false;
   save(); buildStrip(); renderAll(); updateBoardIfOpen(); fitViewer('fit'); toast('빈 콘티로 시작합니다'); };
 
+/* ---------- AI prompts: each shot written out for a photoreal image (ChatGPT) or video (Higgsfield) generator ---------- */
+// Everything comes from the shot as planned: framing, lens, camera height, who stands where and faces which way, the set,
+// and every light by role, direction, quality and colour. Prompts are in English (what these models follow best); the
+// action and dialogue stay as written. The same character lines repeat in every shot, so people stay consistent.
+const EN_SIZE = { EWS: 'extreme wide shot', WS: 'wide shot', FS: 'full shot (head to toe)', MLS: 'medium long shot (knees up)', MS: 'medium shot (waist up)', MCU: 'medium close-up (chest up)', CU: 'close-up (face)', ECU: 'extreme close-up' };
+const EN_ANGLE = { EYE: 'eye-level angle', HIGH: 'high angle looking down', LOW: 'low angle looking up', BIRD: "bird's-eye view from directly above", WORM: "worm's-eye view from the ground" };
+const EN_MOVE = { static: ['locked-off static camera', 'Static'], pan: ['slow pan across the scene', 'Pan'], tilt: ['slow tilt', 'Tilt'], dollyin: ['slow dolly in toward the subject', 'Dolly In'],
+  dollyout: ['slow dolly out away from the subject', 'Dolly Out'], track: ['tracking shot moving alongside the subject', 'Tracking'], crane: ['crane / boom up rising over the scene', 'Crane Up'],
+  zoom: ['slow zoom in', 'Zoom In'], hand: ['handheld camera with subtle natural shake', 'Handheld'] };
+const EN_POSE = { stand: 'standing', sit: 'sitting', walk: 'walking', run: 'running', squat: 'crouching down', wave: 'raising one hand', point: 'pointing', lie: 'lying on their back' };
+const EN_OUTFIT = ['navy blue', 'brick red', 'forest green', 'cream', 'black', 'mustard yellow', 'plum purple'], EN_SKIN = ['medium', 'tan', 'light', 'deep brown'], EN_FUR = ['golden', 'cream', 'black', 'chocolate brown'];
+const EN_AGE = { child: 'child', teen: 'teenage', adult: 'adult', senior: 'elderly' };
+const EN_PROP = { sofa: 'a sofa', table: 'a dining table', cafe: 'a small round café table', chair: 'a chair', desk: 'a desk', bed: 'a bed', shelf: 'a bookshelf', flat: 'a wall', flatdoor: 'a wall with a door', flatwin: 'a wall with a window',
+  armchair: 'an armchair', counter: 'a bar counter', stool: 'a bar stool', kitchen: 'a kitchen counter with sink', fridge: 'a fridge', tv: 'a TV on a low cabinet', plant: 'a potted plant', rug: 'a rug', car: 'a parked car', apple: 'an apple box',
+  tree: 'a tree', bush: 'a bush', rock: 'a rock', fence: 'a wooden fence', parasol: 'a patio umbrella', picnic: 'a picnic table', bench: 'a park bench', lamp: 'a street lamp', bike: 'a bicycle', cone: 'a traffic cone', bin: 'a trash bin', hydrant: 'a fire hydrant' };
+const EN_FIN = { white: 'white', beige: 'beige', gray: 'grey', dark: 'dark' };
+const EN_ENV = { studio: 'a dark stage with no ambient light', night: 'night, dim city ambience', magic: 'magic hour, soft warm twilight', overcast: 'overcast daylight, soft and even', blue: 'blue hour, cool deep-blue twilight', shade: 'open shade on a sunny day', sun: 'bright sunny day' };
+const EN_GOBO = { win: 'a window-pane pattern', blind: 'venetian-blind stripes', leaf: 'dappled leaf shadows', break: 'a broken-up breakup pattern', none: 'a clean round spot' };
+function enFixture(fx) { const k = fixKind(fx.id);
+  if (/^hmi/.test(fx.id)) return 'HMI'; if (k === 'fresnel') return /^dedo/.test(fx.id) ? 'small tungsten spotlight' : /^(red|blonde)/.test(fx.id) ? 'open-face tungsten light' : 'tungsten fresnel';
+  return { cob: 'LED spotlight', panel: 'LED panel', tube: 'LED tube light', bulb: 'practical lamp in frame', china: 'paper lantern (china ball)', balloon: 'balloon light', leko: 'ellipsoidal spotlight' }[k] || 'light'; }
+const EN_MOD = { barn: '', fdiff: 'through a diffusion frame', chimera: 'through a softbox', refl: '', hyper: 'with a narrow reflector', fresatt: 'with a fresnel lens', dome: 'through a large softbox', domegrid: 'through a gridded softbox',
+  lantern: 'through a lantern that spreads light all around', open: '', grid: 'with a honeycomb grid', pbox: 'through a softbox' };
+function hueWord(c) { const m = Math.max(...c), n = Math.min(...c); if (m - n < 0.12 * m) return null; const [r, g, b] = c.map(v => v / m);
+  let h = r === 1 ? ((g - b) / (1 - Math.min(g, b) || 1)) * 60 : g === 1 ? 120 + ((b - r) / (1 - Math.min(r, b) || 1)) * 60 : 240 + ((r - g) / (1 - Math.min(r, g) || 1)) * 60; h = (h + 360) % 360;
+  return h < 15 || h >= 340 ? 'red' : h < 40 ? 'orange' : h < 65 ? 'yellow' : h < 160 ? 'green' : h < 200 ? 'cyan' : h < 255 ? 'blue' : h < 290 ? 'purple' : 'magenta'; }
+// where something is, seen from the subject: in front, from the side, from behind; on screen left or right; how high
+function dirWords(s, from, T) {
+  const B = shotBasis(s), toL = norm({ x: from.x - T.x, y: 0, z: from.z - T.z }), toC = norm({ x: s.cam.x - T.x, y: 0, z: s.cam.z - T.z });
+  const a = Math.acos(clamp(dot(toL, toC), -1, 1)) / DEG, side = dot(toL, B.r) > 0 ? 'screen right' : 'screen left';
+  const el = Math.atan2(from.y - T.y, Math.hypot(from.x - T.x, from.z - T.z)) / DEG;
+  const h = el > 55 ? 'from directly above' : el > 25 ? 'from high' : el < -8 ? 'from below' : 'at head height';
+  return { a, side, h, text: a < 25 ? `from near the camera, ${h}` : a < 70 ? `from ${side}, about 45° to the front, ${h}` : a < 115 ? `from ${side} at the side, ${h}` : `from behind on ${side}, ${h}` };
+}
+function promptParts(s) {
+  const o = optics(s), B = shotBasis(s), L = lightCtx(s), sz = autoSize(s, o), an = autoAngle(s), keys = subjKeys(s), WB = s.wb || 5600;
+  const scr = p => { const d = sub3(p, B.P), z = dot(d, B.f); return z > 0.1 ? { x: dot(d, B.r) / z / o.tanH, y: dot(d, B.u) / z / o.tanV, z } : null; };
+  const third = x => x < -0.45 ? 'on the left third of the frame' : x < -0.1 ? 'just left of centre' : x > 0.45 ? 'on the right third of the frame' : x > 0.1 ? 'just right of centre' : 'in the centre of the frame';
+  // people: who, what they wear, how they stand, where in frame and which way they face
+  const people = keys.map(k => { const c = castOf(k), sb = s[k], nm = (c.name || '').trim(), head = { x: sb.x, y: headY(s, sb), z: sb.z }, q = scr(head);
+    const who = c.who === 'dog' ? `a ${{ s: 'small', m: 'medium-sized', l: 'large' }[c.size || 'm']} ${EN_FUR[c.outfit % EN_FUR.length]} dog`
+      : `${c.vrm ? 'the person from the attached character reference — ' : ''}an ${EN_AGE[c.age || 'adult']} ${c.who === 'f' ? 'woman' : 'man'}, ${EN_SKIN[(c.skin || 0) % EN_SKIN.length]} skin, ${c.age === 'senior' ? 'grey' : 'dark'} ${c.who === 'f' && c.age !== 'senior' ? 'long' : 'short'} hair, wearing a ${EN_OUTFIT[c.outfit % EN_OUTFIT.length]} top and dark trousers`.replace(/^an (child|teenage)/, 'a $1');
+    const fa = Math.atan2(Math.sin(sb.face * DEG), Math.cos(sb.face * DEG)), toC = Math.atan2(s.cam.x - sb.x, s.cam.z - sb.z), da = Math.abs(((fa - toC) / DEG + 540) % 360 - 180);
+    const facing = da < 30 ? 'facing the camera' : da < 75 ? 'in three-quarter view' : da < 115 ? 'in profile' : 'with their back to the camera';
+    const where = q ? (Math.abs(q.x) > 1.05 ? 'just outside the frame' : third(q.x)) : 'behind the camera';
+    return { k, out: !q || Math.abs(q.x) > 1.05, line: `${k}${nm ? ` (${nm})` : ''}: ${who}, ${EN_POSE[sb.pose || 'stand']}, ${facing}, ${where}` }; });
+  // the place and the time of day
+  const rm = roomInfo(), sn = state.set.sun && state.set.sun.on ? state.set.sun : null;
+  const place = rm ? `Interior: a room of about ${Math.round(rm.area)} m² with ${EN_FIN[rm.fin] || 'plain'} walls and a ${rm.h} m ceiling${L.nWin ? `, ${L.nWin} window${L.nWin > 1 ? 's' : ''}` : ''}`
+    : `Exterior${backdropOn() ? ': a quiet city street with trees and low buildings in the background' : ': an open outdoor location'}`;
+  let time = EN_ENV[state.set.env] || '';
+  if (sn) { const e = sunEnv(sn), hr = sn.hour; time = e.el < -4 ? 'after sunset, blue hour' : e.el < 6 ? 'golden hour, the sun on the horizon' : e.el < 20 ? 'late low sun, warm golden light' : hr < 11 ? 'morning sun' : hr < 15 ? 'midday sun' : 'afternoon sun';
+    time += { clear: ', clear sky', partly: ', scattered clouds', overcast: ', overcast sky' }[sn.wx || 'clear']; }
+  const props = state.set.props.filter(p => { const d = propDims(p), q = scr({ x: p.x, y: d.h / 2, z: p.z }); return q && Math.abs(q.x) < 1.1 && Math.abs(q.y) < 1.2 && q.z < 25; }).map(p => EN_PROP[p.type]).filter(Boolean);
+  // lights: brightest on the subject is the key; describe role, fixture, direction, quality and colour
+  const T = { x: s[afKey(s)].x, y: headY(s, s[afKey(s)]), z: s[afKey(s)].z };
+  const lit = L.lights.map(li => { const d = sub3(li.P, T), d2 = Math.max(0.2, dot(d, d)), E = li.I0 / d2; return { li, E, dw: dirWords(s, li.P, T) }; }).sort((a, b) => b.E - a.E);
+  const ambient = (L.env.sky || 0) * 0.5 + (L.Eind || 0), key = lit[0], fx0 = key && FIX(key.li.l.fx);
+  const lights = lit.map((x, i) => { const l = x.li.l, fx = FIX(l.fx), md = modOf(l, fx), soft = x.li.size >= 0.5 ? 'soft' : x.li.size >= 0.2 ? 'semi-soft' : 'hard', coloured = fx.rgb ? (l.cmode === 'rgb' || l.cmode === 'gel') : GELS[l.gel] && GELS[l.gel].t, hw = coloured && hueWord(x.li.col);
+    const col = hw ? `${hw}-coloured` : x.li.K < WB - 700 ? `warm (${x.li.K}K)` : x.li.K > WB + 1200 ? `cool blue-ish (${x.li.K}K)` : `neutral white (${x.li.K}K)`;
+    const role = fixKind(l.fx) === 'bulb' || fixKind(l.fx) === 'china' ? 'practical' : x.dw.a > 115 ? 'backlight / rim light' : i === 0 ? 'key light' : x.E > key.E * 0.4 ? 'second key' : 'fill light';
+    const extra = fx.gobo ? ` projecting ${EN_GOBO[l.gobo || 'win'] || 'a pattern'}` : '', cut = x.li.cut < 0.99 ? `, cut down by ${x.li.cut <= 0.55 ? 'a net / silk (about one stop)' : 'a single net'}` : '';
+    if (role === 'practical') { const q = scr(x.li.P); return `practical: ${hw ? hw + ' ' : x.li.K < 3500 ? 'warm ' : ''}${fixKind(l.fx) === 'china' ? 'paper lantern' : 'table lamp'} ${q && Math.abs(q.x) < 1 && Math.abs(q.y) < 1 ? 'visible in frame, ' + third(q.x) : 'off-screen'}, glowing`; }
+    return `${role}: ${soft} ${col} ${enFixture(fx)}${md && EN_MOD[md.id] ? ' ' + EN_MOD[md.id] : ''}${extra}, ${x.dw.text}${cut}`; });
+  if (sn && L.sunDir && L.env.sun) { const sp = { x: T.x + L.sunDir.x * 50, y: T.y + L.sunDir.y * 50, z: T.z + L.sunDir.z * 50 }; lights.unshift(`sunlight ${dirWords(s, sp, T).text}`); }
+  const flags = L.grips.filter(g => GRIPS[g.fx].kind === 'flag').length;
+  const ratio = key ? key.E / Math.max(1, ambient + lit.slice(1).filter(x => x.dw.a < 115).reduce((m, x) => m + x.E, 0)) : 0;
+  const contrast = !key ? 'lit only by ambient light' : ratio > 8 ? 'high-contrast, low-key look with deep shadows' : ratio > 3 ? 'moderate contrast, natural shadows' : 'soft, low-contrast look';
+  // lens: full-frame equivalent and the depth of field it actually gives
+  const eq = Math.round(o.eq), dofM = o.far - o.near, dof = !isFinite(o.far) || dofM > 20 ? 'deep focus, background sharp' : dofM < 0.6 ? 'very shallow depth of field, background strongly blurred (creamy bokeh)' : dofM < 2.5 ? 'shallow depth of field, background softly blurred' : 'moderate depth of field';
+  const kit = KIT(), ana = kit.sq > 1, asp = state.aspect === '2.39:1' ? '2.39:1 anamorphic widescreen' : state.aspect === '9:16' ? '9:16 vertical' : state.aspect;
+  const tilt = Math.abs(s.cam.tilt) < 4 ? 'level' : s.cam.tilt < 0 ? `tilted down ${Math.round(-s.cam.tilt)}°` : `tilted up ${Math.round(s.cam.tilt)}°`;
+  return { o, sz, an, eq, dof, asp, ana, tilt, people, place, time, props, lights, contrast, flags, WB, move: EN_MOVE[s.move] || EN_MOVE.static, focusK: afKey(s) };
+}
+function promptImage(s, i) {
+  const p = promptParts(s), n = String(i + 1).padStart(2, '0');
+  return [`[S${n}] Photorealistic cinematic film still, shot on a full-frame cinema camera. Aspect ratio ${p.asp}.`,
+    `If a storyboard frame is attached: keep its exact composition, camera angle, framing, character positions and light directions, but replace the simple 3D figures and set with real people and real locations.`,
+    `Location: ${p.place}. ${p.time ? 'Time: ' + p.time + '.' : ''}`,
+    `Camera: ${EN_SIZE[p.sz] || 'shot'}, ${EN_ANGLE[p.an.k]}${p.an.dutch ? ', dutch tilt' : ''}, ${p.eq}mm lens${p.ana ? ' (anamorphic, oval bokeh, horizontal flares)' : ''} at ${stopTxt(s.N)}, camera ${fmt(s.cam.y, 2)} m high, ${p.tilt}, focus on ${p.focusK}, ${p.dof}.`,
+    `People: ${p.people.filter(x => !x.out).map(x => x.line).join('; ') || 'nobody in frame'}.${p.people.some(x => x.out) ? ` Off-screen (not visible): ${p.people.filter(x => x.out).map(x => x.k).join(', ')}.` : ''}`,
+    p.props.length ? `In frame: ${[...new Set(p.props)].join(', ')}.` : '',
+    `Lighting: ${p.lights.join('; ') || 'ambient only'}. Overall ${p.contrast}, white balance ${p.WB}K.`,
+    s.action ? `Action: ${s.action}` : '', s.dialogue ? `Moment: while saying "${s.dialogue}"` : '', s.note ? `Note: ${s.note}` : '',
+    `Style: real photograph, natural skin texture, realistic fabric and materials, subtle film grain. No text, no watermark, no storyboard marks, not a 3D render, not an illustration.`].filter(Boolean).join('\n');
+}
+function promptVideo(s, i) {
+  const p = promptParts(s), n = String(i + 1).padStart(2, '0'), who = p.people.filter(x => !x.out).map(x => x.line.replace(/^\w+( \([^)]*\))?: /, '')).join('; ') || 'The empty scene';
+  return [`[S${n}] Camera motion preset: ${p.move[1]} · duration ${s.dur || 3}s · ${p.asp}`,
+    `${p.move[0][0].toUpperCase() + p.move[0].slice(1)}. ${((EN_SIZE[p.sz] || 'shot').replace(/ \(.*\)/, '')).replace(/^./, c => c.toUpperCase())} at ${EN_ANGLE[p.an.k]}, ${p.eq}mm lens, ${p.dof}.`,
+    `${who}.${s.action ? ' ' + s.action : ''}${s.dialogue ? ` They say: "${s.dialogue}"` : ''}`,
+    `${p.place}${p.time ? ', ' + p.time : ''}.${p.props.length ? ' ' + [...new Set(p.props)].join(', ') + ' in frame.' : ''}`,
+    `Lighting: ${p.lights.slice(0, 3).join('; ') || 'ambient'}; ${p.contrast}.`,
+    `Photorealistic live-action footage, cinematic, natural motion, 24fps film look, consistent faces and clothing. No text, no 3D render look.`].join('\n');
+}
+
+/* ---------- the prompt sheet ---------- */
+let aiKind = 'img', aiSel = 0;
+function openAi() { aiSel = state.sel; $('#aiModal').hidden = false; syncAi(); }
+function syncAi() {
+  if ($('#aiModal').hidden) return; aiSel = Math.min(aiSel, state.shots.length - 1);
+  document.querySelectorAll('#aiKind button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === aiKind));
+  $('#aiShots').innerHTML = state.shots.map((s, i) => `<button data-i="${i}" aria-pressed="${i === aiSel}">S${String(i + 1).padStart(2, '0')}</button>`).join('');
+  $('#aiText').value = (aiKind === 'img' ? promptImage : promptVideo)(state.shots[aiSel], aiSel);
+  $('#aiTip').textContent = aiKind === 'img' ? 'ChatGPT에 "참고 프레임"을 같이 올리고 프롬프트를 붙여넣으면 구도가 그대로 나와요. 인물 설명은 모든 샷에 똑같이 들어가 있어요.'
+    : 'Higgsfield에서 프롬프트 첫 줄의 카메라 무브 프리셋을 고르고, 참고 프레임(또는 ChatGPT로 만든 실사 컷)을 시작 이미지로 넣으세요.';
+}
+const aiCopy = text => { try { navigator.clipboard.writeText(text).then(() => toast('프롬프트를 복사했어요'), () => { $('#aiText').select(); toast('자동 복사가 막혔어요 — 글을 길게 눌러 복사하세요'); }); } catch (e) { $('#aiText').select(); } };
+// the planned frame as a PNG: the composition reference to attach next to the prompt
+async function aiFrame() {
+  const s = state.shots[aiSel], asp = aspectV(), W = asp >= 1 ? 1600 : Math.round(1600 * asp), H = Math.round(W / asp), cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d'); ctx.setTransform(1, 0, 0, 1, 0, 0); renderShot(ctx, W, H, s, { labels: false, move: false, lit: true, blur: state.blur, slot: 'ref' });
+  const blob = await new Promise(r => cv.toBlob(r, 'image/png')), name = `${(state.title || '프레임콘티').replace(/[\\/:*?"<>|]+/g, ' ').trim().slice(0, 40)}_S${String(aiSel + 1).padStart(2, '0')}.png`;
+  const dl = window.claude && window.claude.use ? await window.claude.use('downloads').catch(() => null) : null;
+  if (dl) { try { await dl.save({ filename: name, data: blob }); toast(`${name} 저장`); } catch (e) { toast('저장을 취소했어요'); } return; }
+  const file = new File([blob], name, { type: 'image/png' });
+  if (coarse.matches && navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  downloadBlob(blob, name); toast(`${name} 저장`);
+}
+$('#aiBtn').onclick = openAi;
+$('#aiClose').onclick = () => { $('#aiModal').hidden = true; };
+$('#aiModal').addEventListener('click', e => { if (e.target.id === 'aiModal') $('#aiModal').hidden = true; });
+$('#aiKind').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { aiKind = b.dataset.k; syncAi(); } });
+$('#aiShots').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { aiSel = +b.dataset.i; syncAi(); } });
+$('#aiCopy').onclick = () => aiCopy($('#aiText').value);
+$('#aiAll').onclick = () => aiCopy(state.shots.map((s, i) => (aiKind === 'img' ? promptImage : promptVideo)(s, i)).join('\n\n---\n\n'));
+$('#aiImg').onclick = aiFrame;
 /* ---------- example scene ---------- */
 // placed the way a DP would describe it (size, height angle, bearing, full-frame focal length), then converted to this sensor so the framing matches
 function placeShot(o) {
@@ -3499,7 +4083,8 @@ function placeDrawer() { const d = $('#drawer');
 function openPane(p) { pane = p; $('#drawer').hidden = !p;
   document.querySelectorAll('.pane').forEach(x => x.hidden = x.dataset.pane !== p);
   document.querySelectorAll('#rail button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pane === p));
-  if (p) { $('#drawerTitle').textContent = PANES[p]; $('#drawerIcon').innerHTML = $(`#rail button[data-pane="${p}"] svg`).outerHTML; placeDrawer(); } }
+  if (p) { $('#drawerTitle').textContent = PANES[p]; $('#drawerIcon').innerHTML = $(`#rail button[data-pane="${p}"] svg`).outerHTML; placeDrawer(); }
+  if (mode === 'mon') { vsz = null; drawMonitor(); } }
 $('#rail').addEventListener('click', e => { const b = e.target.closest('button'); if (b) openPane(pane === b.dataset.pane ? null : b.dataset.pane); });
 $('#drawerClose').onclick = () => openPane(null);
 phone.addEventListener('change', placeDrawer);
@@ -3688,7 +4273,7 @@ function shareLink() {
   const url = location.origin + location.pathname + '#d=' + LZString.compressToEncodedURIComponent(JSON.stringify({ f: 'frameconti', v: SCHEMA, p: { ...state, sel: 0 } }));
   if (url.length > 16000) return toast(`링크가 너무 길어요 (${Math.round(url.length / 1000)}k자). 프로젝트 파일로 공유하세요`, { ms: 5000 });
   const done = () => toast('공유 링크를 복사했어요. 받은 사람은 "내 프로젝트로 저장"을 누르면 돼요', { ms: 4000 });
-  if (navigator.share && (phone.matches || shortH.matches)) navigator.share({ title: state.title, url }).catch(() => {});
+  if (navigator.share && coarse.matches) navigator.share({ title: state.title, url }).catch(() => {});
   else try { navigator.clipboard.writeText(url).then(done, () => prompt('공유 링크', url)); } catch (e) { prompt('공유 링크', url); } }
 $('#shareLinkBtn').onclick = shareLink;
 function openShared(data) { let o = null; try { o = JSON.parse(window.LZString ? LZString.decompressFromEncodedURIComponent(data) : ''); } catch (e) {}
@@ -3775,7 +4360,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.10.30 14:51'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.10.30 16:59'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
