@@ -3,44 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script>
-/* Landscape on phones even with the rotation lock on: a page can't turn the screen, so on a phone the app runs in a full-screen frame
-   that is turned 90° whenever the screen is upright. Inside the frame the app sees a landscape viewport (media queries, sizes and touch
-   coordinates all follow the frame), so nothing in the app changes. Turned clockwise by default; the tilt sensor (Android) or the
-   menu's flip (localStorage framecontis.flip) picks the other way. Inlined at the top of the site's <head> by build_site.py. */
-(function () {
-  if (window.top !== window || /[?&]in=1/.test(location.search)) return;
-  var small = Math.min(screen.width, screen.height) < 600, coarse = window.matchMedia && matchMedia('(pointer: coarse)').matches;
-  if (!small || !coarse) return;
-  window.__landWrap = 1;
-  try { window.stop(); } catch (e) {}
-  var src = location.pathname + (location.search ? location.search + '&' : '?') + 'in=1' + location.hash;
-  document.documentElement.innerHTML = '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">' +
-    '<meta name="theme-color" content="#0A0D11"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png">' +
-    '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>프레임콘티</title>' +
-    '<style>html,body{margin:0;height:100%;overflow:hidden;background:#0A0D11;touch-action:none;overscroll-behavior:none;position:fixed;inset:0}' +
-    '#lw{position:fixed;inset:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}' +
-    'iframe{position:fixed;left:0;top:0;border:0;transform-origin:0 0;background:#0A0D11;display:block}</style></head>' +
-    '<body><div id="lw"></div><iframe id="lf" title="프레임콘티" allow="web-share; clipboard-write; fullscreen; camera; microphone"></iframe></body>';
-  var f = document.getElementById('lf'), lw = document.getElementById('lw'), cw = true;
-  try { cw = localStorage.getItem('framecontis.flip') !== '1'; } catch (e) {}
-  function fit() {
-    var cs = getComputedStyle(lw), pl = parseFloat(cs.paddingLeft) || 0, pr = parseFloat(cs.paddingRight) || 0, pt = parseFloat(cs.paddingTop) || 0, pb = parseFloat(cs.paddingBottom) || 0;
-    var W = window.innerWidth, H = window.innerHeight, w = W - pl - pr, h = H - pt - pb, st = f.style;
-    if (h > w) { st.width = h + 'px'; st.height = w + 'px'; st.transform = cw ? 'translate(' + (pl + w) + 'px,' + pt + 'px) rotate(90deg)' : 'translate(' + pl + 'px,' + (pt + h) + 'px) rotate(-90deg)'; }
-    else { st.width = w + 'px'; st.height = h + 'px'; st.transform = 'translate(' + pl + 'px,' + pt + 'px)'; }
-  }
-  window.__landFlip = function () { cw = !cw; try { localStorage.setItem('framecontis.flip', cw ? '0' : '1'); } catch (e) {} fit(); };
-  window.__landRotated = function () { return window.innerHeight > window.innerWidth; };
-  // which way the phone is turned: with the right edge up (turned counter-clockwise) the picture turns clockwise, and the other way round
-  window.addEventListener('deviceorientation', function (e) { if (e.gamma == null || Math.abs(e.beta) > 50) return;
-    var want = e.gamma < -60 ? true : e.gamma > 60 ? false : cw; if (want !== cw) { cw = want; fit(); } });
-  // a two-finger touch must never become a page zoom (it would cancel the drag in the frame)
-  document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
-  window.addEventListener('resize', fit); window.addEventListener('orientationchange', function () { setTimeout(fit, 250); });
-  fit(); f.src = src; setTimeout(fit, 300);
-})();
-</script>
 <meta name="theme-color" content="#0A0D11">
 <meta name="description" content="버튼과 드래그만으로 샷별 카메라·렌즈·장비·조명·세트·인물을 짜는 3D 콘티 앱">
 <link rel="manifest" href="manifest.webmanifest">
@@ -802,8 +764,8 @@ textarea#aiText{font-size:11px!important}
     <button id="aiBtn" role="menuitem">AI 실사 프롬프트 (ChatGPT · Higgsfield)</button><hr>
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
-    <hr><button id="flipBtn" role="menuitem" hidden>화면 방향 뒤집기 (180°)</button><button id="tourBtn" role="menuitem">사용법 보기</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.01 00:39</p>
+    <hr><button id="tourBtn" role="menuitem">사용법 보기</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.01 00:46</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -1033,7 +995,7 @@ textarea#aiText{font-size:11px!important}
     <div class="mc-row"><button class="sbtn center" id="mcCopy"><b>주소 복사</b></button><a class="sbtn primary center" id="mcSend" target="_blank" rel="noopener"><b>메일 앱으로 보내기</b></a></div>
     <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
-  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.01 00:39</span><button class="mc-ask" id="mcAsk">문의하기</button></div>
+  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.01 00:46</span><button class="mc-ask" id="mcAsk">문의하기</button></div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
@@ -1208,8 +1170,6 @@ function kitF(f, k = KIT()) {
   return f;
 }
 const stopsFor = s => { const t = maxT(KIT(), s.f); return [t, ...STOPS.filter(x => x > t + 0.05)]; };
-// a phone runs the app in a landscape frame (src/landwrap.js): that outer page, or null
-const landWrap = () => { try { return window.parent !== window && parent.__landWrap ? parent : null; } catch (e) { return null; } };
 /* ---------- state ---------- */
 let uid = 1;
 const mkId = () => 's' + Date.now().toString(36) + (uid++);
@@ -4922,8 +4882,6 @@ function tour(i) { document.querySelectorAll('.spot').forEach(e => e.classList.r
   if (!tourLoop) { tourLoop = true; requestAnimationFrame(tourPlace); } }
 $('#addBtn').onclick = addShot;
 $('#coachNext').onclick = () => tour(tourI + 1); $('#coachSkip').onclick = () => tour(-1);
-// phones run in a landscape frame (src/landwrap.js); when the picture is upside down for the way the phone is held, flip it
-$('#flipBtn').hidden = !landWrap(); $('#flipBtn').onclick = () => { xMenu(false); const w = landWrap(); if (w) w.__landFlip(); };
 $('#tourBtn').onclick = () => { xMenu(false); openPane(null); if (mode !== '3d') setMode('3d'); tour(0); };
 function maybeTour() { let seen = null; try { seen = localStorage.getItem('framecontis.tour'); } catch (e) {}
   if (seen) return; setTimeout(() => tour(0), 500); }
@@ -5064,8 +5022,7 @@ $('#fileIn').addEventListener('change', e => { const f = e.target.files && e.tar
 $('#expFileBtn').onclick = exportFile; $('#shareFileBtn').onclick = shareFile; $('#impFileBtn').onclick = $('#mcImport').onclick = () => $('#fileIn').click();
 
 /* ---------- address bar: #/p/<id> follows the open project; #d=<compressed> carries a whole project in the link ---------- */
-const setHash = h => { try { history.replaceState(null, '', h || location.pathname + location.search); } catch (e) {}
-  try { if (landWrap()) parent.history.replaceState(null, '', h || parent.location.pathname); } catch (e) {} }; // a phone's landscape frame: the address bar follows
+const setHash = h => { try { history.replaceState(null, '', h || location.pathname + location.search); } catch (e) {} };
 function shareLink() {
   if (!window.LZString) return toast('링크 압축 도구를 불러오지 못했어요. 파일로 공유하세요');
   const url = location.origin + location.pathname + '#d=' + LZString.compressToEncodedURIComponent(JSON.stringify({ f: 'frameconti', v: SCHEMA, p: { ...state, sel: 0 } }));
@@ -5164,7 +5121,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.01 00:39'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.01 00:46'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
