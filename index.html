@@ -101,8 +101,18 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stro
 .vfbox canvas{touch-action:none;cursor:crosshair;border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
 .hud{font-family:var(--f-mono);font-size:11px;color:var(--vf-ink);display:flex;justify-content:space-between;gap:8px;letter-spacing:.03em;white-space:nowrap;overflow:hidden;pointer-events:none}
 .hud.b{color:var(--vf-dim)}
-.vfbox .hud{position:absolute;left:10px;right:10px;z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 6px rgba(0,0,0,.6)}
-.vfbox .hud.t{top:7px} .vfbox .hud.b{bottom:7px;color:var(--vf-ink)}
+/* readouts outside the picture, the way a camera monitor shows them: the exposure status line above (FPS, shutter, iris, EI, ND, WB and the
+   shot), framing and focus below. sizeView keeps the room; placeHud steps them clear of the view switch and the keys. */
+.vfbox .hud{position:absolute;left:2px;right:2px;z-index:1}
+.vfbox .hud.t{bottom:100%;margin-bottom:3px;height:22px;align-items:baseline;gap:10px}
+.vfbox .hud.b{top:100%;margin-top:3px;height:16px;line-height:16px;font-size:10.5px;color:var(--vf-dim)}
+.vfbox .hud span{overflow:hidden;text-overflow:ellipsis}
+.hud .mf{display:inline-flex;align-items:baseline;gap:4px;flex:none}
+.hud .mf i{font:500 8.5px var(--f-mono);font-style:normal;color:var(--vf-dim);letter-spacing:.05em}
+.hud .mf b{font:600 16px/1 var(--f-display);color:#fff;letter-spacing:.02em}
+.hud .mcam{flex:none;margin-left:auto;font:700 13px/1 var(--f-display);color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:3px;padding:2px 5px}
+.vfbox .hud.t.tight{gap:6px;align-items:center} .hud.t.tight .mf{flex-direction:column;align-items:flex-start;gap:1px} .hud.t.tight .mf i{font-size:7.5px;line-height:1} .hud.t.tight .mf b{font-size:12.5px}
+.hud.b #hudB{flex:none}
 .hud .rec{display:inline-flex;align-items:center;gap:6px;overflow:hidden;text-overflow:ellipsis}
 .hud .rec::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--rec);box-shadow:0 0 8px var(--rec)}
 .hud .warn{color:#F07A66}
@@ -557,7 +567,17 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 /* direction keys: a cross of four 44 px keys; each key is its own touch, so two can be held (forward + left) while the other hand drags the picture */
 .mp-pad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:2px}
 .mp-pad .mp-f{grid-area:1/2} .mp-pad .mp-l{grid-area:2/1} .mp-pad .mp-r{grid-area:2/3} .mp-pad .mp-b{grid-area:3/2} .mp-pad .mp-u{grid-area:1/3} .mp-pad .mp-d{grid-area:3/3}
-.movepad .mp-pad button{width:44px;height:44px} .movepad svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.movepad .mp-pad button{width:44px;height:44px}
+/* moving a person (3D, person picked): a joystick instead of the keys, drag the thumb the way they should walk */
+.movepad{opacity:.8} /* a little see-through, fixed */
+.movepad.subj .mp-pad{display:none} .movepad:not(.subj) .mp-joy{display:none}
+.mp-joy{position:relative;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:radial-gradient(circle,rgba(255,255,255,.06),rgba(17,21,27,.7) 70%);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);touch-action:none;user-select:none;-webkit-user-select:none}
+.mp-joy::before{content:"";position:absolute;inset:14px;border-radius:50%;border:1px dashed rgba(255,255,255,.12)}
+.mp-thumb{position:absolute;left:50%;top:50%;width:50px;height:50px;margin:-25px 0 0 -25px;border-radius:50%;background:rgba(240,244,250,.9);box-shadow:0 4px 14px rgba(0,0,0,.45);pointer-events:none;transition:transform .12s}
+.mp-joy.on .mp-thumb{background:var(--accent);transition:none}
+@media (orientation:landscape) and (max-height:520px){ .mp-joy{width:108px;height:108px} }
+@media (prefers-reduced-motion:reduce){ .mp-thumb{transition:none} } .movepad svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .movepad[hidden]{display:none}
 .movepad.subj .mp-u,.movepad.subj .mp-d{display:none}
 .app.dock .movepad,.app.dock .vfbox .vf-tools{display:none!important}
@@ -690,7 +710,7 @@ textarea#aiText{font-size:11px!important}
 .vfbox .vf-tools.edge{gap:3px} .vfbox .vf-tools.edge button{width:34px;min-height:34px;opacity:.62;font-size:0;padding:2px} .vfbox .vf-tools.edge button svg{width:16px;height:16px}
 .vfbox .vf-tools.edge button:hover,.vfbox .vf-tools.edge button[aria-pressed="true"]{opacity:.9}
 /* the frame reads clearly against the dimmed surround */
-.vfbox canvas#view{box-shadow:0 0 0 1.5px rgba(255,255,255,.8),0 0 0 3px rgba(0,0,0,.55),0 0 28px rgba(0,0,0,.75)}
+.vfbox canvas#view{box-shadow:0 0 0 1.5px rgba(229,72,58,.9),0 0 0 3px rgba(0,0,0,.55),0 0 28px rgba(0,0,0,.75)} /* the red frame line of a monitor on a rolling camera */
 /* upright phones: compact shot cards — number, size and lens only — so five or more fit across */
 @media (max-width:719px) and (orientation:portrait){
   .strip{gap:6px} .card{width:62px;padding:5px 4px;gap:2px;justify-content:center} .card canvas{display:none}
@@ -765,7 +785,7 @@ textarea#aiText{font-size:11px!important}
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
     <hr><button id="tourBtn" role="menuitem">사용법 보기</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.01 00:46</p>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.01 18:36</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -784,9 +804,9 @@ textarea#aiText{font-size:11px!important}
       <canvas id="viewBg" class="surround" aria-hidden="true" hidden></canvas>
       <div class="fclegend" id="fcLegend" hidden aria-label="폴스컬러 범례"><b>폴스컬러 · 스톱 (18% 기준)</b><span style="--c:#e53935"><i style="background:#e53935"></i><em>+5.3↑</em><small>클리핑</small></span><span style="--c:#f2d33a"><i style="background:#f2d33a"></i><em>+4.5</em><small>하이라이트 끝</small></span><span style="--c:#ec79b8"><i style="background:#ec79b8"></i><em>+1</em><small>밝은 피부</small></span><span style="--c:#3fae5a"><i style="background:#3fae5a"></i><em>0</em><small>18% 회색</small></span><span style="--c:#2f5fd0"><i style="background:#2f5fd0"></i><em>−4.5</em><small>어두운 끝</small></span><span style="--c:#6b2c91"><i style="background:#6b2c91"></i><em>−6↓</em><small>블랙</small></span></div>
       <div class="vfbox" id="vfbox">
-        <div class="hud t"><span class="rec" id="hudL">S01</span><span id="hudR">16:9</span></div>
+        <div class="hud t" id="hudTop"></div>
         <canvas id="view" aria-label="카메라에 찍히는 화면. 드래그하면 팬과 틸트, 두 손가락 위아래나 휠은 달리, 더블클릭은 초점 대상 조준."></canvas>
-        <div class="hud b"><span id="monInfo"></span><span id="hudB"></span></div>
+        <div class="hud b"><span class="rec" id="hudL"></span><span id="monInfo"></span><span id="hudB"></span></div>
         <div class="vf-tools"><button id="gThirds" aria-pressed="true" title="3분할 가이드 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>3×3</button><button id="gFC" aria-pressed="false" title="폴스컬러 노출 표시 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 8h16M4 12h16M4 16h16"/></svg>폴스</button></div>
       </div>
     </div>
@@ -817,6 +837,7 @@ textarea#aiText{font-size:11px!important}
       <button class="fab" id="oDup" data-p title="복제"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span class="lab">복제</span></button><button class="fab" id="oDel"><svg class="i" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></svg><span class="lab">삭제</span></button>
       <button class="fab" id="oClose" title="선택 해제"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
     <div class="ov ov-bl movepad" id="movePad" hidden aria-label="이동 키">
+      <div class="mp-joy" id="joy" role="application" aria-label="조이스틱: 끄는 방향으로 인물이 걸어가요"><i class="mp-thumb" id="joyThumb"></i></div>
       <div class="mp-pad" role="group" aria-label="앞뒤 좌우 이동 (누르고 있는 동안 움직여요)">
         <button data-mv="f" class="mp-f" aria-label="앞으로"><svg viewBox="0 0 24 24" style="transform:rotate(0deg)"><path d="M6 15l6-6 6 6"/></svg><small>앞</small></button><button data-mv="l" class="mp-l" aria-label="왼쪽으로"><svg viewBox="0 0 24 24" style="transform:rotate(-90deg)"><path d="M6 15l6-6 6 6"/></svg><small>좌</small></button>
         <button data-mv="r" class="mp-r" aria-label="오른쪽으로"><svg viewBox="0 0 24 24" style="transform:rotate(90deg)"><path d="M6 15l6-6 6 6"/></svg><small>우</small></button><button data-mv="b" class="mp-b" aria-label="뒤로"><svg viewBox="0 0 24 24" style="transform:rotate(180deg)"><path d="M6 15l6-6 6 6"/></svg><small>뒤</small></button><button data-mv="u" class="mp-u" aria-label="위로 (붐 업)">↑<small>붐</small></button><button data-mv="d" class="mp-d" aria-label="아래로 (붐 다운)">↓<small>붐</small></button>
@@ -995,7 +1016,7 @@ textarea#aiText{font-size:11px!important}
     <div class="mc-row"><button class="sbtn center" id="mcCopy"><b>주소 복사</b></button><a class="sbtn primary center" id="mcSend" target="_blank" rel="noopener"><b>메일 앱으로 보내기</b></a></div>
     <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
-  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.01 00:46</span><button class="mc-ask" id="mcAsk">문의하기</button></div>
+  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.01 18:36</span><button class="mc-ask" id="mcAsk">문의하기</button></div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
@@ -3701,19 +3722,19 @@ function setMode(m) {
   renderAll();
   if (m === 'top') topViewer(); else if (m === '3d') { if (view3d) tweenViewer(view3d, 560); else fitViewer(); }
 }
-// direction keys (앞 뒤 좌 우, plus 붐 ↑↓): in the monitor they drive the camera (dolly forward/back, truck sideways, boom),
-// in 3D with a person picked they walk that person across the floor relative to your view, turning them to face the way they go.
+// direction keys (앞 뒤 좌 우, plus 붐 ↑↓) drive the camera in the monitor (dolly forward/back, truck sideways, boom); in 3D with a person
+// picked a joystick walks that person across the floor relative to your view (speed by how far the thumb goes), turning them to face the way they go.
 // Held keys start slow and reach full speed in under a second; for the camera the speed also follows the distance to the subject.
-const mvKeys = new Set(); let mvRaf = 0, mvT = 0, mvT0 = 0, mvWarned = false;
+const mvKeys = new Set(), joy = { x: 0, y: 0, on: false }; let mvRaf = 0, mvT = 0, mvT0 = 0, mvWarned = false;
 function mvSubj() { return mode === '3d' && selObj && selObj.kind === 'subj' && !placing ? selObj.k : null; }
 function mvStep(t) {
-  if (!mvKeys.size) { mvRaf = 0; changed(true, true); return; }
+  if (!mvKeys.size && !joy.on) { mvRaf = 0; changed(true, true); return; }
   const dt = mvT ? Math.min(0.05, (t - mvT) / 1000) : 0.016; mvT = t; const s = cur(), k = mvSubj();
   const key = c => mvKeys.has(c) ? 1 : 0, ramp = Math.min(1, 0.35 + (t - mvT0) / 900);
   const diag = key('f') + key('b') && key('l') + key('r') ? Math.SQRT1_2 : 1; // forward + sideways together: no faster than one key
   const fw = (key('f') - key('b')) * ramp * diag, rt = (key('r') - key('l')) * ramp * diag, up = (key('u') - key('d')) * ramp;
   if (k) { const sb = s[k], vb = viewerBasis(1, 1), y = Math.atan2(vb.f.x, vb.f.z), fh = { x: Math.sin(y), z: Math.cos(y) }, rh = { x: Math.cos(y), z: -Math.sin(y) };
-    const mx = fh.x * fw + rh.x * rt, mz = fh.z * fw + rh.z * rt, m = Math.hypot(mx, mz);
+    const jf = -joy.y, jr = joy.x, mx = fh.x * jf + rh.x * jr, mz = fh.z * jf + rh.z * jr, m = Math.hypot(mx, mz);
     if (m > 0.05) { const v = 1.4 * dt; sb.x = +(sb.x + mx * v).toFixed(3); sb.z = +(sb.z + mz * v).toFixed(3); sb.face = Math.round((Math.atan2(mx, mz) / DEG + 360) % 360); }
     renderWorld(); syncBars(); mvRaf = requestAnimationFrame(mvStep); return; }
   const SB = shotBasis(s), sb = s[afKey(s)], d = Math.hypot(s.cam.x - sb.x, s.cam.z - sb.z), v = clamp(d * 0.45, 0.25, 2.5) * dt;
@@ -3727,6 +3748,12 @@ $('#movePad').addEventListener('pointerdown', e => { const b = e.target.closest(
   mvKeys.add(b.dataset.mv); b.classList.add('on'); mvGo(); });
 const mvEnd = e => { const b = e.target.closest('[data-mv]'); if (!b) return; mvKeys.delete(b.dataset.mv); b.classList.remove('on'); };
 ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => $('#movePad').addEventListener(ev, mvEnd));
+const joySet = e => { const r = $('#joy').getBoundingClientRect(), R = r.width / 2 - 16; let x = (e.clientX - r.left - r.width / 2) / R, y = (e.clientY - r.top - r.height / 2) / R;
+  const m = Math.hypot(x, y); if (m > 1) { x /= m; y /= m; } joy.x = Math.abs(x) < 0.12 ? 0 : x; joy.y = Math.abs(y) < 0.12 ? 0 : y;
+  $('#joyThumb').style.transform = `translate(${x * R}px, ${y * R}px)`; };
+$('#joy').addEventListener('pointerdown', e => { e.preventDefault(); capture($('#joy'), e.pointerId); joy.on = true; $('#joy').classList.add('on'); joySet(e); mvGo(); });
+$('#joy').addEventListener('pointermove', e => { if (joy.on) joySet(e); });
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => $('#joy').addEventListener(ev, () => { joy.on = false; joy.x = joy.y = 0; $('#joy').classList.remove('on'); $('#joyThumb').style.transform = ''; }));
 $('#modeSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setMode(b.dataset.mode); });
 $('#fitBtn').onclick = frameViewer;
 
@@ -3756,32 +3783,59 @@ function sizeView() {
   // with a panel open on a phone, the monitor moves into the space the panel leaves, so lens and exposure changes show at once
   const side = shortH.matches, dr = $('#drawer'), dock = (phone.matches || side) && !dr.hidden, dw = dock && side ? dr.offsetWidth : 0, dh = dock && !side ? dr.offsetHeight : 0;
   $('#app').classList.toggle('dock', dock);
-  // the frame is as large as the stage allows at the shot's aspect ratio; the readouts sit on the picture and the controls float over the edges
-  const maxW = side ? (dock ? st.clientWidth - dw - 12 : st.clientWidth) : st.clientWidth - (phone.matches ? 0 : 16), maxH = side ? st.clientHeight : dock ? st.clientHeight - dh - 12 : st.clientHeight - (phone.matches ? 150 : 16);
+  // the frame is as large as the stage allows at the shot's aspect ratio; the controls float over the edges
+  // the readouts (shot, lens, focus, depth of field…) run in a strip above and one below the picture, never on it: keep room for both
+  const hudH = 25 + 19; // status line above + readout line below
+  const maxW = side ? (dock ? st.clientWidth - dw - 12 : st.clientWidth) : st.clientWidth - (phone.matches ? 0 : 16), maxH = (side ? st.clientHeight : dock ? st.clientHeight - dh - 12 : st.clientHeight - (phone.matches ? 150 : 16)) - hudH;
   // with false colour on, keep a gutter on each side wide enough for its key, so the key never sits on the picture
   const fcPad = showFC && !phone.matches && !dock ? 2 * 84 : 0;
   let W = Math.min(maxW, st.clientWidth - fcPad), H = W / asp; if (H > maxH) { H = maxH; W = H * asp; }
-  $('#vfbox').style.transform = dw ? `translateX(${-dw / 2}px)` : dh ? `translateY(${-dh / 2}px)` : '';
+  const lift = (19 - 25) / 2; // a taller line above than below: shift so the picture stays centred between them
+  const tf = dw ? `translate(${-dw / 2}px, ${-lift}px)` : `translateY(${-(dh / 2) - lift}px)`; $('#vfbox').style.transform = tf; $('#vfbox').dataset.t = tf;
   W = Math.floor(Math.max(80, W)); H = Math.floor(Math.max(50, H));
   cv.style.width = W + 'px'; cv.style.height = H + 'px'; cv.width = W * dpr; cv.height = H * dpr; $('#vfbox').style.width = W + 'px';
   return { W, H, dpr };
 }
-let vsz = null;
+let vsz = null, hudForms = null;
 function drawMonitor() {
   if (mode !== 'mon') return;
   if (!vsz) vsz = sizeView();
   const ctx = $('#view').getContext('2d'); ctx.setTransform(vsz.dpr, 0, 0, vsz.dpr, 0, 0);
   const s = cur(), V = renderShot(ctx, vsz.W, vsz.H, s, { af: true, thirds: showThirds, blur: state.blur, lensGrid: showLensGrid, lit: state.lit !== false, fc: showFC, slot: 'mon' }), o = V.o;
   const sz = autoSize(s, o), an = autoAngle(s), n = String(state.sel + 1).padStart(2, '0');
-  $('#hudL').textContent = `S${n} · ${sz || '—'} · ${fmt(s.f, s.f < 20 ? 1 : 0)}mm ${stopTxt(s.N)}${an.dutch ? ' · DUTCH' : ''}`;
-  if (axisOf().show && axisCheck(s).state === 'cross') $('#hudL').insertAdjacentHTML('beforeend', '<span class="hudwarn">가상선을 넘었어요</span>');
+  // status line above the picture, as on a camera monitor
+  const mf = (k, v) => `<span class="mf"><i>${k}</i><b>${v}</b></span>`, sg = (v, w) => (v < 0 ? '−' : '+') + Math.abs(v).toFixed(1).padStart(w, '0');
+  $('#hudTop').innerHTML = mf('FPS', fpsNow().toFixed(3)) + mf('SHUTTER', fmt(s.shutter ?? 180, 1)) + mf('IRIS', stopTxt(s.N)) + mf(isoInfo().ei ? 'EI' : 'ISO', s.iso ?? 800)
+    + mf('ND', ((s.nd || 0) * 0.3).toFixed(1)) + mf('WB', `${s.wb || 5600} K`) + `<span class="mcam">S${n}</span>`;
+  // under the picture: framing, focus, camera angles
+  // each readout in a long and shorter forms; placeHud uses the longest that fits the width
+  const lens = `${sz || '—'} · ${fmt(s.f, s.f < 20 ? 1 : 0)}mm`, dutch = an.dutch ? ' · DUTCH' : '', cross = axisOf().show && axisCheck(s).state === 'cross';
+  hudForms = { L: [`${lens} · H ${fmt(o.hf / DEG)}°${dutch}`, lens + dutch, lens + dutch], cross,
+    B: [`PAN ${sg(s.cam.pan, 5)}°  TILT ${sg(s.cam.tilt, 4)}°  ROLL ${sg(s.cam.roll || 0, 4)}°`, `P ${sg(s.cam.pan, 5)}° T ${sg(s.cam.tilt, 4)}° R ${sg(s.cam.roll || 0, 4)}°`, `T ${sg(s.cam.tilt, 4)}°`] };
   if (axisOf().show) drawEyelines(ctx, vsz.W, vsz.H, s, o);
-  $('#hudR').textContent = `${TODS[todOf()]} · ${state.aspect} · ${s.dur}s`;
-  $('#hudB').textContent = `H ${fmt(o.hf / DEG)}° · ${SENSOR().name.split(' (')[0]}`;
-  $('#monInfo').textContent = o.tooClose ? `초점 불가 · ${fmtM(o.want)} < 최소 ${fmtM(o.mod)}` : `${s.focus === 'M' ? 'MF' : 'AF · ' + afKey(s)} ${fmtM(o.fd)} · 심도 ${fmtM(o.near)}–${fmtM(o.far)}`;
+  { const af = `${s.focus === 'M' ? 'MF' : 'AF ' + afKey(s)} ${fmtM(o.fd)}`, dof = `${fmtM(o.near)}–${fmtM(o.far)}`, bad = `초점 불가 · 최소 ${fmtM(o.mod)}`;
+    hudForms.I = o.tooClose ? [`초점 불가 · ${fmtM(o.want)} < 최소 ${fmtM(o.mod)}`, bad, bad] : [`${af} · 심도 ${dof}`, `${af} · ${dof}`, `심도 ${dof}`]; }
   $('#monInfo').classList.toggle('warn', o.tooClose);
-  drawSurround(s, o); placeVfTools(); placeKfBar(); placeLegend();
+  drawSurround(s, o); placeVfTools(); placeKfBar(); placeLegend(); placeHud();
 }
+// like a camera monitor, the lines run across the whole monitor, not just the picture: each stretches from the stage edge (or whatever
+// floats at its height — the view switch, the keys, the guide buttons) on one side to the same on the other. A status line still too
+// long for the room stacks each label over its value.
+function placeHud() { const v = $('#view').getBoundingClientRect(), st = $('#stage').getBoundingClientRect(), pad = $('#movePad'), cx = (v.left + v.right) / 2;
+  const floats = ['#modeSeg', '#movePad', '.vfbox .vf-tools', '#kfBar .toolbar', '#stageInfo'].map(q => $(q)).filter(e => e && e.offsetParent && !e.closest('[hidden]'));
+  const span = h => { h.style.left = h.style.right = ''; if (phone.matches) return; const r = h.getBoundingClientRect(); let L = st.left + 8, R = st.right - 8;
+    floats.forEach(e => { const b = e.getBoundingClientRect(); if (!b.width || b.bottom <= r.top || b.top >= r.bottom) return;
+      if (b.left + b.right < 2 * cx) L = Math.max(L, b.right + 8); else R = Math.min(R, b.left - 8); });
+    h.style.left = Math.round(L - v.left) + 'px'; h.style.right = Math.round(v.right - R) + 'px'; };
+  const top = $('.vfbox .hud.t'); span(top); span($('.vfbox .hud.b'));
+  top.classList.remove('tight'); if (top.scrollWidth > top.clientWidth + 1) top.classList.add('tight');
+  if (hudForms) { const bot = $('.vfbox .hud.b'), cut = () => [...bot.children].some(c => c.scrollWidth > c.clientWidth + 1);
+    for (let i = 0; i < 3; i++) { $('#hudL').textContent = hudForms.L[i]; $('#monInfo').textContent = hudForms.I[i]; $('#hudB').textContent = hudForms.B[i];
+      if (hudForms.cross) $('#hudL').insertAdjacentHTML('beforeend', '<span class="hudwarn">가상선을 넘었어요</span>'); if (!cut()) break; } }
+  // upright phones: the keys sit under the picture; when the readouts would reach them, move the picture up (not under the top chips)
+  if (phone.matches && !pad.hidden) { const box = $('#vfbox'), base = box.dataset.t || ''; box.style.transform = base;
+    const hb = $('.vfbox .hud.b').getBoundingClientRect(), p = pad.getBoundingClientRect(), st = $('#stage').getBoundingClientRect(), top = box.getBoundingClientRect().top;
+    const over = hb.bottom + 6 - p.top, room = top - 25 - (st.top + 84); /* 25: the status line above the picture */ if (over > 0 && room > 0) box.style.transform = `${base} translateY(${-Math.min(over, room)}px)`; } }
 // upright phones: the start/end bar takes the free left end of the guide-button row under the picture
 function placeKfBar() { const bar = $('#kfBar'); if (!phone.matches || mode !== 'mon') { bar.style.top = ''; return; }
   const vt = $('.vfbox .vf-tools').getBoundingClientRect(), st = $('#stage').getBoundingClientRect(); bar.style.top = Math.round(vt.top - st.top + (vt.height - bar.offsetHeight) / 2) + 'px'; }
@@ -5121,7 +5175,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.01 00:46'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.01 18:36'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
