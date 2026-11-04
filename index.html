@@ -942,7 +942,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button><button id="techMenuBtn" role="menuitem" data-pro>테크비즈 시트 (현장용) · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
     <hr><button id="uiModeBtn" role="menuitem"></button><button id="tourBtn" role="menuitem">사용법 보기</button><button id="keysBtn" role="menuitem">조작키 보기 (?)</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.04 20:02</p>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.04 20:38</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -1197,7 +1197,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <div class="mc-row"><button class="sbtn center" id="mcCopy"><b>주소 복사</b></button><a class="sbtn primary center" id="mcSend" target="_blank" rel="noopener"><b>메일 앱으로 보내기</b></a></div>
     <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
-  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.04 20:02</span></div>
+  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.04 20:38</span></div>
 </div>
 
 <div class="keyhelp" id="keyHelp" role="dialog" aria-modal="true" aria-labelledby="keyHelpT" hidden><div class="kh-box glass">
@@ -5890,7 +5890,20 @@ const SET_PRESETS = [
 // the set of a preset as the scene's set (fresh copies, ids, the time of day applied)
 function presetSet(pr) { const set = { env: 'studio', room: pr.room ? { py: pr.room[0], h: pr.room[1], fin: pr.room[2] } : null, sun: { on: true, month: 10, hour: 15, north: 0, wx: 'clear' }, bg: pr.bg || 'street',
     props: pr.props.map((o, i) => ({ id: 'P' + (i + 1), fin: 'white', ...o })), lights: pr.lights.map((l, i) => ({ id: 'L' + (i + 1), track: null, pan: 0, tilt: -20, mod: modsFor(FIX(l.fx))[0], ...l })) };
+  if (set.room) set.lights.forEach(l => { l.y = Math.min(l.y, set.room.h - 0.12); }); /* a light hung above a low ceiling would be shut out by it */
   if (pr.tod === 'studio') { set.sun.on = false; set.env = 'studio'; } else setTod(set, pr.tod); return set; }
+/* a new scene should never open blown out or black: after metering the face, the whole frame is checked and the exposure moved a stop at a time
+   (ND first, then the stop, then ISO) until almost nothing clips, letting the face go at most about 2 stops off */
+function frameClip(s) { const cv = document.createElement('canvas'); cv.width = 160; cv.height = 90; const ctx = cv.getContext('2d');
+  renderShot(ctx, 160, 90, s, { labels: false, lit: true, slot: 'thumb' }); const px = ctx.getImageData(0, 0, 160, 90).data; let bl = 0, bk = 0, n = 0;
+  for (let i = 0; i < px.length; i += 8, n++) { const y = px[i] * 0.3 + px[i + 1] * 0.59 + px[i + 2] * 0.11; if (y > 245) bl++; else if (y < 14) bk++; } return { bl: bl / n, bk: bk / n }; }
+function nudgeExposure(s, dir) { const nd = s.nd || 0, iso = s.iso || 800, st = stopsFor(s);
+  if (dir > 0) { if (nd < 7) { s.nd = nd + 1; return true; } const nx = st.filter(x => x > s.N * 1.3); if (nx.length) { s.N = Math.min(...nx); return true; }
+    const lo = isoNear(iso / 2); if (lo < iso) { s.iso = lo; return true; } return false; }
+  if (nd > 0) { s.nd = nd - 1; return true; } const pv = st.filter(x => x < s.N / 1.3); if (pv.length) { s.N = Math.max(...pv); return true; }
+  const hi = isoNear(iso * 2); if (hi > iso) { s.iso = hi; return true; } return false; }
+function fitFrame(s) { try { for (let i = 0; i < 6; i++) { const c = frameClip(s), ev = faceLight(s).ev;
+    if (c.bl > 0.06 && ev > -1) { if (!nudgeExposure(s, 1)) break; } else if (c.bk > 0.5 && c.bl < 0.02 && ev < 2) { if (!nudgeExposure(s, -1)) break; } else break; } } catch (e) {} }
 function newProject(title, kind) {
   const pr = typeof kind === 'string' && kind.startsWith('set:') && SET_PRESETS.find(x => 'set:' + x.k === kind);
   if (pr) return newFromPreset(pr, title);
@@ -5901,7 +5914,7 @@ function newProject(title, kind) {
   state.meta = { sceneNo: '', location: '', ...t.meta };
   if (!example) state.shots[0].iso = 800;
   normalizeState();
-  if (t !== TEMPLATES.blank) state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); });
+  if (t !== TEMPLATES.blank) state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); fitFrame(s); });
   projId = newId(); sharedView = false; hideStart(); afterLoad(); saveProject(); setHash('#/p/' + projId); fitViewer('fit');
   maybeTour(); }
 
@@ -5964,10 +5977,10 @@ function presetState(pr, title) {
   state = { title: title || pr.name, aspect: '16:9', sensor: { ...SENSORS[0] }, squeeze: 1, breathing: true, blur: true, example: false, sel: 0, kit: 'free', lit: true, shots: [], set: presetSet(pr), cast: JSON.parse(JSON.stringify(CAST0)) };
   const sh = pr.shot; state.shots = [placeShot({ size: sh.size, eye: true, elev: 0, ff: sh.ff, az: sh.az || 180, aim: 'A', N: 2.8, dur: 4, A: sh.A, B: pr.B || noB })];
   state.meta = { sceneNo: '', location: pr.name, ie: pr.ie, dn: pr.tod === 'night' ? 'NIGHT' : 'DAY' }; normalizeState();
-  state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); }); return state; }
+  state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); fitFrame(s); }); return state; }
 function newFromPreset(pr, title) { presetState(pr, title); projId = newId(); sharedView = false; hideStart(); afterLoad(); saveProject(); setHash('#/p/' + projId); fitViewer('fit'); maybeTour(); }
 // the preset seen from high in a corner (inside the room, or above the set outdoors) for its Home card; drawn once, kept on the device
-const PRESET_THUMB_V = 'previo.presetthumbs.3';
+const PRESET_THUMB_V = 'previo.presetthumbs.4';
 let presetThumbs = {}; try { presetThumbs = JSON.parse(localStorage.getItem(PRESET_THUMB_V) || '{}'); } catch (e) {}
 function presetThumb(pr) { if (presetThumbs[pr.k]) return presetThumbs[pr.k]; const keep = state, keepId = projId; let url = null;
   try { presetState(pr); const s0 = state.shots[0], rm = roomInfo(), R = rm ? rm.side / 2 : 7.5, conv = imageArea().iw / imageArea({ w: 36, h: 24 }).iw;
@@ -6071,7 +6084,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.04 20:02'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.04 20:38'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
