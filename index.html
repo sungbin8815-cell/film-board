@@ -11,27 +11,27 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="프레임콘티">
-<title>프레임콘티</title>
+<meta name="apple-mobile-web-app-title" content="PREVIO">
+<title>PREVIO</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
-/* FrameConti design system. One full-height workspace: header, tool rail, stage (3D / monitor / top), a drawer that opens beside the stage
+/* PREVIO design system. One full-height workspace: header, tool rail, stage (3D / monitor / top), a drawer that opens beside the stage
    (a bottom sheet on phones) and the shot strip. Surfaces: paper (app) < sheet (chrome) < raise (cards inside panels). */
 :root{
-  /* palette: a night shoot in a pixel game — plum-navy surfaces, hot pink action, tally yellow and monitor cyan as the two highlights */
-  --paper:#120F26; --sheet:#1A1634; --raise:#221D41; --ink:#F3F0FF; --ink2:#CEC6EE; --muted:#958CC0; --line:#2F2958; --line2:#241F46; --soft:#241F48;
-  --accent:#FF4FA3; --accent-ink:#2A0718; --accent-soft:rgba(255,79,163,.16); --pencil:#3BE8FF; --ok:#5CE38A; --rec:#FF4B3E; --tally:#FFD43B;
+  /* PREVIO palette: a dark cinematic workspace — neutral blue-grey surfaces, one blue-violet accent for what is active, violet as the second */
+  --paper:#171B24; --sheet:#242B38; --raise:#333D50; --ink:#E7EAF2; --ink2:#AAB4C6; --muted:#78849A; --line:#394355; --line2:#2C3444; --soft:#2B3342;
+  --accent:#8B9CFF; --accent-ink:#11152B; --accent-soft:rgba(139,156,255,.16); --accent2:#A78BFA; --pencil:#A78BFA; --ok:#47C9A0; --caution:#E8B45D; --rec:#E5483A; --tally:#A78BFA;
   --figA:#2B4A60; --figB:#5C4930; --col:#2C3742; --cam:#9AACBF; --wall:#2E3844; --prop:#6A5844;
-  --sky:#1C1838; --ground:#15122B; --grid:rgba(255,79,163,.14); --shadow:rgba(0,0,0,.4);
-  --vf:#040507; --vf-ink:#E8EDF3; --vf-dim:#7D8B99; --warn:#F07A66;
+  --sky:#151923; --ground:#12161E; --grid:rgba(139,156,255,.14); --shadow:rgba(0,0,0,.4);
+  --vf:#0E1118; --vf-ink:#E7EAF2; --vf-dim:#8A95AA; --warn:#E07878;
   --sh-1:0 1px 2px rgba(0,0,0,.4); --sh-2:0 10px 30px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
   color-scheme:dark;
-  --r-s:8px; --r-m:12px; --r-l:16px;
-  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
-  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --r-s:8px; --r-m:12px; --r-l:14px;
+  --f-display:"Space Grotesk","Inter",sans-serif; --f-logo:"Space Grotesk",sans-serif;
+  --f-body:"Pretendard","Inter","IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif; /* Pretendard when the device has it; Inter for Latin and numbers */
   --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
 }
 *{box-sizing:border-box}
@@ -496,8 +496,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .sbtn small{display:block;font-size:12px;color:rgba(255,255,255,.62)}
 .sbtn .go{margin-left:auto;opacity:.5;font-size:18px}
 .sbtn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent;box-shadow:0 6px 18px rgba(0,0,0,.35)}
-.sbtn.primary:hover{background:#FF78BA}
-.sbtn.primary .si{background:rgba(42,7,24,.12)} .sbtn.primary small{color:rgba(42,7,24,.72)}
+.sbtn.primary:hover{background:#A3B0FF}
+.sbtn.primary .si{background:rgba(17,21,43,.12)} .sbtn.primary small{color:rgba(17,21,43,.72)}
 .sbtn.center{justify-content:center;min-height:46px} .sbtn.center b{font-size:14.5px}
 /* sub panels */
 .mc-panel{gap:12px;background:rgba(13,17,23,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);padding:22px;border-radius:20px;border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 50px rgba(0,0,0,.5);align-items:stretch}
@@ -506,7 +506,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .mc-panel h2 svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .mc-lab{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:-6px}
 .mc-in{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#fff;padding:11px 13px;font-size:15px;font-family:var(--f-body);border-radius:11px;resize:vertical}
-.mc-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,79,163,.3)}
+.mc-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,156,255,.3)}
 .mc-seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:rgba(255,255,255,.06);border-radius:12px;padding:4px}
 .mc-seg button{border:0;border-radius:9px;padding:9px;background:transparent;color:rgba(255,255,255,.7);font:inherit;font-weight:600;font-size:13.5px;cursor:pointer}
 .mc-seg button[aria-pressed="true"]{background:#fff;color:#0e1621}
@@ -515,7 +515,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .mc-list{width:100%;max-height:min(44vh,360px);overflow-y:auto;display:flex;flex-direction:column;gap:6px}
 .mc-item{display:flex;gap:12px;align-items:center;padding:9px 10px;border:1px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;text-align:left;background:rgba(255,255,255,.04);color:#fff;width:100%;font:inherit}
 .mc-item:hover{background:rgba(255,255,255,.08)}
-.mc-item[aria-pressed="true"]{border-color:var(--accent);background:rgba(255,79,163,.16)}
+.mc-item[aria-pressed="true"]{border-color:var(--accent);background:rgba(139,156,255,.16)}
 .mc-item .ic{width:42px;height:42px;flex:none;display:grid;place-items:center;font-weight:700;font-size:16px;border-radius:10px;background:rgba(255,79,255,.18);color:#C9D6FF}
 .mc-item b{display:block;font-size:14.5px;font-weight:600}
 .mc-item small{color:rgba(255,255,255,.55);font-size:12px}
@@ -720,49 +720,43 @@ textarea#aiText{font-size:11px!important}
   .card .axw{font-size:8.5px;padding:0 3px;margin:0 0 1px}
 }
 
-/* ---------- start screen: a camera viewfinder drawn in pixels (game title screen on a film set) ----------
-   the 3D set runs behind at low resolution, so it reads as dots; #mcVF draws the frame, REC, timecode, meters and sprites at 1/3–1/4 size
-   and is scaled up without smoothing. Colours: plum-navy night, hot pink, tally yellow, monitor cyan. */
-.mc{--px:var(--f-px,"Silkscreen",monospace);background:#120F26}
-#pano{image-rendering:pixelated;image-rendering:crisp-edges;filter:saturate(1.35) contrast(1.05)}
-.mc-shade{position:fixed;inset:0;background:
-  linear-gradient(rgba(59,232,255,.07) 1px,transparent 1px) 0 0/16px 16px,linear-gradient(90deg,rgba(59,232,255,.07) 1px,transparent 1px) 0 0/16px 16px,
-  repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 2px,transparent 2px 4px),
-  radial-gradient(110% 85% at 50% 45%,rgba(26,18,70,.62),rgba(14,10,34,.93) 72%)}
-#pano{opacity:.85}
-#mcVF{position:fixed;inset:0;width:100%;height:var(--app-h,100dvh);z-index:1;pointer-events:none;image-rendering:pixelated;image-rendering:crisp-edges}
-.mc-main{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px;width:min(760px,calc(100% - 48px));text-align:center}
+/* ---------- Home (PREVIO): the 3D set softly blurred behind; brand, tagline, templates and recent projects in one calm column ---------- */
+.mc{background:var(--paper);justify-content:flex-start;padding:0}
+#pano{filter:blur(6px) saturate(.9) brightness(.55);transform:scale(1.04)}
+.mc-shade{position:fixed;inset:0;background:linear-gradient(180deg,rgba(23,27,36,.55) 0%,rgba(23,27,36,.88) 45%,var(--paper) 100%)}
+.mc-main.home{position:relative;z-index:2;width:min(1040px,100%);margin:0 auto;padding:max(20px,env(safe-area-inset-top,0px)) max(24px,env(safe-area-inset-right,0px)) 72px max(24px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:28px}
 .mc-main[hidden]{display:none}
-.mc-brand{display:flex;flex-direction:column;align-items:center;gap:10px}
-.mc-brand h1{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px}
-#mcLogo{display:block;width:min(560px,78vw);image-rendering:pixelated;image-rendering:crisp-edges}
-.mc-brand .ko{font:700 14px var(--f-body);color:#FFD43B;letter-spacing:.04em;text-shadow:2px 2px 0 #2A0718}
-.mc-brand p{margin:0;max-width:34em;font-size:13px;line-height:1.6;color:#CEC6EE}
-.mc-press{font:400 12px var(--px);color:#3BE8FF;letter-spacing:.12em;animation:pxblink 1.1s steps(2,end) infinite}
-@keyframes pxblink{50%{opacity:0}}
-/* chunky pixel buttons: notched corners, hard drop shadow; they press in like a game button */
-.mc-acts{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-.mc-act{--b:#FFD43B;--bi:#2A0718;position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:200px;min-height:60px;padding:12px 18px;border:0;background:var(--b);color:var(--bi);font:inherit;text-align:left;cursor:pointer;
-  clip-path:polygon(0 6px,6px 6px,6px 0,calc(100% - 6px) 0,calc(100% - 6px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 6px) calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 6px),0 calc(100% - 6px));
-  box-shadow:inset -4px -4px 0 rgba(0,0,0,.28),inset 4px 4px 0 rgba(255,255,255,.35);transition:transform .08s steps(2)}
-.mc-act b{font-size:15.5px;font-weight:700;line-height:1.25} .mc-act small{font-size:12px;opacity:.78;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mc-act:hover{transform:translate(-2px,-2px)} .mc-act:active{transform:translate(2px,2px);box-shadow:inset 4px 4px 0 rgba(0,0,0,.28)}
-.mc-act:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.mc-act.primary{--b:#FFD43B} #mcResume{--b:#FF4FA3} #mcLoad{--b:#3BE8FF;--bi:#071A24}
-.mc-act[hidden]{display:none}
-.mc-foot{position:fixed;z-index:2;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);transform:translateX(-50%);display:flex;align-items:center;gap:16px;
-  font:400 10px var(--px);color:#958CC0;letter-spacing:.06em;white-space:nowrap}
-.mc-foot .ver{display:none}
-.mc-ask{position:relative;border:0;background:none;color:#FFD43B;font:700 12px var(--f-body);padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.mc-ask::before{content:"";position:absolute;inset:-12px -8px}
-/* panels on the start screen: pixel boxes too */
-.mc .mc-panel{border-radius:0;border:3px solid #3BE8FF;background:rgba(18,15,38,.94);box-shadow:6px 6px 0 #FF4FA3;-webkit-backdrop-filter:none;backdrop-filter:none}
-.mc .mc-panel h2{font-weight:700} .mc .sbtn{border-radius:0;border-width:2px} .mc .sbtn.primary{background:#FFD43B;color:#2A0718} .mc .mc-in{border-radius:0} .mc .mc-seg,.mc .mc-seg button{border-radius:0}
-.mc .mc-pick{border-radius:0;border:2px solid #2F2958} .mc .mc-pick b{font:700 18px var(--px);color:#FFD43B} .mc .mc-pick:hover{border-color:#FF4FA3}
-.mc .mc-item{border-radius:0} .mc .mc-item .ic{border-radius:0;color:#FFD9EC}
-@media (orientation:landscape) and (max-height:520px){ .mc-main{gap:10px} #mcLogo{width:min(380px,46vw)} .mc-press{display:none} .mc-brand p{display:none} .mc-acts{flex-wrap:nowrap;width:100%} .mc-act{flex:1 1 0;min-width:0;max-width:230px;min-height:52px;padding:9px 12px} .mc-act b{font-size:14px} .mc-foot{bottom:18px} }
-@media (orientation:portrait) and (max-width:719px){ .mc-acts{flex-direction:column;width:100%} .mc-act{width:100%} #mcLogo{width:86vw} }
-@media (prefers-reduced-motion:reduce){ .mc-press{animation:none} .mc-act{transition:none} }
+.hm-top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.hm-brand{display:flex;align-items:center;font:700 26px/1 var(--f-logo);letter-spacing:-.01em;color:var(--ink)}
+.hm-brand .recdot{width:.82em;height:.82em;margin-left:.05em} .hm-brand .recdot circle:first-child{fill:none;stroke:#E5483A;stroke-width:1.6;opacity:.55} .hm-brand .recdot circle:last-child{fill:#E5483A} /* the O is a REC button */
+.hm-tools{display:flex;gap:6px}
+.hm-link{position:relative;min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:rgba(36,43,56,.6);color:var(--ink2);font:500 13px var(--f-body);cursor:pointer;transition:background .14s,border-color .14s}
+.hm-link:hover{background:var(--sheet);border-color:var(--accent);color:var(--ink)} .hm-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px} .hm-link[hidden]{display:none}
+.hm-hero h1{margin:0;font:700 clamp(28px,4.6vw,46px)/1.08 var(--f-logo);letter-spacing:-.02em;color:var(--ink)}
+.hm-hero p{margin:0;font-size:14px;color:var(--ink2);max-width:42em}
+.hm-sec{display:flex;flex-direction:column;gap:12px}
+.hm-h{display:flex;align-items:center;justify-content:space-between} .hm-h h2{margin:0;font:600 15px var(--f-body);color:var(--ink)}
+.hm-tpls{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.hm-tpl{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:118px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--sheet);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:border-color .14s,transform .14s,background .14s}
+.hm-tpl i{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--accent-soft);color:var(--accent)} .hm-tpl svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hm-tpl b{font-size:14.5px;font-weight:600} .hm-tpl small{font-size:12px;line-height:1.45;color:var(--ink2)}
+.hm-tpl:hover{border-color:var(--accent);background:var(--raise);transform:translateY(-2px)} .hm-tpl:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hm-tpl:first-child i{background:rgba(167,139,250,.16);color:var(--accent2)}
+.hm-recent{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.hm-card{display:flex;flex-direction:column;gap:4px;padding:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--sheet);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:border-color .14s,transform .14s}
+.hm-card img,.hm-card .hm-noimg{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:linear-gradient(135deg,#242B38,#333D50);margin-bottom:6px}
+.hm-card b,.hm-card small{padding:0 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .hm-card b{font-size:13.5px;font-weight:600} .hm-card small{font-size:11.5px;color:var(--muted)}
+.hm-card:hover{border-color:var(--accent);transform:translateY(-2px)} .hm-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hm-empty{margin:0;padding:22px;border:1px dashed var(--line);border-radius:12px;color:var(--ink2);font-size:13px;text-align:center}
+.mc-foot{position:fixed;z-index:2;left:0;right:0;bottom:0;padding:8px max(24px,env(safe-area-inset-left,0px)) calc(8px + env(safe-area-inset-bottom,0px));display:flex;gap:16px;font:400 11px var(--f-body);color:var(--muted);background:linear-gradient(0deg,var(--paper),transparent)}
+/* panels on Home share the workspace look */
+.mc .mc-panel{margin:auto;border-radius:14px;border:1px solid var(--line);background:var(--sheet);box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.mc .mc-pick{border-radius:12px;border:1px solid var(--line);background:var(--raise)} .mc .mc-pick b{font:700 20px var(--f-logo);color:var(--ink)} .mc .mc-pick:hover{border-color:var(--accent)}
+/* phones and short screens: templates and recent projects scroll sideways, the hero gets shorter */
+@media (max-width:820px),(max-height:520px){ .mc-main.home{gap:16px;padding-bottom:48px} .hm-hero h1{font-size:24px} .hm-hero p{font-size:12.5px;margin-top:6px}
+  .hm-tpls,.hm-recent{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;margin:0 -4px} .hm-tpl{flex:0 0 168px;min-height:104px;scroll-snap-align:start} .hm-card{flex:0 0 190px;scroll-snap-align:start} }
+@media (orientation:landscape) and (max-height:520px){ .mc-foot{display:none} .hm-hero{display:none} .hm-brand{font-size:22px} .mc-main.home{gap:12px;padding-top:12px} .hm-tpl{min-height:92px;padding:10px} .hm-tpl i{width:30px;height:30px} }
+@media (prefers-reduced-motion:reduce){ .hm-tpl,.hm-card,.hm-link{transition:none} }
 
 /* a static shot gets its start/end bar only once something moves: this makes an end for blocking alone */
 .blockadd{margin-top:8px;min-height:44px;width:100%}
@@ -790,7 +784,7 @@ html:not(.simple) [data-simple]{display:none!important}
 .mc-modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .mc-pick{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#fff;font:inherit;text-align:left;cursor:pointer;min-height:44px}
 .mc-pick b{font:700 22px/1 var(--f-display);letter-spacing:.02em} .mc-pick span{font-size:13px;line-height:1.55;color:rgba(255,255,255,.78)} .mc-pick small{font-size:11.5px;color:rgba(255,255,255,.5)}
-.mc-pick:hover{border-color:var(--accent);background:rgba(255,79,163,.12)} .mc-pick:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.mc-pick:hover{border-color:var(--accent);background:rgba(139,156,255,.12)} .mc-pick:focus-visible{outline:2px solid #fff;outline-offset:2px}
 @media (max-width:520px){ .mc-modes{grid-template-columns:1fr} }
 @media (orientation:landscape) and (max-height:520px){ .mc-pick{padding:12px} .mc-pick span{font-size:12px} }
 
@@ -862,12 +856,76 @@ html:not(.simple) [data-simple]{display:none!important}
 #questList li .btn{flex:none;min-height:36px}
 @media (prefers-reduced-motion:reduce){ .questb.pop{animation:none} }
 @media (orientation:landscape) and (max-height:520px){ .guidemenu{grid-template-columns:repeat(4,1fr);width:340px;padding:5px} .guidemenu button{min-height:40px;padding:0 6px;font-size:12.5px} .guidemenu .gm-row{padding-top:4px} .guidemenu .gm-row button{min-height:34px} }
+
+/* timeline (wide screens): shots as long as they last, a ruler, a playhead */
+.tl{display:none}
+@media (min-width:1024px) and (min-height:640px){
+  .shots{flex-wrap:wrap;row-gap:6px}
+  .tl{display:flex;order:-1;flex:1 0 100%;position:relative;height:30px;gap:2px;padding-top:12px;--ph:0}
+  .tl-seg{position:relative;min-width:0;flex-basis:0;display:flex;align-items:center;gap:6px;padding:0 8px;border:1px solid var(--line);border-radius:6px;background:var(--raise);color:var(--ink2);font:500 11px var(--f-body);cursor:pointer;overflow:hidden;white-space:nowrap}
+  .tl-seg b{font:600 11px var(--f-mono);color:var(--ink)} .tl-seg span{overflow:hidden;text-overflow:ellipsis}
+  .tl-seg:hover{border-color:var(--accent)} .tl-seg[aria-current="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+  .tl-tick{position:absolute;top:0;height:10px;border-left:1px solid var(--line);pointer-events:none} .tl-tick span{position:absolute;top:-1px;left:3px;font:500 9px var(--f-mono);color:var(--muted)}
+  .tl-ph{position:absolute;top:2px;bottom:-2px;left:calc(var(--ph) * 100%);width:2px;margin-left:-1px;background:var(--accent);border-radius:1px;pointer-events:none;box-shadow:0 0 0 1px rgba(23,27,36,.6)}
+  .tl-ph::before{content:"";position:absolute;top:-2px;left:-4px;border:5px solid transparent;border-top-color:var(--accent)}
+}
+
+/* empty states: what is missing and the one action that fixes it */
+.empty{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px;border:1px dashed var(--line);border-radius:12px;background:rgba(51,61,80,.25)}
+.empty b{font-size:13.5px;color:var(--ink)} .empty span{font-size:12.5px;line-height:1.5;color:var(--ink2)} .empty .btn{margin-top:4px;min-height:36px}
+body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
+#propAdd .addgrid.thumbs button{cursor:grab}
+
+/* phones: an open panel gets its own space instead of covering the picture */
+@media (max-width:719px) and (orientation:portrait){
+  .app.docked{grid-template-rows:auto minmax(150px,1fr) minmax(0,48%) auto;grid-template-areas:"bar" "stage" "drawer" "rail"}
+  .app.docked .shots{display:none}
+  .app.docked .drawer{position:relative;inset:auto;max-height:none;min-height:0;border-radius:14px 14px 0 0;box-shadow:0 -6px 20px var(--shadow);animation:none} }
+@media (orientation:landscape) and (max-height:520px){
+  .app.docked{grid-template-columns:58px minmax(0,1fr) min(360px,46vw);grid-template-areas:"rail bar bar" "rail stage drawer" "rail shots drawer"}
+  .app.docked .drawer{position:relative;inset:auto;width:auto;border-radius:0;box-shadow:none;border-left:1px solid var(--line);animation:none} }
+/* header mark: the red REC dot on a dark tile */
+.logo{background:var(--raise)!important;box-shadow:none!important} .logo svg circle{fill:#E5483A;stroke:none}
+.hm-sub{font-size:12px;color:var(--muted)} .hm-sets{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))} .hm-card small{white-space:nowrap}
+
+/* the on-screen move keys / joystick are for touch screens (phones, iPad); with a keyboard and a mouse, WASD does it */
+@media (hover:hover) and (pointer:fine){ .movepad{display:none!important} }
+
+/* ---------- Home: a game title screen in the PREVIO look — logo in the middle, three big choices under it, settings in the corner ---------- */
+.mc{justify-content:center}
+.mc-main.home{min-height:var(--app-h,100dvh);justify-content:center;align-items:center;gap:0;padding-bottom:56px}
+.hm-center{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;width:min(820px,100%)}
+.hm-logo{display:flex;flex-direction:column;align-items:center;gap:12px}
+.hm-mark{display:grid;place-items:center;width:64px;height:64px;border-radius:16px;background:var(--sheet);border:1px solid var(--line)}
+.hm-mark svg{width:38px;height:38px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round} .hm-mark svg circle{fill:#E5483A;stroke:none}
+.hm-center .hm-brand{font-size:clamp(40px,7vw,64px);justify-content:center}
+.hm-tag{margin:0;font-size:14px;color:var(--ink2);max-width:36em}
+.hm-menu{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;margin-top:10px}
+.hm-big{display:flex;flex-direction:column;align-items:center;gap:6px;min-height:150px;padding:20px 14px;border:1px solid var(--line);border-radius:14px;background:var(--sheet);color:var(--ink);font:inherit;cursor:pointer;
+  transition:border-color .14s,transform .14s,background .14s}
+.hm-big i{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:var(--accent-soft);color:var(--accent)} .hm-big svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hm-big b{font-size:16px;font-weight:600;margin-top:4px} .hm-big small{font-size:12px;color:var(--ink2)}
+.hm-big.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)} .hm-big.primary i{background:rgba(17,21,43,.14);color:var(--accent-ink)} .hm-big.primary small{color:rgba(17,21,43,.72)}
+.hm-big:hover{border-color:var(--accent);transform:translateY(-3px)} .hm-big.primary:hover{background:#A3B0FF} .hm-big:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.hm-resume{min-height:40px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:rgba(36,43,56,.7);color:var(--ink2);font:500 13px var(--f-body);cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hm-resume b{color:var(--ink);font-weight:600} .hm-resume:hover{border-color:var(--accent);color:var(--ink)} .hm-resume[hidden]{display:none}
+.mc-main.home > .hm-tools{position:fixed;top:max(14px,env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));z-index:3}
+.mc .mc-panel.wide{width:min(940px,calc(100% - 32px));max-height:calc(var(--app-h,100dvh) - 32px);overflow-y:auto}
+.mc-panel.wide .hm-tpls{grid-template-columns:repeat(4,1fr)}
+.mc-item img.ic{width:72px;height:42px;object-fit:cover;padding:0}
+@media (max-width:720px){ .hm-menu{grid-template-columns:1fr;gap:10px} .hm-big{flex-direction:row;min-height:64px;padding:12px 16px;text-align:left;gap:14px} .hm-big i{width:40px;height:40px}
+  .hm-big b{margin:0} .hm-big small{margin-left:auto} .hm-mark{width:52px;height:52px} .mc-panel.wide .hm-tpls{grid-template-columns:1fr 1fr} .mc-panel.wide .hm-sets{grid-template-columns:1fr 1fr} }
+@media (orientation:landscape) and (max-height:520px){ .hm-center{gap:10px} .hm-mark{display:none} .hm-tag{display:none} .hm-center .hm-brand{font-size:36px}
+  .hm-menu{grid-template-columns:repeat(3,1fr);margin-top:4px} .hm-big{flex-direction:column;min-height:110px;padding:12px;text-align:center;gap:4px} .hm-big small{margin:0}
+  .mc-panel.wide .hm-tpls{grid-template-columns:repeat(4,1fr)} .mc-panel.wide .hm-sets{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))} }
+.mc-panel.wide .hm-tpls,.mc-panel.wide .hm-recent{display:grid;overflow:visible;margin:0}
+@media (prefers-reduced-motion:reduce){ .hm-big{transition:none} }
 </style>
 </head>
 <body>
 <div class="app" id="app">
   <header class="bar">
-    <button class="brand" id="homeBtn" title="시작 화면으로"><div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3"/></svg></div><b>프레임콘티<small>3D 스토리보드</small></b></button>
+    <button class="brand" id="homeBtn" title="시작 화면으로"><div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/><circle cx="12" cy="12" r="2.8"/></svg></div><b>PREVIO<small>프리비즈 스튜디오</small></b></button>
     <div class="vsep"></div>
     <div class="scene">
       <input id="title" class="title-in" aria-label="씬 제목" value="">
@@ -884,7 +942,7 @@ html:not(.simple) [data-simple]{display:none!important}
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button><button id="techMenuBtn" role="menuitem" data-pro>테크비즈 시트 (현장용) · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
     <hr><button id="uiModeBtn" role="menuitem"></button><button id="tourBtn" role="menuitem">사용법 보기</button><button id="keysBtn" role="menuitem">조작키 보기 (?)</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.04 17:23</p>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.04 20:02</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -1066,6 +1124,7 @@ html:not(.simple) [data-simple]{display:none!important}
   </aside>
 
   <footer class="shots" aria-label="샷 순서">
+    <div class="tl" id="tl" role="group" aria-label="타임라인"></div>
     <button class="stog" id="stripToggle" aria-expanded="true" aria-controls="strip" title="샷 목록 접기 · 펴기"><svg class="i" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg><span id="stripCur"></span></button>
     <span class="snav" id="snav"><button data-nav="-1" aria-label="이전 샷">‹</button><button data-nav="1" aria-label="다음 샷">›</button></span>
     <div class="sl"><b>Shots</b><span id="sum"></span></div>
@@ -1080,7 +1139,7 @@ html:not(.simple) [data-simple]{display:none!important}
 </div>
 
 <div class="rothint" id="rotHint" role="dialog" aria-labelledby="rotT"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="15" y="6" width="18" height="32" rx="3"/><path d="M8 30a16 16 0 0 0 14 12M40 18A16 16 0 0 0 26 6"/><path d="M22 42l-3-3M22 42l-3 3M26 6l3-3M26 6l3 3"/></svg>
-  <b id="rotT">휴대폰을 가로로 돌려 주세요</b><p>프레임콘티는 가로 화면에 맞춰져 있어요.<br>3D 세트와 모니터가 훨씬 넓게 보여요.</p><button class="btn ghost" id="rotOk">세로로 계속 쓰기</button></div>
+  <b id="rotT">휴대폰을 가로로 돌려 주세요</b><p>PREVIO는 가로 화면에 맞춰져 있어요.<br>3D 세트와 모니터가 훨씬 넓게 보여요.</p><button class="btn ghost" id="rotOk">세로로 계속 쓰기</button></div>
 <input type="file" id="vrmFile" accept=".vrm" hidden>
 <div id="mapPrint" aria-hidden="true"></div>
 <div id="techPrint" aria-hidden="true"></div>
@@ -1092,18 +1151,18 @@ html:not(.simple) [data-simple]{display:none!important}
 </div></div>
 <div class="mc" id="startScreen" hidden>
   <canvas id="pano" aria-hidden="true"></canvas><div class="mc-shade"></div>
-  <canvas id="mcVF" aria-hidden="true"></canvas>
-  <div class="mc-main" id="mcMain">
-    <div class="mc-brand">
-      <h1><canvas id="mcLogo" role="img" aria-label="FRAMECONTI 프레임콘티"></canvas><span class="ko">프레임콘티 · 3D 콘티 · 프리비즈</span></h1>
-      <p>촬영 전에 카메라 · 조명 · 동선을 세트에서 미리 맞춰 봐요.</p>
-      <span class="mc-press" aria-hidden="true">▶ PRESS START</span>
+  <div class="mc-main home" id="mcMain">
+    <div class="hm-center">
+      <div class="hm-logo"><span class="hm-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/><circle cx="12" cy="12" r="2.8"/></svg></span><div class="hm-brand" aria-label="PREVIO"><span>PREVI</span><svg class="recdot" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6.2"/></svg></div></div>
+      <p class="hm-tag">촬영 전에 카메라 · 조명 · 동선을 3D 세트에서 미리 맞춰 보는 프리비즈 스튜디오</p>
+      <nav class="hm-menu" aria-label="시작">
+        <button class="hm-big primary" id="mcNew"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></i><b>새 프로젝트</b><small id="mcNewT">템플릿 4가지</small></button>
+        <button class="hm-big" id="mcSetsBtn"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10.5L12 4l9 6.5V20H3z"/><path d="M9 20v-6h6v6"/></svg></i><b>세트 프리셋</b><small>공간 17가지로 바로 시작</small></button>
+        <button class="hm-big" id="mcLoad"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></i><b>불러오기</b><small id="mcLoadT">저장한 프로젝트</small></button>
+      </nav>
+      <button class="hm-resume" id="mcResume" hidden>이어서 작업 · <b id="mcResumeT"></b></button>
     </div>
-    <nav class="mc-acts" aria-label="시작">
-      <button class="mc-act primary" id="mcNew"><b>새 프로젝트</b><small>예시 씬이나 빈 세트로 시작</small></button>
-      <button class="mc-act" id="mcResume" hidden><b>이어서 작업</b><small id="mcResumeT"></small></button>
-      <button class="mc-act" id="mcLoad"><b>프로젝트 불러오기</b><small id="mcLoadT">저장한 콘티와 파일</small></button>
-    </nav>
+    <div class="hm-tools"><button class="hm-link" id="mcModeBtn"></button><button class="hm-link" id="mcAsk">문의하기</button></div>
   </div>
   <div class="mc-panel mc-mode" id="mcModeP" hidden>
     <h2>어떻게 쓰실 건가요?</h2>
@@ -1113,11 +1172,15 @@ html:not(.simple) [data-simple]{display:none!important}
       <button class="mc-pick" data-uimode="pro"><b>프로</b><span>실제 렌즈 키트 · 센서 · 노출(ND · ISO · 폴스컬러) · 조명 장비 · 촬영 순서까지 모두 다뤄요.</span><small>감독 · 촬영감독 · 조감독</small></button>
     </div>
   </div>
-  <div class="mc-panel" id="mcNewP" hidden>
-    <h2><span class="si"><svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="1.5"/><path d="M3.5 9l2-5 15 1.5-1.2 3.5"/></svg></span>새 프로젝트</h2>
-    <label class="mc-lab" for="mcTitle">씬 제목</label><input class="mc-in" id="mcTitle" maxlength="60" placeholder="예: 씬 3 · 옥상 — 고백">
-    <label class="mc-lab">시작 방식</label><div class="mc-seg" id="mcModeSeg"><button data-ex="1">예시 씬</button><button data-ex="0">빈 세트</button></div><p class="mc-note" id="mcModeNote"></p>
-    <div class="mc-row"><button class="sbtn center" data-back><b>취소</b></button><button class="sbtn primary center" id="mcCreate"><b>시작하기</b></button></div>
+  <div class="mc-panel wide" id="mcNewP" hidden>
+    <h2>새 프로젝트</h2><p class="mc-note">어떤 작업인지 고르면 그에 맞는 세트와 첫 샷이 준비돼요. 이름은 나중에 위에서 바꿔요.</p>
+    <div class="hm-tpls" id="mcTpls"></div>
+    <div class="mc-row"><button class="sbtn center" id="mcImport2"><b>파일에서 가져오기</b></button><button class="sbtn center" data-back><b>돌아가기</b></button></div>
+  </div>
+  <div class="mc-panel wide" id="mcSetP" hidden>
+    <h2>세트 프리셋</h2><p class="mc-note">공간을 고르면 가구 · 조명 · 시간대가 갖춰진 세트에서 시작해요.</p>
+    <div class="hm-recent hm-sets" id="mcSets"></div>
+    <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
   <div class="mc-panel" id="mcLoadP" hidden>
     <h2><span class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="7" r="1.6"/><circle cx="12" cy="17" r="1.6"/><circle cx="7" cy="12" r="1.6"/><circle cx="17" cy="12" r="1.6"/></svg></span>프로젝트 불러오기</h2>
@@ -1129,12 +1192,12 @@ html:not(.simple) [data-simple]{display:none!important}
   <div class="mc-panel" id="mcAskP" hidden>
     <h2><span class="si"><svg viewBox="0 0 24 24"><path d="M4 10v4h3l6 4V6L7 10H4z"/><path d="M16.5 9a4 4 0 0 1 0 6"/></svg></span>문의하기</h2>
     <label class="mc-lab" for="mcAddr">받는 사람</label><input class="mc-in" id="mcAddr" value="soungbin8815@naver.com" readonly>
-    <label class="mc-lab" for="mcSubj">제목</label><input class="mc-in" id="mcSubj" value="[프레임콘티] 문의">
+    <label class="mc-lab" for="mcSubj">제목</label><input class="mc-in" id="mcSubj" value="[PREVIO] 문의">
     <label class="mc-lab" for="mcBody">내용</label><textarea class="mc-in" id="mcBody" rows="5" placeholder="버그, 원하는 기능, 장비 정보 정정 등 무엇이든 적어 주세요."></textarea>
     <div class="mc-row"><button class="sbtn center" id="mcCopy"><b>주소 복사</b></button><a class="sbtn primary center" id="mcSend" target="_blank" rel="noopener"><b>메일 앱으로 보내기</b></a></div>
     <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
-  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.04 17:23</span><button class="mc-ask" id="mcModeBtn"></button><button class="mc-ask" id="mcAsk">문의하기</button></div>
+  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.04 20:02</span></div>
 </div>
 
 <div class="keyhelp" id="keyHelp" role="dialog" aria-modal="true" aria-labelledby="keyHelpT" hidden><div class="kh-box glass">
@@ -1165,7 +1228,7 @@ html:not(.simple) [data-simple]{display:none!important}
 </div></div>
 <div class="questcard glass" id="questCard" role="dialog" aria-labelledby="questT" hidden><div class="qc-head"><b id="questT">첫 콘티 미션</b><span id="questSum"></span><button class="btn sm ghost" id="questClose" aria-label="닫기">✕</button></div><ol id="questList"></ol></div>
 <div class="toast" id="toast" role="status"></div>
-<input type="file" id="fileIn" accept=".frameconti,application/json" hidden>
+<input type="file" id="fileIn" accept=".previo,.frameconti,application/json" hidden>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
@@ -1916,6 +1979,14 @@ const PROPS = {
   drums: { name: '드럼 세트', w: 1.6, d: 1.3, h: 1.2, rgb: [0.55, 0.08, 0.1] }, micstand: { name: '마이크 스탠드', w: 0.5, d: 0.5, h: 1.6, rgb: [0.06, 0.06, 0.07] },
   amp: { name: '기타 앰프', w: 0.6, d: 0.3, h: 0.55, rgb: [0.06, 0.06, 0.06] }, speaker: { name: 'PA 스피커', w: 0.5, d: 0.45, h: 1.0, rgb: [0.05, 0.05, 0.055] },
   synth: { name: '키보드 (신디)', w: 1.2, d: 0.45, h: 0.95, rgb: [0.08, 0.08, 0.09] },
+  // for the set presets
+  cooler: { name: '음료 냉장고', w: 1.2, d: 0.7, h: 2.0, rgb: [0.85, 0.86, 0.87] }, schoolchair: { name: '학교 의자', w: 0.42, d: 0.45, h: 0.8, rgb: [0.68, 0.52, 0.34] },
+  cubicle: { name: '사무실 파티션', w: 1.6, d: 0.06, h: 1.3, rgb: [0.45, 0.5, 0.56] }, watercooler: { name: '정수기', w: 0.35, d: 0.38, h: 1.25, rgb: [0.92, 0.92, 0.93] },
+  printer: { name: '복합기', w: 0.6, d: 0.65, h: 1.15, rgb: [0.88, 0.88, 0.87] }, showerbooth: { name: '샤워 부스', w: 0.9, d: 0.9, h: 2.0, rgb: [0.8, 0.82, 0.84] },
+  hospitalbed: { name: '병원 침대', w: 1.0, d: 2.15, h: 0.95, rgb: [0.9, 0.91, 0.92] }, ivstand: { name: '링거대', w: 0.5, d: 0.5, h: 1.9, rgb: [0.7, 0.71, 0.72] },
+  fountain: { name: '분수대', w: 2.4, d: 2.4, h: 1.3, rgb: [0.72, 0.7, 0.66] }, campchair: { name: '캠핑 의자', w: 0.55, d: 0.55, h: 0.85, rgb: [0.18, 0.32, 0.28] },
+  watertank: { name: '옥상 물탱크', w: 1.4, d: 1.4, h: 1.9, rgb: [0.2, 0.42, 0.7] }, acunit: { name: '에어컨 실외기', w: 0.85, d: 0.32, h: 0.6, rgb: [0.88, 0.88, 0.86] },
+  slide: { name: '미끄럼틀', w: 0.8, d: 3.0, h: 1.9, rgb: [0.92, 0.75, 0.15] }, swing: { name: '그네', w: 2.6, d: 1.6, h: 2.3, rgb: [0.85, 0.25, 0.2] },
 };
 function roomInfo() {
   const r = state.set && state.set.room; if (!r) return null;
@@ -2430,7 +2501,7 @@ function playShot() {
   play = { i, orig, view: orig, t0: performance.now(), dur, ev: frameEvents(orig), sizes: sz0 && sz1 && sz0 !== sz1 ? `${sz0} → ${sz1}` : sz0 || '' };
   const step = now => { if (!play) return; const t = clamp((now - play.t0) / dur, 0, 1);
     play.view = shotAt(orig, ease(orig, t)); state.shots[i] = play.view; play.t = t;
-    if (mode === 'mon') drawMonitor(); else renderWorld(); pipSoon(); syncKfBar();
+    if (mode === 'mon') drawMonitor(); else renderWorld(); pipSoon(); syncKfBar(); { const tot = state.shots.reduce((a, x, j) => a + Math.max(1, (j === i ? orig : x).dur || 3), 0), before = state.shots.slice(0, i).reduce((a, x) => a + Math.max(1, x.dur || 3), 0); tlHead((before + t * dur / 1000) / tot); }
     if (t < 1) play.raf = requestAnimationFrame(step); else play.raf = setTimeout(stopPlay, 700); };
   play.raf = requestAnimationFrame(step); syncKfBar();
 }
@@ -2446,7 +2517,7 @@ function seqShot(i) { if (!seq) return; if (i >= state.shots.length) return stop
   play = { i, orig, view: orig, t0: performance.now(), dur, ev: [], sizes: '', seq: true };
   const step = now => { if (!play || !seq) return; const t = clamp((now - play.t0) / dur, 0, 1);
     if (orig.end) { play.view = shotAt(orig, ease(orig, t)); state.shots[i] = play.view; }
-    drawMonitor(); $('#animT').textContent = `S${String(i + 1).padStart(2, '0')} · ${fmt(t * dur / 1000, 1)} / ${dur / 1000}초 · 전체 ${mmss(seq.done + t * dur / 1000)} / ${mmss(seq.total)}`;
+    drawMonitor(); tlHead((seq.done + t * dur / 1000) / seq.total); $('#animT').textContent = `S${String(i + 1).padStart(2, '0')} · ${fmt(t * dur / 1000, 1)} / ${dur / 1000}초 · 전체 ${mmss(seq.done + t * dur / 1000)} / ${mmss(seq.total)}`;
     if (t < 1) play.raf = requestAnimationFrame(step); else { state.shots[i] = orig; play = null; seq.done += dur / 1000; seqShot(i + 1); } };
   play.raf = requestAnimationFrame(step); }
 function stopSeq(end) { if (!seq) return; seq = null; if (play) { cancelAnimationFrame(play.raf); state.shots[play.i] = play.orig; play = null; }
@@ -2709,6 +2780,38 @@ function propFaces(o) {
     case 'speaker': B(-W, 0, -D, W, d.h, D, base); mCyl(out, F, 'z', [0, 0.32, D - 0.01], 0.18, 0.18, 0.02, 16, { rgb: [0.12, 0.12, 0.12] }); mCyl(out, F, 'z', [0, 0.75, D - 0.01], 0.09, 0.09, 0.02, 12, { rgb: [0.12, 0.12, 0.12] }); break;
     case 'synth': { for (const sx of [-1, 1]) { mRod(out, fp3(F, sx * 0.35, 0, -0.2), fp3(F, -sx * 0.35, 0.82, 0.05), 0.035, MAT.metal); mRod(out, fp3(F, sx * 0.35, 0, 0.2), fp3(F, -sx * 0.35, 0.82, -0.05), 0.035, MAT.metal); }
       B(-W, 0.82, -D + 0.1, W, 0.9, D - 0.1, base); B(-W + 0.05, 0.9, -D + 0.2, W - 0.05, 0.92, D - 0.12, { rgb: [0.92, 0.91, 0.88] }); for (let x = -W + 0.06; x < W - 0.06; x += 0.032) B(x, 0.92, -D + 0.2, x + 0.013, 0.935, -D + 0.32, MAT.black); break; }
+    case 'cooler': { const glass = { rgb: [0.6, 0.75, 0.85], alpha: 0.3 }, pal = [[0.85, 0.15, 0.15], [0.15, 0.45, 0.85], [0.95, 0.75, 0.2], [0.2, 0.65, 0.3]];
+      B(-W, 0, -D, W, d.h, D - 0.04, base); B(-W, d.h - 0.22, D - 0.04, W, d.h, D, { css: '#E5483A' });
+      for (let r = 0; r < 5; r++) for (let c = 0; c < 8; c++) B(-W + 0.08 + c * 0.13, 0.12 + r * 0.33, D - 0.3, -W + 0.17 + c * 0.13, 0.36 + r * 0.33, D - 0.08, { rgb: pal[(r + c) % 4] });
+      for (const x of [-W + 0.04, 0.005]) mQuad(out, [fp3(F, x, 0.08, D - 0.03), fp3(F, x + W - 0.045, 0.08, D - 0.03), fp3(F, x + W - 0.045, d.h - 0.24, D - 0.03), fp3(F, x, d.h - 0.24, D - 0.03)], glass); break; }
+    case 'schoolchair': { const steel = { rgb: [0.25, 0.3, 0.32] }; legs(0.03, 0.03, 0.025, 0.44, steel); B(-W, 0.44, -D, W, 0.47, D, base); B(-W + 0.02, 0.58, -D, W - 0.02, d.h, -D + 0.025, base);
+      for (const sx of [-1, 1]) B(sx * (W - 0.03) - 0.012, 0.47, -D, sx * (W - 0.03) + 0.012, 0.6, -D + 0.025, steel); break; }
+    case 'cubicle': B(-W, 0.02, -D, W, d.h, D, base); B(-W, 0, -D - 0.01, W, 0.04, D + 0.01, MAT.grey); B(-W - 0.02, 0, -D - 0.01, -W, d.h, D + 0.01, MAT.grey); B(W, 0, -D - 0.01, W + 0.02, d.h, D + 0.01, MAT.grey); break;
+    case 'watercooler': B(-W, 0, -D, W, 0.95, D, base); B(-W + 0.06, 0.55, D, W - 0.06, 0.75, D + 0.01, MAT.grey); mCyl(out, F, 'y', [0, 0.95, 0], 0.15, 0.15, 0.3, 14, { rgb: [0.45, 0.65, 0.9], alpha: 0.5 }); break;
+    case 'printer': B(-W, 0, -D, W, 0.85, D, base); B(-W, 0.85, -D, W, 1.0, D - 0.15, lite); B(-W + 0.05, 1.0, -D + 0.05, W - 0.05, d.h, D - 0.2, MAT.grey); B(0.05, 0.88, D - 0.15, W - 0.04, 0.95, D, MAT.black);
+      for (let i = 0; i < 3; i++) B(-W + 0.04, 0.1 + i * 0.24, D, W - 0.04, 0.3 + i * 0.24, D + 0.01, lite); break;
+    case 'showerbooth': { const glass = { rgb: [0.75, 0.85, 0.9], alpha: 0.22 }; B(-W, 0, -D, W, 0.1, D, base);
+      for (const [a, b] of [[[-W, -D], [W, -D]], [[W, -D], [W, D]], [[-W, D], [W, D]], [[-W, -D], [-W, D]]]) mQuad(out, [fp3(F, a[0], 0.1, a[1]), fp3(F, b[0], 0.1, b[1]), fp3(F, b[0], d.h, b[1]), fp3(F, a[0], d.h, a[1])], glass);
+      for (const [x, z] of [[-W, -D], [W, -D], [W, D], [-W, D]]) B(x - 0.02, 0.1, z - 0.02, x + 0.02, d.h, z + 0.02, MAT.metal); mRod(out, fp3(F, 0, 1.9, -D + 0.05), fp3(F, 0, 1.9, -D + 0.25), 0.03, MAT.metal); break; }
+    case 'hospitalbed': { const steel = MAT.metal, linen = { rgb: [0.85, 0.9, 0.95] }; legs(0.08, 0.1, 0.04, 0.45, steel);
+      B(-W, 0.45, -D, W, 0.6, D, steel); B(-W + 0.03, 0.6, -D + 0.05, W - 0.03, 0.75, D - 0.05, linen); B(-W + 0.03, 0.75, -D + 0.05, W - 0.03, 0.85, -D + 0.55, linen);
+      B(-W, 0.45, -D, W, d.h, -D + 0.05, steel); B(-W, 0.45, D - 0.05, W, 0.85, D, steel); for (const sx of [-1, 1]) B(sx * W - 0.02, 0.62, -D + 0.5, sx * W + 0.02, 0.85, D - 0.5, steel); break; }
+    case 'ivstand': for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; mRod(out, fp3(F, 0, 0.08, 0), fp3(F, Math.sin(a) * 0.24, 0.02, Math.cos(a) * 0.24), 0.025, base); }
+      mCyl(out, F, 'y', [0, 0.05, 0], 0.012, 0.012, 1.8, 8, base, 0); mRod(out, fp3(F, -0.12, 1.82, 0), fp3(F, 0.12, 1.82, 0), 0.02, base); B(0.06, 1.5, -0.04, 0.14, 1.78, 0.04, { rgb: [0.85, 0.92, 0.95], alpha: 0.6 }); break;
+    case 'fountain': { const water = { rgb: [0.4, 0.62, 0.8], alpha: 0.65 }; mCyl(out, F, 'y', [0, 0, 0], W, W, 0.45, 20, base); mCyl(out, F, 'y', [0, 0.38, 0], W - 0.12, W - 0.12, 0.05, 20, water);
+      mCyl(out, F, 'y', [0, 0.45, 0], 0.15, 0.12, 0.55, 12, base); mCyl(out, F, 'y', [0, 0.95, 0], 0.55, 0.45, 0.12, 16, base); mCyl(out, F, 'y', [0, 1.07, 0], 0.08, 0.02, 0.25, 8, water); break; }
+    case 'campchair': { const fr = MAT.black; for (const sz of [-1, 1]) { mRod(out, fp3(F, -W + 0.03, 0, sz * (D - 0.03)), fp3(F, W - 0.03, 0.42, -sz * (D - 0.03)), 0.02, fr); mRod(out, fp3(F, W - 0.03, 0, sz * (D - 0.03)), fp3(F, -W + 0.03, 0.42, -sz * (D - 0.03)), 0.02, fr); }
+      B(-W + 0.03, 0.36, -D + 0.05, W - 0.03, 0.42, D - 0.05, { ...base, two: true }); B(-W + 0.03, 0.42, -D + 0.03, W - 0.03, d.h, -D + 0.07, { ...base, two: true }); break; }
+    case 'watertank': mCyl(out, F, 'y', [0, 0.3, 0], W - 0.05, W - 0.05, d.h - 0.4, 18, base); mCyl(out, F, 'y', [0, d.h - 0.1, 0], W - 0.05, 0.25, 0.1, 18, base);
+      B(-W, 0, -W, W, 0.3, W, MAT.grey); break;
+    case 'acunit': B(-W, 0.05, -D, W, d.h, D, base); mCyl(out, F, 'z', [-0.12, 0.33, D - 0.01], 0.22, 0.22, 0.02, 18, MAT.grey); for (let i = 0; i < 6; i++) B(-0.32 + i * 0.01, 0.12 + i * 0.07, D + 0.005, 0.1, 0.13 + i * 0.07, D + 0.012, MAT.grey);
+      B(-W + 0.05, 0, -D + 0.05, -W + 0.12, 0.05, D - 0.05, MAT.black); B(W - 0.12, 0, -D + 0.05, W - 0.05, 0.05, D - 0.05, MAT.black); break;
+    case 'slide': { const steel = { rgb: [0.2, 0.45, 0.75] }; for (const sx of [-1, 1]) { mRod(out, fp3(F, sx * (W - 0.05), 0, -D + 0.05), fp3(F, sx * (W - 0.05), 1.55, -D + 0.05), 0.06, steel); mRod(out, fp3(F, sx * (W - 0.05), 0, -D + 0.75), fp3(F, sx * (W - 0.05), 1.55, -D + 0.75), 0.06, steel); }
+      B(-W, 1.45, -D, W, 1.55, -D + 0.8, steel); for (let i = 1; i < 6; i++) B(-W + 0.1, i * 0.27 - 0.02, -D - 0.02, W - 0.1, i * 0.27 + 0.02, -D + 0.04, steel);
+      const sl = 12; for (let i = 0; i < sl; i++) { const t0 = i / sl, t1 = (i + 1) / sl, z0 = -D + 0.8 + t0 * (2 * D - 0.8), z1 = -D + 0.8 + t1 * (2 * D - 0.8), y0 = 1.5 * (1 - t0) + 0.15, y1 = 1.5 * (1 - t1) + 0.15;
+        mQuad(out, [fp3(F, -W + 0.12, y0, z0), fp3(F, W - 0.12, y0, z0), fp3(F, W - 0.12, y1, z1), fp3(F, -W + 0.12, y1, z1)], base); for (const sx of [-1, 1]) mRod(out, fp3(F, sx * (W - 0.12), y0 + 0.12, z0), fp3(F, sx * (W - 0.12), y1 + 0.12, z1), 0.03, base); } break; }
+    case 'swing': { const steel = { rgb: [0.2, 0.45, 0.75] }; for (const sx of [-1, 1]) for (const sz of [-1, 1]) mRod(out, fp3(F, sx * (W - 0.05), 0, sz * (D - 0.05)), fp3(F, sx * (W - 0.05), d.h, 0), 0.06, steel);
+      mCyl(out, F, 'x', [-W, d.h, 0], 0.05, 0.05, 2 * W, 10, steel); for (const x of [-0.6, 0.6]) { for (const dx of [-0.2, 0.2]) mRod(out, fp3(F, x + dx, d.h, 0), fp3(F, x + dx, 0.45, 0), 0.015, MAT.metal); B(x - 0.23, 0.42, -0.1, x + 0.23, 0.46, 0.1, base); } break; }
     default: B(-W, 0, -D, W, d.h, D, base); // a plain box until a piece has its own shape
   }
   if (scaled) out.forEach(f => { f.n = norm(f.n); if (f.vn) f.vn = f.vn.map(norm); });
@@ -3577,6 +3680,7 @@ let wsz = null, worldHandles = [], wDrag = null, worldV = null, view3d = null;
 const ptrs = new Map(), coarse = matchMedia('(pointer: coarse)'), pad = () => coarse.matches ? 1.8 : 1;
 // phone = upright phone layout; shortH = any phone held sideways (also narrow ones like the iPhone SE); small = either, for lighter rendering
 const phone = matchMedia('(max-width: 719px) and (orientation: portrait)'), shortH = matchMedia('(orientation: landscape) and (max-height: 520px)');
+const wide = matchMedia('(min-width: 1024px) and (min-height: 640px)'); // tablets and computers: docked inspector, timeline
 const small = () => phone.matches || shortH.matches;
 // the app is exactly as tall as what is visible: follows the on-screen keyboard and browser bars, and never lets the page itself scroll
 function fitApp() { const vv = window.visualViewport, h = Math.round(vv ? vv.height : innerHeight); document.documentElement.style.setProperty('--app-h', h + 'px'); if (scrollX || scrollY) scrollTo(0, 0); }
@@ -3937,12 +4041,26 @@ function syncCrane() {
   $('#craneName').textContent = `암 ${fmt(s.crane.len, 1)}m · 붐 ${s.crane.boom > 0 ? '+' : ''}${fmt(s.crane.boom, 0)}°`;
   $('#crLen').hidden = l0 === l1;
   $('#crIn').disabled = s.crane.len <= l0 + 1e-3; $('#crOut').disabled = s.crane.len >= l1 - 1e-3;
+  placeCraneBar();
 }
+// the crane controls sit bottom-centre; where the little monitor in the corner would cover them, they move left of it, or above it when there is no room
+function placeCraneBar() { const bar = $('#craneBar'), pip = $('#pip'); if (bar.hidden) return; bar.style.transform = ''; bar.style.bottom = '';
+  if (!pip || pip.hidden || !pip.offsetParent) return; const b = bar.getBoundingClientRect(), p = pip.getBoundingClientRect(), st = $('#stage').getBoundingClientRect();
+  if (b.right <= p.left - 8 || b.bottom <= p.top) return;
+  const shift = b.right - (p.left - 8); if (b.left - shift >= st.left + 8) bar.style.transform = `translateX(calc(-50% - ${Math.ceil(shift)}px))`;
+  else bar.style.bottom = Math.ceil(st.bottom - p.top + 8) + 'px'; }
+if (window.ResizeObserver) { const ro = new ResizeObserver(() => placeCraneBar()); ['#craneBar', '#pip', '#stage'].forEach(q => $(q) && ro.observe($(q))); }
+new MutationObserver(() => placeCraneBar()).observe($('#pip'), { attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
 $('#craneBar').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const s = cur();
   if (b.id === 'crClose') return craneToggle(false);
   if (!craneTake(s)) return; const k = b.dataset.cr; craneMove(s, { [k]: s.crane[k] + +b.dataset.d }); changed(true); });
 // floating bars: one while placing, one for the selected object (rotate, move, size, copy, delete)
-function syncBars() { syncCrane();
+// wide screens: the drawer is an inspector — picking something opens its settings beside the stage (camera, light, furniture or a person);
+// with nothing picked it stays on what was open. Only a change of selection switches it, so a panel you opened yourself stays put.
+let inspKey = null;
+function autoInspect() { if (!wide.matches || view !== 'edit' || placing) return; const key = selObj ? selObj.id : camSel ? 'cam' : ''; if (key === inspKey) return; inspKey = key;
+  const want = selObj ? (selObj.kind === 'light' ? 'light' : 'set') : camSel ? 'cam' : null; if (want && pane !== want) openPane(want); else if (!pane) openPane('cam'); }
+function syncBars() { autoInspect(); syncCrane();
   const pb = $('#placeBar'), ob = $('#objBar'), cb = $('#camBar'), mk = mvSubj(); pb.hidden = !placing; cb.hidden = !!placing || craneOn || mode === 'mon' || !!mk;
   $('#movePad').hidden = !(mode === 'mon' || mk) || view !== 'edit'; $('#movePad').classList.toggle('subj', !!mk);
   if (placing) { $('#placeName').textContent = PROPS[placing.o.type].name; const st = $('#placeStat'); st.textContent = placing.why || '놓을 수 있어요'; st.className = 'pstat ' + (placing.why ? 'bad' : 'ok');
@@ -4261,7 +4379,7 @@ function sizeView() {
   const st = $('#stage'), cv = $('#view'), asp = aspectV(), dpr = devicePixelRatio || 1;
   // sideways phone: the monitor takes the whole stage like the 3D and top views. Upright: full width, with room for the move pad underneath.
   // with a panel open on a phone, the monitor moves into the space the panel leaves, so lens and exposure changes show at once
-  const side = shortH.matches, dr = $('#drawer'), dock = (phone.matches || side) && !dr.hidden, dw = dock && side ? dr.offsetWidth : 0, dh = dock && !side ? dr.offsetHeight : 0;
+  const side = shortH.matches, dr = $('#drawer'), dock = (phone.matches || side) && !dr.hidden, dw = 0, dh = 0; // the panel no longer covers the stage on phones: it has its own space
   $('#app').classList.toggle('dock', dock);
   // the frame is as large as the stage allows at the shot's aspect ratio; the controls float over the edges
   // the readouts (shot, lens, focus, depth of field…) run in a strip above and one below the picture, never on it: keep room for both
@@ -4627,8 +4745,10 @@ function gripPlace(g, s = cur()) {
 }
 function addGrip(id) { const g = { id: 'G' + Date.now().toString(36), fx: id }; gripPlace(g); shotLights().push(g); selObj = { id: g.id, kind: 'light' }; changed(true, true);
   toast(`${josa(GRIPS[id].name, '을', '를')} 세웠어요. 3D에서 끌어 옮기세요`); }
-$('#lightList').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { selObj = { id: b.dataset.id, kind: 'light' }; syncSet(); syncBars(); renderWorld(); } });
-$('#propList').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { selObj = { id: b.dataset.id, kind: 'prop' }; syncSet(); syncBars(); renderWorld(); } });
+// empty lists offer the way to add something
+document.addEventListener('click', e => { const g = e.target.closest('[data-goadd]'); if (g) paneTab(g.dataset.goadd, 'add'); });
+$('#lightList').addEventListener('click', e => { const b = e.target.closest('button:not([data-goadd])'); if (b) { selObj = { id: b.dataset.id, kind: 'light' }; syncSet(); syncBars(); renderWorld(); } });
+$('#propList').addEventListener('click', e => { const b = e.target.closest('button:not([data-goadd])'); if (b) { selObj = { id: b.dataset.id, kind: 'prop' }; syncSet(); syncBars(); renderWorld(); } });
 $('#roomSeg').innerHTML = [0, 3, 5, 10, 15, 20, 30].map(v => `<button data-py="${v}">${v ? v + '평' : '없음 (야외)'}</button>`).join('');
 $('#ceilSeg').innerHTML = [2.4, 2.7, 3.0, 3.6, 4.5].map(v => `<button data-h="${v}">${v}m</button>`).join('');
 $('#finSeg').innerHTML = Object.entries(FINISH).map(([k, v]) => `<button data-fin="${k}">${v.name}</button>`).join('');
@@ -4638,12 +4758,12 @@ $('#bgSeg').addEventListener('click', e => { const b = e.target.closest('button'
 $('#ceilSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b && state.set.room) { state.set.room.h = +b.dataset.h; changed(true, true); } });
 $('#finSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b && state.set.room) { state.set.room.fin = b.dataset.fin; changed(true, true); } });
 const PROP_GROUPS = [['거실 · 침실', ['sofa', 'armchair', 'coffee', 'table', 'bed', 'nightstand', 'wardrobe', 'dresser', 'tv', 'shelf', 'piano', 'floorlamp', 'mirror', 'curtain', 'rug', 'plant']],
-  ['카페 · 주방', ['cafe', 'chair', 'counter', 'stool', 'kitchen', 'fridge', 'booth']], ['사무실 · 학교', ['desk', 'officechair', 'schooldesk', 'whiteboard', 'locker', 'filing', 'podium']],
-  ['가게', ['storeshelf', 'register', 'vending']], ['욕실', ['bathtub', 'toilet', 'sink']],
+  ['카페 · 주방', ['cafe', 'chair', 'counter', 'stool', 'kitchen', 'fridge', 'booth']], ['사무실 · 학교', ['desk', 'officechair', 'cubicle', 'printer', 'watercooler', 'schooldesk', 'schoolchair', 'whiteboard', 'locker', 'filing', 'podium']],
+  ['가게', ['storeshelf', 'cooler', 'register', 'vending']], ['욕실 · 병원', ['bathtub', 'showerbooth', 'toilet', 'sink', 'hospitalbed', 'ivstand']],
   ['세트 구조물', ['flat', 'flatdoor', 'flatwin', 'stairs', 'riser', 'pillar', 'backdrop', 'apple']], ['촬영 현장', ['director', 'monitorcart', 'cstand']],
-  ['야외 · 자연', ['tree', 'pine', 'bush', 'hedge', 'flowerbed', 'rock', 'log', 'fence', 'parasol', 'picnic', 'tent', 'campfire']],
+  ['야외 · 자연', ['tree', 'pine', 'bush', 'hedge', 'flowerbed', 'rock', 'log', 'fence', 'parasol', 'picnic', 'tent', 'campfire', 'campchair', 'fountain', 'slide', 'swing']],
   ['야외 · 거리', ['bench', 'lamp', 'busstop', 'trafficlight', 'streetsign', 'bollard', 'guardrail', 'crosswalk', 'stall', 'bike', 'motorbike', 'car', 'van', 'cone', 'bin', 'hydrant']],
-  ['창고 · 공사', ['crate', 'barrel', 'pallet', 'ladder']], ['음악 · 공연', ['drums', 'micstand', 'amp', 'speaker', 'synth']]];
+  ['창고 · 옥상', ['crate', 'barrel', 'pallet', 'ladder', 'watertank', 'acunit']], ['음악 · 공연', ['drums', 'micstand', 'amp', 'speaker', 'synth']]];
 // the catalogue shows each piece as a little 3D picture, like a building game's catalogue: drawn once, from its own model, when first seen
 function propThumb(type) { const cv = document.createElement('canvas'), W = 120, H = 84, dpr = Math.min(2, devicePixelRatio || 1); cv.width = W * dpr; cv.height = H * dpr;
   const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr); let faces = []; try { faces = propFaces({ id: 'thumb_' + type, type, x: 0, z: 0, yaw: 0, fin: 'white' }); } catch (e) { return ''; }
@@ -4665,6 +4785,17 @@ $('#propAdd').innerHTML = PROP_GROUPS.map(([t, ids]) => `<div class="cat">${t}</
   document.querySelectorAll('#propAdd [data-thumb]').forEach(el => io ? io.observe(el) : (el.style.backgroundImage = `url(${propThumb(el.dataset.thumb)})`)); }
 groupTabs($('#propAdd'));
 $('#propAdd').addEventListener('click', e => { const b = e.target.closest('button[data-prop]'); if (b) startPlace(b.dataset.prop); });
+// building-game drag (mouse · pen): press a picture in the catalogue and drag it onto the 3D stage — the piece follows the pointer over the
+// floor and lands where you let go (released anywhere else, it is put back). A plain click still starts placing as before.
+let dragProp = null;
+$('#propAdd').addEventListener('pointerdown', e => { if (e.pointerType === 'touch' || e.button !== 0) return; const b = e.target.closest('button[data-prop]'); if (b) dragProp = { type: b.dataset.prop, x: e.clientX, y: e.clientY, on: false }; });
+addEventListener('pointermove', e => { if (!dragProp) return;
+  if (!dragProp.on) { if (Math.hypot(e.clientX - dragProp.x, e.clientY - dragProp.y) < 10) return; dragProp.on = true; if (mode === 'mon') setMode('3d'); startPlace(dragProp.type); document.body.classList.add('dragging-prop'); }
+  const w = $('#world').getBoundingClientRect(), over = e.clientX > w.left && e.clientX < w.right && e.clientY > w.top && e.clientY < w.bottom; dragProp.over = over;
+  if (over && placing) movePlace(groundHit({ x: e.clientX - w.left, y: e.clientY - w.top }, worldV)); });
+addEventListener('pointerup', () => { const d = dragProp; dragProp = null; if (!d || !d.on) return; document.body.classList.remove('dragging-prop');
+  if (d.over && placing && !placing.why) confirmPlace(); else if (placing) { cancelPlace(); toast(d.over ? '여기엔 놓을 수 없어요' : '3D 화면 위에 놓아 주세요'); }
+  const sw = ev => ev.stopPropagation(); addEventListener('click', sw, true); setTimeout(() => removeEventListener('click', sw, true), 60); }); // the release must not also count as a click
 let editLock = null; // the edit pane whose slider is being dragged is not rebuilt mid-drag
 const rangeRow = (k, lab, min, max, step, v, out) => `<div class="xrow"><label for="ed_${k}">${lab}</label><input type="range" id="ed_${k}" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${v}"><output>${out}</output></div>`;
 ['#lightEdit', '#propEdit'].forEach(id => {
@@ -4707,7 +4838,7 @@ function syncSet() {
     $('#todSum').textContent = sn.on ? `해 ${hhmm(sn.hour)} · 고도 ${fmt(sunPos(sn.month, sn.hour).el, 0)}° — 3D, 노출, AI 프롬프트가 모두 이 시간대를 따라요` : t === 'night' ? '밤: 도심 야간 환경광만 있어요. 조명을 배치하세요' : '자연광 없이 배치한 조명만으로 비춰요'; }
   const L = lightCtx(s);
   const sn = set.sun, se = sn.on ? sunEnv(sn) : null;
-  $('#lightList').innerHTML = (sn.on ? `<button data-id="SUN" aria-pressed="${!!selObj && selObj.id === 'SUN'}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(se.sunK)}"></i>햇빛</span><span>${sn.month}월 ${hhmm(sn.hour)} · 고도 ${fmt(se.el, 0)}° · ${se.el > 0 ? se.sunK + 'K' : '해 짐'}</span></button>` : '') + L.grips.map(g => `<button data-id="${g.id}" aria-pressed="${!!selObj && selObj.id === g.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${{ silk: '#e8e8e4', net: '#555', flag: '#111' }[GRIPS[g.fx].kind]}"></i>${GRIPS[g.fx].name}</span><span>그립 · 높이 ${fmt(g.y, 1)}m</span></button>`).join('') + L.lights.map(li => `<button data-id="${li.l.id}" aria-pressed="${!!selObj && selObj.id === li.l.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' || GELS[li.l.gel] && GELS[li.l.gel].t ? lightCss(li.col) : kelvinCss(li.K)}"></i>${lightLabel(li.l)}</span><span>${Math.round((li.l.dim ?? 1) * 100)}% · ${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' ? 'RGB ' + Math.round(li.l.hue ?? 0) + '°' : GELS[li.l.gel] && GELS[li.l.gel].t ? GELS[li.l.gel].name : li.K + 'K'} · ${(modOf(li.l) || { name: fixKind(li.l.fx) === 'leko' ? '패턴 ' + GOBOS[li.l.gobo || 'win'] : '맨 전구' }).name}</span></button>`).join('') || (sn.on ? '' : '<p class="hint" style="margin:0">아직 조명이 없어요. 아래에서 하나 추가하세요.</p>');
+  $('#lightList').innerHTML = (sn.on ? `<button data-id="SUN" aria-pressed="${!!selObj && selObj.id === 'SUN'}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(se.sunK)}"></i>햇빛</span><span>${sn.month}월 ${hhmm(sn.hour)} · 고도 ${fmt(se.el, 0)}° · ${se.el > 0 ? se.sunK + 'K' : '해 짐'}</span></button>` : '') + L.grips.map(g => `<button data-id="${g.id}" aria-pressed="${!!selObj && selObj.id === g.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${{ silk: '#e8e8e4', net: '#555', flag: '#111' }[GRIPS[g.fx].kind]}"></i>${GRIPS[g.fx].name}</span><span>그립 · 높이 ${fmt(g.y, 1)}m</span></button>`).join('') + L.lights.map(li => `<button data-id="${li.l.id}" aria-pressed="${!!selObj && selObj.id === li.l.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' || GELS[li.l.gel] && GELS[li.l.gel].t ? lightCss(li.col) : kelvinCss(li.K)}"></i>${lightLabel(li.l)}</span><span>${Math.round((li.l.dim ?? 1) * 100)}% · ${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' ? 'RGB ' + Math.round(li.l.hue ?? 0) + '°' : GELS[li.l.gel] && GELS[li.l.gel].t ? GELS[li.l.gel].name : li.K + 'K'} · ${(modOf(li.l) || { name: fixKind(li.l.fx) === 'leko' ? '패턴 ' + GOBOS[li.l.gobo || 'win'] : '맨 전구' }).name}</span></button>`).join('') || (sn.on ? '' : '<div class="empty"><b>아직 조명이 없어요</b><span>주 조명 하나로 시작해 보세요. 인물 쪽을 향해 놓이고 그 뒤로는 고정돼요.</span><button class="btn sm" data-goadd="light">조명 추가</button></div>');
 
   const sl = selObj && selObj.kind === 'light' && shotLights(s).find(l => l.id === selObj.id);
   if (editLock === '#lightEdit') {} else if (selObj && selObj.id === 'SUN' && sn.on) { const p = se.pos, L0 = lux(irr(L, { x: s.A.x, y: 0, z: s.A.z }, UP, null));
@@ -4750,7 +4881,7 @@ function syncSet() {
     $('#roomInfo').innerHTML = `${rm.py}평 · ${fmt(rm.side, 2)} × ${fmt(rm.side, 2)}m · 천장 ${rm.h}m · 창 ${L.nWin || 0}개` +
       (camIn ? '' : '<br><span class="warn-t">카메라가 방 밖에 있어요</span>') + (outL ? `<br><span class="warn-t">방 밖 조명 ${outL}개는 벽에 막혀요</span>` : ''); }
   else $('#roomInfo').innerHTML = '야외';
-  $('#propList').innerHTML = set.props.map(o => `<button data-id="${o.id}" aria-pressed="${!!selObj && selObj.id === o.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px">${PROPS[o.type].name}</span><span>${fmt(o.x, 1)}, ${fmt(o.z, 1)} · ${o.yaw || 0}°</span></button>`).join('') || '<p class="hint" style="margin:0">가구가 없어요.</p>';
+  $('#propList').innerHTML = set.props.map(o => `<button data-id="${o.id}" aria-pressed="${!!selObj && selObj.id === o.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px">${PROPS[o.type].name}</span><span>${fmt(o.x, 1)}, ${fmt(o.z, 1)} · ${o.yaw || 0}°</span></button>`).join('') || '<div class="empty"><b>아직 가구가 없어요</b><span>"가구 추가" 탭에서 골라 바닥에 놓거나, 카탈로그 그림을 3D 화면으로 끌어다 놓으세요.</span><button class="btn sm" data-goadd="set">가구 추가</button></div>';
   const sp = selObj && selObj.kind === 'prop' && set.props.find(o => o.id === selObj.id);
   if (editLock === '#propEdit') {} else if (sp) { const d = PROPS[sp.type], dm = propDims(sp), M = v => fmt(v, 2) + 'm', P = k => Math.round((sp[k] ?? 1) * 100);
     const size = sp.type === 'flatwin' ? rangeRow('ww', '창 너비', 0.5, 2.4, 0.05, dm.ww, M(dm.ww)) + rangeRow('wh', '창 높이', 0.4, 1.8, 0.05, dm.wh, M(dm.wh)) + rangeRow('sill', '창턱 높이', 0.1, 1.4, 0.05, dm.sill, M(dm.sill))
@@ -4929,7 +5060,16 @@ function updateCurrentCard() { const el = $(`.card[data-id="${cur().id}"]`); if 
   drawThumb(el.querySelector('canvas'), cur()); el.querySelector('.m').innerHTML = cardMeta(cur());
   // the 180° verdict of every shot can change with this one (the reference shot, or the people), so refresh all the badges
   state.shots.forEach(s => { const c = $(`.card[data-id="${s.id}"] .m`); if (c && s !== cur()) c.innerHTML = cardMeta(s); }); updateSum(); }
-function updateSum() { syncStripCur(); const t = state.shots.reduce((a, s) => a + s.dur, 0), tt = `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
+// wide screens: a timeline over the shot list — each shot as long as it lasts, a ruler in seconds, and a playhead (moves while playing)
+function syncTimeline() { const tl = $('#tl'); if (!tl || !wide.matches) return; const total = state.shots.reduce((a, s) => a + Math.max(1, s.dur || 3), 0) || 1;
+  const step = total > 120 ? 30 : total > 40 ? 10 : 5, ticks = []; for (let t = step; t < total; t += step) ticks.push(`<i class="tl-tick" style="left:${t / total * 100}%"><span>${mmss(t)}</span></i>`);
+  tl.innerHTML = state.shots.map((s, i) => `<button class="tl-seg" data-i="${i}" style="flex-grow:${Math.max(1, s.dur || 3)}" aria-current="${i === state.sel}" title="S${String(i + 1).padStart(2, '0')} · ${s.dur}초 · ${moveName(s)}">
+    <b>S${String(i + 1).padStart(2, '0')}</b><span>${s.dur}s${s.move !== 'static' ? ' · ' + moveName(s) : ''}</span></button>`).join('') + ticks.join('') + '<i class="tl-ph" aria-hidden="true"></i>';
+  tlHead(state.shots.slice(0, state.sel).reduce((a, s) => a + Math.max(1, s.dur || 3), 0) / total); }
+const tlHead = f => { const tl = $('#tl'); if (tl) tl.style.setProperty('--ph', clamp(f, 0, 1)); };
+$('#tl').addEventListener('click', e => { const b = e.target.closest('.tl-seg'); if (b) select(+b.dataset.i); });
+wide.addEventListener('change', () => syncTimeline());
+function updateSum() { syncStripCur(); syncTimeline(); const t = state.shots.reduce((a, s) => a + s.dur, 0), tt = `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
   $('#sum').textContent = `${state.shots.length}컷 · ${tt}`;
   $('#sceneMeta').textContent = [`${state.shots.length}컷 · 총 ${tt}`, todLabel(), `${fpsNow()}fps`, SENSOR().name.split(' (')[0], state.aspect, KIT().id === 'free' ? '자유 렌즈' : KIT().name].filter(Boolean).join(' · '); }
 $('#strip').addEventListener('click', e => { const c = e.target.closest('.card[data-id]'); if (c) select(state.shots.findIndex(s => s.id === c.dataset.id)); });
@@ -4943,8 +5083,8 @@ function select(i) { if (play) stopPlay(); kfReset(); state.sel = clamp(i, 0, st
 const nextOrder = () => Math.max(0, ...state.shots.map(x => x.order || 0)) + 1;
 // the new shot picks up where this one is shown: its end, when the end is being edited (the next shot continues the move)
 function addShot() { const s = JSON.parse(JSON.stringify(cur())); Object.assign(s, { id: mkId(), action: '', dialogue: '', note: '', move: 'static', takes: 1, order: nextOrder(), end: null, cross: false });
-  state.shots.splice(state.sel + 1, 0, s); state.sel++; state.example = false; save(); buildStrip(); renderAll(); toast(`S${String(state.sel + 1).padStart(2, '0')} 추가됨 — 앞 샷의 카메라와 배치를 이어받았어요`); }
-$('#dupBtn').onclick = () => { kfReset(); const s = JSON.parse(JSON.stringify(cur())); s.id = mkId(); s.order = nextOrder(); state.shots.splice(state.sel + 1, 0, s); state.sel++; save(); buildStrip(); renderAll(); toast('복제됨'); };
+  state.shots.splice(state.sel + 1, 0, s); state.sel++; state.example = false; save(); questCheck(); buildStrip(); renderAll(); toast(`S${String(state.sel + 1).padStart(2, '0')} 추가됨 — 앞 샷의 카메라와 배치를 이어받았어요`); }
+$('#dupBtn').onclick = () => { kfReset(); const s = JSON.parse(JSON.stringify(cur())); s.id = mkId(); s.order = nextOrder(); state.shots.splice(state.sel + 1, 0, s); state.sel++; save(); questCheck(); buildStrip(); renderAll(); toast('복제됨'); };
 $('#delBtn').onclick = () => { kfReset(); if (state.shots.length === 1) state.shots[0] = newShot({ f: cur().f }); else { state.shots.splice(state.sel, 1); state.sel = Math.min(state.sel, state.shots.length - 1); }
   save(); histCommit(); buildStrip(); renderAll(); toast('샷 삭제됨', { label: '되돌리기', action: undo, ms: 5000 }); };
 
@@ -5023,7 +5163,7 @@ $('#copyBtn').onclick = copyShotList;
 async function saveCsv() {
   const { meta, head, rows } = shotTable(), q = v => /[",\r\n]/.test(v = String(v)) ? `"${v.replace(/"/g, '""')}"` : v;
   const csv = '\uFEFF' + [...meta.map(m => q(m)), '', head.map(q).join(','), ...rows.map(r => r.map(q).join(','))].join('\r\n') + '\r\n';
-  const name = fileName().replace(/\.frameconti$/, '') + ' 샷리스트.csv';
+  const name = fileName().replace(/\.previo$/, '') + ' 샷리스트.csv';
   const dl = window.claude && window.claude.use ? await window.claude.use('downloads').catch(() => null) : null;
   if (dl) { try { await dl.save({ filename: name, data: csv }); toast(`${name} 저장했어요`); } catch (e) { toast('저장을 취소했어요'); } return; }
   downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), name); toast(`${name} 저장했어요`); }
@@ -5065,7 +5205,8 @@ const EN_MOVE = { arc: ['slow arc around the subject', 'Arc'], craned: ['crane /
   dollyout: ['slow dolly out away from the subject', 'Dolly Out'], track: ['tracking shot moving alongside the subject', 'Tracking'], crane: ['crane / boom up rising over the scene', 'Crane Up'],
   zoom: ['slow zoom in', 'Zoom In'], hand: ['handheld camera with subtle natural shake', 'Handheld'] };
 const EN_POSE = { stand: 'standing', sit: 'sitting', walk: 'walking', run: 'running', squat: 'crouching down', wave: 'raising one hand', point: 'pointing', lie: 'lying on their back' };
-const EN_PROP = { coffee: 'a coffee table', nightstand: 'a nightstand', wardrobe: 'a wardrobe', dresser: 'a chest of drawers', floorlamp: 'a floor lamp', mirror: 'a full-length mirror',
+const EN_PROP = { cooler: 'a glass-door drinks fridge', schoolchair: 'a school chair', cubicle: 'an office partition', watercooler: 'a water dispenser', printer: 'an office copier', showerbooth: 'a glass shower booth', hospitalbed: 'a hospital bed', ivstand: 'an IV drip stand', fountain: 'a stone fountain', campchair: 'a camping chair', watertank: 'a rooftop water tank', acunit: 'an air-conditioner outdoor unit', slide: 'a playground slide', swing: 'a playground swing set',
+  coffee: 'a coffee table', nightstand: 'a nightstand', wardrobe: 'a wardrobe', dresser: 'a chest of drawers', floorlamp: 'a floor lamp', mirror: 'a full-length mirror',
   piano: 'an upright piano', curtain: 'curtains', officechair: 'an office chair', schooldesk: 'a school desk', whiteboard: 'a whiteboard', locker: 'lockers', filing: 'a filing cabinet', podium: 'a podium',
   booth: 'a diner booth', vending: 'a vending machine', storeshelf: 'a supermarket shelf', register: 'a checkout counter', bathtub: 'a bathtub', toilet: 'a toilet', sink: 'a washbasin',
   stairs: 'a flight of stairs', riser: 'a stage riser', pillar: 'a pillar', backdrop: 'a seamless paper backdrop', director: "a director's chair", monitorcart: 'a video monitor cart', cstand: 'a C-stand',
@@ -5226,7 +5367,7 @@ const aiCopy = text => { try { navigator.clipboard.writeText(text).then(() => to
 async function aiFrame() {
   const s = state.shots[aiSel], asp = aspectV(), W = asp >= 1 ? 1600 : Math.round(1600 * asp), H = Math.round(W / asp), cv = document.createElement('canvas'); cv.width = W; cv.height = H;
   const ctx = cv.getContext('2d'); ctx.setTransform(1, 0, 0, 1, 0, 0); renderShot(ctx, W, H, s, { labels: false, move: false, lit: true, blur: state.blur, slot: 'ref' });
-  const blob = await new Promise(r => cv.toBlob(r, 'image/png')), name = `${(state.title || '프레임콘티').replace(/[\\/:*?"<>|]+/g, ' ').trim().slice(0, 40)}_S${String(aiSel + 1).padStart(2, '0')}.png`;
+  const blob = await new Promise(r => cv.toBlob(r, 'image/png')), name = `${(state.title || 'PREVIO').replace(/[\\/:*?"<>|]+/g, ' ').trim().slice(0, 40)}_S${String(aiSel + 1).padStart(2, '0')}.png`;
   const dl = window.claude && window.claude.use ? await window.claude.use('downloads').catch(() => null) : null;
   if (dl) { try { await dl.save({ filename: name, data: blob }); toast(`${name} 저장`); } catch (e) { toast('저장을 취소했어요'); } return; }
   const file = new File([blob], name, { type: 'image/png' });
@@ -5336,7 +5477,7 @@ function exportSetupMap() {
   const cv = document.createElement('canvas'); cv.width = 1500; cv.height = mh * 2; const mc = cv.getContext('2d'); mc.scale(2, 2); drawSetupMap(mc, 750, mh);
   const { of } = setupGroups(), rows = state.shots.map((s, i) => ({ s, i })).sort((a, b) => (a.s.order || 0) - (b.s.order || 0));
   const box = $('#mapPrint');
-  box.innerHTML = `<h1>${esc(state.title || '프레임콘티')} — 카메라 배치도</h1><p class="mp-meta">${esc($('#sceneMeta').textContent)}</p><img alt="카메라 배치도" src="${cv.toDataURL('image/png')}">
+  box.innerHTML = `<h1>${esc(state.title || 'PREVIO')} — 카메라 배치도</h1><p class="mp-meta">${esc($('#sceneMeta').textContent)}</p><img alt="카메라 배치도" src="${cv.toDataURL('image/png')}">
     <table><thead><tr><th>촬영 순서</th><th>샷</th><th>셋업</th><th>사이즈</th><th>렌즈</th><th>무빙</th><th>액션</th></tr></thead><tbody>${rows.map(({ s, i }, r) => `<tr><td>${r + 1}</td><td>S${String(i + 1).padStart(2, '0')}</td><td>${setupName(of[s.id])}</td><td>${autoSize(s, optics(s)) || '—'}</td><td>${fmt(s.f, s.f < 20 ? 1 : 0)}mm ${stopTxt(s.N)}</td><td>${(MOVES.find(m => m.k === s.move) || MOVES[0]).ko}</td><td>${esc(s.action || '')}</td></tr>`).join('')}</tbody></table>`;
   document.body.classList.add('print-map'); const done = () => { document.body.classList.remove('print-map'); removeEventListener('afterprint', done); };
   // back to the app after the print dialog; if a browser never reports it, the next touch brings the app back
@@ -5347,7 +5488,7 @@ function exportSetupMap() {
 const techTable = s => techRows(s).map(([k, v, n]) => `<tr><th>${k}</th><td>${esc(v)}${n ? `<small>${esc(n)}</small>` : ''}</td></tr>`).join('');
 function syncTech() { const t = $('#techTbl'); if (t) t.innerHTML = canon(() => techTable(cur())); }
 function exportTech() { kfReset(); if (play) stopPlay();
-  $('#techPrint').innerHTML = `<h1>${esc(state.title || '프레임콘티')} — 테크비즈 시트</h1><p class="mp-meta">${esc($('#sceneMeta').textContent)} · 거리와 높이는 미터, 높이는 바닥에서 렌즈 중심까지</p>`
+  $('#techPrint').innerHTML = `<h1>${esc(state.title || 'PREVIO')} — 테크비즈 시트</h1><p class="mp-meta">${esc($('#sceneMeta').textContent)} · 거리와 높이는 미터, 높이는 바닥에서 렌즈 중심까지</p>`
     + state.shots.map((s, i) => { const o = optics(s); return `<section><h2>S${String(i + 1).padStart(2, '0')} · ${autoSize(s, o) || '—'} · ${moveName(s)}${s.action ? ` — ${esc(s.action)}` : ''}</h2><table>${techTable(s)}</table></section>`; }).join('');
   document.body.classList.add('print-tech'); const done = () => { document.body.classList.remove('print-tech'); removeEventListener('afterprint', done); };
   addEventListener('afterprint', done); setTimeout(() => { window.print(); addEventListener('pointerdown', done, { once: true }); }, 200); }
@@ -5435,10 +5576,10 @@ function paneTab(p, t) {
 document.querySelectorAll('.ptabs').forEach(tb => tb.addEventListener('click', e => { const b = e.target.closest('button'); if (b) paneTab(tb.closest('.pane').dataset.pane, b.dataset.tab); }));
 document.querySelectorAll('.pane').forEach(x => paneTab(x.dataset.pane));
 let pane = null;
-function placeDrawer() { const d = $('#drawer');
-  if (phone.matches) { const a = $('#app').getBoundingClientRect(), r = $('#rail').getBoundingClientRect(); d.style.bottom = Math.max(0, a.bottom - r.top) + 'px'; }
-  else d.style.bottom = ''; }
-function openPane(p) { pane = p; $('#drawer').hidden = !p;
+// phones: an open panel takes its own part of the screen (beside the picture sideways, under it upright) instead of covering it,
+// so what a slider changes stays in view; computers keep the drawer docked on the right as before
+function placeDrawer() { $('#drawer').style.bottom = ''; $('#app').classList.toggle('docked', !!pane && (phone.matches || shortH.matches)); }
+function openPane(p) { pane = p; $('#drawer').hidden = !p; $('#app').classList.toggle('docked', !!p && (phone.matches || shortH.matches));
   document.querySelectorAll('.pane').forEach(x => x.hidden = x.dataset.pane !== p);
   document.querySelectorAll('#rail button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pane === p));
   if (p) { $('#drawerTitle').textContent = PANES[p]; $('#drawerIcon').innerHTML = $(`#rail button[data-pane="${p}"] svg`).outerHTML; placeDrawer(); }
@@ -5491,9 +5632,11 @@ function questMark(id) { if (questDone.has(id) || !QUESTS.some(q => q[0] === id)
   syncQuests(); const q = QUESTS.find(x => x[0] === id), n = questDone.size; $('#questBtn').classList.add('pop'); setTimeout(() => $('#questBtn').classList.remove('pop'), 900);
   toast(n === QUESTS.length ? '🎬 미션을 모두 마쳤어요! 이제 콘티를 마음껏 짜 보세요' : `미션 완료 · ${q[1]} (${n}/${QUESTS.length})`); }
 // after every saved change: what changed since the last one (only within the same shot, so switching shots never counts as moving the camera)
-function questCheck() { if (!state.shots || !state.shots.length || questDone.size >= QUESTS.length) return; const q = questOf(), p = questSnap; questSnap = q; if (!p || p.sel !== q.sel || sharedView) return;
+function questCheck() { if (!state.shots || !state.shots.length || questDone.size >= QUESTS.length) return; const q = questOf(), p = questSnap; questSnap = q; if (!p || sharedView) return;
+  if (q.shots > p.shots && q.shots >= 3) questMark('shots'); // a new shot is selected as it is made, so this is checked before the same-shot rule
+  if (p.sel !== q.sel) return;
   if (p.cam !== q.cam) questMark('cam'); if (p.f !== q.f) questMark('lens'); if (p.subj !== q.subj) questMark('actor'); if (q.props > p.props) questMark('prop'); if (q.lights > p.lights) questMark('light');
-  if (q.shots > p.shots && q.shots >= 3) questMark('shots'); if (q.moving > p.moving || (q.moving && p.moveOf !== q.moveOf)) questMark('move'); }
+  if (q.moving > p.moving || (q.moving && p.moveOf !== q.moveOf)) questMark('move'); }
 const questReset = () => { questSnap = state && state.shots && state.shots.length ? questOf() : null; };
 function syncQuests() { const n = questDone.size, all = n >= QUESTS.length; $('#questN').textContent = all ? '완료' : `${n}/${QUESTS.length}`;
   $('#questBtn').style.setProperty('--qp', Math.round(n / QUESTS.length * 100)); $('#questBtn').classList.toggle('done', all); $('#questSum').textContent = `${n} / ${QUESTS.length}`;
@@ -5517,7 +5660,7 @@ function tourSteps() {
     { t: '카메라 도구', p: '수평 맞추기, 인물 바라보기, 화면 맞춤', el: '#camBar', go: T3D },
     { t: '작은 모니터', p: '지금 카메라에 찍히는 화면이에요. 누르면 크게 봐요.', el: '#pip', go: T3D },
     { t: '구도 · 가이드', p: '구도 선과 색 · 선명도를 골라요.', el: '.vfbox .vf-tools', go: TMON },
-    { t: '이동 키', p: '누르고 있으면 카메라가 움직여요.', el: '#movePad', go: TMON },
+    coarse.matches ? { t: '이동 키', p: '누르고 있으면 카메라가 움직여요.', el: '#movePad', go: TMON } : { t: '키보드로 이동', p: 'W A S D로 앞뒤 좌우, Q E로 위아래, 화살표로 둘러봐요. ? 키를 누르면 모든 조작키가 나와요.', go: TMON },
     { t: '샷 목록', p: '컷들이 순서대로 있어요. 눌러서 고르고 끌어서 순서를 바꿔요.', el: '#strip', go: T3D },
     { t: '샷 추가 · 전체 재생', p: '새 컷, 복제, 삭제, 모든 샷 이어서 재생', el: '.stools', go: T3D },
     { t: '보드', p: '콘티 전체를 한 장으로 봐요.', el: '#boardBtn', go: T3D },
@@ -5607,8 +5750,14 @@ const store = (() => {
   };
 })();
 const projects = () => store.list();
+// a small picture of the first shot for the Home screen's project cards (redrawn at most every 20 s while working)
+let thumbT = 0, thumbURL = null, thumbId = null;
+function projectThumb() { const now = Date.now(); if (thumbId === projId && thumbURL && now - thumbT < 20000) return thumbURL;
+  try { const cv = document.createElement('canvas'); cv.width = 240; cv.height = 135; renderShot(cv.getContext('2d'), 240, 135, canon(() => state.shots[0]), { labels: false, lit: state.lit !== false, slot: 'thumb' });
+    thumbURL = cv.toDataURL('image/jpeg', 0.62); thumbT = now; thumbId = projId; } catch (e) {} return thumbURL; }
 function saveProject() { if (!projId) return; state.schema = SCHEMA;
-  const row = { id: projId, title: state.title || '제목 없는 씬', shots: state.shots.length, updated: Date.now(), sensor: SENSOR().name.split(' (')[0] };
+  const row = { id: projId, title: state.title || '제목 없는 씬', shots: state.shots.length, updated: Date.now(), sensor: SENSOR().name.split(' (')[0],
+    secs: state.shots.reduce((a, x) => a + (x.dur || 3), 0), thumb: projectThumb() };
   return store.put(projId, state, row).catch(e => store.fail(e)); }
 // data version: bump when the saved shape changes and add the step here
 const SCHEMA = 10;
@@ -5656,14 +5805,103 @@ const newId = () => 'p' + Date.now().toString(36) + Math.random().toString(36).s
 async function openProject(id) { let st = null; try { st = await store.get(id); } catch (e) {}
   if (!st || !Array.isArray(st.shots)) { toast('이 기기에 없는 프로젝트예요'); setHash(''); showStart(); return false; }
   state = st; normalizeState(); projId = id; sharedView = false; hideStart(); afterLoad(); setHash('#/p/' + id); toast(`"${state.title}" 열었어요`); return true; }
-function newProject(title, example) {
-  state = { title: title || '새 씬', aspect: '16:9', sensor: { ...SENSORS[0] }, squeeze: 1, breathing: true, blur: true, example, sel: 0, kit: 'free', lit: true, shots: [],
-    set: example ? sampleSet() : { env: 'magic', room: null, sun: { on: true, month: 10, hour: 17.5, north: 0, wx: 'clear' }, lights: [], props: [] }, cast: JSON.parse(JSON.stringify(CAST0)) };
-  state.shots = example ? sampleShots() : [placeShot({ size: 'FS', eye: true, elev: 0, ff: 35, az: 180, aim: 'A', N: 2.8, dur: 3, A: { x: 0, z: 0, face: 180 }, B: { on: false, x: 1.1, z: 0, face: 270 } })];
-  state.meta = example ? { sceneNo: '12', location: '카페 테라스', ie: 'EXT', dn: 'DAY' } : { sceneNo: '', location: '', ie: 'INT', dn: 'DAY' };
+// project templates on the Home screen. Each is a real, editable scene: its set, lights (aimed once at the person, then fixed) and first shots.
+const solo = { x: 0, z: 0, face: 180 }, noB = { on: false, x: 1.1, z: 0, face: 270 };
+const TEMPLATES = {
+  blank: { name: '빈 프로젝트', desc: '빈 야외 세트와 인물 한 명', meta: { ie: 'INT', dn: 'DAY' } },
+  film: { name: '단편영화', desc: '카페 테라스 대화 씬 6컷 (무빙 · 동선 포함)', meta: { sceneNo: '12', location: '카페 테라스', ie: 'EXT', dn: 'DAY' } },
+  ad: { name: '광고', desc: '스튜디오 배경지 · 3점 조명 · 제품 테이블', meta: { sceneNo: '1', location: '스튜디오', ie: 'INT', dn: 'DAY' },
+    set: () => ({ env: 'studio', room: null, sun: { on: false, month: 10, hour: 12, north: 0, wx: 'clear' }, bg: 'none',
+      lights: [{ id: 'L1', fx: 'cob300', mod: 'dome', role: 'key', x: -2.0, y: 2.2, z: -1.6, track: 'A', dim: 0.6 }, { id: 'L2', fx: 'panel', mod: 'open', role: 'fill', x: 2.2, y: 1.8, z: -1.4, track: 'A', dim: 0.25 },
+        { id: 'L3', fx: 'cob120', mod: 'refl', role: 'back', x: 1.2, y: 2.5, z: 2.0, track: 'A', dim: 0.5 }],
+      props: [{ id: 'P1', type: 'backdrop', x: 0, z: 1.7, yaw: 180 }, { id: 'P2', type: 'table', x: 0, z: -0.75, yaw: 0 }] }),
+    shots: () => [placeShot({ size: 'WS', eye: true, elev: 0, ff: 35, az: 180, aim: 'A', N: 4, dur: 4, A: solo, B: noB, action: '스튜디오 와이드. 모델이 제품 뒤에 선다.' }),
+      placeShot({ size: 'MS', eye: true, elev: 0, ff: 50, az: 200, aim: 'A', N: 2.8, dur: 3, A: solo, B: noB, action: '제품을 들어 보인다.' }),
+      placeShot({ size: 'CU', elev: 0, ff: 85, az: 165, aim: 'A', N: 2, move: 'dollyin', dur: 3, A: solo, B: noB, action: '미소 · 제품 이름을 말한다.' })] },
+  mv: { name: '뮤직비디오', desc: '무대 · 밴드 장비 · 컬러 조명', meta: { sceneNo: '1', location: '공연 무대', ie: 'INT', dn: 'NIGHT' },
+    set: () => ({ env: 'night', room: null, sun: { on: false, month: 10, hour: 21, north: 0, wx: 'clear' }, bg: 'none',
+      lights: [{ id: 'L1', fx: 'skypanel', mod: 'grid', x: -2.4, y: 2.6, z: 2.2, track: 'A', dim: 0.05, cmode: 'rgb', hue: 300, sat: 95 }, { id: 'L2', fx: 'skypanel', mod: 'grid', x: 2.4, y: 2.6, z: 2.2, track: 'A', dim: 0.05, cmode: 'rgb', hue: 190, sat: 95 },
+        { id: 'L3', fx: 'cob600', mod: 'dome', role: 'key', x: -1.3, y: 2.0, z: -1.5, track: 'A', dim: 1 }],
+      props: [{ id: 'P2', type: 'drums', x: 0, z: 2.6, yaw: 180 }, { id: 'P3', type: 'micstand', x: 0.5, z: -0.35, yaw: 200 },
+        { id: 'P4', type: 'amp', x: 1.7, z: 1.4, yaw: 200 }, { id: 'P5', type: 'speaker', x: -2.6, z: 0.6, yaw: 150 }, { id: 'P6', type: 'speaker', x: 2.6, z: 0.6, yaw: 210 }] }),
+    shots: () => [placeShot({ size: 'WS', elev: -8, ff: 24, az: 180, aim: 'A', N: 2.8, dur: 4, A: solo, B: noB, action: '인트로. 무대 전체, 로우 앵글.' }),
+      placeShot({ size: 'MCU', eye: true, elev: 0, ff: 50, az: 150, aim: 'A', N: 2, dur: 3, A: solo, B: noB, action: '보컬 클로즈업.' }),
+      placeShot({ size: 'WS', elev: 10, ff: 24, az: 210, aim: 'A', N: 2.8, move: 'crane', dur: 5, A: solo, B: noB, action: '후렴. 크레인 업.' })] } };
+/* ---------- set presets: ready-made spaces (room, furniture, lights, time of day) with a first shot; Home previews them from a high corner ---------- */
+// pP(type, x, z, yaw): a piece; rooms are centred on 0,0 with the camera on the −z side, so "the back wall" is +z and a piece facing the camera has yaw 180
+const pP = (type, x, z, yaw = 0, o = {}) => ({ type, x, z, yaw, ...o }), pL = (fx, x, y, z, o = {}) => ({ fx, x, y, z, dim: 0.6, ...o });
+const pKEY = (x, z, o = {}) => pL('panel', x, 2.2, z, { mod: 'open', role: 'key', track: 'A', dim: 0.55, ...o }), pTOP = (x, z, o = {}) => pL('panel', x, 2.45, z, { mod: 'open', pan: 0, tilt: -89, dim: 0.5, ...o });
+const SET_PRESETS = [
+  { k: 'living', name: '거실', desc: '소파 · 창가 · 스탠드', room: [12, 2.6, 'beige'], tod: 'afternoon', ie: 'INT',
+    props: [pP('sofa', 0, 2.6, 180), pP('rug', 0, 1.4), pP('coffee', 0, 1.5), pP('tv', -2.85, 0.6, 90), pP('armchair', 2.0, 1.4, 230), pP('floorlamp', -1.4, 2.8), pP('plant', 2.7, 2.7), pP('shelf', 2.95, -0.4, 270), pP('flatwin', 0, 3.1, 180, { fin: 'beige' })],
+    lights: [pL('bulb', -1.4, 1.45, 2.8, { dim: 1 }), pKEY(-1.6, -1.2)], shot: { size: 'FS', ff: 24, A: { x: 0.4, z: 0.6, face: 180 } } },
+  { k: 'bedroom', name: '침실', desc: '침대 · 협탁 · 옷장', room: [8, 2.5, 'white'], tod: 'morning', ie: 'INT',
+    props: [pP('bed', 0, 1.42, 180), pP('nightstand', -1.15, 2.3, 180), pP('nightstand', 1.15, 2.3, 180), pP('wardrobe', -2.25, -0.4, 90), pP('dresser', 2.3, 0.2, 270), pP('rug', 0, -0.3), pP('flatwin', 2.5, 1.2, 270)],
+    lights: [pL('bulb40', -1.15, 0.85, 2.3, { dim: 1 }), pKEY(-1.4, -1.6, { dim: 0.4 })], shot: { size: 'FS', ff: 24, A: { x: 0.5, z: -0.2, face: 200 } } },
+  { k: 'kitchen', name: '주방 · 식탁', desc: '싱크대 · 냉장고 · 식탁', room: [10, 2.5, 'white'], tod: 'noon', ie: 'INT',
+    props: [pP('kitchen', -0.4, 2.55, 180), pP('fridge', 1.75, 2.5, 180), pP('table', 0, 0.5), pP('chair', -0.8, 0.5, 90), pP('chair', 0.8, 0.5, 270), pP('chair', 0, 1.15, 180), pP('plant', -2.5, -2.4), pP('flatwin', -2.85, 0.6, 90)],
+    lights: [pTOP(0, 0.5, { fx: 'china', mod: undefined, dim: 0.8, y: 2.0 })], shot: { size: 'FS', ff: 18, A: { x: 0, z: -0.25, face: 180 } } },
+  { k: 'cafe', name: '카페', desc: '카운터 · 테이블 · 창가 자리', room: [15, 3.0, 'beige'], tod: 'afternoon', ie: 'INT', B: { on: true, x: 1.1, z: 0.8, face: 270 },
+    props: [pP('counter', 0, 2.95, 180), pP('stool', -0.6, 2.35), pP('stool', 0.6, 2.35), pP('cafe', -2.2, 0.6), pP('chair', -2.75, 0.6, 90), pP('chair', -1.65, 0.6, 270), pP('cafe', 2.2, -1.4), pP('chair', 1.65, -1.4, 90), pP('chair', 2.75, -1.4, 270),
+      pP('plant', -3.1, 3.0), pP('plant', 3.1, 3.0), pP('flatwin', -3.45, -1.0, 90), pP('flatwin', -3.45, 1.4, 90)],
+    lights: [pL('bulb', -1.2, 2.4, 2.2, { dim: 1 }), pL('bulb', 1.2, 2.4, 2.2, { dim: 1 }), pKEY(-1.6, -1.6)], shot: { size: 'MS', ff: 35, A: { x: 0, z: 0.8, face: 90 } } },
+  { k: 'store', name: '편의점', desc: '진열대 · 음료 냉장고 · 계산대', room: [12, 2.7, 'white'], tod: 'night', ie: 'INT',
+    props: [pP('storeshelf', -1.4, 1.0), pP('storeshelf', 1.4, 1.0), pP('storeshelf', -1.4, -0.7), pP('storeshelf', 1.4, -0.7), pP('cooler', -1.3, 2.75, 180), pP('cooler', 0, 2.75, 180), pP('cooler', 1.3, 2.75, 180), pP('register', 2.3, -2.4, 270)],
+    lights: [pTOP(-1.2, 0.2), pTOP(1.2, 0.2), pTOP(0, -2.0)], shot: { size: 'FS', ff: 24, A: { x: 0, z: 0.2, face: 180 } } },
+  { k: 'office', name: '사무실', desc: '책상 4개 · 파티션 · 화이트보드', room: [15, 2.7, 'gray'], tod: 'afternoon', ie: 'INT',
+    props: [pP('desk', -1.6, 1.3, 180), pP('desk', 1.6, 1.3, 180), pP('desk', -1.6, -0.9, 180), pP('desk', 1.6, -0.9, 180), pP('officechair', -1.6, 1.9, 180), pP('officechair', 1.6, 1.9, 180), pP('officechair', -1.6, -0.3, 180), pP('officechair', 1.6, -0.3, 180),
+      pP('cubicle', 0, 0.2, 90), pP('whiteboard', 0, 3.1, 180), pP('filing', 3.2, 2.9, 270), pP('printer', -3.1, 2.8, 90), pP('watercooler', 3.25, -1.5, 270), pP('plant', -3.1, -3.0), pP('flatwin', 3.45, 0.8, 270)],
+    lights: [pTOP(-1.6, 0.2), pTOP(1.6, 0.2)], shot: { size: 'MLS', ff: 24, A: { x: 0, z: 1.6, face: 180 } } },
+  { k: 'classroom', name: '교실', desc: '책상 9개 · 칠판 · 교탁', room: [20, 3.0, 'beige'], tod: 'morning', ie: 'INT',
+    props: [...[-1.6, 0, 1.6].flatMap(x => [1.3, 0.1, -1.1].flatMap(z => [pP('schooldesk', x, z), pP('schoolchair', x, z - 0.45)])), pP('whiteboard', 0, 3.75, 180), pP('podium', 1.6, 3.0, 180), pP('locker', -3.75, 2.4, 90), pP('flatwin', 4.0, 1.2, 270), pP('flatwin', 4.0, -1.4, 270)],
+    lights: [pTOP(-1.5, 1.0), pTOP(1.5, 1.0)], shot: { size: 'WS', ff: 24, A: { x: 0, z: 2.9, face: 180 } } },
+  { k: 'hospital', name: '병실', desc: '병원 침대 · 링거대 · 커튼', room: [8, 2.6, 'white'], tod: 'afternoon', ie: 'INT',
+    props: [pP('hospitalbed', 0.3, 1.4, 180), pP('ivstand', 1.15, 2.1), pP('chair', -0.8, 0.9, 90), pP('curtain', -1.75, 1.2, 90), pP('flatwin', 2.5, 0.4, 270)],
+    lights: [pTOP(0.3, 1.2, { dim: 0.4 })], shot: { size: 'MS', ff: 35, A: { x: -0.35, z: 0.2, face: 150 } } },
+  { k: 'bathroom', name: '욕실', desc: '욕조 · 세면대 · 샤워부스', room: [5, 2.4, 'white'], tod: 'night', ie: 'INT',
+    props: [pP('bathtub', 0.75, 1.6, 180), pP('toilet', -1.4, 1.65, 180), pP('sink', -1.75, 0.1, 90), pP('showerbooth', 1.5, -1.4)],
+    lights: [pTOP(0, 0.2, { dim: 0.6 })], shot: { size: 'MLS', ff: 18, A: { x: 0, z: 0.2, face: 180 } } },
+  { k: 'interrogation', name: '취조실', desc: '테이블 · 의자 2개 · 매직미러', room: [6, 2.6, 'dark'], tod: 'night', ie: 'INT', B: { on: true, x: 0, z: -0.5, face: 0 },
+    props: [pP('table', 0, 0.3, 90), pP('chair', 0, 1.05, 180), pP('chair', 0, -0.45), pP('flatwin', -2.2, 0.3, 90, { fin: 'dark' }), pP('filing', 2.0, 1.9, 270)],
+    lights: [pL('bulb100', 0, 1.9, 0.3, { dim: 1 })], shot: { size: 'MS', ff: 35, az: 160, A: { x: 0, z: 1.05, face: 180 } } },
+  { k: 'street', name: '밤거리', desc: '가로등 · 버스 정류장 · 횡단보도', tod: 'night', ie: 'EXT', bg: 'street',
+    props: [pP('busstop', 0, 3.6, 180), pP('lamp', -3.0, 1.6, 90), pP('lamp', 3.4, -1.2, 270), pP('crosswalk', 0, -3.2, 90), pP('car', 4.6, 0.6), pP('trafficlight', -2.4, -3.4), pP('bin', 1.9, 3.2), pP('hydrant', -1.8, 2.8), pP('bollard', -1.2, -1.8), pP('bollard', 1.2, -1.8), pP('streetsign', 2.6, 3.4, 180)],
+    lights: [pL('bulb100', -2.4, 4.0, 1.6, { dim: 1 }), pL('bulb100', 2.8, 4.0, -1.2, { dim: 1 }), pKEY(-1.4, -1.5, { fx: 'tube', mod: 'open', dim: 0.4, K: 4300 })], shot: { size: 'FS', ff: 35, A: { x: 0, z: 1.8, face: 180 } } },
+  { k: 'park', name: '공원', desc: '나무 · 벤치 · 분수대', tod: 'afternoon', ie: 'EXT', bg: 'street',
+    props: [pP('tree', -4.2, 3.4), pP('pine', 4.6, 4.0), pP('bench', 0, 2.6, 180), pP('fountain', -3.6, -2.4), pP('bush', 2.6, 2.8), pP('flowerbed', 2.4, 0.6, 270), pP('lamp', 1.6, 3.3, 180), pP('picnic', 4.2, -1.8), pP('bin', -1.5, 2.9)],
+    lights: [], shot: { size: 'FS', ff: 35, A: { x: 0, z: 1.6, face: 180 } } },
+  { k: 'playground', name: '놀이터', desc: '미끄럼틀 · 그네 · 벤치', tod: 'afternoon', ie: 'EXT', bg: 'street',
+    props: [pP('slide', -2.4, 1.8, 90), pP('swing', 2.4, 2.4, 180), pP('bench', 0, -2.6), pP('tree', -4.6, 4.0), pP('bush', 4.4, 0), pP('fence', -2.4, 4.6), pP('fence', 0, 4.6), pP('fence', 2.4, 4.6)],
+    lights: [], shot: { size: 'FS', ff: 35, A: { x: 0, z: 1.0, face: 180 } } },
+  { k: 'camping', name: '캠핑장', desc: '텐트 · 모닥불 · 캠핑 의자', tod: 'golden', ie: 'EXT', bg: 'none',
+    props: [pP('tent', 1.9, 2.4, 200), pP('campfire', 0, 0.6), pP('campchair', -0.95, 0.95, 120), pP('campchair', 0.95, 1.25, 240), pP('log', -1.7, -0.3, 60), pP('pine', -3.6, 3.6), pP('pine', 4.0, 1.0), pP('pine', -4.4, -1.4), pP('rock', 3.0, -1.8)],
+    lights: [pL('bulb100', 0, 0.45, 0.6, { dim: 1, gel: 'orange' })], shot: { size: 'FS', ff: 35, A: { x: 0, z: 1.7, face: 180 } } },
+  { k: 'rooftop', name: '옥상', desc: '난간 · 물탱크 · 실외기', tod: 'golden', ie: 'EXT', bg: 'street',
+    props: [pP('fence', -3.6, 3.4), pP('fence', -1.2, 3.4), pP('fence', 1.2, 3.4), pP('fence', 3.6, 3.4), pP('watertank', -3.2, 1.6), pP('acunit', -4.3, -0.6, 90), pP('acunit', -4.3, -1.6, 90), pP('acunit', -4.3, -2.6, 90), pP('bench', 1.8, 1.4, 200), pP('plant', 3.6, 2.4)],
+    lights: [], shot: { size: 'FS', ff: 35, A: { x: 0, z: 2.4, face: 180 } } },
+  { k: 'studio', name: '촬영 스튜디오', desc: '배경지 · 3점 조명 · 모니터 카트', tod: 'studio', ie: 'INT', bg: 'none',
+    props: [pP('backdrop', 0, 1.8, 180), pP('cstand', -2.2, 1.0), pP('cstand', 2.4, 1.2), pP('apple', 0.4, 0.6), pP('director', -2.6, -2.4, 30), pP('monitorcart', 2.4, -2.4, 330)],
+    lights: [pKEY(-2.0, -1.4, { fx: 'cob300', mod: 'dome' }), pKEY(2.2, -1.2, { fx: 'panel', role: 'fill', dim: 0.25 }), pKEY(1.2, 2.2, { fx: 'cob120', mod: 'refl', role: 'back', y: 2.5, dim: 0.5 })], shot: { size: 'FS', ff: 35, A: { x: 0, z: 0.3, face: 180 } } },
+  { k: 'stage', name: '공연 무대', desc: '드럼 · 앰프 · 스피커 · 컬러 조명', tod: 'night', ie: 'INT', bg: 'none',
+    props: [pP('drums', 0, 2.6, 180), pP('micstand', 0.5, -0.35, 200), pP('amp', 1.7, 1.4, 200), pP('speaker', -2.6, 0.6, 150), pP('speaker', 2.6, 0.6, 210), pP('synth', -1.8, 1.6, 160)],
+    lights: [pL('skypanel', -2.4, 2.6, 2.2, { mod: 'grid', track: 'A', dim: 0.05, cmode: 'rgb', hue: 300, sat: 95 }), pL('skypanel', 2.4, 2.6, 2.2, { mod: 'grid', track: 'A', dim: 0.05, cmode: 'rgb', hue: 190, sat: 95 }),
+      pKEY(-1.3, -1.5, { fx: 'cob600', mod: 'dome', dim: 1, y: 2.0 })], shot: { size: 'MS', ff: 35, A: { x: 0, z: 0, face: 180 } } },
+];
+// the set of a preset as the scene's set (fresh copies, ids, the time of day applied)
+function presetSet(pr) { const set = { env: 'studio', room: pr.room ? { py: pr.room[0], h: pr.room[1], fin: pr.room[2] } : null, sun: { on: true, month: 10, hour: 15, north: 0, wx: 'clear' }, bg: pr.bg || 'street',
+    props: pr.props.map((o, i) => ({ id: 'P' + (i + 1), fin: 'white', ...o })), lights: pr.lights.map((l, i) => ({ id: 'L' + (i + 1), track: null, pan: 0, tilt: -20, mod: modsFor(FIX(l.fx))[0], ...l })) };
+  if (pr.tod === 'studio') { set.sun.on = false; set.env = 'studio'; } else setTod(set, pr.tod); return set; }
+function newProject(title, kind) {
+  const pr = typeof kind === 'string' && kind.startsWith('set:') && SET_PRESETS.find(x => 'set:' + x.k === kind);
+  if (pr) return newFromPreset(pr, title);
+  const t = TEMPLATES[kind === true ? 'film' : kind] || TEMPLATES.blank, example = t === TEMPLATES.film;
+  state = { title: title || (t === TEMPLATES.blank ? '새 씬' : t.name), aspect: '16:9', sensor: { ...SENSORS[0] }, squeeze: 1, breathing: true, blur: true, example, sel: 0, kit: 'free', lit: true, shots: [],
+    set: example ? sampleSet() : t.set ? t.set() : { env: 'magic', room: null, sun: { on: true, month: 10, hour: 17.5, north: 0, wx: 'clear' }, lights: [], props: [] }, cast: JSON.parse(JSON.stringify(CAST0)) };
+  state.shots = example ? sampleShots() : t.shots ? t.shots() : [placeShot({ size: 'FS', eye: true, elev: 0, ff: 35, az: 180, aim: 'A', N: 2.8, dur: 3, A: solo, B: noB })];
+  state.meta = { sceneNo: '', location: '', ...t.meta };
   if (!example) state.shots[0].iso = 800;
   normalizeState();
-  if (example) state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); });
+  if (t !== TEMPLATES.blank) state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); });
   projId = newId(); sharedView = false; hideStart(); afterLoad(); saveProject(); setHash('#/p/' + projId); fitViewer('fit');
   maybeTour(); }
 
@@ -5683,9 +5921,9 @@ $('#undoBtn').onclick = undo; $('#redoBtn').onclick = redo;
 document.addEventListener('click', e => { if (!e.target.closest('#undoBtn,#redoBtn,#startScreen')) setTimeout(histCommit, 0); }, true);
 document.addEventListener('change', () => setTimeout(histCommit, 0), true);
 
-/* ---------- project file (.frameconti): download, share sheet on phones, import as a new project ---------- */
-const fileName = () => (state.title || '프레임콘티').replace(/[\\/:*?"<>|]+/g, ' ').trim().slice(0, 60) + '.frameconti';
-const packProject = () => JSON.stringify({ format: 'frameconti', schema: SCHEMA, exported: new Date().toISOString(), project: { ...state, sel: 0 } });
+/* ---------- project file (.previo, formerly .frameconti): download, share sheet on phones, import as a new project ---------- */
+const fileName = () => (state.title || 'PREVIO').replace(/[\\/:*?"<>|]+/g, ' ').trim().slice(0, 60) + '.previo'; // older .frameconti files still import
+const packProject = () => JSON.stringify({ format: 'previo', schema: SCHEMA, exported: new Date().toISOString(), project: { ...state, sel: 0 } });
 function downloadBlob(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500); }
 // inside the Claude artifact viewer files go through its downloads capability; on the published site a normal download
 async function exportFile() { const name = fileName(), text = packProject();
@@ -5696,7 +5934,7 @@ async function shareFile() { const file = new File([packProject()], fileName(), 
   if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: state.title }); } catch (e) { if (e.name !== 'AbortError') exportFile(); } }
   else { exportFile(); toast('이 브라우저는 파일 공유를 지원하지 않아 다운로드로 저장했어요'); } }
 function readProjectFile(text) { const o = JSON.parse(text), p = o && (o.project || o); if (!p || !Array.isArray(p.shots) || !p.shots.length) throw new Error('not a project'); return p; }
-async function importFile(f) { let p; try { p = readProjectFile(await f.text()); } catch (e) { toast('프레임콘티 프로젝트 파일이 아니에요'); return; }
+async function importFile(f) { let p; try { p = readProjectFile(await f.text()); } catch (e) { toast('PREVIO(프레임콘티) 프로젝트 파일이 아니에요'); return; }
   state = p; normalizeState(); projId = newId(); sharedView = false; await saveProject(); hideStart(); afterLoad(); setHash('#/p/' + projId); toast(`"${state.title}" 가져왔어요`); }
 $('#fileIn').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) importFile(f); });
 $('#expFileBtn').onclick = exportFile; $('#shareFileBtn').onclick = shareFile; $('#impFileBtn').onclick = $('#mcImport').onclick = () => $('#fileIn').click();
@@ -5721,15 +5959,32 @@ function route() { const h = location.hash;
   const m = h.match(/^#\/p\/([\w-]+)/); if (m) { if (store.has(m[1])) return openProject(m[1]); toast('이 기기에 없는 프로젝트예요. 시작 화면에서 고르거나 파일로 가져오세요', { ms: 5000 }); setHash(''); }
   showStart(); }
 addEventListener('hashchange', route);
-
-/* ---------- start screen: a pixel camera viewfinder over the slowly turning 3D set (drawn small, scaled up without smoothing) ---------- */
+// a set preset as the new scene: its set, one person (two where the space is for two) and a first wide shot to start blocking from
+function presetState(pr, title) {
+  state = { title: title || pr.name, aspect: '16:9', sensor: { ...SENSORS[0] }, squeeze: 1, breathing: true, blur: true, example: false, sel: 0, kit: 'free', lit: true, shots: [], set: presetSet(pr), cast: JSON.parse(JSON.stringify(CAST0)) };
+  const sh = pr.shot; state.shots = [placeShot({ size: sh.size, eye: true, elev: 0, ff: sh.ff, az: sh.az || 180, aim: 'A', N: 2.8, dur: 4, A: sh.A, B: pr.B || noB })];
+  state.meta = { sceneNo: '', location: pr.name, ie: pr.ie, dn: pr.tod === 'night' ? 'NIGHT' : 'DAY' }; normalizeState();
+  state.shots.forEach(s => { s.f = roundF(kitF(s.f)); s.N = Math.max(s.N, maxT(KIT(), s.f)); fitExposure(s); }); return state; }
+function newFromPreset(pr, title) { presetState(pr, title); projId = newId(); sharedView = false; hideStart(); afterLoad(); saveProject(); setHash('#/p/' + projId); fitViewer('fit'); maybeTour(); }
+// the preset seen from high in a corner (inside the room, or above the set outdoors) for its Home card; drawn once, kept on the device
+const PRESET_THUMB_V = 'previo.presetthumbs.3';
+let presetThumbs = {}; try { presetThumbs = JSON.parse(localStorage.getItem(PRESET_THUMB_V) || '{}'); } catch (e) {}
+function presetThumb(pr) { if (presetThumbs[pr.k]) return presetThumbs[pr.k]; const keep = state, keepId = projId; let url = null;
+  try { presetState(pr); const s0 = state.shots[0], rm = roomInfo(), R = rm ? rm.side / 2 : 7.5, conv = imageArea().iw / imageArea({ w: 36, h: 24 }).iw;
+    const cam = rm ? { x: -R + 0.35, y: rm.h - 0.2, z: -R + 0.35 } : { x: -R * 0.95, y: R * 0.85, z: -R * 0.95 }, la = lookAngles(cam, { x: rm ? R * 0.2 : 0, y: 0.3, z: rm ? R * 0.2 : 0.5 });
+    const v = { ...s0, cam: { ...cam, pan: la.pan, tilt: la.tilt, roll: 0 }, f: roundF((rm ? 12 : 18) * conv), focus: 'M', fd: R * 2, N: 8, end: null }; fitExposure(v);
+    const cv = document.createElement('canvas'); cv.width = 320; cv.height = 180; const ctx = cv.getContext('2d'); renderShot(ctx, 320, 180, v, { labels: false, lit: true, slot: 'thumb' });
+    // metered for the person, a dark stage or a small white room can come out black or white as a whole: then show the set in even light instead
+    const px = ctx.getImageData(0, 0, 320, 180).data; let blown = 0, black = 0, n = 0; for (let i = 0; i < px.length; i += 16, n++) { const y = px[i] * 0.3 + px[i + 1] * 0.59 + px[i + 2] * 0.11; if (y > 245) blown++; else if (y < 22) black++; }
+    if (blown / n > 0.3 || black / n > 0.55) renderShot(ctx, 320, 180, v, { labels: false, lit: false, slot: 'thumb' }); url = cv.toDataURL('image/jpeg', 0.66); }
+  catch (e) {} finally { state = keep; projId = keepId; }
+  if (url) { presetThumbs[pr.k] = url; try { localStorage.setItem(PRESET_THUMB_V, JSON.stringify(presetThumbs)); } catch (e) {} } return url; }
+/* ---------- Home: the 3D set turning slowly behind the brand, templates and recent projects ---------- */
 let panoRaf = 0, panoA = 0, panoT = 0;
-const PXS = () => innerWidth < 720 || innerHeight < 520 ? 3 : 4; // one art pixel = this many screen pixels (phones: finer)
 function panoFrame(now) {
   if ($('#startScreen').hidden) return; panoRaf = requestAnimationFrame(panoFrame);
   if (now - panoT < 33) return; panoT = now; // about 30 fps is plenty for a backdrop
-  if (now - vfT > 125) { vfT = now; drawVF(now); } // the viewfinder ticks at a retro 8 frames a second
-  const cv = $('#pano'), W = Math.ceil(innerWidth / PXS()), H = Math.ceil(innerHeight / PXS()); if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+  const cv = $('#pano'), W = Math.ceil(innerWidth / 2), H = Math.ceil(innerHeight / 2); if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; } // half resolution: it sits blurred under the Home screen
   const ctx = cv.getContext('2d'); ctx.setTransform(1, 0, 0, 1, 0, 0);
   if (!gl) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1b2a44'); g.addColorStop(1, '#0b0f16'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); return; }
   const s = cur(); panoA += 0.08;
@@ -5738,76 +5993,43 @@ function panoFrame(now) {
   const la = lookAngles(P, T), V = Object.assign(basis(P, la.pan, la.tilt, 0), { W, H }); V.fp = Math.max(W, H * 0.8) / 2 / Math.tan(34 * DEG);
   try { glWorld(ctx, W, H, s, V); } catch (e) { cancelAnimationFrame(panoRaf); }
 }
-// the viewfinder: double neon frame, corner marks, ● REC, running timecode, exposure, battery, audio meters, and a few pixel sprites from a film set
-const PX = { ink: '#FFFFFF', cyan: '#3BE8FF', pink: '#FF4FA3', mag: '#FF4FD8', yel: '#FFD43B', red: '#FF4B3E', blue: '#3D5BFF', grn: '#5CE38A', orn: '#FF8A2A', dark: '#120F26' };
-// sprites as rows of palette letters (. = empty)
-const SPR = {
-  clap: ['wkwkwkwkwkwk', 'kwkwkwkwkwkw', 'yyyyyyyyyyyy', 'yddddddddddy', 'ydwwddwwwddy', 'yddddddddddy', 'ydwwwwddwwdy', 'yddddddddddy', 'yyyyyyyyyyyy'],
-  lamp: ['..yyyyyy..', '.yooooooy.', 'yoowwwwooy', 'yoowwwwooy', '.yooooooy.', '..yyyyyy..', '....kk....', '....kk....', '....kk....', '...k..k...', '..k....k..', '.k......k.'],
-  reel: ['..cccc..', '.cddddc.', 'cdwddwdc', 'cddccddc', 'cddccddc', 'cdwddwdc', '.cddddc.', '..cccc..'],
-  star: ['.y.', 'yyy', '.y.'] };
-const SPR_COL = { w: PX.ink, k: '#2A2550', y: PX.yel, d: PX.dark, o: PX.orn, c: PX.cyan, p: PX.pink, m: PX.mag };
-let vfT = 0;
-const vfStart = performance.now();
-function sprite(ctx, rows, x, y, k = 1) { rows.forEach((r, j) => [...r].forEach((ch, i) => { if (ch === '.') return; ctx.fillStyle = SPR_COL[ch]; ctx.fillRect(x + i * k, y + j * k, k, k); })); }
-function drawVF(now = performance.now()) {
-  const cv = $('#mcVF'); if (!cv || $('#startScreen').hidden) return; const S = PXS(), W = Math.ceil(innerWidth / S), H = Math.ceil(($('#startScreen').clientHeight || innerHeight) / S);
-  if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; } const ctx = cv.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.clearRect(0, 0, W, H);
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches, t = (now - vfStart) / 1000, m = 4, R = (x, y, w, h, c) => { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); };
-  // frame: thick cyan outer line, thin pink inner line, yellow corner marks
-  R(m, m, W - 2 * m, 2, PX.cyan); R(m, H - m - 2, W - 2 * m, 2, PX.cyan); R(m, m, 2, H - 2 * m, PX.cyan); R(W - m - 2, m, 2, H - 2 * m, PX.cyan);
-  const n = m + 4; R(n, n, W - 2 * n, 1, PX.pink); R(n, H - n - 1, W - 2 * n, 1, PX.pink); R(n, n, 1, H - 2 * n, PX.pink); R(W - n - 1, n, 1, H - 2 * n, PX.pink);
-  const c = n + 5, L = 9; for (const [x, y, sx, sy] of [[c, c, 1, 1], [W - c, c, -1, 1], [c, H - c, 1, -1], [W - c, H - c, -1, -1]]) { R(sx > 0 ? x : x - L, sy > 0 ? y : y - 2, L, 2, PX.yel); R(sx > 0 ? x : x - 2, sy > 0 ? y : y - L, 2, L, PX.yel); }
-  // centre cross
-  R(Math.floor(W / 2) - 3, Math.floor(H / 2), 7, 1, 'rgba(255,255,255,.55)'); R(Math.floor(W / 2), Math.floor(H / 2) - 3, 1, 7, 'rgba(255,255,255,.55)');
-  // status bar: REC + timecode on the left, exposure + battery on the right
-  ctx.font = '8px Silkscreen, monospace'; ctx.textBaseline = 'top'; const ty = c + 4, f = Math.floor(t * 24) % 24, tc = `${String(Math.floor(t / 3600)).padStart(2, '0')}:${String(Math.floor(t / 60) % 60).padStart(2, '0')}:${String(Math.floor(t) % 60).padStart(2, '0')}:${String(f).padStart(2, '0')}`;
-  if (still || Math.floor(t * 2) % 2 === 0) { R(c + 12, ty + 1, 5, 5, PX.red); } ctx.fillStyle = PX.red; ctx.fillText('REC', c + 20, ty);
-  if (W >= 190) { ctx.fillStyle = PX.ink; ctx.fillText(tc, c + 44, ty); }
-  const right = W >= 250 ? 'ISO 800  T2.8  24P' : '24P'; const rw = ctx.measureText(right).width, bx = W - c - 14;
-  ctx.fillStyle = PX.cyan; ctx.fillText(right, bx - rw - 6, ty); R(bx, ty, 11, 6, PX.ink); R(bx + 11, ty + 2, 1, 2, PX.ink); R(bx + 1, ty + 1, 9, 4, PX.dark); for (let i = 0; i < 3; i++) R(bx + 2 + i * 3, ty + 2, 2, 2, PX.grn);
-  // bottom: format on the left, audio meters on the right (bouncing)
-  const by = H - c - 10; ctx.fillStyle = PX.yel; if (W >= 200) ctx.fillText('4K  16:9  LOG', c + 12, by);
-  const cells = W >= 260 ? 16 : 9, mx = W - c - 12 - cells * 3; for (let row = 0; row < 2; row++) { const lv = still ? 0.6 : 0.45 + 0.35 * Math.abs(Math.sin(t * (2.1 + row * 0.7))) + 0.15 * Math.sin(t * 9.3 + row);
-    for (let i = 0; i < cells; i++) { const on = i / cells < lv, col = i > cells * 0.8 ? PX.red : i > cells * 0.6 ? PX.yel : PX.grn; R(mx + i * 3, by + row * 4, 2, 3, on ? col : 'rgba(255,255,255,.12)'); } }
-  // film-set sprites along the edges, and a few twinkling stars
-  if (W >= 180 && H >= 120) { sprite(ctx, SPR.clap, c + 6, H - c - 34); sprite(ctx, SPR.lamp, W - c - 22, c + 18); sprite(ctx, SPR.reel, c + 8, c + 18); }
-  [[0.2, 0.3], [0.82, 0.62], [0.12, 0.7], [0.9, 0.24], [0.66, 0.14]].forEach(([fx, fy], i) => { if (still || (Math.floor(t * 1.5 + i) % 3)) sprite(ctx, SPR.star, Math.floor(W * fx), Math.floor(H * fy)); });
-}
-// the logo: FRAMECONTI set in the pixel face at its native 8 px, with a blue and a pink shadow step, then scaled up
-function drawLogo() { const cv = $('#mcLogo'); if (!cv) return; const ctx = cv.getContext('2d'); ctx.font = '700 8px Silkscreen, monospace'; const tw = Math.ceil(ctx.measureText('FRAMECONTI').width);
-  cv.width = tw + 4; cv.height = 12; const c2 = cv.getContext('2d'); c2.imageSmoothingEnabled = false; c2.font = '700 8px Silkscreen, monospace'; c2.textBaseline = 'top';
-  c2.fillStyle = PX.blue; c2.fillText('FRAMECONTI', 2, 3); c2.fillStyle = PX.pink; c2.fillText('FRAMECONTI', 1, 2); c2.fillStyle = PX.ink; c2.fillText('FRAMECONTI', 0, 1);
-  cv.style.aspectRatio = `${cv.width} / ${cv.height}`; }
-if (document.fonts && document.fonts.load) document.fonts.load('700 8px Silkscreen').then(() => { drawLogo(); drawVF(); }).catch(drawLogo); else drawLogo();
-addEventListener('resize', () => { if (!$('#startScreen').hidden) drawVF(); });
-// the most recent project is one tap away; the status line counts what is saved on this device
-function mcSync() { const list = projects(), p = list[0], d = p && new Date(p.updated);
-  $('#mcResume').hidden = !p; if (p) { $('#mcResumeT').textContent = `${p.title || '제목 없는 씬'}, ${p.shots || 0}컷, ${d.getMonth() + 1}월 ${d.getDate()}일 수정`; $('#mcResume').dataset.id = p.id; }
-  $('#mcLoadT').textContent = list.length > 1 ? `저장한 콘티 ${list.length}개와 파일` : '저장한 콘티와 파일';
-  $('#mcModeBtn').textContent = `${isPro() ? '프로' : '간편'} 모드 · 바꾸기`;
-  $('#mcStat').textContent = list.length ? `이 기기에 프로젝트 ${list.length}개` : '이 기기에 저장된 프로젝트 없음'; }
+// Home: templates to start from, then the recent projects as picture cards (first shot, saved with the project)
+const TPL_ICON = { blank: '<path d="M12 5v14M5 12h14"/>', film: '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 8l3-4h4l-3 4M10 8l3-4h4l-3 4M17 8l2-4"/>',
+  ad: '<path d="M12 3l1.9 4.6L19 9l-4 3.3 1.2 5L12 14.8 7.8 17.3 9 12.3 5 9l5.1-1.4z"/>', mv: '<path d="M9 18V6l11-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>' };
+$('#mcTpls').innerHTML = Object.entries(TEMPLATES).map(([k, t]) => `<button class="hm-tpl" data-tpl="${k}"><i aria-hidden="true"><svg viewBox="0 0 24 24">${TPL_ICON[k]}</svg></i><b>${t.name}</b><small>${t.desc}</small></button>`).join('');
+$('#mcTpls').addEventListener('click', e => { const b = e.target.closest('[data-tpl]'); if (b) newProject(null, b.dataset.tpl); });
+$('#mcSets').innerHTML = SET_PRESETS.map(pr => `<button class="hm-card" data-set="${pr.k}"><span class="hm-noimg" data-pthumb="${pr.k}" aria-hidden="true"></span><b>${pr.name}</b><small>${pr.desc}</small></button>`).join('');
+$('#mcSets').addEventListener('click', e => { const b = e.target.closest('[data-set]'); if (b) newProject(null, 'set:' + b.dataset.set); });
+// preset pictures: kept on the device after the first visit; the missing ones are drawn one per frame while Home is open
+let setThumbBusy = false;
+function fillSetThumbs() { if (setThumbBusy) return; setThumbBusy = true; const todo = SET_PRESETS.slice();
+  const step = () => { if ($('#startScreen').hidden || !todo.length) { setThumbBusy = false; return; } const pr = todo.shift(), el = document.querySelector(`[data-pthumb="${pr.k}"]`), url = presetThumb(pr);
+    if (el && url && el.tagName !== 'IMG') { const img = new Image(); img.alt = ''; img.src = url; el.replaceWith(img); } setTimeout(step, presetThumbs[todo[0] && todo[0].k] ? 0 : 40); };
+  setTimeout(step, 150); }
+const mcDate = t => { const d = new Date(t), now = new Date(); return d.toDateString() === now.toDateString() ? `오늘 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}` : `${d.getMonth() + 1}월 ${d.getDate()}일`; };
+function mcSync() { const list = projects(), p = list[0];
+  $('#mcResume').hidden = !p; if (p) { $('#mcResumeT').textContent = `${p.title || '제목 없는 씬'} (${mcDate(p.updated)})`; $('#mcResume').dataset.id = p.id; }
+  $('#mcLoadT').textContent = list.length ? `저장한 프로젝트 ${list.length}개` : '파일에서 가져오기';
+  $('#mcModeBtn').textContent = `${isPro() ? '프로' : '간편'} 모드 · 바꾸기`; $('#mcStat').textContent = list.length ? `이 기기에 프로젝트 ${list.length}개` : '';
+  if (list.slice(0, 12).some(r => !r.thumb && !thumbTried.has(r.id))) setTimeout(fillThumbs, 300); }
+$('#mcResume').onclick = () => { const id = $('#mcResume').dataset.id; if (id) openProject(id); };
+$('#mcNew').onclick = () => mcShow('mcNewP');
+$('#mcSetsBtn').onclick = () => { mcShow('mcSetP'); fillSetThumbs(); };
+$('#mcImport2').onclick = () => $('#fileIn').click();
 document.querySelectorAll('[data-uimode]').forEach(b => b.onclick = () => { setUiMode(b.dataset.uimode, true); mcSync(); mcShow('mcMain'); });
 $('#mcModeBtn').onclick = () => mcShow('mcModeP');
-$('#mcResume').onclick = () => { const id = $('#mcResume').dataset.id; if (id) openProject(id); };
 function showStart() { setHash(''); sharedView = false; syncShared(); const st = $('#startScreen'); st.hidden = false; mcSync(); mcShow(uiMode ? 'mcMain' : 'mcModeP'); // first visit: pick a mode first
   cancelAnimationFrame(panoRaf); panoRaf = requestAnimationFrame(panoFrame); }
 function hideStart() { $('#startScreen').hidden = true; cancelAnimationFrame(panoRaf); if (/이 기기에 없는/.test($('#toast').textContent)) toastClear(); // a project opened fine: drop the missing-project notice
   try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} } // only takes in fullscreen / installed app
 try { if (localStorage.getItem('framecontis.portok')) document.documentElement.classList.add('port-ok'); } catch (e) {}
 $('#rotOk').onclick = () => { document.documentElement.classList.add('port-ok'); try { localStorage.setItem('framecontis.portok', '1'); } catch (e) {} fitApp(); };
-function mcShow(id) { ['mcMain', 'mcModeP', 'mcNewP', 'mcLoadP', 'mcAskP'].forEach(k => $('#' + k).hidden = k !== id); const f = $('#' + id).querySelector('input,.sbtn:not([disabled]),.mc-act:not([hidden])'); if (f) setTimeout(() => f.focus(), 30); }
+function mcShow(id) { ['mcMain', 'mcModeP', 'mcNewP', 'mcSetP', 'mcLoadP', 'mcAskP'].forEach(k => $('#' + k).hidden = k !== id); const f = $('#' + id).querySelector('input,.hm-big,.hm-tpl,.hm-card,.mc-item,.sbtn:not([disabled])'); if (f) setTimeout(() => f.focus(), 30); }
 document.querySelectorAll('#startScreen [data-back]').forEach(b => b.onclick = () => { mcSync(); mcShow('mcMain'); });
-let mcExample = true;
-const mcMode = () => { document.querySelectorAll('#mcModeSeg button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.ex === '1') === mcExample)); $('#mcModeNote').textContent = mcExample ? '카페 테라스 예시 6컷과 조명·가구가 들어 있어요. 둘러보며 익히기 좋아요.' : '카메라 한 대와 인물 A만 있는 빈 세트에서 시작해요.'; };
-$('#mcNew').onclick = () => { $('#mcTitle').value = ''; mcMode(); mcShow('mcNewP'); };
-$('#mcModeSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { mcExample = b.dataset.ex === '1'; mcMode(); } });
-$('#mcCreate').onclick = () => newProject($('#mcTitle').value.trim() || (mcExample ? '씬 12 · 카페 테라스 — 이별' : '새 씬'), mcExample);
-$('#mcTitle').addEventListener('keydown', e => { if (e.key === 'Enter') $('#mcCreate').click(); });
 let mcPick = null, mcDelArm = 0;
 function mcList() { const list = projects(), fmtD = t => { const d = new Date(t); return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
   if (mcPick && !list.some(p => p.id === mcPick)) mcPick = null;
-  $('#mcList').innerHTML = list.length ? list.map(p => `<button class="mc-item" data-id="${p.id}" aria-pressed="${p.id === mcPick}"><span class="ic">${esc((p.title || '?').trim().slice(0, 1))}</span>
+  $('#mcList').innerHTML = list.length ? list.map(p => `<button class="mc-item" data-id="${p.id}" aria-pressed="${p.id === mcPick}">${p.thumb ? `<img class="ic" alt="" src="${p.thumb}">` : `<span class="ic">${esc((p.title || '?').trim().slice(0, 1))}</span>`}
     <span><b>${esc(p.title || '제목 없는 씬')}</b><small>${p.shots || 0}컷 · ${p.sensor ? esc(p.sensor) + ' · ' : ''}${fmtD(p.updated)} 수정</small></span></button>`).join('')
     : '<p class="mc-note" style="padding:22px 8px">아직 저장된 프로젝트가 없어요. "새 프로젝트"로 시작하세요.</p>';
   $('#mcOpen').disabled = $('#mcDel').disabled = !mcPick; $('#mcDel').textContent = '삭제'; clearTimeout(mcDelArm); mcDelArm = 0; }
@@ -5820,7 +6042,7 @@ $('#mcDel').onclick = () => { if (!mcPick) return;
   const gone = mcPick; store.del(gone).catch(e => store.fail(e)).then(() => { if (projId === gone) projId = null; mcPick = null; mcList(); }); };
 // enquiries go to the address the maker gave; the mail app opens with the message filled in
 const ASK_TO = 'soungbin8815@naver.com';
-const mcMail = () => { $('#mcSend').href = `mailto:${ASK_TO}?subject=${encodeURIComponent($('#mcSubj').value || '[프레임콘티] 문의')}&body=${encodeURIComponent(($('#mcBody').value || '') + '\n\n— 프레임콘티 v12')}`; };
+const mcMail = () => { $('#mcSend').href = `mailto:${ASK_TO}?subject=${encodeURIComponent($('#mcSubj').value || '[PREVIO] 문의')}&body=${encodeURIComponent(($('#mcBody').value || '') + '\n\n— PREVIO')}`; };
 $('#mcAsk').onclick = () => { mcMail(); mcShow('mcAskP'); };
 $('#mcSubj').addEventListener('input', mcMail); $('#mcBody').addEventListener('input', mcMail);
 $('#mcCopy').onclick = () => { const done = () => { $('#mcCopy').textContent = '복사했어요'; setTimeout(() => $('#mcCopy').textContent = '주소 복사', 1600); };
@@ -5849,7 +6071,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.04 17:23'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.04 20:02'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
