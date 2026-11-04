@@ -16,15 +16,16 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap">
 <style>
 /* FrameConti design system. One full-height workspace: header, tool rail, stage (3D / monitor / top), a drawer that opens beside the stage
    (a bottom sheet on phones) and the shot strip. Surfaces: paper (app) < sheet (chrome) < raise (cards inside panels). */
 :root{
-  --paper:#0A0D11; --sheet:#11151B; --raise:#171C24; --ink:#E9EEF4; --ink2:#C3CCD7; --muted:#8793A2; --line:#232A34; --line2:#1C222B; --soft:#1A2029;
-  --accent:#7392FF; --accent-ink:#081022; --accent-soft:rgba(115,146,255,.14); --pencil:#4FA3CC; --ok:#3CC48A; --rec:#E5483A;
+  /* palette: a night shoot in a pixel game — plum-navy surfaces, hot pink action, tally yellow and monitor cyan as the two highlights */
+  --paper:#120F26; --sheet:#1A1634; --raise:#221D41; --ink:#F3F0FF; --ink2:#CEC6EE; --muted:#958CC0; --line:#2F2958; --line2:#241F46; --soft:#241F48;
+  --accent:#FF4FA3; --accent-ink:#2A0718; --accent-soft:rgba(255,79,163,.16); --pencil:#3BE8FF; --ok:#5CE38A; --rec:#FF4B3E; --tally:#FFD43B;
   --figA:#2B4A60; --figB:#5C4930; --col:#2C3742; --cam:#9AACBF; --wall:#2E3844; --prop:#6A5844;
-  --sky:#1A222B; --ground:#141B22; --grid:rgba(115,146,255,.15); --shadow:rgba(0,0,0,.4);
+  --sky:#1C1838; --ground:#15122B; --grid:rgba(255,79,163,.14); --shadow:rgba(0,0,0,.4);
   --vf:#040507; --vf-ink:#E8EDF3; --vf-dim:#7D8B99; --warn:#F07A66;
   --sh-1:0 1px 2px rgba(0,0,0,.4); --sh-2:0 10px 30px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
   color-scheme:dark;
@@ -50,7 +51,7 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stro
 /* header */
 .bar{grid-area:bar;display:flex;align-items:center;gap:14px;padding:9px 16px;border-bottom:1px solid var(--line);background:var(--sheet);min-width:0}
 .brand{display:flex;align-items:center;gap:10px;flex:none;border:0;background:none;padding:0;text-align:left;color:inherit}
-.logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(140deg,var(--accent),#7B4DFF);display:grid;place-items:center;box-shadow:0 2px 8px rgba(47,91,255,.35)}
+.logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(140deg,var(--accent),var(--tally));display:grid;place-items:center;box-shadow:0 2px 8px rgba(47,91,255,.35)}
 .logo svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .brand b{font-family:var(--f-display);font-weight:700;font-size:19px;letter-spacing:.06em;text-transform:uppercase;line-height:1}
 .brand b small{display:block;font-family:var(--f-body);font-weight:500;font-size:10px;letter-spacing:.02em;text-transform:none;color:var(--muted);margin-top:2px}
@@ -405,7 +406,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 @keyframes slideIn{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
 .chipi.pop{animation:pop .45s cubic-bezier(.2,.8,.2,1)}
 @keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:scale(1)}}
-.coach{position:absolute;left:50%;top:64px;transition:top .25s,bottom .25s;transform:translateX(-50%);z-index:8;width:min(370px,calc(100% - 24px));border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:7px;animation:rise .3s cubic-bezier(.2,.8,.2,1)}
+.coach{position:absolute;left:50%;top:64px;transition:top .25s,bottom .25s;transform:translateX(-50%);z-index:45;width:min(370px,calc(100% - 24px));border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:7px;animation:rise .3s cubic-bezier(.2,.8,.2,1)}
 .coach b{font-size:15px}
 .coach p{margin:0;font-size:13px;color:var(--ink2);line-height:1.6}
 .coach .row{justify-content:space-between}
@@ -473,8 +474,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 @keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.toast{transition:none} .drawer,.chipi.pop,.coach,.spot,.tring,.rothint svg{animation:none} .btn,.fab,.rail button,.card{transition:none}}
 
-/* start screen: a monitor on standby. The 3D set turns behind a 2.39:1 frame (corner marks, darker letterbox bars); the title sits
-   bottom-left like a title card, the actions are one quiet list on the right, the status line runs in the bar under the frame. */
+/* start screen: a pixel camera viewfinder (see the start screen block further down). */
 .mc{position:fixed;inset:0;z-index:50;overscroll-behavior:contain;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow-y:auto;background:#07090c;color:#fff;font-family:var(--f-body);
   padding:max(56px,env(safe-area-inset-top,0px)) 16px max(56px,env(safe-area-inset-bottom,0px))}
 #pano{position:fixed;inset:0;width:100%;height:100%;filter:saturate(1.1)}
@@ -495,9 +495,9 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .sbtn b{display:block;font-size:16px;font-weight:600;line-height:1.25}
 .sbtn small{display:block;font-size:12px;color:rgba(255,255,255,.62)}
 .sbtn .go{margin-left:auto;opacity:.5;font-size:18px}
-.sbtn.primary{background:var(--accent);color:#081022;border-color:transparent;box-shadow:0 6px 18px rgba(0,0,0,.35)}
-.sbtn.primary:hover{background:#86A2FF}
-.sbtn.primary .si{background:rgba(8,16,34,.12)} .sbtn.primary small{color:rgba(8,16,34,.7)}
+.sbtn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.sbtn.primary:hover{background:#FF78BA}
+.sbtn.primary .si{background:rgba(42,7,24,.12)} .sbtn.primary small{color:rgba(42,7,24,.72)}
 .sbtn.center{justify-content:center;min-height:46px} .sbtn.center b{font-size:14.5px}
 /* sub panels */
 .mc-panel{gap:12px;background:rgba(13,17,23,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);padding:22px;border-radius:20px;border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 50px rgba(0,0,0,.5);align-items:stretch}
@@ -506,7 +506,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .mc-panel h2 svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .mc-lab{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:-6px}
 .mc-in{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#fff;padding:11px 13px;font-size:15px;font-family:var(--f-body);border-radius:11px;resize:vertical}
-.mc-in:focus{outline:none;border-color:#7392FF;box-shadow:0 0 0 3px rgba(115,146,255,.25)}
+.mc-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,79,163,.3)}
 .mc-seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:rgba(255,255,255,.06);border-radius:12px;padding:4px}
 .mc-seg button{border:0;border-radius:9px;padding:9px;background:transparent;color:rgba(255,255,255,.7);font:inherit;font-weight:600;font-size:13.5px;cursor:pointer}
 .mc-seg button[aria-pressed="true"]{background:#fff;color:#0e1621}
@@ -515,8 +515,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .mc-list{width:100%;max-height:min(44vh,360px);overflow-y:auto;display:flex;flex-direction:column;gap:6px}
 .mc-item{display:flex;gap:12px;align-items:center;padding:9px 10px;border:1px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;text-align:left;background:rgba(255,255,255,.04);color:#fff;width:100%;font:inherit}
 .mc-item:hover{background:rgba(255,255,255,.08)}
-.mc-item[aria-pressed="true"]{border-color:#7392FF;background:rgba(115,146,255,.16)}
-.mc-item .ic{width:42px;height:42px;flex:none;display:grid;place-items:center;font-weight:700;font-size:16px;border-radius:10px;background:rgba(115,146,255,.18);color:#C9D6FF}
+.mc-item[aria-pressed="true"]{border-color:var(--accent);background:rgba(255,79,163,.16)}
+.mc-item .ic{width:42px;height:42px;flex:none;display:grid;place-items:center;font-weight:700;font-size:16px;border-radius:10px;background:rgba(255,79,255,.18);color:#C9D6FF}
 .mc-item b{display:block;font-size:14.5px;font-weight:600}
 .mc-item small{color:rgba(255,255,255,.55);font-size:12px}
 
@@ -720,49 +720,148 @@ textarea#aiText{font-size:11px!important}
   .card .axw{font-size:8.5px;padding:0 3px;margin:0 0 1px}
 }
 
-/* ---------- start screen layout (see the note above .mc) ---------- */
-.mc{--fw:min(calc(100vw - 32px),calc((var(--app-h,100dvh) - 56px) * 2.39));--fh:calc(var(--fw) / 2.39)}
-.mc-shade{position:fixed;inset:0;background:linear-gradient(90deg,rgba(7,9,12,.78) 0%,rgba(7,9,12,.25) 48%,rgba(7,9,12,.55) 100%),linear-gradient(0deg,rgba(7,9,12,.7),transparent 55%)}
-.mc-frame,.mc-main{position:fixed;left:50%;top:50%;width:var(--fw);height:var(--fh);transform:translate(-50%,-50%)}
-.mc-frame{z-index:1;pointer-events:none;box-shadow:0 0 0 100vmax rgba(3,4,6,.62),inset 0 0 0 1px rgba(255,255,255,.1)}
-.mc-frame i{position:absolute;width:22px;height:22px;border:0 solid rgba(255,255,255,.8)}
-.mc-frame i:nth-child(1){left:10px;top:10px;border-width:1.5px 0 0 1.5px} .mc-frame i:nth-child(2){right:10px;top:10px;border-width:1.5px 1.5px 0 0}
-.mc-frame i:nth-child(3){left:10px;bottom:10px;border-width:0 0 1.5px 1.5px} .mc-frame i:nth-child(4){right:10px;bottom:10px;border-width:0 1.5px 1.5px 0}
-.mc-frame b{position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);opacity:.5;
-  background:linear-gradient(#fff,#fff) center/1px 100% no-repeat,linear-gradient(#fff,#fff) center/100% 1px no-repeat}
-.mc-main{z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,34%);align-items:end;gap:28px;padding:clamp(20px,3.2vw,40px)}
+/* ---------- start screen: a camera viewfinder drawn in pixels (game title screen on a film set) ----------
+   the 3D set runs behind at low resolution, so it reads as dots; #mcVF draws the frame, REC, timecode, meters and sprites at 1/3–1/4 size
+   and is scaled up without smoothing. Colours: plum-navy night, hot pink, tally yellow, monitor cyan. */
+.mc{--px:var(--f-px,"Silkscreen",monospace);background:#120F26}
+#pano{image-rendering:pixelated;image-rendering:crisp-edges;filter:saturate(1.35) contrast(1.05)}
+.mc-shade{position:fixed;inset:0;background:
+  linear-gradient(rgba(59,232,255,.07) 1px,transparent 1px) 0 0/16px 16px,linear-gradient(90deg,rgba(59,232,255,.07) 1px,transparent 1px) 0 0/16px 16px,
+  repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 2px,transparent 2px 4px),
+  radial-gradient(110% 85% at 50% 45%,rgba(26,18,70,.62),rgba(14,10,34,.93) 72%)}
+#pano{opacity:.85}
+#mcVF{position:fixed;inset:0;width:100%;height:var(--app-h,100dvh);z-index:1;pointer-events:none;image-rendering:pixelated;image-rendering:crisp-edges}
+.mc-main{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px;width:min(760px,calc(100% - 48px));text-align:center}
 .mc-main[hidden]{display:none}
-.mc-brand h1{margin:0;display:flex;flex-direction:column;gap:6px}
-.mc-brand .ko{font-family:var(--f-body);font-size:15px;font-weight:600;color:rgba(255,255,255,.72);letter-spacing:.01em}
-.mc-brand .en{font-family:var(--f-display);font-weight:700;font-size:clamp(46px,min(10vw,17vh),112px);line-height:.84;letter-spacing:.015em;color:#fff}
-.mc-brand p{margin:14px 0 0;max-width:30em;font-size:13.5px;line-height:1.65;color:rgba(255,255,255,.66);text-wrap:pretty}
-.mc-acts{display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:rgba(10,13,17,.66);border:1px solid rgba(255,255,255,.12);
-  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-.mc-act{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:56px;padding:11px 16px;border:0;border-top:1px solid rgba(255,255,255,.08);background:transparent;color:#fff;
-  font:inherit;text-align:left;cursor:pointer;transition:background .15s}
-.mc-act:first-child{border-top:0} .mc-act[hidden]{display:none}
-.mc-act b{font-size:15px;font-weight:600;line-height:1.3} .mc-act small{font-size:12px;color:rgba(255,255,255,.58);line-height:1.35;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mc-act:hover{background:rgba(255,255,255,.06)} .mc-act:active{background:rgba(255,255,255,.1)}
-.mc-act.primary{background:var(--accent);color:var(--accent-ink)} .mc-act.primary small{color:rgba(8,16,34,.68)} .mc-act.primary:hover{background:#86A2FF}
-.mc-act:focus-visible{outline:2px solid #fff;outline-offset:-4px}
-.mc-foot{position:fixed;z-index:2;left:50%;width:var(--fw);top:calc(50% + var(--fh) / 2);height:calc((var(--app-h,100dvh) - var(--fh)) / 2);transform:translateX(-50%);
-  display:flex;align-items:center;gap:18px;padding:0 4px;font-family:var(--f-mono);font-size:11px;color:rgba(255,255,255,.6)}
-.mc-foot .ver{margin-left:auto}
-.mc-ask{position:relative;border:0;background:none;color:rgba(255,255,255,.85);font:500 12px var(--f-body);padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.35)}
-.mc-ask::before{content:"";position:absolute;inset:-12px -10px}
-.mc-ask:hover{color:#fff}
-/* upright narrow windows: the frame fills the screen and everything stacks */
-@media (orientation:portrait) and (max-width:719px){
-  .mc{--fw:calc(100vw - 24px);--fh:calc(var(--app-h,100dvh) - 72px)}
-  .mc-main{grid-template-columns:1fr;align-content:end;gap:22px} .mc-brand .en{font-size:clamp(46px,15vw,72px)}
-  .mc-foot .ver{display:none}
-}
-@media (prefers-reduced-motion:reduce){ .mc-act{transition:none} }
+.mc-brand{display:flex;flex-direction:column;align-items:center;gap:10px}
+.mc-brand h1{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px}
+#mcLogo{display:block;width:min(560px,78vw);image-rendering:pixelated;image-rendering:crisp-edges}
+.mc-brand .ko{font:700 14px var(--f-body);color:#FFD43B;letter-spacing:.04em;text-shadow:2px 2px 0 #2A0718}
+.mc-brand p{margin:0;max-width:34em;font-size:13px;line-height:1.6;color:#CEC6EE}
+.mc-press{font:400 12px var(--px);color:#3BE8FF;letter-spacing:.12em;animation:pxblink 1.1s steps(2,end) infinite}
+@keyframes pxblink{50%{opacity:0}}
+/* chunky pixel buttons: notched corners, hard drop shadow; they press in like a game button */
+.mc-acts{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.mc-act{--b:#FFD43B;--bi:#2A0718;position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:200px;min-height:60px;padding:12px 18px;border:0;background:var(--b);color:var(--bi);font:inherit;text-align:left;cursor:pointer;
+  clip-path:polygon(0 6px,6px 6px,6px 0,calc(100% - 6px) 0,calc(100% - 6px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 6px) calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 6px),0 calc(100% - 6px));
+  box-shadow:inset -4px -4px 0 rgba(0,0,0,.28),inset 4px 4px 0 rgba(255,255,255,.35);transition:transform .08s steps(2)}
+.mc-act b{font-size:15.5px;font-weight:700;line-height:1.25} .mc-act small{font-size:12px;opacity:.78;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mc-act:hover{transform:translate(-2px,-2px)} .mc-act:active{transform:translate(2px,2px);box-shadow:inset 4px 4px 0 rgba(0,0,0,.28)}
+.mc-act:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.mc-act.primary{--b:#FFD43B} #mcResume{--b:#FF4FA3} #mcLoad{--b:#3BE8FF;--bi:#071A24}
+.mc-act[hidden]{display:none}
+.mc-foot{position:fixed;z-index:2;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);transform:translateX(-50%);display:flex;align-items:center;gap:16px;
+  font:400 10px var(--px);color:#958CC0;letter-spacing:.06em;white-space:nowrap}
+.mc-foot .ver{display:none}
+.mc-ask{position:relative;border:0;background:none;color:#FFD43B;font:700 12px var(--f-body);padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.mc-ask::before{content:"";position:absolute;inset:-12px -8px}
+/* panels on the start screen: pixel boxes too */
+.mc .mc-panel{border-radius:0;border:3px solid #3BE8FF;background:rgba(18,15,38,.94);box-shadow:6px 6px 0 #FF4FA3;-webkit-backdrop-filter:none;backdrop-filter:none}
+.mc .mc-panel h2{font-weight:700} .mc .sbtn{border-radius:0;border-width:2px} .mc .sbtn.primary{background:#FFD43B;color:#2A0718} .mc .mc-in{border-radius:0} .mc .mc-seg,.mc .mc-seg button{border-radius:0}
+.mc .mc-pick{border-radius:0;border:2px solid #2F2958} .mc .mc-pick b{font:700 18px var(--px);color:#FFD43B} .mc .mc-pick:hover{border-color:#FF4FA3}
+.mc .mc-item{border-radius:0} .mc .mc-item .ic{border-radius:0;color:#FFD9EC}
+@media (orientation:landscape) and (max-height:520px){ .mc-main{gap:10px} #mcLogo{width:min(380px,46vw)} .mc-press{display:none} .mc-brand p{display:none} .mc-acts{flex-wrap:nowrap;width:100%} .mc-act{flex:1 1 0;min-width:0;max-width:230px;min-height:52px;padding:9px 12px} .mc-act b{font-size:14px} .mc-foot{bottom:18px} }
+@media (orientation:portrait) and (max-width:719px){ .mc-acts{flex-direction:column;width:100%} .mc-act{width:100%} #mcLogo{width:86vw} }
+@media (prefers-reduced-motion:reduce){ .mc-press{animation:none} .mc-act{transition:none} }
 
 /* a static shot gets its start/end bar only once something moves: this makes an end for blocking alone */
 .blockadd{margin-top:8px;min-height:44px;width:100%}
 .blockadd[hidden]{display:none}
 #easeRow[hidden],#kfSum[hidden]{display:none}
+
+/* composition guide picker, opened from the monitor's 구도 button */
+.guidemenu{position:absolute;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:6px;border-radius:12px;width:236px;max-height:calc(100% - 12px);overflow-y:auto}
+.guidemenu[hidden]{display:none}
+.guidemenu button{min-height:44px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:var(--ink);font:500 13.5px var(--f-body);text-align:left;cursor:pointer}
+.guidemenu button:hover{background:var(--soft)} .guidemenu button[aria-checked="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.guidemenu button[data-gflip]{grid-column:1/-1;border-top:1px solid var(--line);border-radius:0 0 8px 8px;margin-top:2px;color:var(--ink2)} .guidemenu button:disabled{opacity:.4;cursor:default}
+.vf-tools .gl{font-size:10px}
+
+/* 간편 / 프로: what each mode shows */
+html.simple [data-pro]{display:none!important}
+html:not(.simple) [data-simple]{display:none!important}
+.fpresets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.fpresets button{min-height:48px;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--ink);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.fpresets button b{font-size:13px;font-weight:600} .fpresets button small{font:500 11px var(--f-mono);color:var(--ink2)}
+.fpresets button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+
+/* first visit: two ways to use the app */
+.mc-mode{width:min(640px,100%)}
+.mc-modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mc-pick{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#fff;font:inherit;text-align:left;cursor:pointer;min-height:44px}
+.mc-pick b{font:700 22px/1 var(--f-display);letter-spacing:.02em} .mc-pick span{font-size:13px;line-height:1.55;color:rgba(255,255,255,.78)} .mc-pick small{font-size:11.5px;color:rgba(255,255,255,.5)}
+.mc-pick:hover{border-color:var(--accent);background:rgba(255,79,163,.12)} .mc-pick:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media (max-width:520px){ .mc-modes{grid-template-columns:1fr} }
+@media (orientation:landscape) and (max-height:520px){ .mc-pick{padding:12px} .mc-pick span{font-size:12px} }
+
+/* key hints (only where there is a keyboard and a mouse) and the 조작키 sheet */
+.rail kbd{display:none}
+@media (hover:hover) and (pointer:fine){ .rail button{position:relative} .rail kbd{display:block;position:absolute;top:3px;right:4px;font:600 9px/1 var(--f-mono);color:var(--ink2);opacity:.7} }
+.keyhelp{position:fixed;inset:0;z-index:70;display:grid;place-items:center;background:rgba(0,0,0,.5);padding:16px}
+.keyhelp[hidden]{display:none}
+.kh-box{width:min(720px,100%);max-height:calc(var(--app-h,100dvh) - 32px);overflow-y:auto;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.kh-box h3{margin:0;font-size:17px} .kh-box h4{margin:0 0 6px;font-size:12.5px;color:var(--ink2);font-weight:600}
+.kh-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.kh-cols p{margin:0 0 6px;font-size:13px;line-height:1.6;color:var(--ink)}
+.keyhelp kbd,.kh-cols kbd{display:inline-block;min-width:22px;padding:1px 6px;margin-right:3px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;font:600 11.5px var(--f-mono);text-align:center;background:var(--soft);color:var(--ink)}
+.kh-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap} .kh-head span{font-size:12.5px;color:var(--ink2)}
+.kh-note{font-size:11.5px!important;color:var(--ink2)!important}
+.kh-foot{display:flex;justify-content:flex-end;gap:8px} .kh-foot .btn{min-height:40px;padding:0 18px}
+@media print{ body.print-keys .app,body.print-keys .mc,body.print-keys .toast{display:none!important} body.print-keys .keyhelp{position:static;display:block!important;background:#fff;padding:0}
+  body.print-keys .kh-box{box-shadow:none;border:0;background:#fff;color:#000;max-height:none} body.print-keys .kh-foot{display:none} body.print-keys .kh-cols p,body.print-keys .kh-box h3{color:#000} }
+
+/* animatic: the whole sequence plays in the monitor; editing tools step aside */
+.animhud{position:absolute;z-index:25;top:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:6px 8px 6px 12px;border-radius:12px;font:500 12px var(--f-mono);white-space:nowrap}
+.animhud[hidden]{display:none} .animhud .rec{width:8px;height:8px;border-radius:50%;background:var(--rec);box-shadow:0 0 8px var(--rec)} .animhud .btn{min-height:36px}
+.app.anim .movepad,.app.anim .vfbox .vf-tools,.app.anim #kfBar,.app.anim #stageInfo{display:none!important}
+.seqb[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* techvis table (shot panel) and its print sheet */
+.techtbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0 8px}
+.techtbl th{text-align:left;font-weight:500;color:var(--ink2);padding:6px 8px 6px 0;white-space:nowrap;vertical-align:top;width:1%}
+.techtbl td{padding:6px 0;color:var(--ink);font-family:var(--f-mono);font-size:12px;border-bottom:1px solid var(--line)} .techtbl th{border-bottom:1px solid var(--line)}
+.techtbl small{display:block;font-family:var(--f-body);font-size:11.5px;color:var(--warn);margin-top:2px}
+#techPrint{display:none}
+@media print{
+  body.print-tech .app,body.print-tech .mc,body.print-tech .modal,body.print-tech .toast{display:none !important}
+  body.print-tech #techPrint{display:block !important;color:#000;font-family:sans-serif}
+  #techPrint h1{font-size:15pt;margin:0 0 2mm} #techPrint .mp-meta{font-size:8.5pt;color:#444;margin:0 0 4mm}
+  #techPrint section{break-inside:avoid;margin:0 0 4mm} #techPrint h2{font-size:10.5pt;margin:0 0 1.5mm}
+  #techPrint table{width:100%;border-collapse:collapse;font-size:8.5pt} #techPrint th,#techPrint td{border:1px solid #bbb;padding:1mm 2mm;text-align:left;vertical-align:top} #techPrint th{width:28mm;background:#f2f2f2;font-weight:600}
+  #techPrint small{display:block;color:#a33}
+}
+
+/* the virtual camera needs a phone's motion sensor */
+@media not (pointer:coarse){ #gVcam{display:none!important} }
+
+.guidemenu .gm-row{grid-column:1/-1;display:flex;gap:6px;padding:6px 2px 0;border-top:1px solid var(--line);margin-top:2px}
+.guidemenu .gm-row button[data-gcol]{flex:1;min-height:36px;min-width:0;padding:0;border-radius:8px;background:var(--c);border:2px solid var(--line)}
+.guidemenu .gm-row button[data-gcol][aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.guidemenu .gm-row.str button{flex:1;min-height:36px;text-align:center;padding:0 4px;font-size:12.5px;border:1px solid var(--line)}
+.guidemenu .gm-row.str button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);font-weight:600}
+
+/* prop catalogue with pictures (building-game style) */
+#propAdd .addgrid.thumbs{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+#propAdd .addgrid.thumbs button{flex-direction:column;align-items:stretch;gap:4px;padding:6px;text-align:left}
+.pthumb{display:block;height:64px;border-radius:8px;background:var(--soft) center/contain no-repeat}
+#propAdd .addgrid.thumbs button b{font-size:12.5px} #propAdd .addgrid.thumbs button small{font-size:10.5px}
+
+/* missions: a progress ring on the tool rail and a card of small goals (game-style quests) */
+.rail .questb{margin-top:auto;color:var(--ink2)} .rail .questb b{font:600 10px var(--f-mono);color:var(--accent)}
+.questb svg .qr-bg{stroke:var(--line);fill:none;stroke-width:2} .questb svg .qr{stroke:var(--accent);fill:none;stroke-width:2.4;stroke-dasharray:calc(var(--qp,0) * 1) 100;transform:rotate(-90deg);transform-origin:12px 12px}
+.questb svg path{stroke:var(--muted)} .questb.done svg path{stroke:var(--ok)} .questb.done b{color:var(--ok)}
+.questb.pop{animation:qpop .9s ease} @keyframes qpop{0%{transform:scale(1)}30%{transform:scale(1.18)}100%{transform:scale(1)}}
+.questcard{position:fixed;z-index:60;width:min(340px,calc(100vw - 16px));max-height:min(440px,calc(var(--app-h,100dvh) - 24px));overflow-y:auto;border-radius:16px;padding:12px 14px}
+.questcard[hidden]{display:none}
+.qc-head{display:flex;align-items:center;gap:8px;margin-bottom:6px} .qc-head b{font-size:15px} .qc-head span{font:500 12px var(--f-mono);color:var(--accent)} .qc-head .btn{margin-left:auto;min-height:36px;min-width:36px}
+#questList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+#questList li{display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:10px} #questList li:hover{background:var(--soft)}
+#questList li i{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--line)}
+#questList li.ok i{background:var(--ok);border-color:var(--ok);box-shadow:inset 0 0 0 3px var(--sheet)} #questList li.ok b{color:var(--ink2);text-decoration:line-through}
+#questList li span{flex:1;min-width:0} #questList li b{display:block;font-size:13px} #questList li small{display:block;font-size:11.5px;color:var(--ink2);line-height:1.4}
+#questList li .btn{flex:none;min-height:36px}
+@media (prefers-reduced-motion:reduce){ .questb.pop{animation:none} }
+@media (orientation:landscape) and (max-height:520px){ .guidemenu{grid-template-columns:repeat(4,1fr);width:340px;padding:5px} .guidemenu button{min-height:40px;padding:0 6px;font-size:12.5px} .guidemenu .gm-row{padding-top:4px} .guidemenu .gm-row button{min-height:34px} }
 </style>
 </head>
 <body>
@@ -782,19 +881,20 @@ textarea#aiText{font-size:11px!important}
   </header>
   <div class="xmenu glass" id="xMenu" role="menu" hidden>
     <button id="aiBtn" role="menuitem">AI 실사 프롬프트 (ChatGPT · Higgsfield)</button><hr>
-    <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button>
+    <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button><button id="techMenuBtn" role="menuitem" data-pro>테크비즈 시트 (현장용) · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
-    <hr><button id="tourBtn" role="menuitem">사용법 보기</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.01 18:36</p>
+    <hr><button id="uiModeBtn" role="menuitem"></button><button id="tourBtn" role="menuitem">사용법 보기</button><button id="keysBtn" role="menuitem">조작키 보기 (?)</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.04 17:23</p>
     <div id="copyFallback" hidden></div>
   </div>
 
   <nav class="rail" id="rail" aria-label="도구">
-    <button data-pane="cam" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 10.5l5-3v9l-5-3"/><circle cx="9.5" cy="12" r="2.5"/></svg>카메라</button>
-    <button data-pane="rig" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="8" y="3.5" width="9" height="5.5" rx="1"/><path d="M17 5.5l3-1.5v5l-3-1.5M12 9v3M12 12l-6 8.5M12 12v8.5M12 12l6 8.5"/></svg>장비</button>
-    <button data-pane="light" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="10" height="8" rx="1.5" transform="rotate(-15 10 8)"/><path d="M15.5 6.5l4-1.5M16 10.5l4 1M10 12.5V20M6.5 20.5h7"/></svg>조명</button>
-    <button data-pane="set" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 11.5V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2.5"/><path d="M3 12h3v3h12v-3h3v5H3zM5 17v2.5M19 17v2.5"/></svg>세트</button>
-    <button data-pane="shot" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="1.5"/><path d="M3.5 9l2-5 15 1.5-1.2 3.5M8.5 4.5l-1.5 4.5M13.5 5l-1.5 4"/></svg>샷</button>
+    <button data-pane="cam" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 10.5l5-3v9l-5-3"/><circle cx="9.5" cy="12" r="2.5"/></svg>카메라<kbd>C</kbd></button>
+    <button data-pane="rig" aria-pressed="false" data-pro><svg viewBox="0 0 24 24"><rect x="8" y="3.5" width="9" height="5.5" rx="1"/><path d="M17 5.5l3-1.5v5l-3-1.5M12 9v3M12 12l-6 8.5M12 12v8.5M12 12l6 8.5"/></svg>장비<kbd>R</kbd></button>
+    <button data-pane="light" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="10" height="8" rx="1.5" transform="rotate(-15 10 8)"/><path d="M15.5 6.5l4-1.5M16 10.5l4 1M10 12.5V20M6.5 20.5h7"/></svg>조명<kbd>L</kbd></button>
+    <button data-pane="set" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 11.5V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2.5"/><path d="M3 12h3v3h12v-3h3v5H3zM5 17v2.5M19 17v2.5"/></svg>세트<kbd>T</kbd></button>
+    <button data-pane="shot" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="1.5"/><path d="M3.5 9l2-5 15 1.5-1.2 3.5M8.5 4.5l-1.5 4.5M13.5 5l-1.5 4"/></svg>샷<kbd>H</kbd></button>
+    <button class="questb" id="questBtn" aria-haspopup="dialog" aria-expanded="false" title="첫 콘티 미션"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" class="qr-bg"/><circle cx="12" cy="12" r="9" class="qr" pathLength="100"/><path d="M8.5 12.2l2.3 2.3 4.7-4.8"/></svg>미션<b id="questN"></b></button>
   </nav>
 
   <div class="stage" id="stage">
@@ -807,9 +907,11 @@ textarea#aiText{font-size:11px!important}
         <div class="hud t" id="hudTop"></div>
         <canvas id="view" aria-label="카메라에 찍히는 화면. 드래그하면 팬과 틸트, 두 손가락 위아래나 휠은 달리, 더블클릭은 초점 대상 조준."></canvas>
         <div class="hud b"><span class="rec" id="hudL"></span><span id="monInfo"></span><span id="hudB"></span></div>
-        <div class="vf-tools"><button id="gThirds" aria-pressed="true" title="3분할 가이드 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>3×3</button><button id="gFC" aria-pressed="false" title="폴스컬러 노출 표시 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 8h16M4 12h16M4 16h16"/></svg>폴스</button></div>
+        <div class="vf-tools"><button id="gThirds" aria-pressed="true" aria-haspopup="menu" aria-expanded="false" title="구도 가이드 (3분할 · 황금비 · 대각선 · 황금나선 …)"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg><span class="gl">3분할</span></button><button id="gVcam" aria-pressed="false" title="가상 카메라: 폰을 돌리면 카메라가 따라 돌아요"><svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M3 9a9 9 0 0 0 0 6M21 9a9 9 0 0 1 0 6"/></svg>가상캠</button><button id="gFC" data-pro aria-pressed="false" title="폴스컬러 노출 표시 켜기/끄기"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 8h16M4 12h16M4 16h16"/></svg>폴스</button></div>
       </div>
     </div>
+    <div class="animhud glass" id="animHud" role="status" hidden><span class="rec" aria-hidden="true"></span><b id="animT"></b><button class="btn sm" id="animStop">■ 정지</button></div>
+    <div class="guidemenu glass" id="guideMenu" role="menu" aria-label="구도 가이드" hidden></div>
     <div class="ov ov-tl"><div class="modeseg glass" id="modeSeg" role="group" aria-label="화면">
       <button data-mode="3d" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>3D</button>
       <button data-mode="mon" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 20.5h8"/></svg>모니터</button>
@@ -824,6 +926,7 @@ textarea#aiText{font-size:11px!important}
       <button class="fab" id="aimA" title="카메라가 A 인물을 바라보게"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/></svg>A<span class="lab"> 바라보기</span></button>
       <button class="fab" id="aimB" title="카메라가 B 인물을 바라보게"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/></svg>B<span class="lab"> 바라보기</span></button>
       <span class="tsep"></span>
+      <button class="fab" id="tapeBtn" aria-pressed="false" hidden title="줄자: 탑뷰에서 두 점 사이 거리 재기"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="1"/><path d="M7 9v3M11 9v3M15 9v3M19 9v2"/></svg>줄자</button>
       <button class="fab" id="fitBtn" title="카메라와 인물이 다 보이게"><svg class="i" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>맞춤</button>
     </div></div>
     <div class="ov ov-bc" id="placeBar" hidden><div class="toolbar glass">
@@ -850,7 +953,7 @@ textarea#aiText{font-size:11px!important}
       <span class="crg" id="crLen"><small>암</small><button class="fab" id="crIn" data-cr="len" data-d="-0.25" aria-label="암 줄이기">−</button><button class="fab" id="crOut" data-cr="len" data-d="0.25" aria-label="암 늘리기">+</button></span>
       <button class="fab" id="crClose" title="크레인 조작 끝내기"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
     <div class="tring" id="tourRing" hidden></div><div class="coach glass" id="coach" hidden role="dialog" aria-labelledby="coachT"><b id="coachT"></b><p id="coachP"></p>
-      <div class="row"><span class="dots" id="coachN"></span><span class="row"><button class="btn sm ghost" id="coachSkip">건너뛰기</button><button class="btn sm primary" id="coachNext">다음</button></span></div></div>
+      <div class="row"><span class="dots" id="coachN"></span><span class="row"><button class="btn sm ghost" id="coachSkip">건너뛰기</button><button class="btn sm" id="coachPrev">이전</button><button class="btn sm primary" id="coachNext">다음</button></span></div></div>
     <canvas class="pip" id="pip" role="button" tabindex="0" aria-label="카메라 모니터 미리보기. 누르면 모니터 화면으로 바뀝니다."></canvas>
   </div>
 
@@ -858,12 +961,13 @@ textarea#aiText{font-size:11px!important}
     <div class="dh"><div class="ico" id="drawerIcon"></div><div class="tt"><h3 id="drawerTitle"></h3></div><button class="xbtn" id="drawerClose" aria-label="닫기"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="db">
       <section class="pane" data-pane="cam" hidden>
-        <div class="ptabs seg kr" role="tablist"><button data-tab="lens">렌즈</button><button data-tab="focus">초점</button><button data-tab="expo">노출</button><button data-tab="dist">거리</button><button data-tab="fmt">센서</button></div>
+        <div class="ptabs seg kr" role="tablist"><button data-tab="lens">렌즈</button><button data-tab="focus" data-pro>초점</button><button data-tab="expo" data-pro>노출</button><button data-tab="dist" data-pro>거리</button><button data-tab="fmt"><span data-pro>센서</span><span data-simple>화면비</span></button></div>
         <div class="ptab" data-tab="lens">
-          <div class="kit"><select id="kitSel" aria-label="렌즈 키트"></select></div>
+          <div class="kit" data-pro><select id="kitSel" aria-label="렌즈 키트"></select></div>
           <div class="bigval"><output id="fOut"></output><span class="eq" id="eqOut"></span></div>
           <input type="range" id="fRange" min="0" max="1000" step="1" aria-label="초점거리">
-          <div class="ticks" id="ticks"></div>
+          <div class="ticks" id="ticks" data-pro></div>
+          <div class="fpresets" id="fPresets" data-simple role="group" aria-label="화각 고르기"></div>
           <div class="lh"><span class="mini">렌즈 바꿀 때</span><div class="seg kr" id="keepSeg"><button data-keep="1">샷 크기 유지</button><button data-keep="0">제자리</button></div></div>
           <p class="sum" id="lensSum"></p>
         </div>
@@ -887,10 +991,10 @@ textarea#aiText{font-size:11px!important}
           <div class="cmp" id="cmpViz"></div>
         </div>
         <div class="ptab" data-tab="fmt">
-          <div class="kit"><select id="sensorSel" aria-label="카메라 센서"></select></div>
-          <p class="sum" id="sensorSum"></p>
+          <div class="kit" data-pro><select id="sensorSel" aria-label="카메라 센서"></select></div>
+          <p class="sum" id="sensorSum" data-pro></p>
           <div class="lh"><span class="mini">화면비</span><div class="seg" id="aspectSeg" role="group" aria-label="화면비"></div></div>
-          <div class="lh"><span class="mini">프레임레이트</span><div class="seg" id="fpsSeg"></div></div>
+          <div class="lh" data-pro><span class="mini">프레임레이트</span><div class="seg" id="fpsSeg"></div></div>
         </div>
       </section>
 
@@ -902,7 +1006,7 @@ textarea#aiText{font-size:11px!important}
       <section class="pane" data-pane="light" hidden>
         <div class="ptabs seg kr" role="tablist"><button data-tab="placed">배치된 조명</button><button data-tab="add">조명 추가</button><button data-tab="sky">시간 · 날씨</button></div>
         <div class="ptab" data-tab="placed"><div class="objlist" id="lightList"></div><div id="lightEdit"></div></div>
-        <div class="ptab" data-tab="add"><div id="fxAdd"></div></div>
+        <div class="ptab" data-tab="add"><div id="fxAdd" data-pro></div><div id="fxSimple" data-simple></div></div>
         <div class="ptab" data-tab="sky">
           <div class="seg kr todseg" id="todSeg"></div>
           <div class="lh"><span class="mini">날씨</span><div class="seg kr" id="wxSeg"></div></div>
@@ -926,7 +1030,7 @@ textarea#aiText{font-size:11px!important}
       </section>
 
       <section class="pane" data-pane="shot" hidden>
-        <div class="ptabs seg kr" role="tablist"><button data-tab="move">무빙</button><button data-tab="axis">가상선</button><button data-tab="order">촬영 순서</button><button data-tab="memo">메모</button></div>
+        <div class="ptabs seg kr" role="tablist"><button data-tab="move">무빙</button><button data-tab="axis">가상선</button><button data-tab="tech" data-pro>테크비즈</button><button data-tab="order" data-pro>촬영 순서</button><button data-tab="memo">메모</button></div>
         <div class="ptab" data-tab="move">
           <div class="chips" id="moves"></div>
           <button class="btn sm ghost blockadd" id="kfAdd">＋ 인물 동선만 (카메라 고정)</button>
@@ -948,6 +1052,10 @@ textarea#aiText{font-size:11px!important}
           <p class="sum" id="orderSum"></p>
           <div class="row"><button class="btn sm" id="orderAuto">방향별로 자동 정리</button><button class="btn sm primary" id="orderMap">배치도 PDF</button></div>
         </div>
+        <div class="ptab" data-tab="tech">
+          <table class="techtbl" id="techTbl"></table>
+          <div class="row"><button class="btn sm" id="techPrintBtn">테크비즈 시트 인쇄 · PDF (전체 샷)</button></div>
+        </div>
         <div class="ptab" data-tab="memo">
           <div class="field"><label for="fAction">화면 설명 / 액션</label><textarea id="fAction" rows="2"></textarea></div>
           <div class="field"><label for="fDialogue">대사</label><textarea id="fDialogue" rows="2"></textarea></div>
@@ -962,7 +1070,7 @@ textarea#aiText{font-size:11px!important}
     <span class="snav" id="snav"><button data-nav="-1" aria-label="이전 샷">‹</button><button data-nav="1" aria-label="다음 샷">›</button></span>
     <div class="sl"><b>Shots</b><span id="sum"></span></div>
     <div class="strip" id="strip"></div>
-    <div class="stools"><button class="btn sm primary addb" id="addBtn" title="새 샷 추가">＋ 샷</button><button class="btn sm" id="dupBtn" title="현재 샷 복제"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span class="lab">복제</span></button><button class="btn sm" id="delBtn" title="현재 샷 삭제"><svg class="i" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></svg><span class="lab">삭제</span></button></div>
+    <div class="stools"><button class="btn sm seqb" id="seqBtn" aria-pressed="false" title="모든 샷을 이어서 재생 (애니매틱 · P)"><svg class="i" viewBox="0 0 24 24"><path d="M5 5l9 7-9 7zM14 5l7 7-7 7"/></svg><span class="lab">전체 재생</span></button><button class="btn sm primary addb" id="addBtn" title="새 샷 추가">＋ 샷</button><button class="btn sm" id="dupBtn" title="현재 샷 복제"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span class="lab">복제</span></button><button class="btn sm" id="delBtn" title="현재 샷 삭제"><svg class="i" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></svg><span class="lab">삭제</span></button></div>
   </footer>
 
   <div class="boardov" id="boardView" hidden>
@@ -975,6 +1083,7 @@ textarea#aiText{font-size:11px!important}
   <b id="rotT">휴대폰을 가로로 돌려 주세요</b><p>프레임콘티는 가로 화면에 맞춰져 있어요.<br>3D 세트와 모니터가 훨씬 넓게 보여요.</p><button class="btn ghost" id="rotOk">세로로 계속 쓰기</button></div>
 <input type="file" id="vrmFile" accept=".vrm" hidden>
 <div id="mapPrint" aria-hidden="true"></div>
+<div id="techPrint" aria-hidden="true"></div>
 <div class="modal" id="aiModal" hidden role="dialog" aria-labelledby="aiT"><div class="msheet aisheet">
   <div class="aihead"><h2 id="aiT">AI 실사 프롬프트</h2><div class="seg kr" id="aiKind"><button data-k="img">이미지 · ChatGPT</button><button data-k="vid">영상 · Higgsfield</button></div><div class="seg" id="aiLang"><button data-l="en">EN</button><button data-l="ko">한국어</button></div><button class="xbtn" id="aiClose" aria-label="닫기"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="seg aishots" id="aiShots"></div>
@@ -983,17 +1092,26 @@ textarea#aiText{font-size:11px!important}
 </div></div>
 <div class="mc" id="startScreen" hidden>
   <canvas id="pano" aria-hidden="true"></canvas><div class="mc-shade"></div>
-  <div class="mc-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
+  <canvas id="mcVF" aria-hidden="true"></canvas>
   <div class="mc-main" id="mcMain">
     <div class="mc-brand">
-      <h1><span class="ko">프레임콘티</span><span class="en">FRAMECONTI</span></h1>
-      <p>촬영 전에 렌즈, 조명, 동선을 3D 세트에서 맞춰 보고 샷리스트로 내보내요.</p>
+      <h1><canvas id="mcLogo" role="img" aria-label="FRAMECONTI 프레임콘티"></canvas><span class="ko">프레임콘티 · 3D 콘티 · 프리비즈</span></h1>
+      <p>촬영 전에 카메라 · 조명 · 동선을 세트에서 미리 맞춰 봐요.</p>
+      <span class="mc-press" aria-hidden="true">▶ PRESS START</span>
     </div>
     <nav class="mc-acts" aria-label="시작">
       <button class="mc-act primary" id="mcNew"><b>새 프로젝트</b><small>예시 씬이나 빈 세트로 시작</small></button>
       <button class="mc-act" id="mcResume" hidden><b>이어서 작업</b><small id="mcResumeT"></small></button>
       <button class="mc-act" id="mcLoad"><b>프로젝트 불러오기</b><small id="mcLoadT">저장한 콘티와 파일</small></button>
     </nav>
+  </div>
+  <div class="mc-panel mc-mode" id="mcModeP" hidden>
+    <h2>어떻게 쓰실 건가요?</h2>
+    <p class="mc-note">언제든 메뉴에서 바꿀 수 있어요.</p>
+    <div class="mc-modes">
+      <button class="mc-pick" data-uimode="simple"><b>간편 모드</b><span>카메라 앵글 · 위치 · 세트 만들기에 집중해요. 렌즈 키트나 노출, 조명 장비는 몰라도 돼요.</span><small>처음이거나 촬영 용어가 낯설다면</small></button>
+      <button class="mc-pick" data-uimode="pro"><b>프로</b><span>실제 렌즈 키트 · 센서 · 노출(ND · ISO · 폴스컬러) · 조명 장비 · 촬영 순서까지 모두 다뤄요.</span><small>감독 · 촬영감독 · 조감독</small></button>
+    </div>
   </div>
   <div class="mc-panel" id="mcNewP" hidden>
     <h2><span class="si"><svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="1.5"/><path d="M3.5 9l2-5 15 1.5-1.2 3.5"/></svg></span>새 프로젝트</h2>
@@ -1016,9 +1134,36 @@ textarea#aiText{font-size:11px!important}
     <div class="mc-row"><button class="sbtn center" id="mcCopy"><b>주소 복사</b></button><a class="sbtn primary center" id="mcSend" target="_blank" rel="noopener"><b>메일 앱으로 보내기</b></a></div>
     <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
-  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.01 18:36</span><button class="mc-ask" id="mcAsk">문의하기</button></div>
+  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.04 17:23</span><button class="mc-ask" id="mcModeBtn"></button><button class="mc-ask" id="mcAsk">문의하기</button></div>
 </div>
 
+<div class="keyhelp" id="keyHelp" role="dialog" aria-modal="true" aria-labelledby="keyHelpT" hidden><div class="kh-box glass">
+  <div class="kh-head"><h3 id="keyHelpT">조작 가이드</h3><span>키보드 · 게임패드 · 터치. 언제든 <kbd>?</kbd> 로 열어요.</span></div>
+  <div class="kh-cols">
+    <section><h4>이동 (게임처럼)</h4>
+      <p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 앞 · 왼쪽 · 뒤 · 오른쪽</p><p><kbd>Q</kbd><kbd>E</kbd> 아래 · 위 (붐)</p>
+      <p><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> 둘러보기 (팬 · 틸트)</p><p><kbd>Shift</kbd> 빠르게 · <kbd>Alt</kbd> 천천히</p>
+      <p class="kh-note">모니터에선 카메라가, 3D에서 인물을 고르면 그 인물이 움직여요.</p></section>
+    <section><h4>화면</h4>
+      <p><kbd>1</kbd> 3D · <kbd>2</kbd> 모니터 · <kbd>3</kbd> 탑</p><p><kbd>V</kbd> 다음 화면</p><p><kbd>0</kbd> 화면 맞춤</p>
+      <p><kbd>G</kbd> 구도 가이드</p><p data-pro><kbd>F</kbd> 폴스컬러</p><p><kbd>B</kbd> 보드 ↔ 편집</p></section>
+    <section><h4>카메라 · 렌즈</h4>
+      <p><kbd>Z</kbd> 더 넓게 · <kbd>X</kbd> 더 좁게 (렌즈)</p><p><kbd>U</kbd> A 인물 바라보기</p><p><kbd>O</kbd> 수평 맞추기 (롤 0°)</p></section>
+    <section><h4>도구 패널</h4>
+      <p><kbd>C</kbd> 카메라 <span data-pro>· <kbd>R</kbd> 장비</span></p><p><kbd>L</kbd> 조명 · <kbd>T</kbd> 세트 · <kbd>H</kbd> 샷</p>
+      <p><kbd>Delete</kbd> 고른 가구 · 조명 지우기</p><p><kbd>Esc</kbd> 패널 닫기</p></section>
+    <section><h4>샷 · 재생</h4>
+      <p><kbd>[</kbd><kbd>]</kbd> 이전 · 다음 샷</p><p><kbd>N</kbd> 새 샷 · <kbd>⌘</kbd><kbd>D</kbd> 복제</p><p><kbd>,</kbd><kbd>.</kbd> 샷 길이 −1 · +1초</p>
+      <p><kbd>M</kbd> 무빙 시작 ↔ 끝 편집</p><p><kbd>Space</kbd> 이 샷 재생 · <kbd>P</kbd> 전체 재생</p><p><kbd>⌘</kbd><kbd>Z</kbd> 실행 취소 · <kbd>⇧</kbd><kbd>⌘</kbd><kbd>Z</kbd> 다시</p></section>
+    <section><h4>게임패드</h4>
+      <p>왼쪽 스틱 이동 · 오른쪽 스틱 둘러보기</p><p>LT · RT 아래 · 위 (붐)</p><p>LB · RB 이전 · 다음 샷</p><p>십자 ↑↓ 렌즈 · ←→ 화면 바꾸기</p>
+      <p>A 이 샷 재생 · B 닫기 · X 구도 · Y 새 샷</p><p>Start 전체 재생 · Select 이 가이드</p></section>
+    <section><h4>터치 · 마우스</h4>
+      <p>모니터 끌기 · 팬 / 틸트</p><p>모니터 두 손가락 벌리기 · 렌즈 줌</p><p>두 손가락 위아래 · 앞뒤 달리 (휠도)</p><p>3D 끌기 · 둘러보기 · 한 번 누르기 · 고르기</p></section>
+  </div>
+  <div class="kh-foot"><button class="btn sm" id="keyHelpPrint">인쇄 · PDF</button><button class="btn sm primary" id="keyHelpClose">닫기</button></div>
+</div></div>
+<div class="questcard glass" id="questCard" role="dialog" aria-labelledby="questT" hidden><div class="qc-head"><b id="questT">첫 콘티 미션</b><span id="questSum"></span><button class="btn sm ghost" id="questClose" aria-label="닫기">✕</button></div><ol id="questList"></ol></div>
 <div class="toast" id="toast" role="status"></div>
 <input type="file" id="fileIn" accept=".frameconti,application/json" hidden>
 
@@ -1191,6 +1336,13 @@ function kitF(f, k = KIT()) {
   return f;
 }
 const stopsFor = s => { const t = maxT(KIT(), s.f); return [t, ...STOPS.filter(x => x > t + 0.05)]; };
+// two ways to use the app, chosen per device: 'simple' (angles, positions and the set; no lens kits, exposure or fixture catalogue)
+// and 'pro' (everything). null until chosen on the start screen. Elements marked data-pro only show in pro, data-simple only in 간편 모드.
+let uiMode = null; try { uiMode = localStorage.getItem('framecontis.uimode'); if (uiMode === 'previz') uiMode = 'simple'; } catch (e) {} // 'previz' was the old name of 간편 모드
+const isPro = () => uiMode !== 'simple';
+document.documentElement.classList.toggle('simple', uiMode === 'simple');
+// 간편 모드 lens choices: views by name (full-frame focal lengths)
+const F_PRESETS = [[18, '초광각'], [24, '광각'], [35, '표준'], [50, '눈과 비슷'], [85, '인물'], [135, '망원']];
 /* ---------- state ---------- */
 let uid = 1;
 const mkId = () => 's' + Date.now().toString(36) + (uid++);
@@ -1219,7 +1371,8 @@ if (state.lit === undefined) state.lit = true;
 const SENSOR = () => state.sensor || SENSORS[0];
 let aspOverride = 0; // set only while the monitor's surround view renders
 const aspectV = () => aspOverride || (ASPECTS.find(a => a.k === state.aspect) || ASPECTS[0]).v;
-let view = 'edit', showThirds = true, mode = '3d';
+let view = 'edit', showThirds = 'thirds', guideFlip = 0, mode = '3d'; // showThirds: the composition guide shown in the monitor (GUIDES), or 'none'
+try { const g = localStorage.getItem('framecontis.guide'); if (g) showThirds = g; guideFlip = +localStorage.getItem('framecontis.guideflip') || 0; } catch (e) {}
 const cur = () => state.shots[state.sel];
 let saveT;
 function save() { clearTimeout(saveT); saveT = setTimeout(() => canon(saveProject), 250); } // canon: the stored layout, even mid-edit of an end keyframe
@@ -1385,6 +1538,10 @@ function setupGroups(shots = state.shots) {
   shots.forEach(s => { let g = groups.find(g => Math.abs(wrap180(s.cam.pan - g.pan)) <= SETUP_DEG); if (!g) { g = { pan: s.cam.pan, ids: [], n: groups.length }; groups.push(g); } g.ids.push(s.id); of[s.id] = g.n; });
   return { groups, of };
 }
+// where a phone's back camera points, from its orientation angles (alpha, beta, gamma in degrees): heading (clockwise from the start) and pitch
+function phoneLook(e) { const a = (e.alpha || 0) * DEG, b = (e.beta || 0) * DEG, g = (e.gamma || 0) * DEG;
+  const fx = -Math.sin(g) * Math.cos(a) - Math.cos(g) * Math.sin(b) * Math.sin(a), fy = -Math.sin(g) * Math.sin(a) + Math.cos(g) * Math.sin(b) * Math.cos(a), fz = -Math.cos(g) * Math.cos(b);
+  return { yaw: Math.atan2(fx, fy) / DEG, pitch: Math.asin(clamp(fz, -1, 1)) / DEG }; }
 /* ---------- colors ---------- */
 let C = {};
 const AX = { x: '#E5484D', y: '#2FA36B', z: '#3E7BFA', pan: '#E8A317', tilt: '#13A8B8', roll: '#A65FE0' };
@@ -1722,6 +1879,43 @@ const PROPS = {
   bike: { name: '자전거', w: 0.6, d: 1.75, h: 1.05, rgb: [0.55, 0.1, 0.08] }, cone: { name: '라바콘', w: 0.36, d: 0.36, h: 0.72, rgb: [0.95, 0.35, 0.05] },
   bin: { name: '쓰레기통', w: 0.5, d: 0.5, h: 0.95, rgb: [0.2, 0.3, 0.22] }, hydrant: { name: '소화전', w: 0.4, d: 0.4, h: 0.8, rgb: [0.72, 0.08, 0.06] },
   car: { name: '승용차', w: 1.85, d: 4.6, h: 1.45, rgb: [0.06, 0.1, 0.2] }, apple: { name: '애플박스', w: 0.5, d: 0.3, h: 0.2, rgb: [0.55, 0.4, 0.25] },
+  // living · bedroom
+  coffee: { name: '커피 테이블', w: 1.1, d: 0.6, h: 0.42, rgb: [0.45, 0.32, 0.2] }, nightstand: { name: '협탁', w: 0.45, d: 0.4, h: 0.55, rgb: [0.55, 0.42, 0.3] },
+  wardrobe: { name: '옷장', w: 1.2, d: 0.6, h: 2.0, rgb: [0.82, 0.8, 0.76] }, dresser: { name: '서랍장', w: 1.0, d: 0.5, h: 0.85, rgb: [0.5, 0.36, 0.24] },
+  floorlamp: { name: '플로어 스탠드', w: 0.4, d: 0.4, h: 1.65, rgb: [0.12, 0.12, 0.13] }, mirror: { name: '전신 거울', w: 0.55, d: 0.35, h: 1.7, rgb: [0.35, 0.26, 0.18] },
+  piano: { name: '업라이트 피아노', w: 1.5, d: 0.6, h: 1.25, rgb: [0.03, 0.03, 0.035] }, curtain: { name: '커튼', w: 2.0, d: 0.15, h: 2.5, rgb: [0.62, 0.55, 0.45] },
+  // office · school
+  officechair: { name: '사무 의자', w: 0.62, d: 0.62, h: 1.1, rgb: [0.1, 0.1, 0.11] }, schooldesk: { name: '학교 책상', w: 0.65, d: 0.5, h: 0.76, rgb: [0.68, 0.52, 0.34] },
+  whiteboard: { name: '화이트보드', w: 1.8, d: 0.6, h: 1.9, rgb: [0.95, 0.95, 0.94] }, locker: { name: '사물함', w: 0.9, d: 0.5, h: 1.8, rgb: [0.42, 0.5, 0.58] },
+  filing: { name: '서류함', w: 0.45, d: 0.6, h: 1.3, rgb: [0.55, 0.56, 0.57] }, podium: { name: '연단', w: 0.6, d: 0.5, h: 1.15, rgb: [0.4, 0.28, 0.18] },
+  // shop · restaurant
+  booth: { name: '식당 부스', w: 1.4, d: 1.5, h: 1.1, rgb: [0.55, 0.12, 0.1] }, vending: { name: '자판기', w: 1.0, d: 0.8, h: 1.85, rgb: [0.75, 0.1, 0.1] },
+  storeshelf: { name: '마트 진열대', w: 1.8, d: 0.6, h: 1.6, rgb: [0.85, 0.85, 0.84] }, register: { name: '계산대', w: 1.4, d: 0.6, h: 1.0, rgb: [0.3, 0.32, 0.35] },
+  // bathroom
+  bathtub: { name: '욕조', w: 1.6, d: 0.75, h: 0.58, rgb: [0.93, 0.93, 0.92] }, toilet: { name: '변기', w: 0.4, d: 0.68, h: 0.78, rgb: [0.95, 0.95, 0.94] },
+  sink: { name: '세면대', w: 0.6, d: 0.48, h: 0.88, rgb: [0.94, 0.94, 0.93] },
+  // set pieces · film set
+  stairs: { name: '계단', w: 1.0, d: 2.4, h: 1.6, rgb: [0.6, 0.58, 0.55] }, riser: { name: '무대 단 (라이저)', w: 2.4, d: 1.2, h: 0.4, rgb: [0.15, 0.15, 0.16] },
+  pillar: { name: '기둥', w: 0.4, d: 0.4, h: 3.0, rgb: [0.8, 0.79, 0.76] }, backdrop: { name: '배경지 스탠드', w: 2.8, d: 0.9, h: 2.8, rgb: [0.88, 0.88, 0.87] },
+  director: { name: '감독 의자', w: 0.56, d: 0.5, h: 1.15, rgb: [0.05, 0.05, 0.06] }, monitorcart: { name: '모니터 카트', w: 0.8, d: 0.6, h: 1.5, rgb: [0.12, 0.12, 0.13] },
+  cstand: { name: 'C 스탠드', w: 0.7, d: 0.7, h: 2.2, rgb: [0.55, 0.56, 0.58] },
+  // outdoor · nature
+  pine: { name: '소나무', w: 2.2, d: 2.2, h: 6.0, rgb: [0.1, 0.24, 0.12] }, hedge: { name: '산울타리', w: 2.4, d: 0.6, h: 1.2, rgb: [0.14, 0.3, 0.12] },
+  flowerbed: { name: '화단', w: 1.6, d: 0.6, h: 0.45, rgb: [0.55, 0.3, 0.22] }, log: { name: '통나무', w: 2.0, d: 0.45, h: 0.45, rgb: [0.4, 0.28, 0.17] },
+  tent: { name: '캠핑 텐트', w: 2.1, d: 2.1, h: 1.3, rgb: [0.2, 0.42, 0.35] }, campfire: { name: '모닥불', w: 0.8, d: 0.8, h: 0.45, rgb: [0.4, 0.39, 0.37] },
+  // outdoor · street
+  busstop: { name: '버스 정류장', w: 3.0, d: 1.3, h: 2.5, rgb: [0.2, 0.22, 0.25] }, trafficlight: { name: '신호등', w: 0.4, d: 0.5, h: 3.6, rgb: [0.15, 0.16, 0.17] },
+  streetsign: { name: '표지판', w: 0.6, d: 0.1, h: 2.4, rgb: [0.1, 0.3, 0.62] }, bollard: { name: '볼라드', w: 0.22, d: 0.22, h: 0.9, rgb: [0.85, 0.7, 0.1] },
+  guardrail: { name: '가드레일', w: 3.0, d: 0.25, h: 0.8, rgb: [0.7, 0.71, 0.72] }, crosswalk: { name: '횡단보도', w: 4.0, d: 3.0, h: 0.012, rgb: [0.92, 0.92, 0.9], flat: true },
+  motorbike: { name: '오토바이', w: 0.75, d: 2.0, h: 1.15, rgb: [0.08, 0.08, 0.09] }, van: { name: '승합차', w: 1.95, d: 5.1, h: 2.0, rgb: [0.85, 0.85, 0.84] },
+  stall: { name: '포장마차', w: 2.4, d: 1.8, h: 2.3, rgb: [0.9, 0.4, 0.1] },
+  // warehouse · construction
+  crate: { name: '나무 상자', w: 0.6, d: 0.4, h: 0.4, rgb: [0.62, 0.48, 0.3] }, barrel: { name: '드럼통', w: 0.58, d: 0.58, h: 0.88, rgb: [0.12, 0.25, 0.55] },
+  pallet: { name: '팔레트', w: 1.2, d: 1.0, h: 0.15, rgb: [0.62, 0.5, 0.32] }, ladder: { name: '사다리', w: 0.55, d: 0.8, h: 1.8, rgb: [0.7, 0.71, 0.72] },
+  // music · performance
+  drums: { name: '드럼 세트', w: 1.6, d: 1.3, h: 1.2, rgb: [0.55, 0.08, 0.1] }, micstand: { name: '마이크 스탠드', w: 0.5, d: 0.5, h: 1.6, rgb: [0.06, 0.06, 0.07] },
+  amp: { name: '기타 앰프', w: 0.6, d: 0.3, h: 0.55, rgb: [0.06, 0.06, 0.06] }, speaker: { name: 'PA 스피커', w: 0.5, d: 0.45, h: 1.0, rgb: [0.05, 0.05, 0.055] },
+  synth: { name: '키보드 (신디)', w: 1.2, d: 0.45, h: 0.95, rgb: [0.08, 0.08, 0.09] },
 };
 function roomInfo() {
   const r = state.set && state.set.room; if (!r) return null;
@@ -2112,7 +2306,19 @@ function floorCells(L, s) {
 const FLOOR_ALB = { room: [0.32, 0.24, 0.17], out: [0.2, 0.2, 0.19] };
 const ALB = { A: [0.25, 0.33, 0.45], B: [0.45, 0.34, 0.24], skin: [0.5, 0.36, 0.28] };
 const heatCol = lx => { const t = clamp(Math.log10(Math.max(1, lx)) / 4, 0, 1), hue = 250 - t * 250; return `hsl(${hue},85%,${35 + t * 20}%)`; }; // 1 lux blue → 10,000 lux red
-
+// a light is aimed at a person once, when it is set down (head height, a little below); after that it keeps that direction (no tracking)
+function aimLight(l, s, k) { const sb = subjOf(s, k || afKey(s)); if (!sb) return; const D = norm(sub3({ x: sb.x, y: headY(s, sb) - 0.1, z: sb.z }, { x: l.x, y: l.y, z: l.z }));
+  l.pan = +(Math.atan2(D.x, D.z) / DEG).toFixed(1); l.tilt = +(Math.asin(clamp(D.y, -1, 1)) / DEG).toFixed(1); l.track = null; }
+// 간편 모드 lighting: lights by what they do, not by fixture — each one placed where that light usually goes around the person
+const SIMPLE_LIGHTS = [
+  { k: 'key', name: '주 조명', desc: '인물을 밝히는 크고 부드러운 빛', fx: 'cob300', mod: 'dome', ang: -45, dist: 2.3, y: 2.1, dim: 0.6 },
+  { k: 'fill', name: '보조광', desc: '반대쪽 그림자를 옅게', fx: 'panel', mod: 'open', ang: 55, dist: 2.6, y: 1.8, dim: 0.25 },
+  { k: 'back', name: '역광 (윤곽)', desc: '머리 · 어깨 테두리를 밝게', fx: 'cob120', mod: 'refl', ang: 160, dist: 2.2, y: 2.5, dim: 0.5 },
+  { k: 'bg', name: '배경 조명', desc: '인물 뒤 배경을 밝게', fx: 'tube', mod: 'open', ang: 180, dist: 3.4, y: 1.3, dim: 0.7, free: true },
+  { k: 'lamp', name: '스탠드 · 전구', desc: '화면에 보이는 실내등', fx: 'bulb', ang: 120, dist: 1.5, y: 1.0, dim: 1, free: true },
+  { k: 'SUN', name: '햇빛', desc: '시간 · 날씨 탭에서 바꿔요' }];
+const simpleOf = l => l && l.role && SIMPLE_LIGHTS.find(x => x.k === l.role);
+const lightLabel = l => isPro() || GRIPS[l.fx] ? fixName(l.fx).replace(/ \(.*\)/, '') : simpleOf(l) ? simpleOf(l).name : '조명'; // 간편 모드: by what it does, or just 조명
 /* ---------- camera moves and blocking: a shot can hold a start (its own fields) and an end (s.end) ---------- */
 // s.end = { cam: {x, y, z, pan, tilt, roll}, f, afT, actors: { A: {x, z, face}, … } }; no end = nothing moves.
 // While the end is being edited its values sit in the shot's own fields (so every editor, handle and renderer works as is) and the
@@ -2187,6 +2393,28 @@ function endDiffers(s) { const e = s.end; if (!e) return false; const c = s.cam,
   if (Math.hypot(d.x - c.x, d.y - c.y, d.z - c.z) > 0.01 || Math.abs(wrap180(d.pan - c.pan)) > 0.2 || Math.abs(d.tilt - c.tilt) > 0.2 || Math.abs((e.f || s.f) - s.f) > 0.1 || e.afT !== s.afT) return true;
   return Object.keys(e.actors || {}).some(k => s[k] && (Math.hypot(e.actors[k].x - s[k].x, e.actors[k].z - s[k].z) > 0.01 || Math.abs(wrap180(e.actors[k].face - s[k].face)) > 1)); }
 const kfShown = s => !!s.end && (!!MOVING[s.move] || (kf === 'end' && kfId === s.id) || canon(() => endDiffers(state.shots.find(x => x.id === s.id) || s)));
+/* ---------- techvis: the numbers the crew sets the shot up from (heights, distances, track, speeds, focus pulls), read from the shot ---------- */
+// rows of [label, value, note]; note flags what needs a decision (a fast dolly, a jib, a big focus pull)
+function techRows(s) {
+  const o = optics(s), k = afKey(s), sb = s[k], d = Math.hypot(s.cam.x - sb.x, s.cam.z - sb.z), rows = [];
+  rows.push(['카메라 높이', `${fmt(s.cam.y, 2)}m (렌즈 중심)`, ''], ['피사체까지', `${fmt(d, 2)}m (${castName(k)}, 수평 거리)`, ''],
+    ['방향', `팬 ${fmt(s.cam.pan, 0)}° · 틸트 ${fmt(s.cam.tilt, 0)}°${Math.abs(s.cam.roll || 0) >= 1 ? ` · 롤 ${fmt(s.cam.roll, 0)}°` : ''}`, ''],
+    ['렌즈', `${fmt(s.f, s.f < 20 ? 1 : 0)}mm (35mm 환산 ${Math.round(o.eq)}mm) · ${stopTxt(s.N)}`, ''], ['초점 · 심도', `${fmtM(o.fd)} · ${fmtM(o.near)}–${fmtM(o.far)}`, '']);
+  const e = s.end, len = Math.max(1, s.dur || 3);
+  if (!e) { rows.push(['장비', s.move === 'hand' ? '핸드헬드' : '삼각대 (고정)', '']); return rows; }
+  const v1 = shotAt(s, 1), track = Math.hypot(e.cam.x - s.cam.x, e.cam.z - s.cam.z), rise = e.cam.y - s.cam.y, dir = moveDir(s), sp = track / len;
+  const kit = s.move === 'steadi' ? '스테디캠 · 짐벌' : Math.abs(rise) > 0.4 ? `지브 · 크레인 (높이 ${rise > 0 ? '+' : ''}${fmt(rise, 2)}m)` : track > 0.05 ? (s.move === 'arc' ? '돌리 + 커브 트랙' : '돌리 + 직선 트랙') : '삼각대 (헤드만)';
+  rows.push(['장비', kit, '']);
+  if (track > 0.05) rows.push(['이동 거리 · 트랙', `${fmt(track, 2)}m 이동 · 트랙 ${fmt(Math.ceil((track + 0.6) * 2) / 2, 1)}m 이상`, '양끝 여유 30cm씩'],
+    ['이동 속도', `${fmt(sp, 2)}m/s (${len}초)`, sp > 1.5 ? '아주 빠름 — 그립과 안전 확인' : sp > 0.8 ? '빠른 편' : sp < 0.08 ? '아주 느림 — 슬라이더 · 모터 돌리 추천' : '']);
+  if (Math.abs(rise) > 0.05) rows.push(['높이 변화', `${fmt(s.cam.y, 2)} → ${fmt(e.cam.y, 2)}m`, '']);
+  if (dir && Math.abs(dir.pan) > 1) rows.push(['팬', `${dir.pan > 0 ? '오른쪽' : '왼쪽'} ${Math.abs(Math.round(dir.pan))}° (${fmt(Math.abs(dir.pan) / len, 0)}°/초)`, Math.abs(dir.pan) / len > 60 ? '휘 팬 속도' : '']);
+  if (Math.abs((e.f || s.f) - s.f) > 0.5) rows.push(['줌', `${Math.round(s.f)} → ${Math.round(e.f)}mm`, '']);
+  const o1 = optics(v1), pull = Math.abs(o1.fd - o.fd);
+  if (pull > 0.05 || e.afT !== s.afT) rows.push(['포커스 풀', `${fmtM(o.fd)} → ${fmtM(o1.fd)}${e.afT !== s.afT ? ` (${castName(s.afT === 'auto' ? k : s.afT)} → ${castName(e.afT)})` : ''}`, pull > 1 && o.near > 0 && o.far - o.near < 0.6 ? '심도가 얕아 큰 풀 — 포커스 풀러 리허설' : '']);
+  for (const a of Object.keys(e.actors || {})) { const p = s[a], q = e.actors[a]; if (!p || (a !== 'A' && !p.on)) continue; const w = Math.hypot(q.x - p.x, q.z - p.z); if (w < 0.05) continue;
+    const ws = w / len; rows.push([`${castName(a)} 동선`, `${fmt(w, 1)}m · ${fmt(ws, 1)}m/s (${ws > 2.5 ? '뛰기' : ws > 1.6 ? '빠른 걸음' : '걷기'})`, '시작 · 끝 마크에 테이프']); }
+  return rows; }
 const ease = (s, t) => s.ease === 'linear' ? t : t * t * (3 - 2 * t);
 const hasEnd = s => !!s.end;
 // when people enter or leave the frame during the shot, sampled through its length (any part of the body in frame counts as in)
@@ -2206,7 +2434,25 @@ function playShot() {
     if (t < 1) play.raf = requestAnimationFrame(step); else play.raf = setTimeout(stopPlay, 700); };
   play.raf = requestAnimationFrame(step); syncKfBar();
 }
-function stopPlay() { if (!play) return; cancelAnimationFrame(play.raf); clearTimeout(play.raf); state.shots[play.i] = play.orig; play = null; renderAll(); }
+// the animatic: every shot in story order for its own length, moves and blocking playing, cut to cut — the walk-through of the sequence.
+// It reuses `play` one shot at a time (seq marks it), so anything that stops a play (an edit, a tap on the picture) stops the animatic.
+let seq = null;
+const mmss = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+function playSeq(from = 0) { if (seq) return stopSeq(); if (play) stopPlay(); kfReset(); openPane(null); if (mode !== 'mon') setMode('mon');
+  const len = s => Math.max(1, s.dur || 3); seq = { i: from, total: state.shots.reduce((a, s) => a + len(s), 0), done: state.shots.slice(0, from).reduce((a, s) => a + len(s), 0) };
+  $('#app').classList.add('anim'); $('#animHud').hidden = false; $('#seqBtn').setAttribute('aria-pressed', 'true'); seqShot(from); }
+function seqShot(i) { if (!seq) return; if (i >= state.shots.length) return stopSeq(true);
+  select(i); const orig = cur(), dur = Math.max(1, orig.dur || 3) * 1000; seq.i = i;
+  play = { i, orig, view: orig, t0: performance.now(), dur, ev: [], sizes: '', seq: true };
+  const step = now => { if (!play || !seq) return; const t = clamp((now - play.t0) / dur, 0, 1);
+    if (orig.end) { play.view = shotAt(orig, ease(orig, t)); state.shots[i] = play.view; }
+    drawMonitor(); $('#animT').textContent = `S${String(i + 1).padStart(2, '0')} · ${fmt(t * dur / 1000, 1)} / ${dur / 1000}초 · 전체 ${mmss(seq.done + t * dur / 1000)} / ${mmss(seq.total)}`;
+    if (t < 1) play.raf = requestAnimationFrame(step); else { state.shots[i] = orig; play = null; seq.done += dur / 1000; seqShot(i + 1); } };
+  play.raf = requestAnimationFrame(step); }
+function stopSeq(end) { if (!seq) return; seq = null; if (play) { cancelAnimationFrame(play.raf); state.shots[play.i] = play.orig; play = null; }
+  $('#app').classList.remove('anim'); $('#animHud').hidden = true; $('#seqBtn').setAttribute('aria-pressed', 'false'); renderAll(); if (end) { toast('전체 재생을 마쳤어요'); questMark('play'); } }
+function stopPlay() { if (play && play.seq) return stopSeq();
+  if (!play) return; cancelAnimationFrame(play.raf); clearTimeout(play.raf); state.shots[play.i] = play.orig; play = null; renderAll(); }
 /* ---------- renderer (shared by monitor, thumbnails and 3D set) ---------- */
 /* ---------- 3D models: faces built in a local frame (r = right, u = up, f = forward), real-world sizes in metres ---------- */
 const KEYL = norm({ x: 0.45, y: 0.8, z: 0.35 }); // fixed key light for the unlit 3D set view
@@ -2347,6 +2593,123 @@ function propFaces(o) {
     case 'hydrant': mCyl(out, F, 'y', [0, 0, 0], 0.17, 0.17, 0.05, 12, base); mCyl(out, F, 'y', [0, 0.05, 0], 0.11, 0.11, 0.6, 12, base);
       mCyl(out, F, 'y', [0, 0.65, 0], 0.13, 0.05, 0.15, 12, base); for (const sx of [-1, 1]) mCyl(out, F, 'x', [sx > 0 ? 0.1 : -0.2, 0.45, 0], 0.045, 0.045, 0.1, 10, dark); break;
     case 'apple': B(-W, 0, -D, W, d.h, D, base); for (const sx of [-1, 1]) B(sx * W - 0.004, 0.12, -0.08, sx * W + 0.004, 0.16, 0.08, MAT.black); break;
+    // ---- living · bedroom
+    case 'coffee': B(-W, 0.38, -D, W, 0.42, D, base); legs(0.05, 0.05, 0.05, 0.38, dark); B(-W + 0.06, 0.1, -D + 0.06, W - 0.06, 0.13, D - 0.06, dark); break;
+    case 'nightstand': B(-W, 0.06, -D, W, d.h, D, base); legs(0.03, 0.03, 0.04, 0.06, dark); B(-W + 0.03, 0.32, D, W - 0.03, 0.5, D + 0.01, lite); B(-0.05, 0.4, D + 0.01, 0.05, 0.42, D + 0.03, MAT.metal); break;
+    case 'wardrobe': B(-W, 0.05, -D, W, d.h, D - 0.02, base); B(-W, 0, -D, W, 0.05, D - 0.05, dark);
+      for (const sx of [-1, 1]) { B(sx < 0 ? -W + 0.01 : 0.005, 0.07, D - 0.02, sx < 0 ? -0.005 : W - 0.01, d.h - 0.02, D, lite); mRod(out, fp3(F, sx * 0.06, 0.9, D + 0.03), fp3(F, sx * 0.06, 1.25, D + 0.03), 0.02, MAT.metal); } break;
+    case 'dresser': B(-W, 0.08, -D, W, d.h, D - 0.02, base); legs(0.04, 0.04, 0.05, 0.08, dark);
+      for (let i = 0; i < 4; i++) { const y = 0.1 + i * 0.185; B(-W + 0.03, y, D - 0.02, W - 0.03, y + 0.17, D, lite); B(-0.08, y + 0.075, D, 0.08, y + 0.095, D + 0.02, MAT.metal); } break;
+    case 'floorlamp': mCyl(out, F, 'y', [0, 0, 0], 0.17, 0.17, 0.03, 16, base); mCyl(out, F, 'y', [0, 0.03, 0], 0.015, 0.015, 1.32, 8, MAT.metal, 0);
+      mCyl(out, F, 'y', [0, 1.33, 0], 0.2, 0.13, 0.3, 16, { rgb: [0.92, 0.88, 0.76], two: true }, 0); break;
+    case 'mirror': B(-W, 0.05, -0.02, W, d.h, 0.02, base); mQuad(out, [fp3(F, -W + 0.04, 0.09, 0.025), fp3(F, W - 0.04, 0.09, 0.025), fp3(F, W - 0.04, d.h - 0.04, 0.025), fp3(F, -W + 0.04, d.h - 0.04, 0.025)], { rgb: [0.62, 0.68, 0.72] });
+      for (const sx of [-1, 1]) mRod(out, fp3(F, sx * (W - 0.06), 1.1, -0.02), fp3(F, sx * (W - 0.06), 0, -D), 0.025, base); break;
+    case 'piano': { const ivory = { rgb: [0.92, 0.91, 0.88] }; B(-W, 0, -D, W, d.h, -D + 0.34, base); B(-W, 0.68, -D + 0.34, W, 0.74, D - 0.06, base); B(-W + 0.06, 0.74, -D + 0.36, W - 0.06, 0.765, -D + 0.52, ivory);
+      for (let x = -W + 0.1; x < W - 0.1; x += 0.035) B(x, 0.765, -D + 0.36, x + 0.014, 0.78, -D + 0.45, MAT.black);
+      for (const sx of [-1, 1]) B(sx * (W - 0.05) - 0.04, 0, D - 0.1, sx * (W - 0.05) + 0.04, 0.68, D - 0.04, base); break; }
+    case 'curtain': mCyl(out, F, 'x', [-W - 0.05, d.h - 0.05, 0], 0.015, 0.015, 2 * W + 0.1, 8, MAT.metal);
+      for (let i = 0, n = 14; i < n; i++) { const x0 = -W + i * 2 * W / n, z = i % 2 ? 0.03 : -0.03; B(x0, 0.02, z - 0.025, x0 + 2 * W / n + 0.01, d.h - 0.08, z + 0.025, i % 2 ? base : dark); } break;
+    // ---- office · school
+    case 'officechair': { for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; mRod(out, fp3(F, 0, 0.08, 0), fp3(F, Math.sin(a) * 0.3, 0.06, Math.cos(a) * 0.3), 0.04, MAT.black); mSphere(out, fp3(F, Math.sin(a) * 0.3, 0.03, Math.cos(a) * 0.3), 0.03, MAT.black, 5); }
+      mCyl(out, F, 'y', [0, 0.08, 0], 0.03, 0.03, 0.36, 8, MAT.metal, 0); B(-0.25, 0.44, -0.24, 0.25, 0.52, 0.25, base); B(-0.23, 0.6, -0.3, 0.23, d.h, -0.24, base); mRod(out, fp3(F, 0, 0.5, -0.24), fp3(F, 0, 0.62, -0.28), 0.04, MAT.black);
+      for (const sx of [-1, 1]) { mRod(out, fp3(F, sx * 0.26, 0.5, 0), fp3(F, sx * 0.26, 0.68, 0), 0.03, MAT.black); B(sx * 0.26 - 0.03, 0.68, -0.12, sx * 0.26 + 0.03, 0.7, 0.14, MAT.black); } break; }
+    case 'schooldesk': { const steel = { rgb: [0.25, 0.3, 0.32] }; B(-W, 0.72, -D, W, 0.76, D, base); legs(0.04, 0.04, 0.03, 0.72, steel); B(-W + 0.05, 0.58, -D + 0.05, W - 0.05, 0.6, D - 0.05, steel); break; }
+    case 'whiteboard': { const steel = { rgb: [0.6, 0.62, 0.64] }; B(-W, 0.8, -0.015, W, d.h, 0.015, base); for (const [x0, x1, y0, y1] of [[-W, W, 0.78, 0.82], [-W, W, d.h - 0.03, d.h], [-W, -W + 0.03, 0.8, d.h], [W - 0.03, W, 0.8, d.h]]) B(x0, y0, -0.02, x1, y1, 0.02, steel);
+      for (const sx of [-1, 1]) { mRod(out, fp3(F, sx * (W - 0.1), 0.05, 0), fp3(F, sx * (W - 0.1), 1.4, 0), 0.04, steel); B(sx * (W - 0.1) - 0.03, 0, -D, sx * (W - 0.1) + 0.03, 0.05, D, steel); } break; }
+    case 'locker': B(-W, 0, -D, W, d.h, D - 0.015, base); for (let i = 0; i < 3; i++) { const x0 = -W + i * 2 * W / 3 + 0.01, x1 = x0 + 2 * W / 3 - 0.02;
+        B(x0, 0.05, D - 0.015, x1, d.h - 0.03, D, lite); for (let k = 0; k < 4; k++) B(x0 + 0.06, d.h - 0.2 - k * 0.04, D, x1 - 0.06, d.h - 0.19 - k * 0.04, D + 0.005, dark); B(x1 - 0.06, 0.9, D, x1 - 0.03, 1.0, D + 0.02, MAT.metal); } break;
+    case 'filing': B(-W, 0, -D, W, d.h, D - 0.015, base); for (let i = 0; i < 4; i++) { const y = 0.04 + i * 0.315; B(-W + 0.02, y, D - 0.015, W - 0.02, y + 0.3, D, lite); B(-0.08, y + 0.2, D, 0.08, y + 0.22, D + 0.03, MAT.metal); } break;
+    case 'podium': mCyl(out, F, 'y', [0, 0, 0], 0.36, 0.3, 0.06, 4, dark); B(-W + 0.06, 0.06, -D + 0.06, W - 0.06, 1.0, D - 0.06, base); B(-W, 1.0, -D, W, d.h, D, lite); mRod(out, fp3(F, 0.15, d.h, D - 0.08), fp3(F, 0.1, d.h + 0.3, D + 0.05), 0.012, MAT.black); break;
+    // ---- shop · restaurant
+    case 'booth': { const seat = base, tbl = { rgb: [0.25, 0.2, 0.16] };
+      for (const sz of [-1, 1]) { B(-W, 0, sz * (D - 0.3) - 0.25, W, 0.45, sz * (D - 0.3) + 0.25, seat); B(-W, 0.45, sz > 0 ? D - 0.12 : -D, W, d.h, sz > 0 ? D : -D + 0.12, seat); }
+      B(-W + 0.1, 0.72, -0.28, W - 0.1, 0.76, 0.28, tbl); mCyl(out, F, 'y', [0, 0, 0], 0.05, 0.05, 0.72, 8, MAT.metal, 0); mCyl(out, F, 'y', [0, 0, 0], 0.25, 0.25, 0.02, 12, MAT.metal); break; }
+    case 'vending': B(-W, 0, -D, W, d.h, D - 0.03, base); mQuad(out, [fp3(F, -W + 0.08, 0.75, D - 0.02), fp3(F, 0.2, 0.75, D - 0.02), fp3(F, 0.2, d.h - 0.12, D - 0.02), fp3(F, -W + 0.08, d.h - 0.12, D - 0.02)], { rgb: [0.85, 0.9, 0.95] });
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) B(-W + 0.12 + c * 0.15, 0.82 + r * 0.24, D - 0.2, -W + 0.22 + c * 0.15, 0.97 + r * 0.24, D - 0.06, { rgb: [[0.9, 0.2, 0.2], [0.2, 0.5, 0.9], [0.95, 0.75, 0.2], [0.2, 0.7, 0.35]][(r + c) % 4] });
+      B(0.26, 0.9, D - 0.03, W - 0.08, 1.35, D, MAT.grey); B(-W + 0.1, 0.25, D - 0.03, W - 0.1, 0.45, D, MAT.black); break;
+    case 'storeshelf': { const rnd = hashRnd(o.id), pal = [[0.85, 0.2, 0.15], [0.15, 0.45, 0.8], [0.95, 0.8, 0.2], [0.2, 0.65, 0.3], [0.9, 0.9, 0.88], [0.55, 0.3, 0.6]];
+      B(-W, 0, -0.03, W, d.h, 0.03, base); for (const sx of [-1, 1]) B(sx * W - 0.03, 0, -D, sx * W + 0.03, d.h, D, base);
+      for (const y of [0.1, 0.5, 0.9, 1.3]) { B(-W, y - 0.02, -D, W, y, D, base);
+        for (const sz of [-1, 1]) { let x = -W + 0.04; while (x < W - 0.12) { const bw = 0.08 + rnd() * 0.1, bh = 0.12 + rnd() * 0.2; B(x, y, sz > 0 ? 0.05 : -D + 0.04, x + bw, y + bh, sz > 0 ? D - 0.04 : -0.05, { rgb: pal[Math.floor(rnd() * pal.length)] }); x += bw + 0.01; } } } break; }
+    case 'register': B(-W, 0, -D, W, 0.92, D, base); B(-W, 0.92, -D, W, d.h, D, lite); B(0.2, 1.0, -0.1, 0.5, 1.02, 0.15, MAT.black); mRod(out, fp3(F, 0.35, 1.02, -0.05), fp3(F, 0.35, 1.25, -0.08), 0.03, MAT.black);
+      B(0.18, 1.2, -0.12, 0.52, 1.42, -0.09, { ...MAT.black, front: { rgb: [0.2, 0.35, 0.5] } }); break;
+    // ---- bathroom
+    case 'bathtub': { const shade = { rgb: base.rgb.map(v => v * 0.8) }; B(-W, 0, -D, W, d.h, -D + 0.07, base); B(-W, 0, D - 0.07, W, d.h, D, base); B(-W, 0, -D, -W + 0.07, d.h, D, base); B(W - 0.07, 0, -D, W, d.h, D, base); B(-W + 0.07, 0, -D + 0.07, W - 0.07, 0.12, D - 0.07, shade);
+      mRod(out, fp3(F, -W + 0.12, d.h, 0), fp3(F, -W + 0.12, d.h + 0.2, 0), 0.025, MAT.metal); mRod(out, fp3(F, -W + 0.12, d.h + 0.2, 0), fp3(F, -W + 0.25, d.h + 0.18, 0), 0.022, MAT.metal); break; }
+    case 'toilet': mCyl(out, F, 'y', [0, 0, 0.08], 0.13, 0.17, 0.38, 14, base); mCyl(out, F, 'y', [0, 0.38, 0.08], 0.19, 0.19, 0.04, 16, base); B(-W, 0.38, -D, W, d.h, -D + 0.2, base); B(-W - 0.01, d.h, -D - 0.01, W + 0.01, d.h + 0.03, -D + 0.21, base); break;
+    case 'sink': mCyl(out, F, 'y', [0, 0, 0], 0.09, 0.12, 0.72, 12, base); B(-W, 0.72, -D, W, d.h, D, base); B(-W + 0.06, d.h - 0.02, -D + 0.12, W - 0.06, d.h + 0.001, D - 0.06, { rgb: base.rgb.map(v => v * 0.78) });
+      mRod(out, fp3(F, 0, d.h, -D + 0.06), fp3(F, 0, d.h + 0.15, -D + 0.06), 0.025, MAT.metal); mRod(out, fp3(F, 0, d.h + 0.15, -D + 0.06), fp3(F, 0, d.h + 0.13, -D + 0.18), 0.02, MAT.metal); break;
+    // ---- set pieces · film set
+    case 'stairs': { const n = 9, run = 2 * D / n, rise = d.h / n; for (let i = 0; i < n; i++) B(-W, 0, -D + i * run, W, (n - i) * rise, -D + (i + 1) * run, i % 2 ? base : lite); break; }
+    case 'riser': B(-W, 0.02, -D, W, d.h, D, base); B(-W + 0.03, 0, -D + 0.03, W - 0.03, 0.02, D - 0.03, MAT.black); B(-W, d.h - 0.02, -D, W, d.h, D, { rgb: [0.25, 0.25, 0.26] }); break;
+    case 'pillar': B(-W, 0, -D, W, d.h, D, base); B(-W - 0.03, 0, -D - 0.03, W + 0.03, 0.12, D + 0.03, lite); B(-W - 0.03, d.h - 0.1, -D - 0.03, W + 0.03, d.h, D + 0.03, lite); break;
+    case 'backdrop': { const steel = MAT.black; for (const sx of [-1, 1]) { mRod(out, fp3(F, sx * (W - 0.05), 0, -D + 0.1), fp3(F, sx * (W - 0.05), d.h, -D + 0.1), 0.035, steel);
+        for (const a of [-1, 1]) mRod(out, fp3(F, sx * (W - 0.05), 0.6, -D + 0.1), fp3(F, sx * (W - 0.05) + a * 0.3, 0, -D + 0.1 + (a > 0 ? 0.3 : -0.05)), 0.025, steel); }
+      mCyl(out, F, 'x', [-W, d.h - 0.06, -D + 0.12], 0.05, 0.05, 2 * W, 12, steel); B(-W + 0.1, 0.35, -D + 0.16, W - 0.1, d.h - 0.1, -D + 0.18, base);
+      for (let i = 0; i < 6; i++) { const a0 = i / 6 * Math.PI / 2, a1 = (i + 1) / 6 * Math.PI / 2, R = 0.35, z0 = -D + 0.17 + Math.sin(a0) * R, z1 = -D + 0.17 + Math.sin(a1) * R, y0 = 0.35 - Math.sin(Math.PI / 2 - a0) * R + 0.0001, y1 = 0.35 - Math.cos(a1) * R;
+        mQuad(out, [fp3(F, -W + 0.1, 0.35 - Math.cos(a0) * R, z0), fp3(F, W - 0.1, 0.35 - Math.cos(a0) * R, z0), fp3(F, W - 0.1, y1, z1), fp3(F, -W + 0.1, y1, z1)], base); }
+      B(-W + 0.1, 0, -D + 0.52, W - 0.1, 0.005, D, base); break; }
+    case 'director': { const wd = { rgb: [0.35, 0.25, 0.16] }; for (const sz of [-1, 1]) { mRod(out, fp3(F, -W + 0.03, 0, sz * (D - 0.03)), fp3(F, W - 0.03, 0.48, -sz * (D - 0.03)), 0.03, wd); mRod(out, fp3(F, W - 0.03, 0, sz * (D - 0.03)), fp3(F, -W + 0.03, 0.48, -sz * (D - 0.03)), 0.03, wd); }
+      B(-W + 0.03, 0.46, -D + 0.03, W - 0.03, 0.5, D - 0.03, base); for (const sx of [-1, 1]) { mRod(out, fp3(F, sx * (W - 0.03), 0.48, -D + 0.04), fp3(F, sx * (W - 0.03), d.h, -D + 0.04), 0.03, wd); B(sx * (W - 0.03) - 0.03, 0.68, -D + 0.04, sx * (W - 0.03) + 0.03, 0.71, D - 0.04, wd); }
+      B(-W + 0.03, 0.85, -D + 0.03, W - 0.03, d.h - 0.02, -D + 0.05, base); break; }
+    case 'monitorcart': { const steel = MAT.grey; B(-W, 0.15, -D, W, 0.18, D, steel); B(-W, 0.8, -D, W, 0.83, D, steel); for (const [sx, sz] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) { mRod(out, fp3(F, sx * (W - 0.03), 0.08, sz * (D - 0.03)), fp3(F, sx * (W - 0.03), 0.95, sz * (D - 0.03)), 0.03, steel); mSphere(out, fp3(F, sx * (W - 0.03), 0.05, sz * (D - 0.03)), 0.05, MAT.black, 5); }
+      mRod(out, fp3(F, 0, 0.83, 0), fp3(F, 0, 1.02, 0), 0.04, MAT.black); B(-0.33, 1.02, -0.06, 0.33, d.h, 0.0, { ...MAT.black, front: { rgb: [0.18, 0.28, 0.4] } }); B(-0.2, 0.83, 0.05, 0.2, 0.95, 0.25, MAT.black); break; }
+    case 'cstand': { const steel = base; for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI * 2; mRod(out, fp3(F, 0, 0.35, 0), fp3(F, Math.sin(a) * 0.33, 0, Math.cos(a) * 0.33), 0.022, steel); }
+      mCyl(out, F, 'y', [0, 0, 0], 0.018, 0.018, 2.0, 8, steel, 0); mRod(out, fp3(F, 0, 1.95, 0), fp3(F, 0, 1.95, 0.9), 0.02, steel); B(-0.04, 1.9, -0.04, 0.04, 2.0, 0.04, MAT.black); break; }
+    // ---- outdoor · nature
+    case 'pine': { const bark = { rgb: [0.27, 0.18, 0.11] }; mCyl(out, F, 'y', [0, 0, 0], 0.16, 0.1, 2.2, 10, bark, 0);
+      [[1.6, 1.1, 1.8], [2.9, 0.85, 1.6], [4.1, 0.6, 1.5], [5.1, 0.35, 1.0]].forEach(([y, r, h], i) => mCyl(out, F, 'y', [0, y - 0.6, 0], r * 1.0, 0.02, h, 9, i % 2 ? base : dark)); break; }
+    case 'hedge': { const rnd = hashRnd(o.id); B(-W, 0, -D, W, d.h - 0.15, D, base); for (let x = -W + 0.2; x < W; x += 0.35) mSphere(out, fp3(F, x, d.h - 0.2, (rnd() - 0.5) * 0.1), 0.28, x % 0.7 < 0.35 ? base : dark, 5); break; }
+    case 'flowerbed': { const rnd = hashRnd(o.id), soil = { rgb: [0.18, 0.12, 0.08] }, pal = [[0.85, 0.15, 0.25], [0.95, 0.85, 0.2], [0.9, 0.5, 0.7], [0.9, 0.9, 0.9], [0.55, 0.3, 0.75]];
+      B(-W, 0, -D, W, 0.3, -D + 0.08, base); B(-W, 0, D - 0.08, W, 0.3, D, base); B(-W, 0, -D, -W + 0.08, 0.3, D, base); B(W - 0.08, 0, -D, W, 0.3, D, base); B(-W + 0.08, 0, -D + 0.08, W - 0.08, 0.26, D - 0.08, soil);
+      for (let i = 0; i < 18; i++) { const x = -W + 0.15 + rnd() * (2 * W - 0.3), z = -D + 0.15 + rnd() * (2 * D - 0.3); mSphere(out, fp3(F, x, 0.33, z), 0.07, { rgb: [0.15, 0.35, 0.12] }, 4); mSphere(out, fp3(F, x, 0.4, z), 0.045, { rgb: pal[i % pal.length] }, 4); } break; }
+    case 'log': mCyl(out, F, 'x', [-W, 0.22, 0], 0.22, 0.2, 2 * W, 12, { ...base, cap0: { rgb: [0.7, 0.55, 0.35] }, cap1: { rgb: [0.7, 0.55, 0.35] } }); break;
+    case 'tent': mCyl(out, F, 'y', [0, 0, 0], W * 1.38, 0.03, d.h, 4, { ...base, two: true }, 0); B(-0.35, 0, D * 0.62, 0.35, 0.8, D * 0.66, dark); break;
+    case 'campfire': { const rnd = hashRnd(o.id); for (let i = 0; i < 9; i++) { const a = i / 9 * Math.PI * 2; mSphere(out, fp3(F, Math.sin(a) * 0.32, 0.06, Math.cos(a) * 0.32), 0.08 + rnd() * 0.03, i % 2 ? base : dark, 4); }
+      for (let i = 0; i < 4; i++) { const a = i / 4 * Math.PI * 2 + 0.4; mRod(out, fp3(F, Math.sin(a) * 0.25, 0.03, Math.cos(a) * 0.25), fp3(F, 0, 0.3, 0), 0.06, { rgb: [0.3, 0.2, 0.12] }); }
+      mCyl(out, F, 'y', [0, 0.05, 0], 0.16, 0.02, 0.38, 8, { css: '#FF8A2A', glow: true }, 0); break; }
+    // ---- outdoor · street
+    case 'busstop': { const glass = { rgb: [0.55, 0.68, 0.78], alpha: 0.25 }; for (const sx of [-1, 1]) for (const sz of [-1, 1]) mRod(out, fp3(F, sx * (W - 0.05), 0, sz * (D - 0.05)), fp3(F, sx * (W - 0.05), d.h - 0.1, sz * (D - 0.05)), 0.07, base);
+      B(-W, d.h - 0.12, -D, W, d.h, D, base); mQuad(out, [fp3(F, -W + 0.05, 0.15, -D + 0.05), fp3(F, W - 0.05, 0.15, -D + 0.05), fp3(F, W - 0.05, d.h - 0.15, -D + 0.05), fp3(F, -W + 0.05, d.h - 0.15, -D + 0.05)], glass);
+      B(-W + 0.3, 0.42, -D + 0.08, W - 0.3, 0.46, -D + 0.45, MAT.metal); B(W - 0.05, 0.5, -D + 0.05, W + 0.01, 2.0, -D + 0.8, { css: '#2E6BD6' }); break; }
+    case 'trafficlight': mCyl(out, F, 'y', [0, 0, 0], 0.07, 0.06, 3.0, 10, base, 0); B(-0.16, 2.9, -0.13, 0.16, 3.6, 0.13, MAT.black);
+      ['#E5483A', '#F2B22E', '#2FBF71'].forEach((c, i) => mCyl(out, F, 'z', [0, 3.47 - i * 0.22, 0.13], 0.08, 0.08, 0.02, 12, { css: c, glow: i === 0 })); break;
+    case 'streetsign': mCyl(out, F, 'y', [0, 0, 0], 0.035, 0.035, 2.4, 8, MAT.metal, 0); B(-W, 1.7, 0.035, W, d.h, 0.06, base); B(-W + 0.04, 1.74, 0.06, W - 0.04, d.h - 0.04, 0.065, { rgb: [0.92, 0.92, 0.9] }); break;
+    case 'bollard': mCyl(out, F, 'y', [0, 0, 0], W, W * 0.9, d.h, 12, base); mCyl(out, F, 'y', [0, d.h * 0.7, 0], W * 0.93, W * 0.93, 0.08, 12, MAT.black, 0); break;
+    case 'guardrail': for (let x = -W + 0.1; x <= W; x += 1.4) B(x - 0.05, 0, -0.05, x + 0.05, d.h, 0.05, dark); B(-W, d.h - 0.35, 0.05, W, d.h - 0.05, D, base); break;
+    case 'crosswalk': for (let i = 0, n = 8; i < n; i++) { const x0 = -W + i * 2 * W / n; B(x0, 0, -D, x0 + W / n, d.h, D, base); } break;
+    case 'motorbike': { const tyre = { ...MAT.black, cap0: MAT.grey, cap1: MAT.grey }; for (const sz of [-1, 1]) mCyl(out, F, 'x', [-0.07, 0.32, sz * 0.68], 0.32, 0.32, 0.14, 16, tyre);
+      B(-0.18, 0.35, -0.55, 0.18, 0.75, 0.45, base); B(-0.15, 0.75, -0.6, 0.15, 0.86, 0.05, MAT.black); B(-0.2, 0.7, 0.1, 0.2, 0.95, 0.45, base);
+      mRod(out, fp3(F, 0, 0.95, 0.45), fp3(F, 0, 0.32, 0.7), 0.05, MAT.metal); B(-0.36, 1.08, 0.42, 0.36, 1.12, 0.48, MAT.black); mRod(out, fp3(F, 0, 0.95, 0.45), fp3(F, 0, 1.1, 0.45), 0.04, MAT.black); break; }
+    case 'van': { const glass = { rgb: [0.015, 0.02, 0.025] }, trim = { rgb: [0.03, 0.03, 0.035] };
+      B(-W, 0.35, -D, W, d.h - 0.05, D - 0.9, base); B(-W, 0.35, D - 0.9, W, 1.15, D, base); B(-W + 0.05, 1.15, D - 0.9, W - 0.05, d.h - 0.15, D - 0.75, glass);
+      B(-W - 0.005, 1.2, -D + 0.6, W + 0.005, 1.65, D - 1.0, glass); B(-W + 0.02, 0.18, -D - 0.04, W - 0.02, 0.45, -D + 0.1, trim); B(-W + 0.02, 0.18, D - 0.1, W - 0.02, 0.45, D + 0.04, trim);
+      for (const [sx, sz] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) mCyl(out, F, 'x', [sx > 0 ? W - 0.2 : -W - 0.02, 0.35, sz * (D - 0.9)], 0.35, 0.35, 0.22, 16, { ...MAT.black, cap0: MAT.grey, cap1: MAT.grey }); break; }
+    case 'stall': { const tarp = base, wd = { rgb: [0.45, 0.32, 0.2] }; for (const sx of [-1, 1]) for (const sz of [-1, 1]) mRod(out, fp3(F, sx * (W - 0.05), 0, sz * (D - 0.05)), fp3(F, sx * (W - 0.05), d.h - 0.2, sz * (D - 0.05)), 0.05, MAT.metal);
+      B(-W - 0.1, d.h - 0.22, -D - 0.1, W + 0.1, d.h, D + 0.1, { ...tarp, two: true }); B(-W, 0.9, -D, -W + 0.02, d.h - 0.22, D, { ...tarp, two: true }); B(W - 0.02, 0.9, -D, W, d.h - 0.22, D, { ...tarp, two: true });
+      B(-W + 0.1, 0, D - 0.6, W - 0.1, 0.85, D - 0.1, wd); B(-W + 0.1, 0.85, D - 0.62, W - 0.1, 0.9, D - 0.05, { rgb: [0.75, 0.74, 0.72] }); break; }
+    // ---- warehouse · construction
+    case 'crate': B(-W, 0, -D, W, d.h, D, base); for (const y of [0.04, d.h / 2, d.h - 0.06]) for (const sz of [-1, 1]) B(-W - 0.005, y, sz * D - 0.005, W + 0.005, y + 0.05, sz * D + 0.005, dark); break;
+    case 'barrel': mCyl(out, F, 'y', [0, 0, 0], W, W, d.h, 16, { ...base, cap1: { rgb: base.rgb.map(v => v * 0.8) } }); for (const y of [0.28, 0.6]) mCyl(out, F, 'y', [0, y, 0], W + 0.01, W + 0.01, 0.03, 16, dark, 0); break;
+    case 'pallet': for (const y of [0, d.h - 0.025]) for (let i = 0, n = y ? 7 : 3; i < n; i++) { const z0 = -D + i * (2 * D - 0.1) / (n - 1); B(-W, y, z0, W, y + 0.025, z0 + 0.1, base); }
+      for (const sx of [-1, 0, 1]) B(sx * (W - 0.05) - 0.05, 0.025, -D, sx * (W - 0.05) + 0.05, d.h - 0.025, D, dark); break;
+    case 'ladder': { for (const sz of [-1, 1]) { for (const sx of [-1, 1]) mRod(out, fp3(F, sx * (W - 0.03), 0, sz * D), fp3(F, sx * (W - 0.06), d.h, sz * 0.05), 0.04, base);
+        if (sz > 0) for (let i = 1; i < 6; i++) { const t = i / 6, z = D * (1 - t) + 0.05 * t; B(-W + 0.04 + t * 0.03, t * d.h - 0.015, z - 0.04, W - 0.04 - t * 0.03, t * d.h + 0.015, z + 0.04, base); } }
+      B(-W, d.h - 0.04, -0.12, W, d.h, 0.12, { css: '#E8A317' }); break; }
+    // ---- music · performance
+    case 'drums': { const shell = base, head = { rgb: [0.92, 0.91, 0.88] }, brass = { rgb: [0.75, 0.6, 0.25] };
+      mCyl(out, F, 'z', [0, 0.28, 0.1], 0.28, 0.28, 0.4, 18, { ...shell, cap0: head, cap1: head });
+      for (const [x, y, z, r] of [[-0.18, 0.72, 0.2, 0.15], [0.18, 0.72, 0.2, 0.15]]) mCyl(out, F, 'y', [x, y - 0.18, z], r, r, 0.18, 14, { ...shell, cap1: head });
+      mCyl(out, F, 'y', [0.55, 0.35, 0.05], 0.22, 0.22, 0.25, 16, { ...shell, cap1: head }); mCyl(out, F, 'y', [-0.45, 0.55, -0.15], 0.17, 0.17, 0.12, 14, { rgb: [0.7, 0.7, 0.72], cap1: head });
+      for (const [x, z, h] of [[-0.7, 0.15, 1.05], [0.75, 0.35, 1.15], [-0.6, -0.3, 0.85]]) { mRod(out, fp3(F, x, 0, z), fp3(F, x, h, z), 0.025, MAT.metal); mCyl(out, F, 'y', [x, h, z], 0.22, 0.22, 0.01, 16, brass); }
+      mCyl(out, F, 'y', [0, 0, -0.45], 0.17, 0.17, 0.5, 12, MAT.black); break; }
+    case 'micstand': for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI * 2; mRod(out, fp3(F, 0, 0.12, 0), fp3(F, Math.sin(a) * 0.22, 0, Math.cos(a) * 0.22), 0.02, base); }
+      mCyl(out, F, 'y', [0, 0.1, 0], 0.012, 0.012, 1.45, 8, base, 0); mRod(out, fp3(F, 0, d.h - 0.05, 0), fp3(F, 0, d.h - 0.02, 0.16), 0.03, MAT.black); mSphere(out, fp3(F, 0, d.h - 0.02, 0.18), 0.03, MAT.metal, 5); break;
+    case 'amp': B(-W, 0, -D, W, d.h, D, base); B(-W + 0.03, 0.04, D, W - 0.03, d.h - 0.12, D + 0.005, { rgb: [0.15, 0.14, 0.12] }); B(-W + 0.03, d.h - 0.11, D, W - 0.03, d.h - 0.03, D + 0.005, { rgb: [0.75, 0.65, 0.4] }); break;
+    case 'speaker': B(-W, 0, -D, W, d.h, D, base); mCyl(out, F, 'z', [0, 0.32, D - 0.01], 0.18, 0.18, 0.02, 16, { rgb: [0.12, 0.12, 0.12] }); mCyl(out, F, 'z', [0, 0.75, D - 0.01], 0.09, 0.09, 0.02, 12, { rgb: [0.12, 0.12, 0.12] }); break;
+    case 'synth': { for (const sx of [-1, 1]) { mRod(out, fp3(F, sx * 0.35, 0, -0.2), fp3(F, -sx * 0.35, 0.82, 0.05), 0.035, MAT.metal); mRod(out, fp3(F, sx * 0.35, 0, 0.2), fp3(F, -sx * 0.35, 0.82, -0.05), 0.035, MAT.metal); }
+      B(-W, 0.82, -D + 0.1, W, 0.9, D - 0.1, base); B(-W + 0.05, 0.9, -D + 0.2, W - 0.05, 0.92, D - 0.12, { rgb: [0.92, 0.91, 0.88] }); for (let x = -W + 0.06; x < W - 0.06; x += 0.032) B(x, 0.92, -D + 0.2, x + 0.013, 0.935, -D + 0.32, MAT.black); break; }
+    default: B(-W, 0, -D, W, d.h, D, base); // a plain box until a piece has its own shape
   }
   if (scaled) out.forEach(f => { f.n = norm(f.n); if (f.vn) f.vn = f.vn.map(norm); });
   return out;
@@ -2704,11 +3067,7 @@ function renderScene(ctx, W, H, V, s, opt = {}) {
     ctx.fillStyle = C.sheet; ctx.globalAlpha = .85; ctx.fillRect(l.p.x - fs * .6, l.p.y - fs * 1.15, fs * 1.2, fs * 1.15); ctx.globalAlpha = 1;
     ctx.fillStyle = C.ink; ctx.fillText(l.t, l.p.x, l.p.y - 1); });
   if (opt.after) opt.after(ctx, toC, scr);
-  if (opt.thirds) {
-    ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]); ctx.beginPath();
-    [1, 2].forEach(i => { ctx.moveTo(W * i / 3, 0); ctx.lineTo(W * i / 3, H); ctx.moveTo(0, H * i / 3); ctx.lineTo(W, H * i / 3); });
-    ctx.stroke(); ctx.setLineDash([]);
-  }
+  if (opt.thirds) drawGuide(ctx, W, H, opt.thirds, opt.guideFlip);
   if (opt.move) drawMove(ctx, W, H, s.move, s);
   ctx.restore();
 }
@@ -2744,6 +3103,43 @@ function arrow(ctx, x1, y1, x2, y2, hw) {
   ctx.lineTo(x2 - hw * Math.cos(a + .45), y2 - hw * Math.sin(a + .45)); ctx.closePath(); ctx.fill();
 }
 // the move drawn over the frame, pointing the way it really goes (from the shot's start and end; without an end, the usual way)
+/* ---------- composition guides over the picture (the monitor's 구도 button) ---------- */
+// thirds · phi grid (0.382 / 0.618) · diagonals with their reciprocals (dynamic symmetry) · golden triangles · golden spiral (fitted to the frame,
+// four ways round) · centre and symmetry · action/title safe (93 % / 90 %). `flip` turns the spiral and triangles: 0–3.
+const GUIDES = [['thirds', '3분할'], ['phi', '황금비'], ['diag', '대각선'], ['tri', '황금 삼각형'], ['spiral', '황금나선'], ['center', '중앙 · 대칭'], ['safe', '안전 영역'], ['none', '끄기']];
+const PHI = (1 + Math.sqrt(5)) / 2;
+// how the guide lines look: colour and strength (연하게 / 보통 / 진하게), so they read on a bright or a dark picture
+const GUIDE_COLS = [['#FFFFFF', '흰색'], ['#111111', '검정'], ['#FFD43B', '노랑'], ['#3BE8FF', '청록'], ['#FF4FD8', '분홍'], ['#5CFF6A', '초록']];
+const GUIDE_STR = [[0.45, 1, '연하게'], [0.75, 1.4, '보통'], [1, 2.2, '진하게']];
+let guideCol = '#FFFFFF', guideStr = 1; try { guideCol = localStorage.getItem('framecontis.guidecol') || guideCol; guideStr = +(localStorage.getItem('framecontis.guidestr') ?? 1); } catch (e) {}
+function drawGuide(ctx, W, H, g, flip = 0) {
+  if (g === true) g = 'thirds'; if (!g || g === 'none') return;
+  const [al, lw] = GUIDE_STR[guideStr] || GUIDE_STR[1], dark = guideCol === '#111111';
+  ctx.save(); ctx.strokeStyle = guideCol; ctx.globalAlpha = al; ctx.lineWidth = lw; ctx.shadowColor = dark ? 'rgba(255,255,255,.55)' : 'rgba(0,0,0,.6)'; ctx.shadowBlur = 2.5; // a halo in the opposite tone keeps the line readable on any picture
+  const L = (x0, y0, x1, y1) => { ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); }, fx = flip & 1, fy = flip & 2;
+  const X = x => fx ? W - x : x, Y = y => fy ? H - y : y; // mirrored corners for the turned versions
+  ctx.beginPath();
+  if (g === 'thirds' || g === 'phi') { const a = g === 'phi' ? 1 / (PHI * PHI) : 1 / 3; ctx.setLineDash([4, 4]);
+    for (const t of [a, 1 - a]) { L(W * t, 0, W * t, H); L(0, H * t, W, H * t); } }
+  if (g === 'diag') { const r = H * H / W; L(0, 0, W, H); L(W, 0, 0, H); ctx.stroke(); ctx.beginPath(); ctx.setLineDash([5, 4]);
+    L(W, 0, W - r, H); L(0, H, r, 0); L(0, 0, r, H); L(W, H, W - r, 0); }
+  if (g === 'tri') { const A = { x: X(0), y: Y(H) }, B = { x: X(W), y: Y(0) }, foot = P => { const dx = B.x - A.x, dy = B.y - A.y, t = ((P.x - A.x) * dx + (P.y - A.y) * dy) / (dx * dx + dy * dy); return { x: A.x + dx * t, y: A.y + dy * t }; };
+    L(A.x, A.y, B.x, B.y); for (const P of [{ x: X(0), y: Y(0) }, { x: X(W), y: Y(H) }]) { const q = foot(P); L(P.x, P.y, q.x, q.y); } }
+  if (g === 'spiral') { // quarter arcs through ever smaller squares of a golden rectangle, stretched to the frame
+    ctx.save(); ctx.translate(fx ? W : 0, fy ? H : 0); ctx.scale((fx ? -1 : 1) * W / PHI, (fy ? -1 : 1) * H);
+    let x = 0, y = 0, w = PHI, h = 1; const sq = [];
+    for (let i = 0; i < 9; i++) { const d = i % 4;
+      if (d === 0) { sq.push([x, y, h, h]); ctx.moveTo(x, y + h); ctx.arc(x + h, y + h, h, Math.PI, 1.5 * Math.PI); x += h; w -= h; }
+      else if (d === 1) { sq.push([x, y, w, w]); ctx.arc(x, y + w, w, 1.5 * Math.PI, 2 * Math.PI); y += w; h -= w; }
+      else if (d === 2) { sq.push([x + w - h, y, h, h]); ctx.arc(x + w - h, y, h, 0, 0.5 * Math.PI); w -= h; }
+      else { sq.push([x, y + h - w, w, w]); ctx.arc(x + w, y + h - w, w, 0.5 * Math.PI, Math.PI); h -= w; } }
+    ctx.restore(); ctx.lineWidth = lw * 1.3; ctx.stroke(); ctx.beginPath(); ctx.lineWidth = lw * 0.8; ctx.globalAlpha = al * 0.4;
+    ctx.save(); ctx.translate(fx ? W : 0, fy ? H : 0); ctx.scale((fx ? -1 : 1) * W / PHI, (fy ? -1 : 1) * H); sq.slice(0, 6).forEach(([a, b, c, e]) => ctx.rect(a, b, c, e)); ctx.restore(); }
+  if (g === 'center') { L(W / 2, 0, W / 2, H); L(0, H / 2, W, H / 2); ctx.stroke(); ctx.beginPath(); ctx.setLineDash([3, 5]); L(W / 4, 0, W / 4, H); L(W * 3 / 4, 0, W * 3 / 4, H);
+    ctx.moveTo(W / 2 + Math.min(W, H) * 0.06, H / 2); ctx.arc(W / 2, H / 2, Math.min(W, H) * 0.06, 0, Math.PI * 2); }
+  if (g === 'safe') { for (const [k, d] of [[0.93, []], [0.9, [4, 4]]]) { ctx.stroke(); ctx.beginPath(); ctx.setLineDash(d); ctx.rect(W * (1 - k) / 2, H * (1 - k) / 2, W * k, H * k); }
+    ctx.stroke(); ctx.beginPath(); ctx.setLineDash([]); const c = Math.min(W, H) * 0.03; L(W / 2 - c, H / 2, W / 2 + c, H / 2); L(W / 2, H / 2 - c, W / 2, H / 2 + c); }
+  ctx.stroke(); ctx.restore(); }
 function drawMove(ctx, W, H, k, s) {
   if (k === 'static') return;
   const lw = Math.max(1.6, W / 200), hw = lw * 4.5, m = Math.min(W, H), d = s && moveDir(s);
@@ -3081,8 +3477,7 @@ function shotOverlay(ctx, W, H, s, V, opt) {
     ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 1; ctx.beginPath();
     const line = fn => { for (let i = 0; i <= 32; i++) { const [a, b] = fn(i / 16 - 1), p = pr({ x: a, y: b, z: 1 }); i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); } };
     for (let i = -6; i <= 6; i++) { line(t => [i / 6 * tH, t * tV]); line(t => [t * tH, i / 6 * tV]); } ctx.stroke(); }
-  if (opt.thirds) { ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]); ctx.beginPath();
-    [1, 2].forEach(i => { ctx.moveTo(W * i / 3, 0); ctx.lineTo(W * i / 3, H); ctx.moveTo(0, H * i / 3); ctx.lineTo(W, H * i / 3); }); ctx.stroke(); ctx.setLineDash([]); }
+  if (opt.thirds) drawGuide(ctx, W, H, opt.thirds, opt.guideFlip);
   if (opt.move !== false) drawMove(ctx, W, H, s.move, s);
 }
 // one entry point for every view through the lens: WebGL when it can, the canvas renderer for the sketch mode, fisheye lenses and old devices
@@ -3242,7 +3637,7 @@ function drawWorld() {
       else if (wDrag && wDrag.t === 'objmove' && wDrag.ghost) drawPlaceGrid(ctx, toC, scr, wDrag.ghost, !!wDrag.why);
       if (showHeat) drawHeatLegend(ctx);
       if (axisOf().show) drawAxis(ctx, toC, scr, s);
-      drawPaths(ctx, toC, scr); drawSetups(ctx, toC, scr);
+      drawPaths(ctx, toC, scr); drawSetups(ctx, toC, scr); drawMarks(ctx, toC, scr); drawTape(ctx, toC, scr);
       drawHandles(ctx, toC, scr, s, SB);
     },
   };
@@ -3317,7 +3712,7 @@ function drawLights(ctx, toC, scr, s, L) {
     const rr = Math.max(12, 0.36 * worldV.fp / q.z);
     if (sel) { ctx.strokeStyle = C.accent; ctx.lineWidth = 2.5; ctx.setLineDash([4, 3]); ctx.beginPath(); ctx.arc(p.x, p.y, rr, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
     if (!sel && rr < 20) { ctx.restore(); return; }
-    const t = FIX(li.l.fx).name.replace(/ \(.*\)/, ''); ctx.font = '600 10.5px "IBM Plex Sans KR", sans-serif'; const tw = ctx.measureText(t).width, lx = p.x + rr * 0.7 + 4, ly = p.y - rr * 0.7;
+    const t = lightLabel(li.l); ctx.font = '600 10.5px "IBM Plex Sans KR", sans-serif'; const tw = ctx.measureText(t).width, lx = p.x + rr * 0.7 + 4, ly = p.y - rr * 0.7;
     ctx.fillStyle = C.sheet; ctx.globalAlpha = 0.85; ctx.fillRect(lx - 3, ly - 8, tw + 6, 16); ctx.globalAlpha = 1;
     ctx.fillStyle = sel ? C.accent : C.ink; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(t, lx, ly); ctx.restore();
   });
@@ -3364,6 +3759,26 @@ function drawPaths(ctx, toC, scr) {
   const cp = line(d.cams, C.accent, [], 2.2); if (cp) { tag(cp[0], 'S', C.accent); tag(cp[cp.length - 1], 'E', '#E8A317'); }
   for (const k of Object.keys(d.acts)) { const ap = line(d.acts[k], CAST_COL[k], [5, 4], 2); if (ap) { tag(ap[0], 'S', CAST_COL[k]); tag(ap[ap.length - 1], 'E', CAST_COL[k]); } }
 }
+// actor marks: a tape T on the floor where each person starts (and ends, when they walk) — toes on the bar, as the crew lays them. Top view.
+function drawMarks(ctx, toC, scr) { if (mode !== 'top') return;
+  const marks = canon(() => { const s = cur(), out = []; for (const k of subjKeys(s)) { out.push({ k, p: s[k], n: 1 }); const e = s.end && s.end.actors && s.end.actors[k];
+    if (e && Math.hypot(e.x - s[k].x, e.z - s[k].z) > 0.05) out.push({ k, p: e, n: 2 }); } return out; });
+  const P = (x, z) => { const q = toC({ x, y: 0.015, z }); return q.z > 0.05 ? scr(q) : null; };
+  ctx.save(); ctx.lineCap = 'round';
+  for (const m of marks) { const f = m.p.face * DEG, fx = Math.sin(f), fz = Math.cos(f), rx = Math.cos(f), rz = -Math.sin(f), cx = m.p.x + fx * 0.2, cz = m.p.z + fz * 0.2;
+    const a = P(cx - rx * 0.18, cz - rz * 0.18), b = P(cx + rx * 0.18, cz + rz * 0.18), c = P(cx, cz), d = P(cx - fx * 0.2, cz - fz * 0.2); if (!a || !b || !c || !d) continue;
+    ctx.strokeStyle = CAST_COL[m.k]; ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.stroke();
+    ctx.fillStyle = CAST_COL[m.k]; ctx.font = '700 10px "IBM Plex Mono", monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(`${m.k}${m.n}`, b.x + 4, b.y); }
+  ctx.restore(); }
+// the measuring tape (top view): drag between two points on the floor; the length stays until the tape is put away
+const tape = { on: false, a: null, b: null };
+function drawTape(ctx, toC, scr) { if (mode !== 'top' || !tape.on || !tape.a || !tape.b) return;
+  const pa = toC({ ...tape.a, y: 0.02 }), pb = toC({ ...tape.b, y: 0.02 }); if (pa.z < 0.05 || pb.z < 0.05) return; const a = scr(pa), b = scr(pb), L = Math.hypot(tape.b.x - tape.a.x, tape.b.z - tape.a.z);
+  ctx.save(); ctx.strokeStyle = '#F2B22E'; ctx.fillStyle = '#F2B22E'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+  for (const p of [a, b]) { ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill(); }
+  const t = `${fmt(L, 2)}m`, mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2; ctx.font = '700 12.5px "IBM Plex Mono", monospace'; const w = ctx.measureText(t).width;
+  ctx.fillStyle = 'rgba(10,12,16,.85)'; ctx.fillRect(mx - w / 2 - 6, my - 20, w + 12, 18); ctx.fillStyle = '#F2B22E'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(t, mx, my - 11); ctx.restore(); }
+$('#tapeBtn').onclick = () => { tape.on = !tape.on; tape.a = tape.b = null; $('#tapeBtn').setAttribute('aria-pressed', tape.on); renderWorld(); if (tape.on) toast('바닥에서 두 점 사이를 끌어 거리를 재요'); };
 function drawCrane(ctx, toC, scr, s, r, g, k) {
   const cr = s.crane, P = g.pivot, a0 = cr.swing * DEG, rh = g.L * Math.cos(g.phi), mx = ARM_MAX[r.kind];
   const curves = [
@@ -3483,8 +3898,9 @@ function overlap(A, B) {
 function placeCheck(o, except) {
   const rm = roomInfo(), fp = footprint(o);
   if (rm && fp.some(q => q.x < rm.x0 - 0.01 || q.x > rm.x1 + 0.01 || q.z < rm.z0 - 0.01 || q.z > rm.z1 + 0.01)) return '방 밖으로 나가요';
-  if (o.type === 'rug') return '';
-  for (const q of state.set.props) { if (q.id === except || q.id === o.id || q.type === 'rug') continue; if (overlap(fp, footprint(q))) return `${josa(PROPS[q.type].name, '과', '와')} 겹쳐요`; }
+  const lies = t => t === 'rug' || PROPS[t].flat; // rugs and road markings lie flat: things stand on them
+  if (lies(o.type)) return '';
+  for (const q of state.set.props) { if (q.id === except || q.id === o.id || lies(q.type)) continue; if (overlap(fp, footprint(q))) return `${josa(PROPS[q.type].name, '과', '와')} 겹쳐요`; }
   return ''; }
 // snap to the grid; windows and doors ride along the nearest wall, facing into the room
 function snapPlace(o, g) { const rm = roomInfo();
@@ -3533,7 +3949,7 @@ function syncBars() { syncCrane();
     $('#pOk').disabled = !!placing.why; $('#pRotL').disabled = $('#pRotR').disabled = !!(WALLED[placing.o.type] && roomInfo()); }
   const o = !placing && selObj && findObj(selObj.id), sun = selObj && selObj.id === 'SUN'; ob.hidden = !o || mode === 'mon' || (sun && !state.set.sun.on);
   if (!ob.hidden) { const isP = selObj.kind === 'prop', isS = selObj.kind === 'subj';
-    $('#objName').textContent = sun ? '햇빛' : isS ? castLabel(selObj.k) : isP ? PROPS[o.type].name : fixName(o.fx).replace(/ \(.*\)/, '');
+    $('#objName').textContent = sun ? '햇빛' : isS ? castLabel(selObj.k) : isP ? PROPS[o.type].name : lightLabel(o);
     document.querySelectorAll('#objBar [data-p]').forEach(b => b.hidden = !isP && !(isS && (b.id === 'oRotL' || b.id === 'oRotR')));
     document.querySelectorAll('#objBar [data-sj]').forEach(b => b.hidden = !isS); if (isS) { const dog = castOf(selObj.k).who === 'dog';
       $('#poseBar').innerHTML = Object.entries(POSES).filter(([p]) => !dog || p === 'stand' || p === 'sit').map(([p, v]) => `<button data-pose="${p}" aria-pressed="${(o.pose || 'stand') === p}">${v.name}</button>`).join(''); }
@@ -3612,6 +4028,7 @@ wcv.addEventListener('pointerdown', e => {
   capture(wcv, e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
   if (ptrs.size === 2) { const [a, b] = [...ptrs.values()], t = twoState(a, b); if (placing) cancelPlaceDrag(); wDrag = { t: 'two', d0: t.d, c0: t.c, a0: a, b0: b, v0: { ...viewer }, V: worldV, cam0: { ...cur().cam }, lock: null }; return; }
   if (ptrs.size > 2) return;
+  if (tape.on && mode === 'top') { const g = groundHit(wLocal(e), worldV); if (g) { tape.a = g; tape.b = g; wDrag = { t: 'tape' }; renderWorld(); return; } }
   if (placing && e.button !== 2 && !e.shiftKey) { movePlace(groundHit(wLocal(e), worldV)); wDrag = { t: 'place', down: { x: e.clientX, y: e.clientY }, V: worldV }; return; }
   const p = wLocal(e), s = cur();
   let best = null, bd = 98; worldHandles.forEach(h => { const d = h.hit(p); if (d < bd) { bd = d; best = h; } });
@@ -3644,6 +4061,7 @@ wcv.addEventListener('pointerdown', e => {
 wcv.addEventListener('pointermove', e => {
   if (!wDrag) { if (placing && e.pointerType === 'mouse') { movePlace(groundHit(wLocal(e), worldV)); return; } if (e.pointerType === 'mouse') { const p = wLocal(e); wcv.style.cursor = worldHandles.some(h => h.hit(p) < 98) ? 'pointer' : mode === 'top' ? 'move' : 'grab'; } return; }
   if (ptrs.has(e.pointerId)) ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (wDrag.t === 'tape') { const g = groundHit(wLocal(e), worldV); if (g) { tape.b = g; renderWorld(); } return; }
   const s = cur(), p = wLocal(e);
   if (wDrag.t === 'two') { if (ptrs.size < 2) return; const [a, b] = [...ptrs.values()], V = wDrag.V, g = twoLock(wDrag, a, b, twoMode === 'pan');
     if (g.lock === 'pinch') { viewer.dist = clamp(wDrag.v0.dist * wDrag.d0 / Math.max(10, g.d), 1.2, 160); renderWorld(); }
@@ -3717,7 +4135,7 @@ const frameViewer = () => mode === 'top' ? topViewer() : mode === '3d' ? fitView
 function setMode(m) {
   if (m === mode) return; if (mode === '3d') view3d = { ...viewer }; mode = m;
   document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
-  $('#stage').dataset.mode = m; syncBars(); $('#worldwrap').hidden = m === 'mon'; $('#vf').hidden = m !== 'mon'; $('#pip').hidden = m === 'mon'; $('#fitBtn').hidden = m === 'mon';
+  $('#stage').dataset.mode = m; $('#tapeBtn').hidden = m !== 'top'; if (m !== 'top' && tape.on) $('#tapeBtn').click(); syncBars(); $('#worldwrap').hidden = m === 'mon'; $('#vf').hidden = m !== 'mon'; $('#pip').hidden = m === 'mon'; $('#fitBtn').hidden = m === 'mon';
   wsz = null; vsz = null;
   renderAll();
   if (m === 'top') topViewer(); else if (m === '3d') { if (view3d) tweenViewer(view3d, 560); else fitViewer(); }
@@ -3728,19 +4146,23 @@ function setMode(m) {
 const mvKeys = new Set(), joy = { x: 0, y: 0, on: false }; let mvRaf = 0, mvT = 0, mvT0 = 0, mvWarned = false;
 function mvSubj() { return mode === '3d' && selObj && selObj.kind === 'subj' && !placing ? selObj.k : null; }
 function mvStep(t) {
-  if (!mvKeys.size && !joy.on) { mvRaf = 0; changed(true, true); return; }
+  if (![...mvKeys].some(k => k !== 'fast' && k !== 'slow') && !joy.on) { mvRaf = 0; changed(true, true); return; }
   const dt = mvT ? Math.min(0.05, (t - mvT) / 1000) : 0.016; mvT = t; const s = cur(), k = mvSubj();
   const key = c => mvKeys.has(c) ? 1 : 0, ramp = Math.min(1, 0.35 + (t - mvT0) / 900);
   const diag = key('f') + key('b') && key('l') + key('r') ? Math.SQRT1_2 : 1; // forward + sideways together: no faster than one key
-  const fw = (key('f') - key('b')) * ramp * diag, rt = (key('r') - key('l')) * ramp * diag, up = (key('u') - key('d')) * ramp;
+  const boost = mvKeys.has('fast') ? 2.5 : mvKeys.has('slow') ? 0.35 : 1; // Shift runs, Alt creeps (as in games)
+  let fw = (key('f') - key('b')) * ramp * diag * boost, rt = (key('r') - key('l')) * ramp * diag * boost, up = (key('u') - key('d')) * ramp * boost;
+  const pad = mvKeys.has('pad') ? gp.axes : null, look = { p: key('lr') - key('ll') + (pad ? pad.lp : 0), t: key('lu') - key('ld') + (pad ? pad.lt : 0) };
+  if (pad) { fw += pad.fw; rt += pad.rt; up += pad.up; } // analogue sticks add to the keys
   if (k) { const sb = s[k], vb = viewerBasis(1, 1), y = Math.atan2(vb.f.x, vb.f.z), fh = { x: Math.sin(y), z: Math.cos(y) }, rh = { x: Math.cos(y), z: -Math.sin(y) };
-    const jf = -joy.y, jr = joy.x, mx = fh.x * jf + rh.x * jr, mz = fh.z * jf + rh.z * jr, m = Math.hypot(mx, mz);
+    const jf = joy.on ? -joy.y : fw, jr = joy.on ? joy.x : rt, mx = fh.x * jf + rh.x * jr, mz = fh.z * jf + rh.z * jr, m = Math.hypot(mx, mz);
     if (m > 0.05) { const v = 1.4 * dt; sb.x = +(sb.x + mx * v).toFixed(3); sb.z = +(sb.z + mz * v).toFixed(3); sb.face = Math.round((Math.atan2(mx, mz) / DEG + 360) % 360); }
     renderWorld(); syncBars(); mvRaf = requestAnimationFrame(mvStep); return; }
   const SB = shotBasis(s), sb = s[afKey(s)], d = Math.hypot(s.cam.x - sb.x, s.cam.z - sb.z), v = clamp(d * 0.45, 0.25, 2.5) * dt;
   const f = fw > 0 && d < 0.35 ? 0 : fw; if (f !== fw && !mvWarned) { mvWarned = true; toast('피사체 바로 앞이라 더 다가갈 수 없어요'); }
   s.cam.x = +(s.cam.x + (SB.fh.x * f + SB.rh.x * rt) * v).toFixed(4); s.cam.z = +(s.cam.z + (SB.fh.z * f + SB.rh.z * rt) * v).toFixed(4);
   s.cam.y = +clamp(s.cam.y + up * v * 0.6, 0.05, 40).toFixed(4);
+  if (look.p || look.t) { const o = optics(s), r = 0.55 * dt * boost; s.cam.pan = +wrap180(s.cam.pan + look.p * o.hf / DEG * r).toFixed(2); s.cam.tilt = +clamp(s.cam.tilt + look.t * o.vf / DEG * r, -90, 90).toFixed(2); }
   changed(false); mvRaf = requestAnimationFrame(mvStep);
 }
 const mvGo = () => { if (!mvRaf) { mvT = 0; mvT0 = performance.now(); mvWarned = false; mvRaf = requestAnimationFrame(mvStep); } };
@@ -3754,6 +4176,64 @@ const joySet = e => { const r = $('#joy').getBoundingClientRect(), R = r.width /
 $('#joy').addEventListener('pointerdown', e => { e.preventDefault(); capture($('#joy'), e.pointerId); joy.on = true; $('#joy').classList.add('on'); joySet(e); mvGo(); });
 $('#joy').addEventListener('pointermove', e => { if (joy.on) joySet(e); });
 ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => $('#joy').addEventListener(ev, () => { joy.on = false; joy.x = joy.y = 0; $('#joy').classList.remove('on'); $('#joyThumb').style.transform = ''; }));
+// game-style keys (desktop, both modes): WASD + QE move what the move keys move, the arrow keys look around, Shift runs / Alt creeps,
+// number keys switch views, letters open the tools, Z / X change the lens, ? shows the whole guide
+const MV_KEY = { w: 'f', s: 'b', a: 'l', d: 'r', e: 'u', q: 'd', ArrowLeft: 'll', ArrowRight: 'lr', ArrowUp: 'lu', ArrowDown: 'ld' }, PANE_KEY = { c: 'cam', r: 'rig', l: 'light', t: 'set', h: 'shot' };
+const keysOff = e => e.metaKey || e.ctrlKey || !$('#startScreen').hidden || (e.target instanceof Element && !!e.target.closest('input,textarea,select,[contenteditable]'));
+function keyHelp(open) { $('#keyHelp').hidden = !open; if (open) $('#keyHelpClose').focus(); }
+// the lens one step wider (−1) or longer (+1): the kit's focal lengths in 프로, the named views in 간편 모드
+function lensStep(dir) { const s = cur(), list = isPro() ? kitFocals() : F_PRESETS.map(([f]) => roundF(kitF(f * imageArea().iw / imageArea({ w: 36, h: 24 }).iw)));
+  const next = dir > 0 ? list.find(f => f > s.f + 0.05) : [...list].reverse().find(f => f < s.f - 0.05); if (next == null) return;
+  setF(next); keepDone(); changed(true); toast(`${fmt(next, next < 20 ? 1 : 0)}mm (35mm 환산 ${Math.round(optics(cur()).eq)}mm)`); }
+const moveKey = (k, on) => { const m = MV_KEY[k]; if (!m) return false; if (on) mvKeys.add(m); else mvKeys.delete(m); document.querySelector(`#movePad [data-mv="${m}"]`)?.classList.toggle('on', on); return true; };
+document.addEventListener('keydown', e => {
+  if (e.key === 'Shift') mvKeys.add('fast'); if (e.key === 'Alt') mvKeys.add('slow');
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'd' && $('#startScreen').hidden) { e.preventDefault(); $('#dupBtn').click(); return; }
+  if (keysOff(e)) return; const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  if (!$('#keyHelp').hidden) { if (k === 'Escape' || k === '?') { keyHelp(false); e.preventDefault(); } return; }
+  if (seq) { if (k === 'Escape' || k === ' ' || k === 'p') { e.preventDefault(); stopSeq(); } return; }
+  if (k === '?' || (k === '/' && e.shiftKey)) { keyHelp(true); e.preventDefault(); return; }
+  if (placing || !$('#coach').hidden) return;
+  if (view !== 'edit') { if (k === 'b') $('#editBtn').click(); return; }
+  const canMove = mode === 'mon' || !!mvSubj(), look = k.startsWith('Arrow');
+  if (MV_KEY[k] && (look ? !mvSubj() && mode !== 'top' : canMove)) { e.preventDefault(); if (!e.repeat) { moveKey(k, true); mvGo(); } return; }
+  if (e.repeat) return;
+  if (k === '1' || k === '2' || k === '3') { setMode(['3d', 'mon', 'top'][+k - 1]); return; }
+  if (k === 'v') { setMode({ '3d': 'mon', mon: 'top', top: '3d' }[mode]); return; }
+  if (PANE_KEY[k] && (isPro() || k !== 'r')) { openPane(pane === PANE_KEY[k] ? null : PANE_KEY[k]); return; }
+  if (k === 'z' || k === 'x') { lensStep(k === 'x' ? 1 : -1); return; }
+  if (k === 'g' && mode === 'mon') { guideMenu($('#guideMenu').hidden); return; }
+  if (k === 'f' && mode === 'mon' && isPro()) { $('#gFC').click(); return; }
+  if (k === 'u') { $('#aimA').click(); return; } if (k === 'o') { $('#levelBtn').click(); return; } if (k === '0') { frameViewer(); return; }
+  if (k === 'm' && cur().end) { setKf(kf === 'end' ? 'start' : 'end'); renderAll(); renderWorld(); return; }
+  if (k === ' ' && cur().end) { e.preventDefault(); playShot(); return; }
+  if (k === 'p') { playSeq(); return; } if (k === 'n') { addShot(); return; } if (k === 'b') { $('#boardBtn').click(); return; }
+  if (k === '[' || k === ']' || (mode === 'top' && (k === 'ArrowLeft' || k === 'ArrowRight'))) { select(state.sel + (k === ']' || k === 'ArrowRight' ? 1 : -1)); e.preventDefault(); return; }
+  if (k === ',' || k === '.') { $(k === '.' ? '#durP' : '#durM').click(); return; }
+  if ((k === 'Delete' || k === 'Backspace') && selObj && selObj.kind !== 'subj' && !$('#objBar').hidden) { e.preventDefault(); $('#oDel').click(); return; } });
+document.addEventListener('keyup', e => { if (e.key === 'Shift') mvKeys.delete('fast'); if (e.key === 'Alt') mvKeys.delete('slow'); moveKey(e.key.length === 1 ? e.key.toLowerCase() : e.key, false); });
+addEventListener('blur', () => { mvKeys.clear(); document.querySelectorAll('#movePad .on').forEach(b => b.classList.remove('on')); });
+$('#keyHelpClose').onclick = () => keyHelp(false); $('#keyHelp').addEventListener('click', e => { if (e.target.id === 'keyHelp') keyHelp(false); });
+$('#keysBtn').onclick = () => { xMenu(false); keyHelp(true); };
+$('#keyHelpPrint').onclick = () => { document.body.classList.add('print-keys'); const done = () => { document.body.classList.remove('print-keys'); removeEventListener('afterprint', done); };
+  addEventListener('afterprint', done); setTimeout(() => { window.print(); addEventListener('pointerdown', done, { once: true }); }, 100); };
+// game controller (standard mapping): left stick moves, right stick looks, triggers boom, bumpers change shots, face buttons act.
+// Polled only while a pad is connected; sticks feed the same keys the keyboard uses, so speed and limits stay the same.
+const gp = { raf: 0, prev: [], axes: { fw: 0, rt: 0, lp: 0, lt: 0, up: 0 } };
+const GP_DEAD = 0.18, dz = v => Math.abs(v) < GP_DEAD ? 0 : (v - Math.sign(v) * GP_DEAD) / (1 - GP_DEAD);
+function gpPoll() { const pad = [...(navigator.getGamepads ? navigator.getGamepads() : [])].find(Boolean); if (!pad) { gp.raf = 0; return; } gp.raf = requestAnimationFrame(gpPoll);
+  const B = i => pad.buttons[i] && (pad.buttons[i].pressed || pad.buttons[i].value > 0.5), hit = i => B(i) && !gp.prev[i];
+  const idle = view !== 'edit' || !$('#startScreen').hidden || placing || !$('#keyHelp').hidden;
+  if (!idle) { const a = gp.axes; a.rt = dz(pad.axes[0] || 0); a.fw = -dz(pad.axes[1] || 0); a.lp = dz(pad.axes[2] || 0); a.lt = -dz(pad.axes[3] || 0); a.up = (pad.buttons[7] ? pad.buttons[7].value : 0) - (pad.buttons[6] ? pad.buttons[6].value : 0);
+    const moving = a.rt || a.fw || a.lp || a.lt || Math.abs(a.up) > 0.1; if (moving && (mode === 'mon' || mvSubj() || mode === '3d')) { mvKeys.add('pad'); mvGo(); } else mvKeys.delete('pad');
+    if (seq) { if (hit(1) || hit(9)) stopSeq(); }
+    else { if (hit(0) && cur().end) playShot(); if (hit(1)) { if (pane) openPane(null); else if (selObj) { selObj = null; syncSet(); syncBars(); renderWorld(); } } if (hit(2) && mode === 'mon') guideMenu($('#guideMenu').hidden);
+      if (hit(3)) addShot(); if (hit(4)) select(state.sel - 1); if (hit(5)) select(state.sel + 1); if (hit(9)) playSeq(); if (hit(12)) lensStep(1); if (hit(13)) lensStep(-1);
+      if (hit(14) || hit(15)) { const order = ['3d', 'mon', 'top'], i = order.indexOf(mode); setMode(order[(i + (hit(15) ? 1 : 2)) % 3]); } } }
+  if (hit(8)) keyHelp($('#keyHelp').hidden);
+  gp.prev = pad.buttons.map(b => b.pressed || b.value > 0.5); }
+addEventListener('gamepadconnected', () => { if (!gp.raf) gp.raf = requestAnimationFrame(gpPoll); toast('게임패드 연결됨 · 왼쪽 스틱 이동, 오른쪽 스틱 둘러보기, Select 조작 가이드'); });
+addEventListener('gamepaddisconnected', () => { mvKeys.delete('pad'); toast('게임패드 연결이 끊겼어요'); });
 $('#modeSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setMode(b.dataset.mode); });
 $('#fitBtn').onclick = frameViewer;
 
@@ -3801,12 +4281,15 @@ function drawMonitor() {
   if (mode !== 'mon') return;
   if (!vsz) vsz = sizeView();
   const ctx = $('#view').getContext('2d'); ctx.setTransform(vsz.dpr, 0, 0, vsz.dpr, 0, 0);
-  const s = cur(), V = renderShot(ctx, vsz.W, vsz.H, s, { af: true, thirds: showThirds, blur: state.blur, lensGrid: showLensGrid, lit: state.lit !== false, fc: showFC, slot: 'mon' }), o = V.o;
+  const s = cur(), V = renderShot(ctx, vsz.W, vsz.H, s, { af: true, thirds: showThirds, guideFlip, blur: state.blur, lensGrid: showLensGrid, lit: state.lit !== false, fc: showFC, slot: 'mon' }), o = V.o;
   const sz = autoSize(s, o), an = autoAngle(s), n = String(state.sel + 1).padStart(2, '0');
   // status line above the picture, as on a camera monitor
   const mf = (k, v) => `<span class="mf"><i>${k}</i><b>${v}</b></span>`, sg = (v, w) => (v < 0 ? '−' : '+') + Math.abs(v).toFixed(1).padStart(w, '0');
-  $('#hudTop').innerHTML = mf('FPS', fpsNow().toFixed(3)) + mf('SHUTTER', fmt(s.shutter ?? 180, 1)) + mf('IRIS', stopTxt(s.N)) + mf(isoInfo().ei ? 'EI' : 'ISO', s.iso ?? 800)
-    + mf('ND', ((s.nd || 0) * 0.3).toFixed(1)) + mf('WB', `${s.wb || 5600} K`) + `<span class="mcam">S${n}</span>`;
+  // 간편 모드: what the shot is (size, lens by name, angle, height, length) instead of exposure numbers
+  const fName = (F_PRESETS.find(([f]) => Math.abs(f - o.eq) < 1.5) || [0, ''])[1];
+  $('#hudTop').innerHTML = isPro() ? mf('FPS', fpsNow().toFixed(3)) + mf('SHUTTER', fmt(s.shutter ?? 180, 1)) + mf('IRIS', stopTxt(s.N)) + mf(isoInfo().ei ? 'EI' : 'ISO', s.iso ?? 800)
+    + mf('ND', ((s.nd || 0) * 0.3).toFixed(1)) + mf('WB', `${s.wb || 5600} K`) + `<span class="mcam">S${n}</span>`
+    : mf('샷', sz ? SIZES[sz].ko : '—') + mf('렌즈', `${Math.round(o.eq)}mm${fName ? ' ' + fName : ''}`) + mf('앵글', an.ko) + mf('높이', fmt(s.cam.y, 2) + 'm') + mf('길이', s.dur + '초') + `<span class="mcam">S${n}</span>`;
   // under the picture: framing, focus, camera angles
   // each readout in a long and shorter forms; placeHud uses the longest that fits the width
   const lens = `${sz || '—'} · ${fmt(s.f, s.f < 20 ? 1 : 0)}mm`, dutch = an.dutch ? ' · DUTCH' : '', cross = axisOf().show && axisCheck(s).state === 'cross';
@@ -3890,20 +4373,53 @@ function syncHud() {
 let vDrag = null;
 const vcv = $('#view'), vptrs = new Map();
 vcv.addEventListener('pointerdown', e => { const s = cur(); capture(vcv, e.pointerId); vptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-  if (vptrs.size === 2) { const [a, b] = [...vptrs.values()], t = twoState(a, b); vDrag = { t: 'two', d0: t.d, c0: t.c, a0: a, b0: b, cam0: { ...s.cam }, lock: null }; return; }
+  if (vptrs.size === 2) { const [a, b] = [...vptrs.values()], t = twoState(a, b); vDrag = { t: 'two', d0: t.d, c0: t.c, a0: a, b0: b, cam0: { ...s.cam }, f0: s.f, lock: null }; return; }
   vDrag = { t: 'look', x: e.clientX, y: e.clientY, pan: s.cam.pan, tilt: s.cam.tilt }; });
 vcv.addEventListener('pointermove', e => { if (!vDrag) return; if (vptrs.has(e.pointerId)) vptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); const s = cur(), o = optics(s);
   if (vDrag.t === 'two') { if (vptrs.size < 2) return; const [a, b] = [...vptrs.values()], g = twoLock(vDrag, a, b, false);
-    if (g.lock === 'dolly') { dollyFrom(s, vDrag.cam0, -g.dc.y); vDrag.moved = true; changed(false); } return; }
+    if (g.lock === 'dolly') { dollyFrom(s, vDrag.cam0, -g.dc.y); vDrag.moved = true; changed(false); }
+    // pinch = zoom the lens, as a game's photo mode zooms its field of view (snaps to the kit's lenses; 간편 모드 and zooms run free)
+    if (g.lock === 'pinch') { const want = clamp(vDrag.f0 * g.d / Math.max(10, vDrag.d0), 6, 600), nf = roundF(kitF(want)); if (Math.abs(nf - s.f) > 0.01) { setF(nf); vDrag.moved = vDrag.zoom = true; changed(false); } }
+    return; }
   s.cam.pan = +wrap180(vDrag.pan + (e.clientX - vDrag.x) / vsz.W * o.hf / DEG).toFixed(2);
   s.cam.tilt = +clamp(vDrag.tilt - (e.clientY - vDrag.y) / vsz.H * o.vf / DEG, -90, 90).toFixed(2); changed(false); });
-const endV = e => { vptrs.delete(e.pointerId); if (vDrag) { const d = vDrag; vDrag = null; if (d.t !== 'two' || d.moved) changed(true); } };
+const endV = e => { vptrs.delete(e.pointerId); if (vDrag) { const d = vDrag; vDrag = null; if (d.zoom) { keepDone(); toast(`${fmt(cur().f, cur().f < 20 ? 1 : 0)}mm (35mm 환산 ${Math.round(optics(cur()).eq)}mm)`); } if (d.t !== 'two' || d.moved) changed(true); } };
 vcv.addEventListener('pointerup', endV); vcv.addEventListener('pointercancel', endV);
 let wheelT;
 vcv.addEventListener('wheel', e => { e.preventDefault(); const s = cur(), B = shotBasis(s), step = -e.deltaY * 0.002 * clamp(depthTo(s, s.A) * 0.4, 0.3, 5);
   s.cam.x = +(s.cam.x + B.fh.x * step).toFixed(3); s.cam.z = +(s.cam.z + B.fh.z * step).toFixed(3); changed(false); clearTimeout(wheelT); wheelT = setTimeout(() => changed(true), 300); }, { passive: false });
 vcv.addEventListener('dblclick', () => aimAt(afKey(cur())));
-$('#gThirds').onclick = () => { showThirds = !showThirds; $('#gThirds').setAttribute('aria-pressed', showThirds); drawMonitor(); };
+// 구도: picks the composition guide; the spiral and the triangles can be turned four ways
+function syncGuide() { if (!GUIDES.some(g => g[0] === showThirds)) showThirds = 'thirds'; const b = $('#gThirds'), on = showThirds !== 'none'; b.setAttribute('aria-pressed', on); b.querySelector('.gl').textContent = on ? GUIDES.find(g => g[0] === showThirds)[1].replace(' · 대칭', '').replace('황금 ', '') : '구도';
+  $('#guideMenu').innerHTML = GUIDES.map(([k, n]) => `<button role="menuitemradio" data-guide="${k}" aria-checked="${k === showThirds}">${n}</button>`).join('')
+    + `<button data-gflip="1" ${showThirds === 'spiral' || showThirds === 'tri' ? '' : 'disabled'}>↻ 방향 돌리기</button>`
+    + `<div class="gm-row" role="group" aria-label="가이드 색">${GUIDE_COLS.map(([c, n]) => `<button data-gcol="${c}" aria-label="${n}" aria-pressed="${c === guideCol}" style="--c:${c}"></button>`).join('')}</div>`
+    + `<div class="gm-row str" role="group" aria-label="선명도">${GUIDE_STR.map(([, , n], i) => `<button data-gstr="${i}" aria-pressed="${i === guideStr}">${n}</button>`).join('')}</div>`;
+  try { localStorage.setItem('framecontis.guide', showThirds); localStorage.setItem('framecontis.guideflip', guideFlip); localStorage.setItem('framecontis.guidecol', guideCol); localStorage.setItem('framecontis.guidestr', guideStr); } catch (e) {} }
+function guideMenu(open) { const m = $('#guideMenu'); m.hidden = !open; $('#gThirds').setAttribute('aria-expanded', open); if (!open) return;
+  const b = $('#gThirds').getBoundingClientRect(), st = $('#stage').getBoundingClientRect(); m.style.top = Math.max(6, Math.min(b.top - st.top, st.height - m.offsetHeight - 6)) + 'px';
+  if (b.left - st.left > st.width / 2) { m.style.left = ''; m.style.right = Math.round(st.right - b.left + 8) + 'px'; } else { m.style.right = ''; m.style.left = Math.round(b.right - st.left + 8) + 'px'; } }
+$('#gThirds').onclick = e => { e.stopPropagation(); guideMenu($('#guideMenu').hidden); };
+$('#guideMenu').addEventListener('click', e => { e.stopPropagation(); const g = e.target.closest('[data-guide]'), f = e.target.closest('[data-gflip]');
+  const c = e.target.closest('[data-gcol]'), w = e.target.closest('[data-gstr]'); if (c) guideCol = c.dataset.gcol; if (w) guideStr = +w.dataset.gstr;
+  if (g) { showThirds = g.dataset.guide; guideMenu(false); if (showThirds !== 'thirds') questMark('guide'); } if (f) guideFlip = (guideFlip + 1) % 4; syncGuide(); drawMonitor(); });
+document.addEventListener('click', () => { if (!$('#guideMenu').hidden) guideMenu(false); });
+syncGuide();
+// virtual camera: on a phone, turning the phone turns the camera (pan and tilt follow the phone's own heading and pitch, from where it was
+// when switched on). The back camera of the phone looks along −z of the device; its direction in the room comes from the orientation angles.
+const vcam = { on: false, base: null, f: null, t: 0 };
+function onPhoneTurn(e) { if (!vcam.on || e.alpha == null) return; const L = phoneLook(e), s = cur();
+  if (!vcam.base) { vcam.base = { yaw: L.yaw, pitch: L.pitch, pan: s.cam.pan, tilt: s.cam.tilt }; vcam.f = { yaw: L.yaw, pitch: L.pitch }; }
+  vcam.f.yaw += wrap180(L.yaw - vcam.f.yaw) * 0.35; vcam.f.pitch += (L.pitch - vcam.f.pitch) * 0.35; // a little smoothing against sensor jitter
+  s.cam.pan = +wrap180(vcam.base.pan + wrap180(vcam.f.yaw - vcam.base.yaw)).toFixed(2); s.cam.tilt = +clamp(vcam.base.tilt + vcam.f.pitch - vcam.base.pitch, -90, 90).toFixed(2);
+  const now = performance.now(); if (now - vcam.t > 30) { vcam.t = now; changed(false); } }
+async function vcamToggle() { if (vcam.on) { vcam.on = false; removeEventListener('deviceorientation', onPhoneTurn); $('#gVcam').setAttribute('aria-pressed', 'false'); changed(true); return; }
+  try { if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission && (await DeviceOrientationEvent.requestPermission()) !== 'granted') { toast('동작 센서를 허용해야 가상 카메라를 쓸 수 있어요'); return; } }
+  catch (e) { toast('이 브라우저에서는 동작 센서를 쓸 수 없어요'); return; }
+  vcam.on = true; vcam.base = null; addEventListener('deviceorientation', onPhoneTurn); $('#gVcam').setAttribute('aria-pressed', 'true');
+  toast('폰을 돌려 구도를 잡아 보세요. 다시 누르면 고정돼요');
+  setTimeout(() => { if (vcam.on && !vcam.base) { vcamToggle(); toast('동작 센서 신호가 없어요 — 폰에서 다시 해 보세요'); } }, 1500); }
+$('#gVcam').onclick = vcamToggle;
 let showLensGrid = false;
 let aimT = 0;
 function aimAt(k) { const s = cur(); if (k === 'B' && !s.B.on) return; const sb = subjOf(s, k), la = lookAngles(s.cam, { x: sb.x, y: headY(s, sb) - (castOf(k).who === 'dog' ? 0 : 0.12), z: sb.z });
@@ -3973,6 +4489,9 @@ const lensView = () => { if (mode !== 'mon' && view === 'edit') setMode('mon'); 
 $('#fRange').addEventListener('input', e => { lensView(); setF(roundF(r2f(+e.target.value))); changed(false); });
 $('#fRange').addEventListener('change', () => { keepDone(); changed(true); });
 $('#ticks').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { lensView(); setF(+b.dataset.f); keepDone(); changed(true); } });
+// 간편 모드: no lens kits, just a handful of views by name (full-frame focal lengths)
+$('#fPresets').innerHTML = F_PRESETS.map(([f, n]) => `<button data-f="${f}"><b>${n}</b><small>${f}mm</small></button>`).join('');
+$('#fPresets').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { lensView(); setF(roundF(kitF(+b.dataset.f * imageArea().iw / imageArea({ w: 36, h: 24 }).iw))); keepDone(); changed(true); } });
 $('#keepSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.keepSize = b.dataset.keep === '1'; keepMsg = null; changed(true); });
 // distance from the subject to the wall behind it along the camera's heading (the background it is shot against); outdoors it is far away
 function bgDistance(s, sb) {
@@ -4087,8 +4606,16 @@ $('#fxAdd').addEventListener('click', e => {
   const s = cur(), k = afKey(s), sb = s[k];
   // start as a 45° key from the camera's left, 2.5 m off the subject
   const a = Math.atan2(s.cam.x - sb.x, s.cam.z - sb.z) - 45 * DEG, fx = FIX(b.dataset.fx);
-  const l = { id: 'L' + Date.now().toString(36), fx: fx.id, mod: modsFor(fx)[0], x: +(sb.x + Math.sin(a) * 2.5).toFixed(2), y: fixKind(fx.id) === 'bulb' ? 1.0 : 2.2, z: +(sb.z + Math.cos(a) * 2.5).toFixed(2), track: fixKind(fx.id) === 'bulb' ? null : k, dim: 0.5, pan: 0, tilt: -20 };
+  const l = { id: 'L' + Date.now().toString(36), fx: fx.id, mod: modsFor(fx)[0], x: +(sb.x + Math.sin(a) * 2.5).toFixed(2), y: fixKind(fx.id) === 'bulb' ? 1.0 : 2.2, z: +(sb.z + Math.cos(a) * 2.5).toFixed(2), track: null, dim: 0.5, pan: 0, tilt: -20 }; if (fixKind(fx.id) !== 'bulb') aimLight(l, s, k);
   shotLights().push(l); selObj = { id: l.id, kind: 'light' }; changed(true, true); toast(`${josa(fx.name, '을', '를')} 놓았어요. 3D 세트에서 끌어 옮기세요`); });
+$('#fxSimple').innerHTML = `<div class="addgrid simple">${SIMPLE_LIGHTS.map(x => `<button data-lrole="${x.k}"><span><b>${x.name}</b><small>${x.desc}</small></span></button>`).join('')}</div>
+  <p class="hint">놓은 뒤 3D에서 끌어 옮기고, 배치된 조명에서 밝기와 색을 바꿔요.</p>`;
+$('#fxSimple').addEventListener('click', e => { const b = e.target.closest('[data-lrole]'); if (!b) return; const x = SIMPLE_LIGHTS.find(v => v.k === b.dataset.lrole);
+  if (x.k === 'SUN') { state.set.sun.on = true; selObj = { id: 'SUN', kind: 'light' }; changed(true, true); toast('햇빛을 켰어요. 시간 · 날씨 탭에서 바꿔 보세요'); return; }
+  const s = cur(), k = afKey(s), sb = s[k], a = Math.atan2(s.cam.x - sb.x, s.cam.z - sb.z) + x.ang * DEG, fx = FIX(x.fx);
+  const l = { id: 'L' + Date.now().toString(36), fx: fx.id, role: x.k, mod: x.mod || modsFor(fx)[0], x: +(sb.x + Math.sin(a) * x.dist).toFixed(2), y: x.y, z: +(sb.z + Math.cos(a) * x.dist).toFixed(2), track: null, dim: x.dim, pan: 0, tilt: -20 }; if (!x.free) aimLight(l, s, k);
+  if (x.free) { const la = lookAngles(l, { x: sb.x, y: 1.2, z: sb.z }); l.pan = +la.pan.toFixed(1); l.tilt = +la.tilt.toFixed(1); if (x.k === 'bg') { l.pan = +wrap180(l.pan + 180).toFixed(1); l.tilt = 0; } }
+  shotLights().push(l); selObj = { id: l.id, kind: 'light' }; changed(true, true); toast(`${josa(x.name, '을', '를')} 놓았어요. 3D에서 끌어 옮기세요`); });
 // a grip goes between a light and the subject it lights: the selected light, otherwise the brightest one; it faces that light
 function gripPlace(g, s = cur()) {
   const L = lightCtx(s), sel = selObj && L.lights.find(li => li.l.id === selObj.id), li = sel || L.lights.slice().sort((a, b) => b.I0 - a.I0)[0], G = GRIPS[g.fx];
@@ -4110,10 +4637,32 @@ $('#roomSeg').addEventListener('click', e => { const b = e.target.closest('butto
 $('#bgSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { state.set.bg = b.dataset.bg; changed(true, true); } });
 $('#ceilSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b && state.set.room) { state.set.room.h = +b.dataset.h; changed(true, true); } });
 $('#finSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b && state.set.room) { state.set.room.fin = b.dataset.fin; changed(true, true); } });
-const PROP_GROUPS = [['거실 · 침실', ['sofa', 'armchair', 'table', 'bed', 'tv', 'shelf', 'rug', 'plant']], ['카페 · 주방', ['cafe', 'chair', 'counter', 'stool', 'kitchen', 'fridge', 'desk']],
-  ['세트 구조물', ['flat', 'flatdoor', 'flatwin', 'apple']], ['야외 · 자연', ['tree', 'bush', 'rock', 'fence', 'parasol', 'picnic']], ['야외 · 거리', ['bench', 'lamp', 'bike', 'cone', 'bin', 'hydrant', 'car']]];
-$('#propAdd').innerHTML = PROP_GROUPS.map(([t, ids]) => `<div class="cat">${t}</div><div class="addgrid">${ids.map(k => { const v = PROPS[k];
-  return `<button data-prop="${k}"><span><b>${v.name}</b><small>${v.w}×${v.d}×${v.h}m</small></span></button>`; }).join('')}</div>`).join('');
+const PROP_GROUPS = [['거실 · 침실', ['sofa', 'armchair', 'coffee', 'table', 'bed', 'nightstand', 'wardrobe', 'dresser', 'tv', 'shelf', 'piano', 'floorlamp', 'mirror', 'curtain', 'rug', 'plant']],
+  ['카페 · 주방', ['cafe', 'chair', 'counter', 'stool', 'kitchen', 'fridge', 'booth']], ['사무실 · 학교', ['desk', 'officechair', 'schooldesk', 'whiteboard', 'locker', 'filing', 'podium']],
+  ['가게', ['storeshelf', 'register', 'vending']], ['욕실', ['bathtub', 'toilet', 'sink']],
+  ['세트 구조물', ['flat', 'flatdoor', 'flatwin', 'stairs', 'riser', 'pillar', 'backdrop', 'apple']], ['촬영 현장', ['director', 'monitorcart', 'cstand']],
+  ['야외 · 자연', ['tree', 'pine', 'bush', 'hedge', 'flowerbed', 'rock', 'log', 'fence', 'parasol', 'picnic', 'tent', 'campfire']],
+  ['야외 · 거리', ['bench', 'lamp', 'busstop', 'trafficlight', 'streetsign', 'bollard', 'guardrail', 'crosswalk', 'stall', 'bike', 'motorbike', 'car', 'van', 'cone', 'bin', 'hydrant']],
+  ['창고 · 공사', ['crate', 'barrel', 'pallet', 'ladder']], ['음악 · 공연', ['drums', 'micstand', 'amp', 'speaker', 'synth']]];
+// the catalogue shows each piece as a little 3D picture, like a building game's catalogue: drawn once, from its own model, when first seen
+function propThumb(type) { const cv = document.createElement('canvas'), W = 120, H = 84, dpr = Math.min(2, devicePixelRatio || 1); cv.width = W * dpr; cv.height = H * dpr;
+  const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr); let faces = []; try { faces = propFaces({ id: 'thumb_' + type, type, x: 0, z: 0, yaw: 0, fin: 'white' }); } catch (e) { return ''; }
+  const az = 35 * DEG, el = 28 * DEG, d = { x: Math.sin(az) * Math.cos(el), y: Math.sin(el), z: Math.cos(az) * Math.cos(el) }, r = { x: Math.cos(az), y: 0, z: -Math.sin(az) };
+  const u = { x: d.y * r.z - d.z * r.y, y: d.z * r.x - d.x * r.z, z: d.x * r.y - d.y * r.x }, Lt = norm({ x: d.x + 0.4, y: d.y + 0.8, z: d.z - 0.2 }), D = p => p.x * d.x + p.y * d.y + p.z * d.z;
+  const pr = p => ({ x: p.x * r.x + p.z * r.z, y: -(p.x * u.x + p.y * u.y + p.z * u.z) }), vis = faces.filter(f => f.m.two || (f.n.x * d.x + f.n.y * d.y + f.n.z * d.z) > 0);
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9; vis.forEach(f => f.p.forEach(p => { const q = pr(p); x0 = Math.min(x0, q.x); x1 = Math.max(x1, q.x); y0 = Math.min(y0, q.y); y1 = Math.max(y1, q.y); }));
+  if (!isFinite(x0)) return ''; const k = Math.min((W - 14) / (x1 - x0 || 1), (H - 12) / (y1 - y0 || 1)), ox = W / 2 - (x0 + x1) / 2 * k, oy = H / 2 - (y0 + y1) / 2 * k;
+  vis.map(f => ({ f, z: f.p.reduce((a, p) => a + D(p), 0) / f.p.length })).sort((a, b) => a.z - b.z).forEach(({ f }) => {
+    const sh = 0.42 + 0.58 * Math.max(0, f.n.x * Lt.x + f.n.y * Lt.y + f.n.z * Lt.z), c = f.m.rgb ? `rgb(${f.m.rgb.map(v => enc(Math.min(1, v * 1.25 * sh))).join(',')})` : f.m.css || '#888';
+    ctx.beginPath(); f.p.forEach((p, i) => { const q = pr(p); i ? ctx.lineTo(ox + q.x * k, oy + q.y * k) : ctx.moveTo(ox + q.x * k, oy + q.y * k); }); ctx.closePath();
+    ctx.globalAlpha = f.m.alpha ? Math.max(0.35, f.m.alpha) : 1; ctx.fillStyle = c; ctx.fill(); ctx.globalAlpha = 1; ctx.strokeStyle = c; ctx.lineWidth = 0.6; ctx.stroke(); });
+  return cv.toDataURL('image/png'); }
+$('#propAdd').innerHTML = PROP_GROUPS.map(([t, ids]) => `<div class="cat">${t}</div><div class="addgrid thumbs">${ids.map(k => { const v = PROPS[k];
+  return `<button data-prop="${k}"><i class="pthumb" data-thumb="${k}" aria-hidden="true"></i><span><b>${v.name}</b><small>${v.w}×${v.d}×${v.h}m</small></span></button>`; }).join('')}</div>`).join('');
+// thumbnails are drawn as their buttons come into view (a few per frame), so opening the catalogue stays instant
+{ const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; io.unobserve(e.target);
+    requestAnimationFrame(() => { const src = propThumb(e.target.dataset.thumb); if (src) e.target.style.backgroundImage = `url(${src})`; }); }), { rootMargin: '120px' }) : null;
+  document.querySelectorAll('#propAdd [data-thumb]').forEach(el => io ? io.observe(el) : (el.style.backgroundImage = `url(${propThumb(el.dataset.thumb)})`)); }
 groupTabs($('#propAdd'));
 $('#propAdd').addEventListener('click', e => { const b = e.target.closest('button[data-prop]'); if (b) startPlace(b.dataset.prop); });
 let editLock = null; // the edit pane whose slider is being dragged is not rebuilt mid-drag
@@ -4130,7 +4679,7 @@ const rangeRow = (k, lab, min, max, step, v, out) => `<div class="xrow"><label f
     if (d.tod) setTod(state.set, { rise: 'dawn' }[d.tod] || d.tod);
     if (d.size) { o.sx = o.sd = o.sh = +d.size; }
     if (d.del) { const arr = selObj.kind === 'light' ? shotLights() : state.set.props; arr.splice(arr.indexOf(o), 1); selObj = null; changed(true, true); return; }
-    if (d.diff) o.diff = d.diff; if (d.gobo) o.gobo = d.gobo; if (d.gel) o.gel = d.gel; if (d.gripfit) gripPlace(o); if (d.cmode) o.cmode = d.cmode; if (d.track !== undefined) { o.track = d.track || null; if (!o.track) { const L = lightCtx(cur()), li = L.lights.find(x => x.l === o); if (li) { o.pan = +(Math.atan2(li.D.x, li.D.z) / DEG).toFixed(1); o.tilt = +(Math.asin(li.D.y) / DEG).toFixed(1); } } }
+    if (d.diff) o.diff = d.diff; if (d.gobo) o.gobo = d.gobo; if (d.gel) o.gel = d.gel; if (d.gripfit) gripPlace(o); if (d.cmode) o.cmode = d.cmode; if (d.aim) aimLight(o, cur()); if (d.track !== undefined) { o.track = d.track || null; if (!o.track) { const L = lightCtx(cur()), li = L.lights.find(x => x.l === o); if (li) { o.pan = +(Math.atan2(li.D.x, li.D.z) / DEG).toFixed(1); o.tilt = +(Math.asin(li.D.y) / DEG).toFixed(1); } } }
     if (d.fin) o.fin = d.fin; if (d.rot) o.yaw = ((o.yaw || 0) + 90) % 360;
     if (d.snap) snapPlace(o, { x: o.x, z: o.z });
     changed(true, true); });
@@ -4158,7 +4707,7 @@ function syncSet() {
     $('#todSum').textContent = sn.on ? `해 ${hhmm(sn.hour)} · 고도 ${fmt(sunPos(sn.month, sn.hour).el, 0)}° — 3D, 노출, AI 프롬프트가 모두 이 시간대를 따라요` : t === 'night' ? '밤: 도심 야간 환경광만 있어요. 조명을 배치하세요' : '자연광 없이 배치한 조명만으로 비춰요'; }
   const L = lightCtx(s);
   const sn = set.sun, se = sn.on ? sunEnv(sn) : null;
-  $('#lightList').innerHTML = (sn.on ? `<button data-id="SUN" aria-pressed="${!!selObj && selObj.id === 'SUN'}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(se.sunK)}"></i>햇빛</span><span>${sn.month}월 ${hhmm(sn.hour)} · 고도 ${fmt(se.el, 0)}° · ${se.el > 0 ? se.sunK + 'K' : '해 짐'}</span></button>` : '') + L.grips.map(g => `<button data-id="${g.id}" aria-pressed="${!!selObj && selObj.id === g.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${{ silk: '#e8e8e4', net: '#555', flag: '#111' }[GRIPS[g.fx].kind]}"></i>${GRIPS[g.fx].name}</span><span>그립 · 높이 ${fmt(g.y, 1)}m</span></button>`).join('') + L.lights.map(li => `<button data-id="${li.l.id}" aria-pressed="${!!selObj && selObj.id === li.l.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' || GELS[li.l.gel] && GELS[li.l.gel].t ? lightCss(li.col) : kelvinCss(li.K)}"></i>${FIX(li.l.fx).name}</span><span>${Math.round((li.l.dim ?? 1) * 100)}% · ${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' ? 'RGB ' + Math.round(li.l.hue ?? 0) + '°' : GELS[li.l.gel] && GELS[li.l.gel].t ? GELS[li.l.gel].name : li.K + 'K'} · ${(modOf(li.l) || { name: fixKind(li.l.fx) === 'leko' ? '패턴 ' + GOBOS[li.l.gobo || 'win'] : '맨 전구' }).name}</span></button>`).join('') || (sn.on ? '' : '<p class="hint" style="margin:0">아직 조명이 없어요. 아래에서 하나 추가하세요.</p>');
+  $('#lightList').innerHTML = (sn.on ? `<button data-id="SUN" aria-pressed="${!!selObj && selObj.id === 'SUN'}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${kelvinCss(se.sunK)}"></i>햇빛</span><span>${sn.month}월 ${hhmm(sn.hour)} · 고도 ${fmt(se.el, 0)}° · ${se.el > 0 ? se.sunK + 'K' : '해 짐'}</span></button>` : '') + L.grips.map(g => `<button data-id="${g.id}" aria-pressed="${!!selObj && selObj.id === g.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${{ silk: '#e8e8e4', net: '#555', flag: '#111' }[GRIPS[g.fx].kind]}"></i>${GRIPS[g.fx].name}</span><span>그립 · 높이 ${fmt(g.y, 1)}m</span></button>`).join('') + L.lights.map(li => `<button data-id="${li.l.id}" aria-pressed="${!!selObj && selObj.id === li.l.id}"><span style="color:var(--ink);font-family:var(--f-body);font-size:12.5px"><i class="sw" style="background:${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' || GELS[li.l.gel] && GELS[li.l.gel].t ? lightCss(li.col) : kelvinCss(li.K)}"></i>${lightLabel(li.l)}</span><span>${Math.round((li.l.dim ?? 1) * 100)}% · ${FIX(li.l.fx).rgb && li.l.cmode === 'rgb' ? 'RGB ' + Math.round(li.l.hue ?? 0) + '°' : GELS[li.l.gel] && GELS[li.l.gel].t ? GELS[li.l.gel].name : li.K + 'K'} · ${(modOf(li.l) || { name: fixKind(li.l.fx) === 'leko' ? '패턴 ' + GOBOS[li.l.gobo || 'win'] : '맨 전구' }).name}</span></button>`).join('') || (sn.on ? '' : '<p class="hint" style="margin:0">아직 조명이 없어요. 아래에서 하나 추가하세요.</p>');
 
   const sl = selObj && selObj.kind === 'light' && shotLights(s).find(l => l.id === selObj.id);
   if (editLock === '#lightEdit') {} else if (selObj && selObj.id === 'SUN' && sn.on) { const p = se.pos, L0 = lux(irr(L, { x: s.A.x, y: 0, z: s.A.z }, UP, null));
@@ -4177,17 +4726,17 @@ function syncSet() {
         : `${fixName(li.l.fx).replace(/ \(.*\)/, '')} 빛을 ${G.kind === 'silk' ? '1스톱 줄이고 부드럽게 퍼뜨려요' : G.t < 0.6 ? '1스톱 줄여요 (빛의 질은 그대로)' : '½스톱 줄여요 (빛의 질은 그대로)'}`}</p></div>`; }
   else if (sl) { const fx = FIX(sl.fx), li = L.lights.find(x => x.l === sl), sb = s[afKey(s)], md = modOf(sl, fx), bm = beamOf(sl, fx);
     const dS = Math.hypot(sl.x - sb.x, sl.y - headY(s, sb), sl.z - sb.z), Eon = li.I0 / (dS * dS);
-    $('#lightEdit').innerHTML = `<div class="edit"><h4><button class="btn sm ghost" data-back>← 목록</button>${fx.name}<button class="btn sm warn hdel" data-del="1">삭제</button></h4>
+    $('#lightEdit').innerHTML = `<div class="edit"><h4><button class="btn sm ghost" data-back>← 목록</button>${isPro() ? fx.name : lightLabel(sl)}<button class="btn sm warn hdel" data-del="1">삭제</button></h4>
       <div class="xrow two"><label>밝기 · 높이</label><input type="range" data-k="dim" min="5" max="100" step="1" value="${Math.round((sl.dim ?? 1) * 100)}" aria-label="밝기"><output>${Math.round((sl.dim ?? 1) * 100)}%</output><input type="range" data-k="y" min="0.2" max="8" step="0.05" value="${sl.y}" aria-label="높이"><output>${fmt(sl.y, 1)}m</output></div>
-      ${md || fx.rgb ? `<div class="lh modrow"><span>${md && fx.rgb ? '앞 · 모드' : md ? '앞에 다는 것' : '모드'}</span>${md ? `<select class="modsel" data-mod="1" aria-label="모디파이어">${modsFor(fx).map(id => `<option value="${id}"${md.id === id ? ' selected' : ''}>${MODS[id].name}</option>`).join('')}</select>` : ''}${fx.rgb ? `<div class="seg kr">${[['cct', 'CCT'], ['rgb', 'HSI'], ['gel', '젤']].map(([k, n]) => `<button data-cmode="${k}" aria-pressed="${(sl.cmode || 'cct') === k}">${n}</button>`).join('')}</div>` : ''}</div>` : ''}
-      ${bm.range ? rangeRow('beam', md && md.id === 'fresatt' ? '빔 각 (어태치)' : '스팟 ↔ 플러드', bm.range[0], bm.range[1], 1, bm.v, bm.v + '°') : ''}
+      ${md || fx.rgb ? `<div class="lh modrow" data-pro><span>${md && fx.rgb ? '앞 · 모드' : md ? '앞에 다는 것' : '모드'}</span>${md ? `<select class="modsel" data-mod="1" aria-label="모디파이어">${modsFor(fx).map(id => `<option value="${id}"${md.id === id ? ' selected' : ''}>${MODS[id].name}</option>`).join('')}</select>` : ''}${fx.rgb ? `<div class="seg kr">${[['cct', 'CCT'], ['rgb', 'HSI'], ['gel', '젤']].map(([k, n]) => `<button data-cmode="${k}" aria-pressed="${(sl.cmode || 'cct') === k}">${n}</button>`).join('')}</div>` : ''}</div>` : ''}
+      ${bm.range ? '<div data-pro>' + rangeRow('beam', md && md.id === 'fresatt' ? '빔 각 (어태치)' : '스팟 ↔ 플러드', bm.range[0], bm.range[1], 1, bm.v, bm.v + '°') + '</div>' : ''}
       ${fx.rgb && sl.cmode === 'rgb' ? `<div class="xrow two"><label>색상 · 채도</label><input type="range" class="hue" data-k="hue" min="0" max="359" step="1" value="${sl.hue ?? 0}" aria-label="색상"><output>${Math.round(sl.hue ?? 0)}°</output><input type="range" data-k="sat" min="0" max="100" step="1" value="${sl.sat ?? 100}" aria-label="채도"><output>${Math.round(sl.sat ?? 100)}%</output></div>`
-        : Array.isArray(fx.K) && !(fx.rgb && sl.cmode === 'gel') ? rangeRow('K', '색온도', fx.K[0], fx.K[1], 100, sl.K ?? 5600, (sl.K ?? 5600) + 'K') : ''}
-      ${fx.rgb && sl.cmode !== 'gel' ? '' : `<div class="lh"><span>젤</span><div class="sw gels">${Object.entries(GELS).map(([k, v]) => `<button data-gel="${k}" aria-pressed="${(sl.gel || 'none') === k}" title="${v.name}" aria-label="컬러 ${v.name}" style="background:${v.t ? linCss(v.t) : kelvinCss(Array.isArray(fx.K) ? sl.K ?? 5600 : fx.K)}"></button>`).join('')}</div></div>`}
-      ${fx.gobo ? `<div class="lh"><span>패턴</span><div class="seg kr">${Object.entries(GOBOS).map(([k, v]) => `<button data-gobo="${k}" aria-pressed="${(sl.gobo || 'win') === k}">${v}</button>`).join('')}</div></div>` : ''}
+        : Array.isArray(fx.K) && !(fx.rgb && sl.cmode === 'gel') ? '<div data-pro>' + rangeRow('K', '색온도', fx.K[0], fx.K[1], 100, sl.K ?? 5600, (sl.K ?? 5600) + 'K') + '</div>' : ''}
+      ${fx.rgb && sl.cmode !== 'gel' ? '' : `<div class="lh"><span>${isPro() ? '젤' : '색'}</span><div class="sw gels">${Object.entries(GELS).map(([k, v]) => `<button data-gel="${k}" aria-pressed="${(sl.gel || 'none') === k}" title="${v.name}" aria-label="컬러 ${v.name}" style="background:${v.t ? linCss(v.t) : kelvinCss(Array.isArray(fx.K) ? sl.K ?? 5600 : fx.K)}"></button>`).join('')}</div></div>`}
+      ${fx.gobo ? `<div class="lh" data-pro><span>패턴</span><div class="seg kr">${Object.entries(GOBOS).map(([k, v]) => `<button data-gobo="${k}" aria-pressed="${(sl.gobo || 'win') === k}">${v}</button>`).join('')}</div></div>` : ''}
       ${bm.beam < 360 ? `
-      <div class="lh"><span>방향</span><div class="seg kr"><button data-track="A" aria-pressed="${sl.track === 'A'}">A 추적</button><button data-track="B" aria-pressed="${sl.track === 'B'}" ${s.B.on ? '' : 'disabled'}>B 추적</button><button data-track="" aria-pressed="${!sl.track}">고정</button></div></div>
-      ${!sl.track ? `<div class="xrow two"><label>팬 · 틸트</label><input type="range" data-k="pan" min="-180" max="180" step="1" value="${sl.pan || 0}" aria-label="팬"><output>${Math.round(sl.pan || 0)}°</output><input type="range" data-k="tilt" min="-90" max="30" step="1" value="${sl.tilt || 0}" aria-label="틸트"><output>${Math.round(sl.tilt || 0)}°</output></div>` : ''}` : ''}
+      <div class="xrow two"><label>팬 · 틸트</label><input type="range" data-k="pan" min="-180" max="180" step="1" value="${sl.pan || 0}" aria-label="팬"><output>${Math.round(sl.pan || 0)}°</output><input type="range" data-k="tilt" min="-90" max="30" step="1" value="${sl.tilt || 0}" aria-label="틸트"><output>${Math.round(sl.tilt || 0)}°</output></div>
+      <div class="row"><button class="btn sm" data-aim="1">${castName(afKey(s))} 쪽으로 다시 향하기</button></div>` : ''}
 </div>`; }
   else $('#lightEdit').innerHTML = '';
   // room
@@ -4231,6 +4780,7 @@ function syncPanels() {
   $('#fRange').value = f2r(s.f);
   $('#eqOut').textContent = `35mm 환산 ${Math.round(o.eq)}mm · 수평 ${fmt(o.hf / DEG)}°${state.squeeze > 1 ? ` · 스퀴즈 ${state.squeeze}x` : ''}`;
   document.querySelectorAll('#ticks button').forEach(b => b.setAttribute('aria-pressed', Math.abs(+b.dataset.f - s.f) < 0.01));
+  document.querySelectorAll('#fPresets button').forEach(b => b.setAttribute('aria-pressed', Math.abs(+b.dataset.f - o.eq) < 1.5));
   document.querySelectorAll('#keepSeg button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.keep === '1') === (state.keepSize !== false)));
   const st = stopsFor(s); $('#nRange').max = st.length - 1;
   $('#nRange').value = st.reduce((bi, x, i) => Math.abs(x - s.N) < Math.abs(st[bi] - s.N) ? i : bi, 0); $('#nOut').textContent = stopTxt(s.N);
@@ -4265,7 +4815,7 @@ function syncPanels() {
   $('#durOut').textContent = s.dur + '초';
   { const c = canon(() => cur()); document.querySelectorAll('#easeSeg button').forEach(b => { b.setAttribute('aria-pressed', b.dataset.ease === (c.ease || 'ease')); b.disabled = !c.end; });
     const mv = kfShown(c); $('#easeRow').hidden = $('#kfSum').hidden = !mv; $('#kfSum').textContent = mv ? canon(() => kfSummary(cur())) : ''; } // speed and the start→end summary only for a shot that moves
-  syncAxis(s); syncOrder();
+  syncAxis(s); syncOrder(); syncTech();
   if (act !== $('#title')) $('#title').value = state.title;
   $('#exampleTag').hidden = !state.example;
   syncSensorSel();
@@ -4515,7 +5065,14 @@ const EN_MOVE = { arc: ['slow arc around the subject', 'Arc'], craned: ['crane /
   dollyout: ['slow dolly out away from the subject', 'Dolly Out'], track: ['tracking shot moving alongside the subject', 'Tracking'], crane: ['crane / boom up rising over the scene', 'Crane Up'],
   zoom: ['slow zoom in', 'Zoom In'], hand: ['handheld camera with subtle natural shake', 'Handheld'] };
 const EN_POSE = { stand: 'standing', sit: 'sitting', walk: 'walking', run: 'running', squat: 'crouching down', wave: 'raising one hand', point: 'pointing', lie: 'lying on their back' };
-const EN_PROP = { sofa: 'a sofa', table: 'a dining table', cafe: 'a small round café table', chair: 'a chair', desk: 'a desk', bed: 'a bed', shelf: 'a bookshelf', flat: 'a wall', flatdoor: 'a wall with a door', flatwin: 'a wall with a window',
+const EN_PROP = { coffee: 'a coffee table', nightstand: 'a nightstand', wardrobe: 'a wardrobe', dresser: 'a chest of drawers', floorlamp: 'a floor lamp', mirror: 'a full-length mirror',
+  piano: 'an upright piano', curtain: 'curtains', officechair: 'an office chair', schooldesk: 'a school desk', whiteboard: 'a whiteboard', locker: 'lockers', filing: 'a filing cabinet', podium: 'a podium',
+  booth: 'a diner booth', vending: 'a vending machine', storeshelf: 'a supermarket shelf', register: 'a checkout counter', bathtub: 'a bathtub', toilet: 'a toilet', sink: 'a washbasin',
+  stairs: 'a flight of stairs', riser: 'a stage riser', pillar: 'a pillar', backdrop: 'a seamless paper backdrop', director: "a director's chair", monitorcart: 'a video monitor cart', cstand: 'a C-stand',
+  pine: 'a pine tree', hedge: 'a hedge', flowerbed: 'a flower bed', log: 'a fallen log', tent: 'a camping tent', campfire: 'a campfire', busstop: 'a bus shelter', trafficlight: 'a traffic light',
+  streetsign: 'a road sign', bollard: 'a bollard', guardrail: 'a guardrail', crosswalk: 'a zebra crossing', motorbike: 'a motorcycle', van: 'a van', stall: 'a Korean street food tent (pojangmacha)',
+  crate: 'a wooden crate', barrel: 'an oil drum', pallet: 'a wooden pallet', ladder: 'a stepladder', drums: 'a drum kit', micstand: 'a microphone stand', amp: 'a guitar amplifier', speaker: 'a PA speaker', synth: 'a keyboard synthesizer on a stand',
+  sofa: 'a sofa', table: 'a dining table', cafe: 'a small round café table', chair: 'a chair', desk: 'a desk', bed: 'a bed', shelf: 'a bookshelf', flat: 'a wall', flatdoor: 'a wall with a door', flatwin: 'a wall with a window',
   armchair: 'an armchair', counter: 'a bar counter', stool: 'a bar stool', kitchen: 'a kitchen counter with sink', fridge: 'a fridge', tv: 'a TV on a low cabinet', plant: 'a potted plant', rug: 'a rug', car: 'a parked car', apple: 'an apple box',
   tree: 'a tree', bush: 'a bush', rock: 'a rock', fence: 'a wooden fence', parasol: 'a patio umbrella', picnic: 'a picnic table', bench: 'a park bench', lamp: 'a street lamp', bike: 'a bicycle', cone: 'a traffic cone', bin: 'a trash bin', hydrant: 'a fire hydrant' };
 const EN_FIN = { white: 'white', beige: 'beige', gray: 'grey', dark: 'dark' };
@@ -4785,6 +5342,16 @@ function exportSetupMap() {
   // back to the app after the print dialog; if a browser never reports it, the next touch brings the app back
   addEventListener('afterprint', done); setTimeout(() => { window.print(); addEventListener('pointerdown', done, { once: true }); }, 200);
 }
+
+/* ---------- techvis: the 테크비즈 tab (this shot) and a printable sheet of every shot ---------- */
+const techTable = s => techRows(s).map(([k, v, n]) => `<tr><th>${k}</th><td>${esc(v)}${n ? `<small>${esc(n)}</small>` : ''}</td></tr>`).join('');
+function syncTech() { const t = $('#techTbl'); if (t) t.innerHTML = canon(() => techTable(cur())); }
+function exportTech() { kfReset(); if (play) stopPlay();
+  $('#techPrint').innerHTML = `<h1>${esc(state.title || '프레임콘티')} — 테크비즈 시트</h1><p class="mp-meta">${esc($('#sceneMeta').textContent)} · 거리와 높이는 미터, 높이는 바닥에서 렌즈 중심까지</p>`
+    + state.shots.map((s, i) => { const o = optics(s); return `<section><h2>S${String(i + 1).padStart(2, '0')} · ${autoSize(s, o) || '—'} · ${moveName(s)}${s.action ? ` — ${esc(s.action)}` : ''}</h2><table>${techTable(s)}</table></section>`; }).join('');
+  document.body.classList.add('print-tech'); const done = () => { document.body.classList.remove('print-tech'); removeEventListener('afterprint', done); };
+  addEventListener('afterprint', done); setTimeout(() => { window.print(); addEventListener('pointerdown', done, { once: true }); }, 200); }
+$('#techPrintBtn').onclick = exportTech; $('#techMenuBtn').onclick = () => { xMenu(false); exportTech(); };
 /* ---------- example scene ---------- */
 // placed the way a DP would describe it (size, height angle, bearing, full-frame focal length), then converted to this sensor so the framing matches
 function placeShot(o) {
@@ -4860,7 +5427,8 @@ const PANES = { cam: '카메라', rig: '카메라 장비', light: '조명', set:
 const paneTabSel = {};
 function paneTab(p, t) {
   const sec = document.querySelector(`.pane[data-pane="${p}"]`); if (!sec || !sec.querySelector('.ptabs')) return;
-  t = t || paneTabSel[p] || sec.querySelector('.ptabs button').dataset.tab; paneTabSel[p] = t;
+  const ok = b => b && !(b.hasAttribute('data-pro') && !isPro()), first = [...sec.querySelectorAll('.ptabs button')].find(ok);
+  t = t || paneTabSel[p]; if (!ok(sec.querySelector(`.ptabs button[data-tab="${t}"]`))) t = first.dataset.tab; paneTabSel[p] = t; // a pro-only tab never stays open in 간편 모드
   sec.querySelectorAll('.ptabs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.tab === t));
   sec.querySelectorAll('.ptab').forEach(x => x.hidden = x.dataset.tab !== t);
 }
@@ -4875,13 +5443,15 @@ function openPane(p) { pane = p; $('#drawer').hidden = !p;
   document.querySelectorAll('#rail button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pane === p));
   if (p) { $('#drawerTitle').textContent = PANES[p]; $('#drawerIcon').innerHTML = $(`#rail button[data-pane="${p}"] svg`).outerHTML; placeDrawer(); }
   if (mode === 'mon') { vsz = null; drawMonitor(); } }
-$('#rail').addEventListener('click', e => { const b = e.target.closest('button'); if (b) openPane(pane === b.dataset.pane ? null : b.dataset.pane); });
+$('#rail').addEventListener('click', e => { const b = e.target.closest('button[data-pane]'); if (b) openPane(pane === b.dataset.pane ? null : b.dataset.pane); });
 $('#drawerClose').onclick = () => openPane(null);
 phone.addEventListener('change', () => { placeDrawer(); buildStrip(); });
 let raf = 0, cardT = 0;
 function changed(commit, all) {
   if (play) stopPlay();
   if (commit) state.example = false;
+  if (commit) questCheck();
+  if (commit && !isPro() && !play) fitExposure(cur()); // 간편 모드 never asks about exposure: every change is metered for you
   save(); if (commit) histCommit();
   if (all) { buildStrip(); renderAll(); updateBoardIfOpen(); return; }
   cancelAnimationFrame(raf);
@@ -4894,23 +5464,68 @@ document.addEventListener('keydown', e => {
     if (e.key.toLowerCase() === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; } if (e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); return; } }
   if (e.key === 'Escape' && pane) { openPane(null); return; }
   if (inField) return;
-  if (e.key === 'ArrowRight') { select(state.sel + 1); e.preventDefault(); }
-  if (e.key === 'ArrowLeft') { select(state.sel - 1); e.preventDefault(); }
 });
 const reTheme = () => { readColors(); buildStrip(); renderAll(); updateBoardIfOpen(); };
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', reTheme);
 new MutationObserver(reTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 let rz; new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(() => { vsz = null; wsz = null; renderAll(); if (view === 'board') buildBoard(); }, 60); }).observe($('#stage'));
 
-/* ---------- guided tour ---------- */
-const TOUR = [
-  { t: '카메라를 움직여 보세요', gizmo: true, p: '3D에서 카메라를 한 번 누르면 화살표와 고리가 나와요. 화살표를 끌면 좌우(빨강 트럭)·높이(초록 붐)로 옮기고, 두 손가락을 위로 밀면 앞으로, 아래로 당기면 뒤로 달리해요. 빈 바닥을 누르면 다시 숨어요.' },
-  { t: '고리를 돌려 방향 잡기', p: '노랑 고리는 팬, 청록은 틸트, 보라는 롤이에요. "A 바라보기"를 누르면 인물 쪽으로 알아서 돌아가요.', el: '#aimA' },
-  { t: '찍히는 화면 확인', p: '오른쪽 아래 작은 모니터나 위의 "모니터"를 누르면 렌즈로 본 화면이에요. 모니터에서는 왼쪽 패드를 누르고 있으면 카메라가 앞뒤·좌우·위아래로 움직여요.', el: '#pip' },
-  { t: '센서 바꾸기', p: '처음엔 풀프레임 센서로 시작해요. 왼쪽 "카메라"를 누르고 맨 오른쪽 "센서" 탭에서 다른 카메라 센서를 고르면 화각과 심도가 그 센서 기준으로 바뀌어요. 바꾼 뒤 뜨는 "같은 화각으로 환산"을 누르면 화면 크기가 그대로 유지돼요.', el: '#rail button[data-pane="cam"]' },
-  { t: '조명 · 세트 꾸미기', p: '도구 버튼을 누르면 패널이 열려요. 조명은 카메라처럼 샷마다 따로 놓이고, 새 샷은 지금 샷의 조명을 이어받아요. 조명과 가구는 3D에서 끌어 옮기고, 한 번 누르면 설정이 열려요.', el: '#rail' },
-  { t: '샷을 쌓아 콘티 완성', p: '아래 "＋ 샷"으로 다음 컷을 만들고, 위의 "보드"로 콘티 전체를 한눈에 봐요.', el: '#addBtn' },
+/* ---------- first-storyboard missions: game-style quests that tick off as you try each thing (kept per device) ---------- */
+const QUESTS = [
+  ['cam', '카메라 옮기기', '3D에서 카메라를 끌거나 모니터에서 방향키 · WASD로', () => { if (mode === 'mon') setMode('3d'); camSel = true; renderWorld(); }],
+  ['lens', '렌즈 바꿔 보기', '카메라 패널에서 화각을 고르거나 모니터를 두 손가락으로 벌려요', () => { openPane('cam'); paneTab('cam', 'lens'); }],
+  ['guide', '구도 가이드 바꾸기', '모니터의 구도 버튼에서 황금나선 같은 선을 골라요', () => { openPane(null); setMode('mon'); setTimeout(() => guideMenu(true), 200); }],
+  ['actor', '인물 움직이기', '3D에서 인물을 누르고 조이스틱이나 끌기로', () => { openPane(null); setMode('3d'); }],
+  ['prop', '소품 놓기', '세트 패널의 가구 추가에서 골라 바닥에 놓아요', () => { openPane('set'); paneTab('set', 'add'); }],
+  ['light', '조명 놓기', '조명 패널의 조명 추가에서', () => { openPane('light'); paneTab('light', 'add'); }],
+  ['shots', '샷 3개 만들기', '아래 ＋ 샷으로 다음 컷을 만들어요', () => { openPane(null); }],
+  ['move', '무빙 넣기', '샷 패널에서 달리 · 팬 같은 무빙을 골라요', () => { openPane('shot'); paneTab('shot', 'move'); }],
+  ['play', '전체 재생해 보기', '샷 목록 옆 ⏩ 버튼이나 P 키', () => { openPane(null); playSeq(); }],
 ];
+let questDone = new Set(); try { questDone = new Set(JSON.parse(localStorage.getItem('framecontis.quests') || '[]')); } catch (e) {}
+let questSnap = null;
+const questOf = () => { const s = canon(() => cur()); return { sel: state.sel, cam: [s.cam.x, s.cam.y, s.cam.z, s.cam.pan, s.cam.tilt].map(v => v.toFixed(2)).join(), f: s.f.toFixed(2),
+  subj: subjKeys(s).map(k => `${s[k].x.toFixed(2)},${s[k].z.toFixed(2)}`).join(), props: state.set.props.length, lights: shotLights(s).length, shots: state.shots.length,
+  moving: state.shots.filter(x => MOVING[x.move]).length, moveOf: s.move }; };
+function questMark(id) { if (questDone.has(id) || !QUESTS.some(q => q[0] === id)) return; questDone.add(id); try { localStorage.setItem('framecontis.quests', JSON.stringify([...questDone])); } catch (e) {}
+  syncQuests(); const q = QUESTS.find(x => x[0] === id), n = questDone.size; $('#questBtn').classList.add('pop'); setTimeout(() => $('#questBtn').classList.remove('pop'), 900);
+  toast(n === QUESTS.length ? '🎬 미션을 모두 마쳤어요! 이제 콘티를 마음껏 짜 보세요' : `미션 완료 · ${q[1]} (${n}/${QUESTS.length})`); }
+// after every saved change: what changed since the last one (only within the same shot, so switching shots never counts as moving the camera)
+function questCheck() { if (!state.shots || !state.shots.length || questDone.size >= QUESTS.length) return; const q = questOf(), p = questSnap; questSnap = q; if (!p || p.sel !== q.sel || sharedView) return;
+  if (p.cam !== q.cam) questMark('cam'); if (p.f !== q.f) questMark('lens'); if (p.subj !== q.subj) questMark('actor'); if (q.props > p.props) questMark('prop'); if (q.lights > p.lights) questMark('light');
+  if (q.shots > p.shots && q.shots >= 3) questMark('shots'); if (q.moving > p.moving || (q.moving && p.moveOf !== q.moveOf)) questMark('move'); }
+const questReset = () => { questSnap = state && state.shots && state.shots.length ? questOf() : null; };
+function syncQuests() { const n = questDone.size, all = n >= QUESTS.length; $('#questN').textContent = all ? '완료' : `${n}/${QUESTS.length}`;
+  $('#questBtn').style.setProperty('--qp', Math.round(n / QUESTS.length * 100)); $('#questBtn').classList.toggle('done', all); $('#questSum').textContent = `${n} / ${QUESTS.length}`;
+  $('#questList').innerHTML = QUESTS.map(([id, t, h]) => `<li class="${questDone.has(id) ? 'ok' : ''}"><i aria-hidden="true"></i><span><b>${t}</b><small>${h}</small></span>${questDone.has(id) ? '' : `<button class="btn sm" data-q="${id}">해 보기</button>`}</li>`).join(''); }
+function questCard(open) { const c = $('#questCard'); c.hidden = !open; $('#questBtn').setAttribute('aria-expanded', open); if (!open) return; syncQuests();
+  const b = $('#questBtn').getBoundingClientRect(); if (phone.matches) Object.assign(c.style, { left: '8px', right: '8px', top: '', bottom: (innerHeight - b.top + 8) + 'px' });
+  else Object.assign(c.style, { left: (b.right + 8) + 'px', right: '', bottom: Math.max(8, innerHeight - b.bottom) + 'px', top: '' }); }
+$('#questBtn').onclick = e => { e.stopPropagation(); questCard($('#questCard').hidden); };
+$('#questClose').onclick = () => questCard(false);
+$('#questList').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (!b) return; const q = QUESTS.find(x => x[0] === b.dataset.q); questCard(false); q[3](); toast(q[2]); });
+document.addEventListener('click', e => { if (!$('#questCard').hidden && !e.target.closest('#questCard')) questCard(false); });
+syncQuests();
+
+/* ---------- guided tour ---------- */
+// the tour: where things are, one short line each, with a ring on the thing (it only switches to the monitor for the monitor's own tools)
+const T3D = () => { openPane(null); if (mode !== '3d') setMode('3d'); }, TMON = () => { openPane(null); if (mode !== 'mon') setMode('mon'); };
+function tourSteps() {
+  return [
+    { t: '화면 바꾸기', p: '3D(세트 둘러보기) · 모니터(렌즈로 보이는 화면) · 탑(위에서 본 배치도)', el: '#modeSeg', go: T3D },
+    { t: '도구', p: isPro() ? '카메라 · 장비 · 조명 · 세트 · 샷 패널이 여기 있어요.' : '카메라 · 조명 · 세트 · 샷 패널이 여기 있어요.', el: '#rail', go: T3D },
+    { t: '카메라 도구', p: '수평 맞추기, 인물 바라보기, 화면 맞춤', el: '#camBar', go: T3D },
+    { t: '작은 모니터', p: '지금 카메라에 찍히는 화면이에요. 누르면 크게 봐요.', el: '#pip', go: T3D },
+    { t: '구도 · 가이드', p: '구도 선과 색 · 선명도를 골라요.', el: '.vfbox .vf-tools', go: TMON },
+    { t: '이동 키', p: '누르고 있으면 카메라가 움직여요.', el: '#movePad', go: TMON },
+    { t: '샷 목록', p: '컷들이 순서대로 있어요. 눌러서 고르고 끌어서 순서를 바꿔요.', el: '#strip', go: T3D },
+    { t: '샷 추가 · 전체 재생', p: '새 컷, 복제, 삭제, 모든 샷 이어서 재생', el: '.stools', go: T3D },
+    { t: '보드', p: '콘티 전체를 한 장으로 봐요.', el: '#boardBtn', go: T3D },
+    { t: '내보내기 · 메뉴', p: 'PDF · 샷리스트 · AI 프롬프트 · 공유, 모드 바꾸기, 조작키 보기', el: '#exportBtn', go: T3D },
+    { t: '미션', p: '처음 해 볼 것들이 여기 있어요. 하나씩 해 보면 체크돼요.', el: '#questBtn', go: T3D },
+  ];
+}
+let TOUR = tourSteps();
 let tourI = -1, tourLoop = false;
 // ring on the thing being explained, bubble on the other half of the stage so it never covers it
 function tourPlace() {
@@ -4929,15 +5544,24 @@ function tourPlace() {
     Object.assign(co.style, { top: below ? 'auto' : '', bottom: below ? '12px' : '', width: '', left: '', right: '', transform: '', overflowY: '' });
     if (below && r) { const room = sg.bottom - (r.y + r.h) - 12; co.style.maxHeight = Math.max(120, room) + 'px'; } else co.style.maxHeight = ''; }
   requestAnimationFrame(tourPlace); }
-function tour(i) { document.querySelectorAll('.spot').forEach(e => e.classList.remove('spot')); tourI = i; if (i === 0) { camSel = true; renderWorld(); }
-  if (i < 0 || i >= TOUR.length) { $('#coach').hidden = true; $('#tourRing').hidden = true; try { localStorage.setItem('framecontis.tour', '1'); } catch (e) {} return; }
-  const st = TOUR[i]; $('#coachT').textContent = st.t; $('#coachP').textContent = st.p; $('#coachN').textContent = `${i + 1} / ${TOUR.length}`;
-  $('#coachNext').textContent = i === TOUR.length - 1 ? '시작하기' : '다음'; $('#coach').hidden = false;
+function tour(i) { document.querySelectorAll('.spot').forEach(e => e.classList.remove('spot')); if (i === 0) TOUR = tourSteps(); tourI = i;
+  if (i < 0 || i >= TOUR.length) { $('#coach').hidden = true; $('#tourRing').hidden = true; try { localStorage.setItem('framecontis.tour2', '1'); } catch (e) {} return; }
+  const st = TOUR[i]; if (st.go) try { st.go(); } catch (e) {} $('#coachT').textContent = st.t; $('#coachP').textContent = st.p; $('#coachN').textContent = `${i + 1} / ${TOUR.length}`;
+  $('#coachNext').textContent = i === TOUR.length - 1 ? '시작하기' : '다음'; $('#coachPrev').hidden = i === 0; $('#coach').hidden = false;
   if (!tourLoop) { tourLoop = true; requestAnimationFrame(tourPlace); } }
 $('#addBtn').onclick = addShot;
-$('#coachNext').onclick = () => tour(tourI + 1); $('#coachSkip').onclick = () => tour(-1);
+$('#seqBtn').onclick = () => playSeq(); $('#animStop').onclick = () => stopSeq();
+$('#coachNext').onclick = () => tour(tourI + 1); $('#coachPrev').onclick = () => tour(Math.max(0, tourI - 1)); $('#coachSkip').onclick = () => tour(-1);
+// switching mode: the class shows / hides what each mode has, open tabs fall back to ones the mode shows
+function setUiMode(m, quiet) { uiMode = m; try { localStorage.setItem('framecontis.uimode', m); } catch (e) {} document.documentElement.classList.toggle('simple', m === 'simple');
+  if (m === 'simple') { if (showFC) $('#gFC').click(); if (pane === 'rig') openPane(null); }
+  document.querySelectorAll('.pane').forEach(x => paneTab(x.dataset.pane)); syncUiMode(); vsz = null; renderAll(); if (typeof mcSync === 'function') mcSync();
+  if (!quiet) toast(m === 'simple' ? '간편 모드: 앵글 · 위치 · 세트에 집중해요' : '프로 모드: 렌즈 키트 · 노출 · 조명 장비까지 모두 보여요'); }
+const syncUiMode = () => { $('#uiModeBtn').textContent = isPro() ? '간편 모드로 바꾸기' : '프로 모드로 바꾸기 (렌즈 · 노출 · 장비)'; };
+$('#uiModeBtn').onclick = () => { xMenu(false); setUiMode(isPro() ? 'simple' : 'pro'); };
+syncUiMode();
 $('#tourBtn').onclick = () => { xMenu(false); openPane(null); if (mode !== '3d') setMode('3d'); tour(0); };
-function maybeTour() { let seen = null; try { seen = localStorage.getItem('framecontis.tour'); } catch (e) {}
+function maybeTour() { let seen = null; try { seen = localStorage.getItem('framecontis.tour2'); /* tour2: the detailed tutorial, shown once even to those who saw the short one */ } catch (e) {}
   if (seen) return; setTimeout(() => tour(0), 500); }
 
 /* ---------- projects: each scene is saved on its own; an index lists them for the start screen ---------- */
@@ -4987,7 +5611,7 @@ function saveProject() { if (!projId) return; state.schema = SCHEMA;
   const row = { id: projId, title: state.title || '제목 없는 씬', shots: state.shots.length, updated: Date.now(), sensor: SENSOR().name.split(' (')[0] };
   return store.put(projId, state, row).catch(e => store.fail(e)); }
 // data version: bump when the saved shape changes and add the step here
-const SCHEMA = 9;
+const SCHEMA = 10;
 function normalizeState() {
   if (!state.set) state.set = sampleSet();
   if (!state.set.sun) state.set.sun = { on: false, month: 10, hour: 17.6, north: 0, wx: 'clear' };
@@ -5018,10 +5642,12 @@ function normalizeState() {
   state.shots.forEach(sh => { if (sh.cross === undefined) sh.cross = false; });
   // v8 → 9: start / end keyframes. A moving shot made before gets an end equal to its start (edit it, or pick the move again for a default)
   state.shots.forEach(sh => { if (sh.end === undefined) sh.end = MOVING[sh.move] ? endFrom(sh) : null; if (!sh.ease) sh.ease = 'ease'; });
+  // v9 → 10: lights no longer follow a person. A light that did is fixed where it points now (towards that person in that shot)
+  state.shots.forEach(sh => shotLights(sh).forEach(l => { if (l.track) aimLight(l, sh, l.track); }));
   kf = 'start'; kfId = null;
   state.sel = clamp(state.sel | 0, 0, state.shots.length - 1); state.schema = SCHEMA;
 }
-function afterLoad() {
+function afterLoad() { questReset();
   selObj = null; placing = null; showHeat = false; if (gl) gl.keys = {}; cellCache = { key: '', cells: null };
   if (mode !== '3d') setMode('3d'); setView('edit'); openPane(null);
   buildTicks(); buildStrip(); wsz = sizeWorld(); vsz = null; fitViewer(true); renderAll(); histReset(); syncShared();
@@ -5096,12 +5722,14 @@ function route() { const h = location.hash;
   showStart(); }
 addEventListener('hashchange', route);
 
-/* ---------- start screen: a slowly turning 3D set behind the title and three menus ---------- */
+/* ---------- start screen: a pixel camera viewfinder over the slowly turning 3D set (drawn small, scaled up without smoothing) ---------- */
 let panoRaf = 0, panoA = 0, panoT = 0;
+const PXS = () => innerWidth < 720 || innerHeight < 520 ? 3 : 4; // one art pixel = this many screen pixels (phones: finer)
 function panoFrame(now) {
   if ($('#startScreen').hidden) return; panoRaf = requestAnimationFrame(panoFrame);
   if (now - panoT < 33) return; panoT = now; // about 30 fps is plenty for a backdrop
-  const cv = $('#pano'), W = innerWidth, H = innerHeight; if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+  if (now - vfT > 125) { vfT = now; drawVF(now); } // the viewfinder ticks at a retro 8 frames a second
+  const cv = $('#pano'), W = Math.ceil(innerWidth / PXS()), H = Math.ceil(innerHeight / PXS()); if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
   const ctx = cv.getContext('2d'); ctx.setTransform(1, 0, 0, 1, 0, 0);
   if (!gl) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1b2a44'); g.addColorStop(1, '#0b0f16'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); return; }
   const s = cur(); panoA += 0.08;
@@ -5110,19 +5738,65 @@ function panoFrame(now) {
   const la = lookAngles(P, T), V = Object.assign(basis(P, la.pan, la.tilt, 0), { W, H }); V.fp = Math.max(W, H * 0.8) / 2 / Math.tan(34 * DEG);
   try { glWorld(ctx, W, H, s, V); } catch (e) { cancelAnimationFrame(panoRaf); }
 }
+// the viewfinder: double neon frame, corner marks, ● REC, running timecode, exposure, battery, audio meters, and a few pixel sprites from a film set
+const PX = { ink: '#FFFFFF', cyan: '#3BE8FF', pink: '#FF4FA3', mag: '#FF4FD8', yel: '#FFD43B', red: '#FF4B3E', blue: '#3D5BFF', grn: '#5CE38A', orn: '#FF8A2A', dark: '#120F26' };
+// sprites as rows of palette letters (. = empty)
+const SPR = {
+  clap: ['wkwkwkwkwkwk', 'kwkwkwkwkwkw', 'yyyyyyyyyyyy', 'yddddddddddy', 'ydwwddwwwddy', 'yddddddddddy', 'ydwwwwddwwdy', 'yddddddddddy', 'yyyyyyyyyyyy'],
+  lamp: ['..yyyyyy..', '.yooooooy.', 'yoowwwwooy', 'yoowwwwooy', '.yooooooy.', '..yyyyyy..', '....kk....', '....kk....', '....kk....', '...k..k...', '..k....k..', '.k......k.'],
+  reel: ['..cccc..', '.cddddc.', 'cdwddwdc', 'cddccddc', 'cddccddc', 'cdwddwdc', '.cddddc.', '..cccc..'],
+  star: ['.y.', 'yyy', '.y.'] };
+const SPR_COL = { w: PX.ink, k: '#2A2550', y: PX.yel, d: PX.dark, o: PX.orn, c: PX.cyan, p: PX.pink, m: PX.mag };
+let vfT = 0;
+const vfStart = performance.now();
+function sprite(ctx, rows, x, y, k = 1) { rows.forEach((r, j) => [...r].forEach((ch, i) => { if (ch === '.') return; ctx.fillStyle = SPR_COL[ch]; ctx.fillRect(x + i * k, y + j * k, k, k); })); }
+function drawVF(now = performance.now()) {
+  const cv = $('#mcVF'); if (!cv || $('#startScreen').hidden) return; const S = PXS(), W = Math.ceil(innerWidth / S), H = Math.ceil(($('#startScreen').clientHeight || innerHeight) / S);
+  if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; } const ctx = cv.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.clearRect(0, 0, W, H);
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches, t = (now - vfStart) / 1000, m = 4, R = (x, y, w, h, c) => { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); };
+  // frame: thick cyan outer line, thin pink inner line, yellow corner marks
+  R(m, m, W - 2 * m, 2, PX.cyan); R(m, H - m - 2, W - 2 * m, 2, PX.cyan); R(m, m, 2, H - 2 * m, PX.cyan); R(W - m - 2, m, 2, H - 2 * m, PX.cyan);
+  const n = m + 4; R(n, n, W - 2 * n, 1, PX.pink); R(n, H - n - 1, W - 2 * n, 1, PX.pink); R(n, n, 1, H - 2 * n, PX.pink); R(W - n - 1, n, 1, H - 2 * n, PX.pink);
+  const c = n + 5, L = 9; for (const [x, y, sx, sy] of [[c, c, 1, 1], [W - c, c, -1, 1], [c, H - c, 1, -1], [W - c, H - c, -1, -1]]) { R(sx > 0 ? x : x - L, sy > 0 ? y : y - 2, L, 2, PX.yel); R(sx > 0 ? x : x - 2, sy > 0 ? y : y - L, 2, L, PX.yel); }
+  // centre cross
+  R(Math.floor(W / 2) - 3, Math.floor(H / 2), 7, 1, 'rgba(255,255,255,.55)'); R(Math.floor(W / 2), Math.floor(H / 2) - 3, 1, 7, 'rgba(255,255,255,.55)');
+  // status bar: REC + timecode on the left, exposure + battery on the right
+  ctx.font = '8px Silkscreen, monospace'; ctx.textBaseline = 'top'; const ty = c + 4, f = Math.floor(t * 24) % 24, tc = `${String(Math.floor(t / 3600)).padStart(2, '0')}:${String(Math.floor(t / 60) % 60).padStart(2, '0')}:${String(Math.floor(t) % 60).padStart(2, '0')}:${String(f).padStart(2, '0')}`;
+  if (still || Math.floor(t * 2) % 2 === 0) { R(c + 12, ty + 1, 5, 5, PX.red); } ctx.fillStyle = PX.red; ctx.fillText('REC', c + 20, ty);
+  if (W >= 190) { ctx.fillStyle = PX.ink; ctx.fillText(tc, c + 44, ty); }
+  const right = W >= 250 ? 'ISO 800  T2.8  24P' : '24P'; const rw = ctx.measureText(right).width, bx = W - c - 14;
+  ctx.fillStyle = PX.cyan; ctx.fillText(right, bx - rw - 6, ty); R(bx, ty, 11, 6, PX.ink); R(bx + 11, ty + 2, 1, 2, PX.ink); R(bx + 1, ty + 1, 9, 4, PX.dark); for (let i = 0; i < 3; i++) R(bx + 2 + i * 3, ty + 2, 2, 2, PX.grn);
+  // bottom: format on the left, audio meters on the right (bouncing)
+  const by = H - c - 10; ctx.fillStyle = PX.yel; if (W >= 200) ctx.fillText('4K  16:9  LOG', c + 12, by);
+  const cells = W >= 260 ? 16 : 9, mx = W - c - 12 - cells * 3; for (let row = 0; row < 2; row++) { const lv = still ? 0.6 : 0.45 + 0.35 * Math.abs(Math.sin(t * (2.1 + row * 0.7))) + 0.15 * Math.sin(t * 9.3 + row);
+    for (let i = 0; i < cells; i++) { const on = i / cells < lv, col = i > cells * 0.8 ? PX.red : i > cells * 0.6 ? PX.yel : PX.grn; R(mx + i * 3, by + row * 4, 2, 3, on ? col : 'rgba(255,255,255,.12)'); } }
+  // film-set sprites along the edges, and a few twinkling stars
+  if (W >= 180 && H >= 120) { sprite(ctx, SPR.clap, c + 6, H - c - 34); sprite(ctx, SPR.lamp, W - c - 22, c + 18); sprite(ctx, SPR.reel, c + 8, c + 18); }
+  [[0.2, 0.3], [0.82, 0.62], [0.12, 0.7], [0.9, 0.24], [0.66, 0.14]].forEach(([fx, fy], i) => { if (still || (Math.floor(t * 1.5 + i) % 3)) sprite(ctx, SPR.star, Math.floor(W * fx), Math.floor(H * fy)); });
+}
+// the logo: FRAMECONTI set in the pixel face at its native 8 px, with a blue and a pink shadow step, then scaled up
+function drawLogo() { const cv = $('#mcLogo'); if (!cv) return; const ctx = cv.getContext('2d'); ctx.font = '700 8px Silkscreen, monospace'; const tw = Math.ceil(ctx.measureText('FRAMECONTI').width);
+  cv.width = tw + 4; cv.height = 12; const c2 = cv.getContext('2d'); c2.imageSmoothingEnabled = false; c2.font = '700 8px Silkscreen, monospace'; c2.textBaseline = 'top';
+  c2.fillStyle = PX.blue; c2.fillText('FRAMECONTI', 2, 3); c2.fillStyle = PX.pink; c2.fillText('FRAMECONTI', 1, 2); c2.fillStyle = PX.ink; c2.fillText('FRAMECONTI', 0, 1);
+  cv.style.aspectRatio = `${cv.width} / ${cv.height}`; }
+if (document.fonts && document.fonts.load) document.fonts.load('700 8px Silkscreen').then(() => { drawLogo(); drawVF(); }).catch(drawLogo); else drawLogo();
+addEventListener('resize', () => { if (!$('#startScreen').hidden) drawVF(); });
 // the most recent project is one tap away; the status line counts what is saved on this device
 function mcSync() { const list = projects(), p = list[0], d = p && new Date(p.updated);
   $('#mcResume').hidden = !p; if (p) { $('#mcResumeT').textContent = `${p.title || '제목 없는 씬'}, ${p.shots || 0}컷, ${d.getMonth() + 1}월 ${d.getDate()}일 수정`; $('#mcResume').dataset.id = p.id; }
   $('#mcLoadT').textContent = list.length > 1 ? `저장한 콘티 ${list.length}개와 파일` : '저장한 콘티와 파일';
+  $('#mcModeBtn').textContent = `${isPro() ? '프로' : '간편'} 모드 · 바꾸기`;
   $('#mcStat').textContent = list.length ? `이 기기에 프로젝트 ${list.length}개` : '이 기기에 저장된 프로젝트 없음'; }
+document.querySelectorAll('[data-uimode]').forEach(b => b.onclick = () => { setUiMode(b.dataset.uimode, true); mcSync(); mcShow('mcMain'); });
+$('#mcModeBtn').onclick = () => mcShow('mcModeP');
 $('#mcResume').onclick = () => { const id = $('#mcResume').dataset.id; if (id) openProject(id); };
-function showStart() { setHash(''); sharedView = false; syncShared(); const st = $('#startScreen'); st.hidden = false; mcSync(); mcShow('mcMain');
+function showStart() { setHash(''); sharedView = false; syncShared(); const st = $('#startScreen'); st.hidden = false; mcSync(); mcShow(uiMode ? 'mcMain' : 'mcModeP'); // first visit: pick a mode first
   cancelAnimationFrame(panoRaf); panoRaf = requestAnimationFrame(panoFrame); }
 function hideStart() { $('#startScreen').hidden = true; cancelAnimationFrame(panoRaf); if (/이 기기에 없는/.test($('#toast').textContent)) toastClear(); // a project opened fine: drop the missing-project notice
   try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} } // only takes in fullscreen / installed app
 try { if (localStorage.getItem('framecontis.portok')) document.documentElement.classList.add('port-ok'); } catch (e) {}
 $('#rotOk').onclick = () => { document.documentElement.classList.add('port-ok'); try { localStorage.setItem('framecontis.portok', '1'); } catch (e) {} fitApp(); };
-function mcShow(id) { ['mcMain', 'mcNewP', 'mcLoadP', 'mcAskP'].forEach(k => $('#' + k).hidden = k !== id); const f = $('#' + id).querySelector('input,.sbtn:not([disabled]),.mc-act:not([hidden])'); if (f) setTimeout(() => f.focus(), 30); }
+function mcShow(id) { ['mcMain', 'mcModeP', 'mcNewP', 'mcLoadP', 'mcAskP'].forEach(k => $('#' + k).hidden = k !== id); const f = $('#' + id).querySelector('input,.sbtn:not([disabled]),.mc-act:not([hidden])'); if (f) setTimeout(() => f.focus(), 30); }
 document.querySelectorAll('#startScreen [data-back]').forEach(b => b.onclick = () => { mcSync(); mcShow('mcMain'); });
 let mcExample = true;
 const mcMode = () => { document.querySelectorAll('#mcModeSeg button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.ex === '1') === mcExample)); $('#mcModeNote').textContent = mcExample ? '카페 테라스 예시 6컷과 조명·가구가 들어 있어요. 둘러보며 익히기 좋아요.' : '카메라 한 대와 인물 A만 있는 빈 세트에서 시작해요.'; };
@@ -5175,7 +5849,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.01 18:36'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.04 17:23'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
