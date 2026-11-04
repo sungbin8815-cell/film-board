@@ -920,6 +920,15 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
   .mc-panel.wide .hm-tpls{grid-template-columns:repeat(4,1fr)} .mc-panel.wide .hm-sets{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))} }
 .mc-panel.wide .hm-tpls,.mc-panel.wide .hm-recent{display:grid;overflow:visible;margin:0}
 @media (prefers-reduced-motion:reduce){ .hm-big{transition:none} }
+/* tutorial: lesson list, the "do it" line in the coach, the Home entry */
+.questb svg path{fill:none;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.coach p.coach-do{padding:8px 10px;border-radius:10px;background:rgba(139,156,255,.14);color:var(--accent);font-weight:600}
+.coach p.coach-do.ok{background:rgba(52,199,89,.16);color:var(--ok)} .coach p.coach-do[hidden]{display:none}
+.coach .dots{max-width:52%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#questList li em{font-style:normal;font:700 10px var(--f-body);padding:2px 7px;border-radius:999px;background:#E5484D;color:#fff;margin-left:6px;vertical-align:1px}
+#questList li.star{background:rgba(229,72,77,.07)}
+.hm-pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:100%}
+.hm-tut{display:inline-flex;align-items:center;gap:7px;color:var(--ink)} .hm-tut svg{width:17px;height:17px;flex:none;fill:none;stroke:var(--accent);stroke-width:1.7;stroke-linejoin:round}
 </style>
 </head>
 <body>
@@ -941,8 +950,8 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <button id="aiBtn" role="menuitem">AI 실사 프롬프트 (ChatGPT · Higgsfield)</button><hr>
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button><button id="techMenuBtn" role="menuitem" data-pro>테크비즈 시트 (현장용) · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
-    <hr><button id="uiModeBtn" role="menuitem"></button><button id="tourBtn" role="menuitem">사용법 보기</button><button id="keysBtn" role="menuitem">조작키 보기 (?)</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.04 20:38</p>
+    <hr><button id="uiModeBtn" role="menuitem"></button><button id="tourBtn" role="menuitem">튜토리얼</button><button id="keysBtn" role="menuitem">조작키 보기 (?)</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.05 00:05</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -952,7 +961,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <button data-pane="light" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="10" height="8" rx="1.5" transform="rotate(-15 10 8)"/><path d="M15.5 6.5l4-1.5M16 10.5l4 1M10 12.5V20M6.5 20.5h7"/></svg>조명<kbd>L</kbd></button>
     <button data-pane="set" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 11.5V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2.5"/><path d="M3 12h3v3h12v-3h3v5H3zM5 17v2.5M19 17v2.5"/></svg>세트<kbd>T</kbd></button>
     <button data-pane="shot" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="1.5"/><path d="M3.5 9l2-5 15 1.5-1.2 3.5M8.5 4.5l-1.5 4.5M13.5 5l-1.5 4"/></svg>샷<kbd>H</kbd></button>
-    <button class="questb" id="questBtn" aria-haspopup="dialog" aria-expanded="false" title="첫 콘티 미션"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" class="qr-bg"/><circle cx="12" cy="12" r="9" class="qr" pathLength="100"/><path d="M8.5 12.2l2.3 2.3 4.7-4.8"/></svg>미션<b id="questN"></b></button>
+    <button class="questb" id="questBtn" aria-haspopup="dialog" aria-expanded="false" title="튜토리얼: 기능을 하나씩 따라 해 봐요"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" class="qr-bg"/><circle cx="12" cy="12" r="9" class="qr" pathLength="100"/><path d="M8 9.5l4-2 4 2-4 2zM9.5 10.5v3c0 .9 1.1 1.6 2.5 1.6s2.5-.7 2.5-1.6v-3"/></svg>튜토리얼<b id="questN"></b></button>
   </nav>
 
   <div class="stage" id="stage">
@@ -980,6 +989,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
       <button class="fab" id="playBtn" aria-label="미리보기 재생"><svg class="i" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></svg></button>
       <span class="kfhud" id="kfHud" aria-live="polite"></span></div></div>
     <div class="ov ov-bl" id="camBar"><div class="toolbar glass">
+      <button class="fab" id="moveModeBtn" aria-pressed="true" title="카메라 이동 방식: 끌어서 자유롭게 ↔ 축 화살표 (J)"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg><span id="moveModeT">끌기</span></button>
       <button class="fab" id="levelBtn" title="롤을 0°로"><svg class="i" viewBox="0 0 24 24"><path d="M3 12h18M7 8.5L3 12l4 3.5M17 8.5l4 3.5-4 3.5"/></svg>수평</button>
       <button class="fab" id="aimA" title="카메라가 A 인물을 바라보게"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/></svg>A<span class="lab"> 바라보기</span></button>
       <button class="fab" id="aimB" title="카메라가 B 인물을 바라보게"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/></svg>B<span class="lab"> 바라보기</span></button>
@@ -1010,8 +1020,8 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
       <span class="crg"><small>붐</small><button class="fab" data-cr="boom" data-d="3" aria-label="붐 올리기">▲</button><button class="fab" data-cr="boom" data-d="-3" aria-label="붐 내리기">▼</button></span>
       <span class="crg" id="crLen"><small>암</small><button class="fab" id="crIn" data-cr="len" data-d="-0.25" aria-label="암 줄이기">−</button><button class="fab" id="crOut" data-cr="len" data-d="0.25" aria-label="암 늘리기">+</button></span>
       <button class="fab" id="crClose" title="크레인 조작 끝내기"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
-    <div class="tring" id="tourRing" hidden></div><div class="coach glass" id="coach" hidden role="dialog" aria-labelledby="coachT"><b id="coachT"></b><p id="coachP"></p>
-      <div class="row"><span class="dots" id="coachN"></span><span class="row"><button class="btn sm ghost" id="coachSkip">건너뛰기</button><button class="btn sm" id="coachPrev">이전</button><button class="btn sm primary" id="coachNext">다음</button></span></div></div>
+    <div class="tring" id="tourRing" hidden></div><div class="coach glass" id="coach" hidden role="dialog" aria-labelledby="coachT"><b id="coachT"></b><p id="coachP"></p><p class="coach-do" id="coachDo" hidden aria-live="polite"></p>
+      <div class="row"><span class="dots" id="coachN"></span><span class="row"><button class="btn sm ghost" id="coachSkip">그만하기</button><button class="btn sm" id="coachPrev">이전</button><button class="btn sm primary" id="coachNext">다음</button></span></div></div>
     <canvas class="pip" id="pip" role="button" tabindex="0" aria-label="카메라 모니터 미리보기. 누르면 모니터 화면으로 바뀝니다."></canvas>
   </div>
 
@@ -1160,7 +1170,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
         <button class="hm-big" id="mcSetsBtn"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10.5L12 4l9 6.5V20H3z"/><path d="M9 20v-6h6v6"/></svg></i><b>세트 프리셋</b><small>공간 17가지로 바로 시작</small></button>
         <button class="hm-big" id="mcLoad"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></i><b>불러오기</b><small id="mcLoadT">저장한 프로젝트</small></button>
       </nav>
-      <button class="hm-resume" id="mcResume" hidden>이어서 작업 · <b id="mcResumeT"></b></button>
+      <div class="hm-pills"><button class="hm-resume" id="mcResume" hidden>이어서 작업 · <b id="mcResumeT"></b></button><button class="hm-resume hm-tut" id="mcTut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5l9-4.5 9 4.5-9 4.5zM6.5 11.2v4.3c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5v-4.3"/></svg>튜토리얼로 배우기</button></div>
     </div>
     <div class="hm-tools"><button class="hm-link" id="mcModeBtn"></button><button class="hm-link" id="mcAsk">문의하기</button></div>
   </div>
@@ -1197,7 +1207,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <div class="mc-row"><button class="sbtn center" id="mcCopy"><b>주소 복사</b></button><a class="sbtn primary center" id="mcSend" target="_blank" rel="noopener"><b>메일 앱으로 보내기</b></a></div>
     <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
-  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.04 20:38</span></div>
+  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.05 00:05</span></div>
 </div>
 
 <div class="keyhelp" id="keyHelp" role="dialog" aria-modal="true" aria-labelledby="keyHelpT" hidden><div class="kh-box glass">
@@ -1211,7 +1221,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
       <p><kbd>1</kbd> 3D · <kbd>2</kbd> 모니터 · <kbd>3</kbd> 탑</p><p><kbd>V</kbd> 다음 화면</p><p><kbd>0</kbd> 화면 맞춤</p>
       <p><kbd>G</kbd> 구도 가이드</p><p data-pro><kbd>F</kbd> 폴스컬러</p><p><kbd>B</kbd> 보드 ↔ 편집</p></section>
     <section><h4>카메라 · 렌즈</h4>
-      <p><kbd>Z</kbd> 더 넓게 · <kbd>X</kbd> 더 좁게 (렌즈)</p><p><kbd>U</kbd> A 인물 바라보기</p><p><kbd>O</kbd> 수평 맞추기 (롤 0°)</p></section>
+      <p><kbd>Z</kbd> 더 넓게 · <kbd>X</kbd> 더 좁게 (렌즈)</p><p><kbd>U</kbd> A 인물 바라보기</p><p><kbd>J</kbd> 카메라 이동: 끌기 ↔ 축</p><p><kbd>O</kbd> 수평 맞추기 (롤 0°)</p></section>
     <section><h4>도구 패널</h4>
       <p><kbd>C</kbd> 카메라 <span data-pro>· <kbd>R</kbd> 장비</span></p><p><kbd>L</kbd> 조명 · <kbd>T</kbd> 세트 · <kbd>H</kbd> 샷</p>
       <p><kbd>Delete</kbd> 고른 가구 · 조명 지우기</p><p><kbd>Esc</kbd> 패널 닫기</p></section>
@@ -1226,7 +1236,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
   </div>
   <div class="kh-foot"><button class="btn sm" id="keyHelpPrint">인쇄 · PDF</button><button class="btn sm primary" id="keyHelpClose">닫기</button></div>
 </div></div>
-<div class="questcard glass" id="questCard" role="dialog" aria-labelledby="questT" hidden><div class="qc-head"><b id="questT">첫 콘티 미션</b><span id="questSum"></span><button class="btn sm ghost" id="questClose" aria-label="닫기">✕</button></div><ol id="questList"></ol></div>
+<div class="questcard glass" id="questCard" role="dialog" aria-labelledby="questT" hidden><div class="qc-head"><b id="questT">튜토리얼</b><span id="questSum"></span><button class="btn sm ghost" id="questClose" aria-label="닫기">✕</button></div><ol id="questList"></ol></div>
 <div class="toast" id="toast" role="status"></div>
 <input type="file" id="fileIn" accept=".previo,.frameconti,application/json" hidden>
 
@@ -3760,6 +3770,11 @@ let showHeat = false, selObj = null, craneOn = false, camSel = false;
 // [minor, major] pairs: the first whose minor spacing is at least 18 px on screen wins
 const GRID_STEPS = [[0.05, 0.5], [0.1, 1], [0.25, 1], [0.5, 2], [1, 5], [2, 10], [5, 25], [10, 50]];
 const showGrid = true; let gridInfo = null, gizmoSpot = null;
+// how the camera is moved in the 3D and top views: 'free' = grab it and drag it over the floor (height kept), 'axis' = along the arrows
+let camMove = (() => { try { return localStorage.getItem('previo.cammove') || 'free'; } catch (e) { return 'free'; } })();
+function syncCamMove() { const b = $('#moveModeBtn'); if (!b) return; b.setAttribute('aria-pressed', camMove === 'free'); $('#moveModeT').textContent = camMove === 'free' ? '끌기' : '축'; }
+function setCamMove(m) { camMove = m; try { localStorage.setItem('previo.cammove', m); } catch (e) {} syncCamMove(); renderWorld();
+  toast(m === 'free' ? '카메라를 잡고 끌어서 옮겨요 · 높이는 그대로예요' : '화살표 축을 따라 옮겨요 · 붐(높이)도 여기서'); }
 function glGrid(V, ex) {
   const g = gl.parts.grid; g.visible = showGrid; if (!showGrid) return null;
   const ppm = V.fp / Math.max(0.5, viewer.dist), [mi, ma] = GRID_STEPS.find(([m]) => m * ppm >= 18) || GRID_STEPS[GRID_STEPS.length - 1];
@@ -3944,16 +3959,17 @@ function drawHandles(ctx, toC, scr, s, SB) {
   const o0 = scr(q0), ppm = worldV.fp / q0.z, Lm = 78 / ppm, cw = ctx.canvas.clientWidth || 1e4, ch = ctx.canvas.clientHeight || 1e4;
   gizmoSpot = { x: o0.x, y: o0.y, r: 96 };
   // the camera itself is a tap target: tapping it shows the move arrows and turn rings, tapping empty floor hides them again
-  worldHandles.push({ t: 'cam', hit: p => Math.hypot(p.x - o0.x, p.y - o0.y) < 16 * k ? 2 : 99 });
+  const free = camMove === 'free' && !crane, top = mode === 'top';
+  worldHandles.push({ t: 'cam', free, hit: p => Math.hypot(p.x - o0.x, p.y - o0.y) < (free && camSel ? 24 : 16) * k ? 2 : 99 });
   if (!camSel) { ctx.strokeStyle = C.accent; ctx.lineWidth = 2; ctx.globalAlpha = .9; ctx.beginPath(); ctx.arc(o0.x, o0.y, 11, 0, Math.PI * 2); ctx.stroke();
     ctx.globalAlpha = 1; ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(o0.x, o0.y, 3.5, 0, Math.PI * 2); ctx.fill(); return; }
-  const axes = [{ id: 'x', v: SB.rh, lab: 'X 트럭' }, { id: 'y', v: UP, lab: 'Y 붐' }, { id: 'z', v: SB.fh, lab: 'Z 달리' }];
+  const axes = free ? [] : [{ id: 'x', v: SB.rh, lab: 'X 트럭' }, { id: 'y', v: UP, lab: 'Y 붐' }, { id: 'z', v: SB.fh, lab: 'Z 달리' }].filter(a => !top || a.id !== 'y');
   const rings = [
     { id: 'pan', R: Lm * 0.95, a: { x: 0, y: 0, z: 1 }, b: { x: 1, y: 0, z: 0 }, th0: SB.yaw * DEG, lab: '팬' },
     { id: 'tilt', R: Lm * 0.72, a: SB.fh, b: UP, th0: SB.pitch * DEG, lab: '틸트' },
     { id: 'roll', R: Lm * 0.5, a: SB.r, b: SB.u, th0: Math.PI / 2, lab: '롤' },
   ];
-  rings.forEach(rg => {
+  rings.filter(rg => !top || rg.id === 'pan').forEach(rg => {
     const pt = th => add(add(P, rg.a, rg.R * Math.cos(th)), rg.b, rg.R * Math.sin(th));
     const pts = []; for (let i = 0; i <= 64; i++) { const th = i / 64 * Math.PI * 2, q = toC(pt(th)); pts.push(q.z > 0.05 ? { ...scr(q), th } : null); }
     const active = wDrag && wDrag.t === 'ring' && wDrag.id === rg.id;
@@ -3975,6 +3991,13 @@ function drawHandles(ctx, toC, scr, s, SB) {
     ctx.fillStyle = C.sheet; ctx.globalAlpha = .85; ctx.fillRect(lx - tw / 2 - 3, ly - 8, tw + 6, 16); ctx.globalAlpha = 1; ctx.fillStyle = AX[ax.id]; ctx.fillText(ax.lab, lx, ly);
     worldHandles.push({ t: 'axis', id: ax.id, v: ax.v, o0, tp, Lm, hit: p => { const d = distSeg(p, o0, tp); return d < 9 * k && Math.hypot(p.x - o0.x, p.y - o0.y) > 8 ? d : 99; } });
   });
+  if (free) { // a grab handle on the camera: four arrows on the floor plane's directions, the camera height stays where it is
+    const on = wDrag && wDrag.t === 'camfree' && wDrag.moved; ctx.globalAlpha = on ? 1 : .92; ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(o0.x, o0.y, 15, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = C.sheet; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.beginPath();
+    [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([a, b]) => { const tx = o0.x + a * 10, ty = o0.y + b * 10; ctx.moveTo(o0.x + a * 3, o0.y + b * 3); ctx.lineTo(tx, ty);
+      ctx.moveTo(tx - a * 3.5 + b * 3.5, ty - b * 3.5 + a * 3.5); ctx.lineTo(tx, ty); ctx.lineTo(tx - a * 3.5 - b * 3.5, ty - b * 3.5 - a * 3.5); }); ctx.stroke(); ctx.globalAlpha = 1;
+    ctx.font = '600 11px "IBM Plex Sans KR", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; const lab = '끌어서 이동', tw = ctx.measureText(lab).width, lx = clamp(o0.x, tw / 2 + 6, cw - tw / 2 - 6), ly = clamp(o0.y + 20, 4, ch - 18);
+    ctx.fillStyle = C.sheet; ctx.globalAlpha = .85; ctx.fillRect(lx - tw / 2 - 4, ly - 2, tw + 8, 16); ctx.globalAlpha = 1; ctx.fillStyle = C.accent; ctx.fillText(lab, lx, ly); return; }
   ctx.fillStyle = C.sheet; ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(o0.x, o0.y, 4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 }
 const findObj = id => id === 'SUN' ? state.set.sun : id && id.startsWith('SUBJ_') ? cur()[id.slice(5)] : shotLights().find(o => o.id === id) || state.set.props.find(o => o.id === id);
@@ -3983,6 +4006,8 @@ function groundHit(p, V) {
   const d = add(add(V.f, V.r, (p.x - V.W / 2) / V.fp), V.u, -(p.y - V.H / 2) / V.fp);
   if (d.y > -1e-4) return null; const t = -V.P.y / d.y; return t > 0 && t < 400 ? add(V.P, d, t) : null;
 }
+function planeHit(p, V, y) { const d = add(add(V.f, V.r, (p.x - V.W / 2) / V.fp), V.u, -(p.y - V.H / 2) / V.fp);
+  if (Math.abs(d.y) < 1e-4) return null; const t = (y - V.P.y) / d.y; return t > 0 && t < 400 ? add(V.P, d, t) : null; }
 function projW(V, w) { const d = sub3(w, V.P), z = dot(d, V.f); return { x: V.W / 2 + dot(d, V.r) / z * V.fp, y: V.H / 2 - dot(d, V.u) / z * V.fp }; }
 /* ---------- placing furniture like a room-decorating game: catalogue → ghost on a 25 cm grid → tap to put it down ---------- */
 // Korean particle after a word: 받침 → first form (과·을·이), otherwise the second (와·를·가)
@@ -4164,6 +4189,7 @@ wcv.addEventListener('pointerdown', e => {
   else if (best && best.t === 'clen') { const sa = { x: best.tp.x - best.o0.x, y: best.tp.y - best.o0.y }, len = Math.hypot(sa.x, sa.y);
     if (len < 6) return; wDrag = { t: 'clen', id: 'len', base, unit: { x: sa.x / len, y: sa.y / len }, ppm: len / best.Lm, cr0: { ...s.crane } }; }
   else if (best && best.t === 'arm') wDrag = { t: 'arm', base, v0: { ...viewer }, V };
+  else if (best && best.t === 'cam' && best.free) { const h = planeHit(p, V, s.cam.y); wDrag = { t: 'camfree', base, V, y: s.cam.y, off: h ? { x: s.cam.x - h.x, z: s.cam.z - h.z } : { x: 0, z: 0 } }; }
   else if (best && best.t === 'cam') wDrag = { t: 'camtap', base, v0: { ...viewer }, V };
   else if (best && best.t === 'subj') { const g = groundHit(p, V), sb = s[best.k]; wDrag = { t: 'subj', k: best.k, V, off: g ? { x: sb.x - g.x, z: sb.z - g.z } : { x: 0, z: 0 } }; }
   else if (best && best.t === 'face') wDrag = { t: 'face', k: best.k, V };
@@ -4196,6 +4222,7 @@ wcv.addEventListener('pointermove', e => {
   if (wDrag.t === 'clen') { craneMove(s, { len: wDrag.cr0.len + (dx * wDrag.unit.x + dy * wDrag.unit.y) / wDrag.ppm }); changed(false); return; }
   if (wDrag.t === 'orbit') { viewer.az = wDrag.v0.az - dx * 0.4; viewer.el = clamp(wDrag.v0.el + dy * 0.3, -8, 89); renderWorld(); return; }
   if (wDrag.t === 'pan') { const V = wDrag.V, k = viewer.dist / V.fp; viewer.tx = wDrag.v0.tx - V.rh.x * dx * k + V.fh.x * dy * k; viewer.tz = wDrag.v0.tz - V.rh.z * dx * k + V.fh.z * dy * k; renderWorld(); return; }
+  if (wDrag.t === 'camfree') { const h = planeHit(p, wDrag.V, wDrag.y); if (h) { if (!camSel) { camSel = true; selObj = null; } s.cam.x = +(h.x + wDrag.off.x).toFixed(3); s.cam.z = +(h.z + wDrag.off.z).toFixed(3); } }
   if (wDrag.t === 'axis') { const m = (dx * wDrag.unit.x + dy * wDrag.unit.y) / wDrag.ppm, c0 = wDrag.cam0;
     s.cam.x = +(c0.x + wDrag.v.x * m).toFixed(3); s.cam.y = +clamp(c0.y + wDrag.v.y * m, 0.05, 40).toFixed(3); s.cam.z = +(c0.z + wDrag.v.z * m).toFixed(3); }
   if (wDrag.t === 'ring') { const dth = (dx * wDrag.tg.x + dy * wDrag.tg.y) / wDrag.tl2 / DEG;
@@ -4214,7 +4241,7 @@ const endW = e => { ptrs.delete(e.pointerId); if (!wDrag) return; const d = wDra
   // a tap on a light or a piece of furniture opens its panel; a drag only moves it
   if (d.t === 'place') { if (!d.moved) confirmPlace(); return; }
   if (d.t === 'arm' && !d.moved) { craneToggle(); return; }
-  if (d.t === 'camtap' && !d.moved) { camSel = !camSel; selObj = null; syncSet(); syncBars(); renderWorld(); return; }
+  if ((d.t === 'camtap' || d.t === 'camfree') && !d.moved) { camSel = !camSel; selObj = null; syncSet(); syncBars(); renderWorld(); return; }
   if (d.t === 'orbit' && !d.moved && (camSel || selObj)) { camSel = false; selObj = null; syncSet(); syncBars(); }
   if (d.t === 'subj' && !d.moved) { selObj = { id: 'SUBJ_' + d.k, kind: 'subj', k: d.k }; syncSet(); }
   if (d.t === 'objmove' && d.why && d.moved) toast(`${d.why} · 마지막으로 놓을 수 있던 자리에 두었어요`);
@@ -4253,7 +4280,7 @@ const frameViewer = () => mode === 'top' ? topViewer() : mode === '3d' ? fitView
 function setMode(m) {
   if (m === mode) return; if (mode === '3d') view3d = { ...viewer }; mode = m;
   document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
-  $('#stage').dataset.mode = m; $('#tapeBtn').hidden = m !== 'top'; if (m !== 'top' && tape.on) $('#tapeBtn').click(); syncBars(); $('#worldwrap').hidden = m === 'mon'; $('#vf').hidden = m !== 'mon'; $('#pip').hidden = m === 'mon'; $('#fitBtn').hidden = m === 'mon';
+  $('#stage').dataset.mode = m; $('#tapeBtn').hidden = m !== 'top'; $('#moveModeBtn').hidden = m === 'mon'; if (m !== 'top' && tape.on) $('#tapeBtn').click(); syncBars(); $('#worldwrap').hidden = m === 'mon'; $('#vf').hidden = m !== 'mon'; $('#pip').hidden = m === 'mon'; $('#fitBtn').hidden = m === 'mon';
   wsz = null; vsz = null;
   renderAll();
   if (m === 'top') topViewer(); else if (m === '3d') { if (view3d) tweenViewer(view3d, 560); else fitViewer(); }
@@ -4322,6 +4349,7 @@ document.addEventListener('keydown', e => {
   if (k === 'z' || k === 'x') { lensStep(k === 'x' ? 1 : -1); return; }
   if (k === 'g' && mode === 'mon') { guideMenu($('#guideMenu').hidden); return; }
   if (k === 'f' && mode === 'mon' && isPro()) { $('#gFC').click(); return; }
+  if (k === 'j' && mode !== 'mon') { setCamMove(camMove === 'free' ? 'axis' : 'free'); return; }
   if (k === 'u') { $('#aimA').click(); return; } if (k === 'o') { $('#levelBtn').click(); return; } if (k === '0') { frameViewer(); return; }
   if (k === 'm' && cur().end) { setKf(kf === 'end' ? 'start' : 'end'); renderAll(); renderWorld(); return; }
   if (k === ' ' && cur().end) { e.preventDefault(); playShot(); return; }
@@ -4354,6 +4382,7 @@ addEventListener('gamepadconnected', () => { if (!gp.raf) gp.raf = requestAnimat
 addEventListener('gamepaddisconnected', () => { mvKeys.delete('pad'); toast('게임패드 연결이 끊겼어요'); });
 $('#modeSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setMode(b.dataset.mode); });
 $('#fitBtn').onclick = frameViewer;
+$('#moveModeBtn').onclick = () => setCamMove(camMove === 'free' ? 'axis' : 'free'); syncCamMove();
 
 
 
@@ -4520,7 +4549,7 @@ function guideMenu(open) { const m = $('#guideMenu'); m.hidden = !open; $('#gThi
 $('#gThirds').onclick = e => { e.stopPropagation(); guideMenu($('#guideMenu').hidden); };
 $('#guideMenu').addEventListener('click', e => { e.stopPropagation(); const g = e.target.closest('[data-guide]'), f = e.target.closest('[data-gflip]');
   const c = e.target.closest('[data-gcol]'), w = e.target.closest('[data-gstr]'); if (c) guideCol = c.dataset.gcol; if (w) guideStr = +w.dataset.gstr;
-  if (g) { showThirds = g.dataset.guide; guideMenu(false); if (showThirds !== 'thirds') questMark('guide'); } if (f) guideFlip = (guideFlip + 1) % 4; syncGuide(); drawMonitor(); });
+  if (g) { showThirds = g.dataset.guide; guideMenu(false); } if (f) guideFlip = (guideFlip + 1) % 4; syncGuide(); drawMonitor(); });
 document.addEventListener('click', () => { if (!$('#guideMenu').hidden) guideMenu(false); });
 syncGuide();
 // virtual camera: on a phone, turning the phone turns the camera (pan and tilt follow the phone's own heading and pitch, from where it was
@@ -4589,7 +4618,7 @@ function setF(nf) { const s = cur(), f0 = s.f; s.f = roundF(kitF(nf)); s.N = Mat
 // at the same lens height. Measured from where the change began, so a slider drag never drifts.
 let keepRef = null;
 function keepShot(s, f0) {
-  if (state.keepSize === false || s.f === f0) return;
+  if (state.keepSize !== true || s.f === f0) return;
   if (!keepRef || keepRef.s !== s) { const B = shotBasis(s), d = depthTo(s, s[afKey(s)]);
     keepRef = { s, f: f0, y: s.cam.y, fd: s.fd, d, T: { x: B.P.x + B.f.x * d, y: B.P.y + B.f.y * d, z: B.P.z + B.f.z * d }, h: { x: s.cam.x, z: s.cam.z } }; }
   const R = keepRef, T = R.T, dy = R.y - T.y, want = R.d * s.f / R.f, h0 = Math.hypot(R.h.x - T.x, R.h.z - T.z);
@@ -4600,7 +4629,7 @@ function keepShot(s, f0) {
 }
 // what the pull-back did is noted under the lens buttons, never over the picture
 let keepMsg = null;
-const keepDone = () => { const R = keepRef; keepRef = null; if (!R || state.keepSize === false) return; const s = cur(), d = Math.hypot(s.cam.x - R.h.x, s.cam.z - R.h.z), rm = roomInfo(), sb = s[afKey(s)];
+const keepDone = () => { const R = keepRef; keepRef = null; if (!R || state.keepSize !== true) return; const s = cur(), d = Math.hypot(s.cam.x - R.h.x, s.cam.z - R.h.z), rm = roomInfo(), sb = s[afKey(s)];
   keepMsg = d > 0.05 ? { s, t: `카메라 ${s.f > R.f ? '뒤로' : '앞으로'} ${fmt(d, 1)}m · 피사체까지 ${fmt(Math.hypot(s.cam.x - sb.x, s.cam.z - sb.z), 1)}m` + (rm && !inRoom(s.cam, rm) ? ' · 방 밖이에요' : ''), warn: !!(rm && !inRoom(s.cam, rm)) } : null; };
 // changing the lens shows the picture right away: the monitor opens beside the panel
 const lensView = () => { if (mode !== 'mon' && view === 'edit') setMode('mon'); };
@@ -4912,14 +4941,14 @@ function syncPanels() {
   $('#eqOut').textContent = `35mm 환산 ${Math.round(o.eq)}mm · 수평 ${fmt(o.hf / DEG)}°${state.squeeze > 1 ? ` · 스퀴즈 ${state.squeeze}x` : ''}`;
   document.querySelectorAll('#ticks button').forEach(b => b.setAttribute('aria-pressed', Math.abs(+b.dataset.f - s.f) < 0.01));
   document.querySelectorAll('#fPresets button').forEach(b => b.setAttribute('aria-pressed', Math.abs(+b.dataset.f - o.eq) < 1.5));
-  document.querySelectorAll('#keepSeg button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.keep === '1') === (state.keepSize !== false)));
+  document.querySelectorAll('#keepSeg button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.keep === '1') === (state.keepSize === true)));
   const st = stopsFor(s); $('#nRange').max = st.length - 1;
   $('#nRange').value = st.reduce((bi, x, i) => Math.abs(x - s.N) < Math.abs(st[bi] - s.N) ? i : bi, 0); $('#nOut').textContent = stopTxt(s.N);
   // only what needs saying: a lens kit that doesn't cover the sensor
   const kt = KIT(), recD = Math.hypot(o.iw / (state.squeeze || 1), o.ih), ls = $('#lensSum'), vig = kt.id !== 'free' && recD > kt.circle;
   if (act !== $('#kitSel')) $('#kitSel').value = kt.id;
   const km = keepMsg && keepMsg.s === s ? keepMsg : null;
-  ls.textContent = vig ? `이미지 서클(${kt.circle}mm)보다 센서가 커서 코너가 어두워져요` : km ? km.t : state.keepSize !== false ? '렌즈를 바꾸면 카메라가 앞뒤로 움직여 인물 크기를 지켜요' : '렌즈를 바꿔도 카메라는 그대로예요'; ls.classList.toggle('warn-t', vig || !!(km && km.warn));
+  ls.textContent = vig ? `이미지 서클(${kt.circle}mm)보다 센서가 커서 코너가 어두워져요` : km ? km.t : state.keepSize === true ? '렌즈를 바꾸면 카메라가 앞뒤로 움직여 인물 크기를 지켜요' : '렌즈를 바꿔도 카메라는 그대로예요'; ls.classList.toggle('warn-t', vig || !!(km && km.warn));
   document.querySelectorAll('#focusSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.fo === (s.focus === 'M' ? 'M' : 'AF')));
   $('#afRow').hidden = s.focus === 'M';
   const afKeys = ['auto', ...subjKeys(s)]; if ($('#afSeg').dataset.keys !== afKeys.join()) { $('#afSeg').dataset.keys = afKeys.join(); $('#afSeg').innerHTML = afKeys.map(k => `<button data-af="${k}">${k === 'auto' ? '가운데' : k}</button>`).join(''); }
@@ -5083,8 +5112,8 @@ function select(i) { if (play) stopPlay(); kfReset(); state.sel = clamp(i, 0, st
 const nextOrder = () => Math.max(0, ...state.shots.map(x => x.order || 0)) + 1;
 // the new shot picks up where this one is shown: its end, when the end is being edited (the next shot continues the move)
 function addShot() { const s = JSON.parse(JSON.stringify(cur())); Object.assign(s, { id: mkId(), action: '', dialogue: '', note: '', move: 'static', takes: 1, order: nextOrder(), end: null, cross: false });
-  state.shots.splice(state.sel + 1, 0, s); state.sel++; state.example = false; save(); questCheck(); buildStrip(); renderAll(); toast(`S${String(state.sel + 1).padStart(2, '0')} 추가됨 — 앞 샷의 카메라와 배치를 이어받았어요`); }
-$('#dupBtn').onclick = () => { kfReset(); const s = JSON.parse(JSON.stringify(cur())); s.id = mkId(); s.order = nextOrder(); state.shots.splice(state.sel + 1, 0, s); state.sel++; save(); questCheck(); buildStrip(); renderAll(); toast('복제됨'); };
+  state.shots.splice(state.sel + 1, 0, s); state.sel++; state.example = false; save(); buildStrip(); renderAll(); toast(`S${String(state.sel + 1).padStart(2, '0')} 추가됨 — 앞 샷의 카메라와 배치를 이어받았어요`); }
+$('#dupBtn').onclick = () => { kfReset(); const s = JSON.parse(JSON.stringify(cur())); s.id = mkId(); s.order = nextOrder(); state.shots.splice(state.sel + 1, 0, s); state.sel++; save(); buildStrip(); renderAll(); toast('복제됨'); };
 $('#delBtn').onclick = () => { kfReset(); if (state.shots.length === 1) state.shots[0] = newShot({ f: cur().f }); else { state.shots.splice(state.sel, 1); state.sel = Math.min(state.sel, state.shots.length - 1); }
   save(); histCommit(); buildStrip(); renderAll(); toast('샷 삭제됨', { label: '되돌리기', action: undo, ms: 5000 }); };
 
@@ -5591,7 +5620,6 @@ let raf = 0, cardT = 0;
 function changed(commit, all) {
   if (play) stopPlay();
   if (commit) state.example = false;
-  if (commit) questCheck();
   if (commit && !isPro() && !play) fitExposure(cur()); // 간편 모드 never asks about exposure: every change is metered for you
   save(); if (commit) histCommit();
   if (all) { buildStrip(); renderAll(); updateBoardIfOpen(); return; }
@@ -5611,64 +5639,71 @@ matchMedia('(prefers-color-scheme: dark)').addEventListener('change', reTheme);
 new MutationObserver(reTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 let rz; new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(() => { vsz = null; wsz = null; renderAll(); if (view === 'board') buildBoard(); }, 60); }).observe($('#stage'));
 
-/* ---------- first-storyboard missions: game-style quests that tick off as you try each thing (kept per device) ---------- */
-const QUESTS = [
-  ['cam', '카메라 옮기기', '3D에서 카메라를 끌거나 모니터에서 방향키 · WASD로', () => { if (mode === 'mon') setMode('3d'); camSel = true; renderWorld(); }],
-  ['lens', '렌즈 바꿔 보기', '카메라 패널에서 화각을 고르거나 모니터를 두 손가락으로 벌려요', () => { openPane('cam'); paneTab('cam', 'lens'); }],
-  ['guide', '구도 가이드 바꾸기', '모니터의 구도 버튼에서 황금나선 같은 선을 골라요', () => { openPane(null); setMode('mon'); setTimeout(() => guideMenu(true), 200); }],
-  ['actor', '인물 움직이기', '3D에서 인물을 누르고 조이스틱이나 끌기로', () => { openPane(null); setMode('3d'); }],
-  ['prop', '소품 놓기', '세트 패널의 가구 추가에서 골라 바닥에 놓아요', () => { openPane('set'); paneTab('set', 'add'); }],
-  ['light', '조명 놓기', '조명 패널의 조명 추가에서', () => { openPane('light'); paneTab('light', 'add'); }],
-  ['shots', '샷 3개 만들기', '아래 ＋ 샷으로 다음 컷을 만들어요', () => { openPane(null); }],
-  ['move', '무빙 넣기', '샷 패널에서 달리 · 팬 같은 무빙을 골라요', () => { openPane('shot'); paneTab('shot', 'move'); }],
-  ['play', '전체 재생해 보기', '샷 목록 옆 ⏩ 버튼이나 P 키', () => { openPane(null); playSeq(); }],
-];
-let questDone = new Set(); try { questDone = new Set(JSON.parse(localStorage.getItem('framecontis.quests') || '[]')); } catch (e) {}
-let questSnap = null;
-const questOf = () => { const s = canon(() => cur()); return { sel: state.sel, cam: [s.cam.x, s.cam.y, s.cam.z, s.cam.pan, s.cam.tilt].map(v => v.toFixed(2)).join(), f: s.f.toFixed(2),
-  subj: subjKeys(s).map(k => `${s[k].x.toFixed(2)},${s[k].z.toFixed(2)}`).join(), props: state.set.props.length, lights: shotLights(s).length, shots: state.shots.length,
-  moving: state.shots.filter(x => MOVING[x.move]).length, moveOf: s.move }; };
-function questMark(id) { if (questDone.has(id) || !QUESTS.some(q => q[0] === id)) return; questDone.add(id); try { localStorage.setItem('framecontis.quests', JSON.stringify([...questDone])); } catch (e) {}
-  syncQuests(); const q = QUESTS.find(x => x[0] === id), n = questDone.size; $('#questBtn').classList.add('pop'); setTimeout(() => $('#questBtn').classList.remove('pop'), 900);
-  toast(n === QUESTS.length ? '🎬 미션을 모두 마쳤어요! 이제 콘티를 마음껏 짜 보세요' : `미션 완료 · ${q[1]} (${n}/${QUESTS.length})`); }
-// after every saved change: what changed since the last one (only within the same shot, so switching shots never counts as moving the camera)
-function questCheck() { if (!state.shots || !state.shots.length || questDone.size >= QUESTS.length) return; const q = questOf(), p = questSnap; questSnap = q; if (!p || sharedView) return;
-  if (q.shots > p.shots && q.shots >= 3) questMark('shots'); // a new shot is selected as it is made, so this is checked before the same-shot rule
-  if (p.sel !== q.sel) return;
-  if (p.cam !== q.cam) questMark('cam'); if (p.f !== q.f) questMark('lens'); if (p.subj !== q.subj) questMark('actor'); if (q.props > p.props) questMark('prop'); if (q.lights > p.lights) questMark('light');
-  if (q.moving > p.moving || (q.moving && p.moveOf !== q.moveOf)) questMark('move'); }
-const questReset = () => { questSnap = state && state.shots && state.shots.length ? questOf() : null; };
-function syncQuests() { const n = questDone.size, all = n >= QUESTS.length; $('#questN').textContent = all ? '완료' : `${n}/${QUESTS.length}`;
-  $('#questBtn').style.setProperty('--qp', Math.round(n / QUESTS.length * 100)); $('#questBtn').classList.toggle('done', all); $('#questSum').textContent = `${n} / ${QUESTS.length}`;
-  $('#questList').innerHTML = QUESTS.map(([id, t, h]) => `<li class="${questDone.has(id) ? 'ok' : ''}"><i aria-hidden="true"></i><span><b>${t}</b><small>${h}</small></span>${questDone.has(id) ? '' : `<button class="btn sm" data-q="${id}">해 보기</button>`}</li>`).join(''); }
+/* ---------- tutorial: short lessons, each a coached walk through one part of the app; "직접 해 보세요" steps wait until you have done it ---------- */
+const T3D = () => { openPane(null); if (mode !== '3d') setMode('3d'); }, TMON = () => { openPane(null); if (mode !== 'mon') setMode('mon'); };
+const TPANE = (p, tab) => () => { if (mode === 'mon') setMode('3d'); openPane(p); if (tab) paneTab(p, tab); };
+// what the "do it" steps compare against: taken when the step starts
+const lessonSnap = () => { const s = canon(() => cur()); return { xz: s.cam.x.toFixed(2) + ',' + s.cam.z.toFixed(2), pan: s.cam.pan.toFixed(1), look: s.cam.pan.toFixed(1) + ',' + s.cam.tilt.toFixed(1),
+  cam: [s.cam.x, s.cam.y, s.cam.z, s.cam.pan, s.cam.tilt].map(v => v.toFixed(2)).join(), f: s.f.toFixed(2), subj: subjKeys(s).map(k => `${s[k].x.toFixed(2)},${s[k].z.toFixed(2)},${s[k].face}`).join(),
+  props: state.set.props.length, lights: shotLights(s).length, shots: state.shots.length, moving: MOVING[s.move] ? s.move : '', guide: showThirds }; };
+const vcamOK = () => coarse.matches && !!window.DeviceOrientationEvent;
+function lessons() { const touch = coarse.matches;
+  return [
+    { id: 'basics', t: '화면 둘러보기', sub: '어디에 무엇이 있는지', steps: [
+      { t: '화면 바꾸기', p: '3D는 세트를 둘러보는 화면, 모니터는 렌즈로 실제 찍히는 화면, 탑은 위에서 본 배치도예요.' + (touch ? '' : ' 1 · 2 · 3 키로도 바꿔요.'), el: '#modeSeg', go: T3D },
+      { t: '도구', p: isPro() ? '카메라 · 장비 · 조명 · 세트 · 샷 패널이 여기 있어요. 누르면 패널이 열려요.' : '카메라 · 조명 · 세트 · 샷 패널이 여기 있어요. 누르면 패널이 열려요.', el: '#rail', go: T3D },
+      { t: '작은 모니터', p: '지금 카메라에 찍히는 화면이에요. 3D에서 무엇을 바꾸든 여기서 바로 확인해요. 누르면 크게 봐요.', el: '#pip', go: T3D },
+      { t: '샷 목록', p: '컷들이 순서대로 있어요. 눌러서 고르고, 끌어서 순서를 바꿔요.', el: '#strip', go: T3D },
+      { t: '보드 · 내보내기', p: '보드는 콘티 전체를 한 장으로 봐요. 내보내기에서 PDF · 샷리스트 · 공유 링크를 만들어요.', el: '#exportBtn', go: T3D },
+      { t: '튜토리얼', p: '카메라 움직이기, ' + (vcamOK() ? '폰으로 촬영하듯 찍기, ' : '') + '렌즈 · 구도, 세트 꾸미기 강의가 여기 있어요. 언제든 다시 볼 수 있어요.', el: '#questBtn', go: T3D } ] },
+    { id: 'camera', t: '카메라 움직이기', sub: '끌어서 옮기기 · 돌리기 · 축 이동', steps: [
+      { t: '카메라 고르기', p: '3D 화면의 카메라(파란 동그라미)를 ' + (touch ? '눌러' : '클릭해') + ' 보세요. 옮기는 손잡이와 돌리는 링이 나타나요.', gizmo: true, go: () => { T3D(); camSel = false; renderWorld(); }, test: () => camSel },
+      { t: '끌어서 옮기기', p: '가운데 손잡이를 잡고 끌면 카메라가 바닥을 따라 움직여요. 높이(붐)는 그대로예요. 직접 옮겨 보세요.', gizmo: true, go: () => { T3D(); if (camMove !== 'free') { camMove = 'free'; syncCamMove(); } camSel = true; renderWorld(); }, test: q => lessonSnap().xz !== q.xz },
+      { t: '돌리기', p: '바깥 링을 끌면 팬(좌우), 안쪽 링은 틸트(위아래) · 롤(기울기)이에요. 바깥 링을 돌려 보세요.', gizmo: true, go: () => { T3D(); camSel = true; renderWorld(); }, test: q => lessonSnap().pan !== q.pan },
+      { t: '끌기 ↔ 축', p: '이 버튼으로 옮기는 방식을 바꿔요. 「축」에선 X 트럭 · Y 붐(높이) · Z 달리 화살표를 따라 한 방향으로만 정확히 움직여요.' + (touch ? '' : ' 단축키는 J예요.'), el: '#moveModeBtn', go: T3D },
+      touch ? { t: '모니터에서 움직이기', p: '모니터 화면에선 이동 키를 누르고 있으면 카메라가 앞뒤 · 좌우로, 붐 키로 위아래로 움직여요. 화면을 한 손가락으로 끌면 팬 · 틸트예요. 움직여 보세요.', el: '#movePad', go: TMON, test: q => lessonSnap().cam !== q.cam }
+        : { t: '키보드로 움직이기', p: 'W A S D 앞뒤 좌우, Q E 위아래(붐), 화살표 팬 · 틸트, Shift 빠르게 · Alt 천천히. 모니터 화면을 끌어도 둘러봐요. 키를 눌러 보세요.', go: TMON, test: q => lessonSnap().cam !== q.cam },
+      touch ? { t: '두 손가락', p: '3D 화면에서 두 손가락을 벌리면 화면 확대, 두 손가락을 같이 위아래로 밀면 카메라가 앞뒤로 달리해요.', go: T3D }
+        : { t: '화면 둘러보기', p: '빈 곳을 끌면 3D 화면이 돌고, 오른쪽 버튼(또는 Shift)으로 끌면 옆으로 밀려요. 휠로 확대해요. 「맞춤」(0 키)은 카메라와 인물이 다 보이게 해요.', el: '#fitBtn', go: T3D } ] },
+    vcamOK() ? { id: 'vcam', t: '폰으로 촬영하듯 찍기', sub: '폰을 움직이면 카메라가 따라와요', star: true, steps: [
+      { t: '가상 카메라', p: '폰이 진짜 카메라가 돼요. 모니터의 「가상캠」을 켜 보세요. (처음엔 동작 센서 허용을 물어봐요)', el: '#gVcam', go: TMON, test: () => vcam.on },
+      { t: '폰을 들고 돌려 보세요', p: '폰을 좌우로 돌리면 팬, 위아래로 기울이면 틸트예요. 실제로 카메라를 들고 앵글을 찾듯이 움직여 보세요.', el: '#gVcam', go: TMON, test: q => vcam.on && lessonSnap().look !== q.look },
+      { t: '구도 고정', p: '마음에 드는 구도가 나오면 「가상캠」을 다시 눌러 고정해요. 이동 키로 위치까지 옮기면 핸드헬드처럼 찍어볼 수 있어요.', el: '#gVcam', go: TMON } ] }
+      : { id: 'vcam', t: '폰으로 촬영하듯 찍기', sub: '핸드폰 전용 기능', star: true, steps: [
+      { t: '가상 카메라 (폰 전용)', p: '핸드폰에서 PREVIO를 열고 모니터의 「가상캠」을 켜면, 폰을 돌리고 기울이는 대로 카메라가 팬 · 틸트해요. 실제 카메라를 들고 앵글을 찾듯이 쓸 수 있어요.', el: '#gVcam', go: TMON },
+      { t: '이 컴퓨터에서는', p: '모니터 화면을 마우스로 끌거나 화살표 키로 같은 움직임을 해 볼 수 있어요.', go: TMON } ] },
+    { id: 'lens', t: '렌즈와 구도', sub: '화각 바꾸기 · 샷 크기 · 구도선', steps: [
+      { t: '렌즈 바꾸기', p: touch ? '모니터를 두 손가락으로 벌리면 망원(좁게), 오므리면 광각(넓게)이에요. 지금 해 보세요.' : 'Z는 더 넓게(광각), X는 더 좁게(망원)예요. 카메라 패널에서 화각을 직접 골라도 돼요. 지금 바꿔 보세요.', go: TMON, test: q => lessonSnap().f !== q.f },
+      { t: '샷 크기 유지', p: '렌즈를 바꿀 때 「샷 크기 유지」를 켜면 인물 크기가 그대로 남도록 카메라가 앞뒤로 움직여요. 기본은 「제자리」라서 카메라는 그대로 있고 화각만 바뀌어요.', el: '#keepSeg', go: TPANE('cam', 'lens') },
+      { t: '구도 가이드', p: '3분할 · 대각선 · 삼각형 · 황금나선 같은 선을 겹쳐 구도를 공부해요. 밝은 화면에선 선 색과 선명도도 바꿔요. 다른 가이드를 골라 보세요.', el: '.vfbox .vf-tools', go: TMON, test: q => showThirds !== q.guide } ] },
+    { id: 'set', t: '세트 꾸미기', sub: '인물 · 가구 · 조명 · 시간', steps: [
+      { t: '인물 옮기기', p: '3D에서 인물을 끌어 옮기고, 발밑 동그라미를 끌어 바라보는 방향을 돌려요. 인물을 옮겨 보세요.', go: T3D, test: q => lessonSnap().subj !== q.subj },
+      { t: '가구 놓기', p: '가구를 골라 바닥에 놓아요. ' + (touch ? '놓을 자리를 누르면 내려놓아요.' : '놓기 전에 R로 돌리고, 클릭해서 내려놓아요.') + ' 하나 놓아 보세요.', el: '#propAdd', go: TPANE('set', 'add'), test: q => state.set.props.length > q.props },
+      { t: '조명 놓기', p: '조명을 고르면 놓는 순간 인물 쪽으로 한 번 맞춰지고, 그 뒤로는 그 자리에 고정돼요. 하나 놓아 보세요.', el: '#rail [data-pane="light"]', go: TPANE('light', 'add'), test: q => shotLights(cur()).length > q.lights },
+      { t: '시간 · 날씨', p: '해가 뜨고 지는 시간과 날씨를 바꿔요. 3D 하늘의 해를 옆으로 끌어도 시간이 바뀌어요.', el: '#rail [data-pane="light"]', go: TPANE('light', 'sky') } ] },
+    { id: 'shots', t: '샷과 무빙', sub: '컷 나누기 · 무빙 · 재생', steps: [
+      { t: '샷 추가', p: '＋ 샷을 누르면 지금 카메라 그대로 다음 컷이 생겨요. 눌러 보세요.', el: '#addBtn', go: T3D, test: q => state.shots.length > q.shots },
+      { t: '무빙 넣기', p: '달리 인, 팬, 크레인 같은 움직임을 골라요. 하나 골라 보세요.', el: '#moves', go: TPANE('shot', 'move'), test: q => !!MOVING[cur().move] && cur().move !== q.moving },
+      { t: '시작 · 끝', p: '무빙이 있는 샷엔 위에 「시작 · 끝」이 생겨요. 「끝」을 누르고 카메라를 옮기면 그만큼 움직이고, ▶로 미리 봐요.', el: '#kfBar', go: T3D },
+      { t: '전체 재생', p: '모든 샷을 이어서 애니매틱으로 봐요.' + (touch ? '' : ' P 키로도 돼요.'), el: '#seqBtn', go: T3D } ] },
+  ]; }
+let lessonDone = new Set(); try { lessonDone = new Set(JSON.parse(localStorage.getItem('previo.lessons') || '[]')); } catch (e) {}
+let lessonCur = null;
+function syncQuests() { const L = lessons(), n = L.filter(l => lessonDone.has(l.id)).length, all = n >= L.length;
+  $('#questN').textContent = all ? '' : `${n}/${L.length}`; $('#questBtn').style.setProperty('--qp', Math.round(n / L.length * 100)); $('#questBtn').classList.toggle('done', all); $('#questSum').textContent = `${n} / ${L.length}`;
+  $('#questList').innerHTML = L.map(l => `<li class="${lessonDone.has(l.id) ? 'ok' : ''}${l.star ? ' star' : ''}"><i aria-hidden="true"></i><span><b>${l.t}${l.star ? ' <em>추천</em>' : ''}</b><small>${l.sub} · ${l.steps.length}단계</small></span><button class="btn sm${lessonDone.has(l.id) ? ' ghost' : ' primary'}" data-q="${l.id}">${lessonDone.has(l.id) ? '다시' : '시작'}</button></li>`).join(''); }
 function questCard(open) { const c = $('#questCard'); c.hidden = !open; $('#questBtn').setAttribute('aria-expanded', open); if (!open) return; syncQuests();
-  const b = $('#questBtn').getBoundingClientRect(); if (phone.matches) Object.assign(c.style, { left: '8px', right: '8px', top: '', bottom: (innerHeight - b.top + 8) + 'px' });
+  const b = $('#questBtn').getBoundingClientRect(); if (phone.matches || !b.width) Object.assign(c.style, { left: '8px', right: '8px', top: '', bottom: Math.max(8, innerHeight - (b.width ? b.top : innerHeight - 8) + 8) + 'px' });
   else Object.assign(c.style, { left: (b.right + 8) + 'px', right: '', bottom: Math.max(8, innerHeight - b.bottom) + 'px', top: '' }); }
 $('#questBtn').onclick = e => { e.stopPropagation(); questCard($('#questCard').hidden); };
 $('#questClose').onclick = () => questCard(false);
-$('#questList').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (!b) return; const q = QUESTS.find(x => x[0] === b.dataset.q); questCard(false); q[3](); toast(q[2]); });
-document.addEventListener('click', e => { if (!$('#questCard').hidden && !e.target.closest('#questCard')) questCard(false); });
+$('#questList').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (!b) return; e.stopPropagation(); questCard(false); startLesson(b.dataset.q); });
+document.addEventListener('click', e => { if (!$('#questCard').hidden && !e.target.closest('#questCard') && !e.target.closest('#questBtn')) questCard(false); });
 syncQuests();
+function startLesson(id) { const l = lessons().find(x => x.id === id); if (!l) return; lessonCur = l; TOUR = l.steps; tour(0); }
 
 /* ---------- guided tour ---------- */
-// the tour: where things are, one short line each, with a ring on the thing (it only switches to the monitor for the monitor's own tools)
-const T3D = () => { openPane(null); if (mode !== '3d') setMode('3d'); }, TMON = () => { openPane(null); if (mode !== 'mon') setMode('mon'); };
-function tourSteps() {
-  return [
-    { t: '화면 바꾸기', p: '3D(세트 둘러보기) · 모니터(렌즈로 보이는 화면) · 탑(위에서 본 배치도)', el: '#modeSeg', go: T3D },
-    { t: '도구', p: isPro() ? '카메라 · 장비 · 조명 · 세트 · 샷 패널이 여기 있어요.' : '카메라 · 조명 · 세트 · 샷 패널이 여기 있어요.', el: '#rail', go: T3D },
-    { t: '카메라 도구', p: '수평 맞추기, 인물 바라보기, 화면 맞춤', el: '#camBar', go: T3D },
-    { t: '작은 모니터', p: '지금 카메라에 찍히는 화면이에요. 누르면 크게 봐요.', el: '#pip', go: T3D },
-    { t: '구도 · 가이드', p: '구도 선과 색 · 선명도를 골라요.', el: '.vfbox .vf-tools', go: TMON },
-    coarse.matches ? { t: '이동 키', p: '누르고 있으면 카메라가 움직여요.', el: '#movePad', go: TMON } : { t: '키보드로 이동', p: 'W A S D로 앞뒤 좌우, Q E로 위아래, 화살표로 둘러봐요. ? 키를 누르면 모든 조작키가 나와요.', go: TMON },
-    { t: '샷 목록', p: '컷들이 순서대로 있어요. 눌러서 고르고 끌어서 순서를 바꿔요.', el: '#strip', go: T3D },
-    { t: '샷 추가 · 전체 재생', p: '새 컷, 복제, 삭제, 모든 샷 이어서 재생', el: '.stools', go: T3D },
-    { t: '보드', p: '콘티 전체를 한 장으로 봐요.', el: '#boardBtn', go: T3D },
-    { t: '내보내기 · 메뉴', p: 'PDF · 샷리스트 · AI 프롬프트 · 공유, 모드 바꾸기, 조작키 보기', el: '#exportBtn', go: T3D },
-    { t: '미션', p: '처음 해 볼 것들이 여기 있어요. 하나씩 해 보면 체크돼요.', el: '#questBtn', go: T3D },
-  ];
-}
-let TOUR = tourSteps();
+let TOUR = [];
 let tourI = -1, tourLoop = false;
 // ring on the thing being explained, bubble on the other half of the stage so it never covers it
 function tourPlace() {
@@ -5687,10 +5722,22 @@ function tourPlace() {
     Object.assign(co.style, { top: below ? 'auto' : '', bottom: below ? '12px' : '', width: '', left: '', right: '', transform: '', overflowY: '' });
     if (below && r) { const room = sg.bottom - (r.y + r.h) - 12; co.style.maxHeight = Math.max(120, room) + 'px'; } else co.style.maxHeight = ''; }
   requestAnimationFrame(tourPlace); }
-function tour(i) { document.querySelectorAll('.spot').forEach(e => e.classList.remove('spot')); if (i === 0) TOUR = tourSteps(); tourI = i;
-  if (i < 0 || i >= TOUR.length) { $('#coach').hidden = true; $('#tourRing').hidden = true; try { localStorage.setItem('framecontis.tour2', '1'); } catch (e) {} return; }
-  const st = TOUR[i]; if (st.go) try { st.go(); } catch (e) {} $('#coachT').textContent = st.t; $('#coachP').textContent = st.p; $('#coachN').textContent = `${i + 1} / ${TOUR.length}`;
-  $('#coachNext').textContent = i === TOUR.length - 1 ? '시작하기' : '다음'; $('#coachPrev').hidden = i === 0; $('#coach').hidden = false;
+let tourPoll = 0;
+function tour(i) { document.querySelectorAll('.spot').forEach(e => e.classList.remove('spot')); tourI = i; clearInterval(tourPoll);
+  if (i < 0 || i >= TOUR.length) { $('#coach').hidden = true; $('#tourRing').hidden = true; try { localStorage.setItem('framecontis.tour2', '1'); } catch (e) {}
+    const l = lessonCur; lessonCur = null;
+    if (l && i >= TOUR.length) { lessonDone.add(l.id); try { localStorage.setItem('previo.lessons', JSON.stringify([...lessonDone])); } catch (e) {} syncQuests();
+      const next = lessons().find(x => !lessonDone.has(x.id) && x.star) || lessons().find(x => !lessonDone.has(x.id));
+      if (next) toast(`「${l.t}」 끝! 다음은 「${next.t}」`, { label: '이어서', action: () => startLesson(next.id), ms: 7000 }); else toast('튜토리얼을 모두 마쳤어요. 이제 콘티를 마음껏 짜 보세요 🎬'); }
+    return; }
+  const st = TOUR[i]; if (st.go) try { st.go(); } catch (e) {} $('#coachT').textContent = st.t; $('#coachP').textContent = st.p;
+  $('#coachN').textContent = (lessonCur ? lessonCur.t + ' · ' : '') + `${i + 1} / ${TOUR.length}`;
+  $('#coachNext').textContent = i === TOUR.length - 1 ? (lessonCur ? '완료' : '시작하기') : '다음'; $('#coachPrev').hidden = i === 0; $('#coach').hidden = false;
+  const d = $('#coachDo'); d.hidden = !st.test; d.classList.remove('ok');
+  if (st.test) { d.textContent = '👉 직접 해 보세요 · 하면 다음으로 넘어가요'; let snap = null; try { snap = lessonSnap(); } catch (e) {}
+    // checked a few times a second while the step is up; done → a short "잘했어요" and on to the next step
+    tourPoll = setInterval(() => { if (tourI !== i || $('#coach').hidden) { clearInterval(tourPoll); return; } let ok = false; try { ok = !!st.test(snap); } catch (e) {}
+      if (!ok) return; clearInterval(tourPoll); d.textContent = '✓ 잘했어요!'; d.classList.add('ok'); setTimeout(() => { if (tourI === i && !$('#coach').hidden) tour(i + 1); }, 1100); }, 250); }
   if (!tourLoop) { tourLoop = true; requestAnimationFrame(tourPlace); } }
 $('#addBtn').onclick = addShot;
 $('#seqBtn').onclick = () => playSeq(); $('#animStop').onclick = () => stopSeq();
@@ -5703,9 +5750,9 @@ function setUiMode(m, quiet) { uiMode = m; try { localStorage.setItem('framecont
 const syncUiMode = () => { $('#uiModeBtn').textContent = isPro() ? '간편 모드로 바꾸기' : '프로 모드로 바꾸기 (렌즈 · 노출 · 장비)'; };
 $('#uiModeBtn').onclick = () => { xMenu(false); setUiMode(isPro() ? 'simple' : 'pro'); };
 syncUiMode();
-$('#tourBtn').onclick = () => { xMenu(false); openPane(null); if (mode !== '3d') setMode('3d'); tour(0); };
+$('#tourBtn').onclick = () => { xMenu(false); questCard(true); };
 function maybeTour() { let seen = null; try { seen = localStorage.getItem('framecontis.tour2'); /* tour2: the detailed tutorial, shown once even to those who saw the short one */ } catch (e) {}
-  if (seen) return; setTimeout(() => tour(0), 500); }
+  if (seen) return; setTimeout(() => startLesson('basics'), 500); }
 
 /* ---------- projects: each scene is saved on its own; an index lists them for the start screen ---------- */
 const IDX = 'framecontis.projects', PK = id => 'framecontis.p.' + id;
@@ -5752,6 +5799,15 @@ const store = (() => {
 const projects = () => store.list();
 // a small picture of the first shot for the Home screen's project cards (redrawn at most every 20 s while working)
 let thumbT = 0, thumbURL = null, thumbId = null;
+const thumbTried = new Set(); // projects whose missing card picture was already attempted this visit
+// older projects saved before cards had pictures get one drawn in the background; only the list row changes, the scene itself is written back as it was
+async function fillThumbs() { const keep = state, keepId = projId;
+  try { for (const r of projects().slice(0, 12)) { if (r.thumb || thumbTried.has(r.id)) continue; thumbTried.add(r.id);
+      let st = null; try { st = await store.get(r.id); } catch (e) {} if (!st || !Array.isArray(st.shots)) continue;
+      try { state = JSON.parse(JSON.stringify(st)); normalizeState(); projId = r.id; thumbId = null; thumbURL = null; const url = projectThumb();
+        state = keep; projId = keepId; if (url) await store.put(r.id, st, { ...r, thumb: url }); } catch (e) {} } }
+  finally { state = keep; projId = keepId; thumbId = null; thumbURL = null; }
+  if (!$('#startScreen').hidden && !$('#mcLoadP').hidden) mcList(); }
 function projectThumb() { const now = Date.now(); if (thumbId === projId && thumbURL && now - thumbT < 20000) return thumbURL;
   try { const cv = document.createElement('canvas'); cv.width = 240; cv.height = 135; renderShot(cv.getContext('2d'), 240, 135, canon(() => state.shots[0]), { labels: false, lit: state.lit !== false, slot: 'thumb' });
     thumbURL = cv.toDataURL('image/jpeg', 0.62); thumbT = now; thumbId = projId; } catch (e) {} return thumbURL; }
@@ -5796,7 +5852,7 @@ function normalizeState() {
   kf = 'start'; kfId = null;
   state.sel = clamp(state.sel | 0, 0, state.shots.length - 1); state.schema = SCHEMA;
 }
-function afterLoad() { questReset();
+function afterLoad() {
   selObj = null; placing = null; showHeat = false; if (gl) gl.keys = {}; cellCache = { key: '', cells: null };
   if (mode !== '3d') setMode('3d'); setView('edit'); openPane(null);
   buildTicks(); buildStrip(); wsz = sizeWorld(); vsz = null; fitViewer(true); renderAll(); histReset(); syncShared();
@@ -6027,6 +6083,10 @@ function mcSync() { const list = projects(), p = list[0];
   if (list.slice(0, 12).some(r => !r.thumb && !thumbTried.has(r.id))) setTimeout(fillThumbs, 300); }
 $('#mcResume').onclick = () => { const id = $('#mcResume').dataset.id; if (id) openProject(id); };
 $('#mcNew').onclick = () => mcShow('mcNewP');
+// the tutorial from Home: a practice room (reused if it is still there), then the lesson list
+$('#mcTut').onclick = async () => { try { localStorage.setItem('framecontis.tour2', '1'); } catch (e) {} const r = projects().find(p => p.title === '튜토리얼 연습');
+  if (!(r && await openProject(r.id))) newFromPreset(SET_PRESETS.find(p => p.k === 'living'), '튜토리얼 연습');
+  setTimeout(() => startLesson(lessons().find(l => !lessonDone.has(l.id))?.id || 'basics'), 450); };
 $('#mcSetsBtn').onclick = () => { mcShow('mcSetP'); fillSetThumbs(); };
 $('#mcImport2').onclick = () => $('#fileIn').click();
 document.querySelectorAll('[data-uimode]').forEach(b => b.onclick = () => { setUiMode(b.dataset.uimode, true); mcSync(); mcShow('mcMain'); });
@@ -6084,7 +6144,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.04 20:38'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.05 00:05'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
