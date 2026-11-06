@@ -1000,6 +1000,10 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
 .fp-rounds li span{flex:1;min-width:0;display:flex;flex-direction:column;font-size:13px} .fp-rounds small{font-size:11.5px;color:var(--muted)} .fp-rounds em{font:700 14px var(--f-mono);font-style:normal}
 .fp-rounds .gS{color:#FFD166} .fp-rounds .gA{color:#34C759} .fp-rounds .gB{color:#8B9CFF} .fp-rounds .gC{color:#F5A623} .fp-rounds .gF{color:#E5484D}
 .fp-lenspick select{min-width:0;max-width:100%} .fp-lenspick #fpKit{flex:1 1 100%} .fp-lenspick span{flex:1 1 100%}
+.ringsum{font-size:11.5px!important;color:var(--muted)!important}
+.lcal{margin-top:6px;font-size:12px;color:var(--ink2)} .lcal summary{cursor:pointer;min-height:36px;display:flex;align-items:center;color:var(--ink2)}
+.lcal textarea{width:100%;box-sizing:border-box;margin:6px 0;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font:500 12.5px var(--f-mono);padding:8px}
+.lcal .row{display:flex;gap:6px} .lcal .btn{min-height:40px}
 </style>
 </head>
 <body>
@@ -1022,7 +1026,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button><button id="techMenuBtn" role="menuitem" data-pro>테크비즈 시트 (현장용) · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
     <hr><button id="uiModeBtn" role="menuitem"></button><button id="tourBtn" role="menuitem">튜토리얼</button><button id="fpMenuBtn" role="menuitem">포커스 연습 (팔로우 포커스)</button><button id="keysBtn" role="menuitem">조작키 보기 (?)</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.07 01:09</p>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.07 01:48</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -1113,9 +1117,14 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
         <div class="ptab" data-tab="focus">
           <div class="seg kr wide" id="focusSeg"><button data-fo="AF">AF 자동</button><button data-fo="M">MF 수동</button></div>
           <div class="lh" id="afRow"><span class="mini">AF 대상</span><div class="seg kr" id="afSeg"><button data-af="auto">가운데</button><button data-af="A">A</button><button data-af="B">B</button><button data-af="C">C</button></div></div>
-          <div class="lh"><span class="mini">거리</span><input type="range" id="fdRange" min="0" max="1000" step="1" aria-label="초점 거리"><output id="fdOut"></output></div>
+          <div class="lh"><span class="mini">포커스 링</span><input type="range" id="fdRange" min="0" max="1000" step="1" aria-label="포커스 링: 왼쪽 최소 초점, 오른쪽 무한대"><output id="fdOut"></output></div>
+          <p class="sum ringsum" id="ringSum"></p>
           <div class="dofbar" id="dofbar" aria-hidden="true"></div>
           <p class="sum" id="focusSum"></p>
+          <details class="lcal" data-pro><summary>링 캘리브레이션 (내 렌즈 측정값)</summary>
+            <p class="mini">이 렌즈를 실제로 재서 거리와 링 각도를 한 줄에 하나씩 적어요: <b>거리(m 또는 inf) 각도(°)</b>. 두 줄 이상이면 그 사이를 매끄럽게 이어요.</p>
+            <textarea id="lcalTxt" rows="5" spellcheck="false" aria-label="링 캘리브레이션 값"></textarea>
+            <div class="row"><button class="btn sm primary" id="lcalSave">적용</button><button class="btn sm ghost" id="lcalClear">모델로 되돌리기</button></div><p class="sum" id="lcalMsg"></p></details>
         </div>
         <div class="ptab" data-tab="expo">
           <div class="lh"><span class="mini">조리개</span><input type="range" id="nRange" min="0" max="10" step="1" aria-label="조리개"><output id="nOut"></output></div>
@@ -1290,7 +1299,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <div class="mc-row"><button class="sbtn center" id="mcCopy"><b>주소 복사</b></button><a class="sbtn primary center" id="mcSend" target="_blank" rel="noopener"><b>메일 앱으로 보내기</b></a></div>
     <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
-  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.07 01:09</span></div>
+  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.07 01:48</span></div>
 </div>
 
 <div class="keyhelp" id="keyHelp" role="dialog" aria-modal="true" aria-labelledby="keyHelpT" hidden><div class="kh-box glass">
@@ -1650,17 +1659,79 @@ const FOPT = {
   // breathing B (eq. 1) with the sensor fixed: a lens focused by moving it whole sees θ through v, so tanθ ∝ 1/v and B = f/v − 1 = −f/u
   breathing(fMm, uMm, kind = 'unit') { if (kind === 'none' || !isFinite(uMm)) return 0; const v = FOPT.imageDistMm(fMm, uMm); return isFinite(v) ? fMm / v - 1 : -1; },
 };
-/* Follow-focus ring. A helicoid moves the optics linearly with ring angle, and the optics must move by the thin-lens extension
-   Δ = v − f = f²/(u − f) to focus at u, so angle ∝ Δ: 0° at the infinity stop, the full throw at the close-focus stop. Real cine lenses
-   use cams that spread the marks more evenly than this; their cam curves are not published, so this is a physical model, not the
-   engraving of any particular lens. Distances here are from the sensor (film plane), as cine close-focus figures are quoted. */
+/* ---------- focus: optical sensitivity (dioptres) kept apart from the ring's mechanical sensitivity ----------
+   Optical: D = 1/u (u in metres, ∞ → 0 D) and dD/du = −1/u². The same 0.1 m step changes D far more up close (0.5 m: 0.33 D,
+   10 m: 0.001 D) — this is what the picture's sharpness responds to (blur is linear in |1/g − 1/Z|, Herrmann et al. eq. 4).
+   Mechanical: how far the focus ring turns per distance. That is a property of each lens's focus mechanism and has to be measured
+   or engraved (Lerner, Beal & Sisson, "Automatic Follow Focus", UCSD: objects at known distances, motor steps counted per lens;
+   their curve needed two separate fits). So the ring is described per lens by calibration points [distance, ring angle]. */
+const DIOPT = {
+  of: uM => uM > 0 && isFinite(uM) ? 1 / uM : 0,
+  slope: uM => uM > 0 && isFinite(uM) ? -1 / (uM * uM) : 0,          // dD/du at u
+  step: (uM, duM) => DIOPT.of(uM) - DIOPT.of(uM + duM),              // |ΔD| for moving focus from u to u + du (exact, not the slope)
+};
+// monotone cubic Hermite through (xs, ys) (Fritsch–Carlson): passes through every point, never overshoots between them
+function pchip(xs, ys) { const n = xs.length, h = [], d = [], m = new Array(n).fill(0);
+  for (let i = 0; i < n - 1; i++) { h[i] = xs[i + 1] - xs[i]; d[i] = (ys[i + 1] - ys[i]) / h[i]; }
+  if (n === 2) { m[0] = m[1] = d[0]; }
+  else { m[0] = d[0]; m[n - 1] = d[n - 2];
+    for (let i = 1; i < n - 1; i++) { if (d[i - 1] * d[i] <= 0) { m[i] = 0; continue; } const w1 = 2 * h[i] + h[i - 1], w2 = h[i] + 2 * h[i - 1]; m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]); }
+    for (const e of [0, n - 1]) { const j = e ? n - 2 : 0; if (m[e] * d[j] <= 0) m[e] = 0; else if (Math.abs(m[e]) > 3 * Math.abs(d[j])) m[e] = 3 * d[j]; } }
+  return x => { if (x <= xs[0]) return ys[0]; if (x >= xs[n - 1]) return ys[n - 1]; let i = 0; while (i < n - 2 && x > xs[i + 1]) i++;
+    const t = (x - xs[i]) / h[i], t2 = t * t, t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * ys[i] + (t3 - 2 * t2 + t) * h[i] * m[i] + (-2 * t3 + 3 * t2) * ys[i + 1] + (t3 - t2) * h[i] * m[i + 1]; }; }
+/* a focus curve from calibration points [distance m (Infinity allowed), ring angle deg], in the lens's own angle convention.
+   Inside, the ring position t runs from 0 at the far stop (∞ if calibrated, else the farthest point) to `throw` at the close stop,
+   and the curve is interpolated in dioptres, where ∞ is just 0 and focus mechanisms are smooth. */
+function focusCurve(points) {
+  const P = points.map(([u, a]) => [DIOPT.of(u), a]).sort((x, y) => x[0] - y[0]), far = P[0][1], near = P[P.length - 1][1], sgn = near >= far ? 1 : -1;
+  const xs = P.map(p => p[0]), ys = P.map(p => (p[1] - far) * sgn);
+  for (let i = 1; i < ys.length; i++) if (!(ys[i] > ys[i - 1]) || !(xs[i] > xs[i - 1])) throw new Error('calibration must be monotonic: a nearer distance needs more ring turn');
+  const tOf = pchip(xs, ys), Dmin = xs[0], Dmax = xs[xs.length - 1], thr = ys[ys.length - 1];
+  // ring position → dioptres: the curve is monotonic, so bisection finds the one D for any t
+  const DOf = t => { t = clamp(t, 0, thr); let lo = Dmin, hi = Dmax; for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (tOf(mid) < t) lo = mid; else hi = mid; } return (lo + hi) / 2; };
+  return { tOf, DOf, Dmin, Dmax, throw: thr, far, sgn, points };
+}
+// focus-by-wire: the ring is an encoder, the camera moves focus by an amount that may depend on how fast the ring turns.
+// No lens maker publishes that response, so this curve is a stand-in: slow turns fine, fast turns coarse (gain ∝ speed^p, clamped).
+const FBW_MODEL = { vRef: 180, p: 1, gMin: 0.2, gMax: 4, virtual: true };
+const FOCUS_IN = {
+  // new ring position after the operator turned the ring by dDeg over dtS seconds
+  move(prof, t, dDeg, dtS) { const thr = prof.curve.throw;
+    if (prof.input !== 'fbw' || prof.fbw.linear) return clamp(t + dDeg, 0, thr); // mechanical: the angle alone decides the focus
+    const v = Math.abs(dDeg) / Math.max(dtS, 1 / 240), g = clamp(Math.pow(v / prof.fbw.vRef, prof.fbw.p), prof.fbw.gMin, prof.fbw.gMax);
+    return clamp(t + dDeg * g, 0, thr); },
+};
+// mechanical sensitivity at a focus distance: metres of focus travel per degree of ring (and its dioptre equivalent)
+const ringSens = (prof, uM) => { const t = RING.angle(prof, uM), t0 = Math.max(0, Math.min(t - 0.5, prof.throw - 1)), t1 = t0 + 1, a = RING.dist(prof, t0), b = RING.dist(prof, t1); // one degree, kept inside the stops
+  return { mPerDeg: isFinite(a) && isFinite(b) ? Math.abs(a - b) : Infinity, dPerDeg: Math.abs(DIOPT.of(b) - DIOPT.of(a)) }; };
+// ring angle ↔ focus distance through a lens's profile. Angles are the inside ring position (0 = far stop).
 const RING = {
   ext(fMm, uMm) { return isFinite(uMm) ? fMm * fMm / Math.max(1e-6, uMm - fMm) : 0; },
-  // ring angle (deg) for focus at uM metres; clamps to the stops
-  angle(lens, uM) { const f = lens.f, u = Math.max(uM * 1000, lens.mod * 1000), e = RING.ext(f, u), eMax = RING.ext(f, lens.mod * 1000); return eMax > 0 ? clamp(e / eMax, 0, 1) * lens.throw : 0; },
-  // focus distance (m) for a ring angle; 0° is infinity
-  dist(lens, deg) { const f = lens.f, t = clamp(deg / lens.throw, 0, 1), eMax = RING.ext(f, lens.mod * 1000); if (t <= 1e-6) return Infinity; return (f + f * f / (t * eMax)) / 1000; },
+  angle(prof, uM) { const c = prof.curve; return c.tOf(clamp(DIOPT.of(Math.max(uM, 1e-6)), c.Dmin, c.Dmax)); },
+  dist(prof, deg) { const D = prof.curve.DOf(deg); return D <= 1e-9 ? Infinity : 1 / D; },
 };
+/* the model used when a lens has no calibration of its own: a helicoid moves the optics linearly with ring angle, and to focus at u
+   they must move by the thin-lens extension f²/(u − f); so the angle ∝ that extension, 0° at ∞ and the full throw at close focus.
+   Real cine lenses use cams that spread the marks more evenly; those curves are not published. Sampled at even dioptre steps. */
+function helicoidPoints(fMm, modM, throwDeg) { const pts = [[Infinity, 0]], eMax = RING.ext(fMm, modM * 1000), n = 24;
+  for (let i = 1; i <= n; i++) { const u = i === n ? modM : 1 / (i / n / modM); pts.push([u, throwDeg * RING.ext(fMm, u * 1000) / eMax]); } return pts; }
+// calibrations entered by the user (measured on their own lens), kept on this device: key "kit:focal" → points
+let LENS_CAL = {}; try { LENS_CAL = JSON.parse(localStorage.getItem('previo.lenscal') || '{}'); } catch (e) {}
+const saveLensCal = () => { try { localStorage.setItem('previo.lenscal', JSON.stringify(LENS_CAL, (k, v) => v === Infinity ? 'inf' : v)); } catch (e) {} };
+const calPoints = key => (LENS_CAL[key] || null) && LENS_CAL[key].map(([u, a]) => [u === 'inf' ? Infinity : +u, +a]);
+// one lens's focus profile: everything the ring needs, and where each part came from
+const _profCache = new Map();
+function lensFocus(k, f) {
+  const key = `${k.id}:${f}`, cal = calPoints(key), spec = lensSpec(k, f), mod = k.id === 'free' ? Math.max(0.15, f * 12.1 / 1000) : spec.mod;
+  const ck = key + JSON.stringify(cal || '') + mod; if (_profCache.has(ck)) return _profCache.get(ck);
+  const fbw = k.stop === 'f'; // photo lenses for mirrorless bodies focus by wire (an encoder ring) — most of them; the rest are mechanical
+  let curve, cSrc; try { curve = cal && cal.length >= 2 ? focusCurve(cal) : null; } catch (e) { curve = null; }
+  if (curve) cSrc = '직접 입력한 측정값'; else { curve = focusCurve(helicoidPoints(f, mod, spec.throw)); cSrc = '헬리코이드 모델 (실제 눈금 곡선 미공개)'; }
+  const near = curve.Dmax > 0 ? 1 / curve.Dmax : mod;
+  const prof = { name: `${k.name} ${f}mm`, f, mod: near, inf: curve.Dmin === 0, throw: curve.throw, throwKnown: !!cal || spec.throwKnown, curve, cSrc, modSrc: spec.src,
+    input: fbw ? 'fbw' : 'mech', fbw: fbw ? { ...FBW_MODEL, linear: false } : null, speed: fbw, breath: spec.breath, throwSrc: cal ? '측정값' : spec.throwKnown ? '제조사 · 판매처 표기' : '공개 수치 없음 · 기본값' };
+  _profCache.set(ck, prof); return prof; }
 /* ---------- vectors & cameras ---------- */
 const dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
 const cross = (a, b) => ({ x: a.y * b.z - a.z * b.y, y: a.z * b.x - a.x * b.z, z: a.x * b.y - a.y * b.x });
@@ -4117,6 +4188,8 @@ function drawHandles(ctx, toC, scr, s, SB) {
   const crane = craneOn && cg && cg.hand ? cg : null;
   if (craneOn && !crane) { craneOn = false; setTimeout(syncBars); }
   if (crane) drawCrane(ctx, toC, scr, s, rev.r, crane, k);
+  // while focus is being set: the focus plane (solid) and the near / far limits of the depth of field (dashed) on the floor, across the picture's width
+  if (pane === 'cam' && paneTabSel.cam === 'focus') drawFocusPlanes(ctx, toC, scr, s, SB);
   // camera gizmo: arrows truck / boom / dolly along the camera's floor heading, rings pan / tilt / roll
   const P = SB.P, q0 = toC(P); if (q0.z < 0.2) return;
   const o0 = scr(q0), ppm = worldV.fp / q0.z, Lm = 78 / ppm, cw = ctx.canvas.clientWidth || 1e4, ch = ctx.canvas.clientHeight || 1e4;
@@ -4163,6 +4236,16 @@ function drawHandles(ctx, toC, scr, s, SB) {
     ctx.fillStyle = C.sheet; ctx.globalAlpha = .85; ctx.fillRect(lx - tw / 2 - 4, ly - 2, tw + 8, 16); ctx.globalAlpha = 1; ctx.fillStyle = C.accent; ctx.fillText(lab, lx, ly); return; }
   ctx.fillStyle = C.sheet; ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(o0.x, o0.y, 4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 }
+function drawFocusPlanes(ctx, toC, scr, s, SB) { const o = optics(s), g = { x: SB.P.x, y: 0.02, z: SB.P.z }, cosT = Math.max(0.2, Math.cos(s.cam.tilt * DEG));
+  const seg = (d, col, w, dash, lab) => { if (!(d > 0) || d > 60) return; const h = d / cosT, half = h * o.tanH, c = add(g, SB.fh, h), a = toC(add(c, SB.rh, -half)), b = toC(add(c, SB.rh, half));
+    if (a.z < 0.1 || b.z < 0.1) return; const A = scr(a), B = scr(b); ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.setLineDash(dash); ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle = col; ctx.font = '600 11px "IBM Plex Sans KR", sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(lab, B.x + 4, B.y - 2); ctx.restore(); };
+  const fd = o.fd >= 999 ? Infinity : o.fd;
+  // the band between near and far, faint, so the plane and the depth of field read as different things
+  if (isFinite(o.near) && o.near < 60) { const far = Math.min(isFinite(o.far) ? o.far : 60, 60), pts = [[o.near, -1], [o.near, 1], [far, 1], [far, -1]].map(([d, sg]) => { const h = d / cosT; return toC(add(add(g, SB.fh, h), SB.rh, sg * h * o.tanH)); });
+    if (pts.every(q => q.z > 0.1)) { const Q = pts.map(scr); ctx.save(); ctx.fillStyle = 'rgba(139,156,255,.10)'; ctx.beginPath(); Q.forEach((q, i) => i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y)); ctx.closePath(); ctx.fill(); ctx.restore(); } }
+  seg(o.near, 'rgba(139,156,255,.8)', 1.5, [5, 4], `심도 앞 ${fmtM(o.near)}`); if (isFinite(o.far)) seg(o.far, 'rgba(139,156,255,.8)', 1.5, [5, 4], `심도 뒤 ${fmtM(o.far)}`);
+  if (isFinite(fd)) seg(fd, '#8B9CFF', 2.5, [], `초점면 ${fmtM(fd)}`); }
 const findObj = id => id === 'SUN' ? state.set.sun : id && id.startsWith('SUBJ_') ? cur()[id.slice(5)] : shotLights().find(o => o.id === id) || state.set.props.find(o => o.id === id);
 function wLocal(e) { const r = $('#world').getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
 function groundHit(p, V) {
@@ -4773,8 +4856,6 @@ function placeVfTools() { const vt = $('.vfbox .vf-tools'); if (phone.matches) {
 /* ---------- lens panel ---------- */
 const F_MIN = 2, F_MAX = 800;
 const f2r = f => Math.round(Math.log(f / F_MIN) / Math.log(F_MAX / F_MIN) * 1000), r2f = r => F_MIN * Math.pow(F_MAX / F_MIN, r / 1000);
-const D_MIN = 0.15, D_MAX = 200;
-const d2r = d => Math.round(Math.log(d / D_MIN) / Math.log(D_MAX / D_MIN) * 1000), r2d = r => D_MIN * Math.pow(D_MAX / D_MIN, r / 1000);
 // change focal length within what the kit offers; the stop can't be faster than that lens opens
 function setF(nf) { const s = cur(), f0 = s.f; s.f = roundF(kitF(nf)); s.N = Math.max(s.N, maxT(KIT(), s.f)); keepShot(s, f0); }
 // keep the shot size: the subject's image size goes with f / distance, so the camera stands at d·f/f₀ on the line to its aim point,
@@ -4828,7 +4909,21 @@ $('#nRange').addEventListener('change', () => changed(true));
 $('#focusSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.disabled) return; const s = cur();
   if (b.dataset.fo === 'M') s.fd = +optics(s).fd.toFixed(2); s.focus = b.dataset.fo; changed(true); });
 $('#afSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.disabled) return; const s = cur(); s.focus = 'AF'; s.afT = b.dataset.af; changed(true); });
-$('#fdRange').addEventListener('input', e => { const s = cur(); s.focus = 'M'; s.fd = +r2d(+e.target.value).toFixed(2); changed(false); });
+// the focus slider is the lens's focus ring: left = close-focus stop, right = infinity stop; positions follow the lens's own curve
+const curProf = () => lensFocus(KIT(), cur().f);
+const ringSet = (s, P, t) => { const d = RING.dist(P, t); s.focus = 'M'; s.fd = isFinite(d) ? +d.toFixed(3) : 1000; };
+$('#fdRange').addEventListener('input', e => { const s = cur(), P = curProf(); ringSet(s, P, (1 - +e.target.value / 1000) * P.throw); changed(false); });
+// a scroll over the slider turns the ring like a hand would: mechanical lenses by the angle, focus-by-wire by angle and speed
+$('#fdRange').addEventListener('wheel', e => { e.preventDefault(); const s = cur(), P = curProf(), now = performance.now(), dt = Math.min(0.25, (now - (ringWheelT || 0)) / 1000); ringWheelT = now;
+  ringSet(s, P, FOCUS_IN.move(P, RING.angle(P, optics(s).fd), (e.deltaY > 0 ? 1 : -1) * Math.min(10, Math.abs(e.deltaY) * 0.06) * (e.shiftKey ? 0.25 : 1), dt)); changed(false); clearTimeout(ringWheelC); ringWheelC = setTimeout(() => changed(true), 300); }, { passive: false });
+let ringWheelT = 0, ringWheelC = 0;
+// a user's own measurements of this lens: "distance angle" per line
+$('#lcalSave').onclick = () => { const s = cur(), k = KIT(), key = `${k.id}:${s.f}`, msg = $('#lcalMsg');
+  const pts = $('#lcalTxt').value.split(/\n+/).map(l => l.trim()).filter(Boolean).map(l => { const [a, b] = l.split(/[\s,]+/); return [/^(inf|∞)$/i.test(a) ? Infinity : parseFloat(a), parseFloat(b)]; });
+  if (pts.length < 2 || pts.some(([u, a]) => !(u > 0) || !isFinite(a))) { msg.textContent = '두 줄 이상, 각 줄에 거리와 각도를 숫자로 적어요'; msg.classList.add('warn-t'); return; }
+  try { focusCurve(pts); } catch (e) { msg.textContent = '가까운 거리일수록 링 각도가 한쪽으로 커져야 해요 (순서가 뒤섞였어요)'; msg.classList.add('warn-t'); return; }
+  LENS_CAL[key] = pts; saveLensCal(); _profCache.clear(); msg.classList.remove('warn-t'); msg.textContent = `${k.name} ${s.f}mm에 적용했어요`; changed(true); };
+$('#lcalClear').onclick = () => { const s = cur(), key = `${KIT().id}:${s.f}`; delete LENS_CAL[key]; saveLensCal(); _profCache.clear(); $('#lcalMsg').textContent = '모델 곡선으로 되돌렸어요'; changed(true); };
 $('#fdRange').addEventListener('change', () => changed(true));
 function kitFocals() {
   const k = KIT(), S = SENSOR(), crop = FF_DIAG / Math.hypot(S.w, S.h);
@@ -5116,7 +5211,10 @@ function syncPanels() {
   $('#afRow').hidden = s.focus === 'M';
   const afKeys = ['auto', ...subjKeys(s)]; if ($('#afSeg').dataset.keys !== afKeys.join()) { $('#afSeg').dataset.keys = afKeys.join(); $('#afSeg').innerHTML = afKeys.map(k => `<button data-af="${k}">${k === 'auto' ? '가운데' : k}</button>`).join(''); }
   document.querySelectorAll('#afSeg button').forEach(b => { const k = b.dataset.af; b.setAttribute('aria-pressed', (s.afT || 'auto') === k); b.disabled = k !== 'auto' && k !== 'A' && !(s[k] && s[k].on); });
-  $('#fdOut').textContent = fmtM(o.fd); $('#fdRange').value = d2r(clamp(o.fd, D_MIN, D_MAX));
+  { const P = curProf(), t = RING.angle(P, o.fd), sn = ringSens(P, o.fd), inf = o.fd >= 999;
+    $('#fdOut').textContent = inf ? '∞' : `${fmtM(o.fd)} · ${DIOPT.of(o.fd).toFixed(2)} D`; $('#fdRange').value = Math.round((1 - t / P.throw) * 1000);
+    $('#ringSum').textContent = `링 ${Math.round(t)}° / ${Math.round(P.throw)}° · 지금 1°에 ${!isFinite(sn.mPerDeg) ? '∞' : sn.mPerDeg < 0.01 ? (sn.mPerDeg * 1000).toFixed(1) + 'mm' : fmtM(sn.mPerDeg)} (${sn.dPerDeg.toFixed(3)} D) · ${P.input === 'fbw' ? '전자식 링 (속도 반응 · 가상 모델)' : '기계식 링'} · 곡선: ${P.cSrc}`;
+    const ta = $('#lcalTxt'), key = `${KIT().id}:${s.f}`; if (document.activeElement !== ta && ta.dataset.key !== key) { ta.dataset.key = key; const c = calPoints(key); ta.value = c ? c.map(([u, a]) => `${isFinite(u) ? u : 'inf'} ${a}`).join('\n') : ''; ta.placeholder = '0.5 270\n1 140\n2 70\ninf 0'; } }
   const fs = $('#focusSum');
   fs.textContent = o.tooClose ? `초점 불가 · 최소 초점거리 ${fmtM(o.mod)}` : `심도 ${fmtM(o.near)} – ${fmtM(o.far)}${isFinite(o.far) ? ` (${fmtM(o.far - o.near)})` : ''}`;
   fs.classList.toggle('warn-t', o.tooClose);
@@ -5765,7 +5863,8 @@ function paneTab(p, t) {
   sec.querySelectorAll('.ptabs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.tab === t));
   sec.querySelectorAll('.ptab').forEach(x => x.hidden = x.dataset.tab !== t);
 }
-document.querySelectorAll('.ptabs').forEach(tb => tb.addEventListener('click', e => { const b = e.target.closest('button'); if (b) paneTab(tb.closest('.pane').dataset.pane, b.dataset.tab); }));
+document.querySelectorAll('.ptabs').forEach(tb => tb.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const p = tb.closest('.pane').dataset.pane; paneTab(p, b.dataset.tab);
+  if (p === 'cam' && mode !== 'mon') renderWorld(); })); // the focus planes in 3D show with the focus tab
 document.querySelectorAll('.pane').forEach(x => paneTab(x.dataset.pane));
 let pane = null;
 // phones: an open panel takes its own part of the screen (beside the picture sideways, under it upright) instead of covering it,
@@ -5775,7 +5874,7 @@ function openPane(p) { pane = p; $('#drawer').hidden = !p; $('#app').classList.t
   document.querySelectorAll('.pane').forEach(x => x.hidden = x.dataset.pane !== p);
   document.querySelectorAll('#rail button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pane === p));
   if (p) { $('#drawerTitle').textContent = PANES[p]; $('#drawerIcon').innerHTML = $(`#rail button[data-pane="${p}"] svg`).outerHTML; placeDrawer(); }
-  if (mode === 'mon') { vsz = null; drawMonitor(); } }
+  if (mode === 'mon') { vsz = null; drawMonitor(); } else if (state && state.shots && state.shots.length && $('#startScreen').hidden) renderWorld(); }
 $('#rail').addEventListener('click', e => { const b = e.target.closest('button[data-pane]'); if (b) openPane(pane === b.dataset.pane ? null : b.dataset.pane); });
 $('#drawerClose').onclick = () => openPane(null);
 phone.addEventListener('change', () => { placeDrawer(); buildStrip(); });
@@ -6387,7 +6486,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.07 01:09'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.07 01:48'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
@@ -6471,7 +6570,7 @@ const fpSeenAt = dur => Math.max(1, Math.pow(Math.max(dur, 0.007) / 0.444, -0.33
 
 function fpScene(lv) {
   const c = fpLens || { kit: lv.kit, f: lv.f, N: lv.N }, k = KITS.find(x => x.id === c.kit) || KITS.find(x => x.id === 'masterp'), f = kitF(c.f, k);
-  const sensor = SENSORS.find(x => x.id === (k.cover === 'S35' || k.cover === 'APS-C' ? 'alexa35' : 'alexalf')) || SENSORS[0], L = lensSpec(k, f), v = lv.gen(L);
+  const sensor = SENSORS.find(x => x.id === (k.cover === 'S35' || k.cover === 'APS-C' ? 'alexa35' : 'alexalf')) || SENSORS[0], L = lensFocus(k, f), v = lv.gen(L);
   const props = []; for (let z = 1; z <= 13; z += 2) props.push({ id: 'P' + z, type: 'bollard', x: -1.7, z, yaw: 0 }, { id: 'Q' + z, type: 'bollard', x: 1.9, z, yaw: 0 });
   props.push({ id: 'L1', type: 'lamp', x: -2.6, z: 9, yaw: 90 }, { id: 'L2', type: 'lamp', x: 2.8, z: 14, yaw: 270 });
   state = { schema: SCHEMA, title: '포커스 연습', aspect: '16:9', sensor: { ...sensor }, squeeze: k.sq || 1, breathing: true, blur: true, example: false, sel: 0, kit: k.id, lit: true, shots: [],
@@ -6492,7 +6591,7 @@ function fpPick(id) { const lv = fpLevel(id); if (!lv) return; fpStop(); fp.lv =
   setMode('mon'); vsz = null; $('#fpList').hidden = true; $('#fpRes').hidden = true; $('#fpGo').hidden = !!fpChal;
   if (lv.speed) fpSync(fp.lens.throw * RND(0, 1)); else fpSync(fp.ring); fpPose(0, true); fpDraw(true); fpLensLine(); }
 function fpLensLine() { const L = fp.lens, k = KIT(), b = (LENS_DATA[k.id] || {}).breath === 'none';
-  $('#fpLens').innerHTML = `<b>${fp.lv.t}</b> · ${fp.v.info}<br><b>${k.name.replace(/ \(.*\)/, '')} ${L.f}mm ${stopTxt(cur().N)}</b> · ${SENSOR().name}<br>최소 초점 ${L.mod.toFixed(2)}m <small>(${esc(L.src)})</small> · 포커스 링 ${L.throw}° <small>(${L.throwKnown ? '제조사 · 판매처 표기' : '공개 수치 없음 · 기본값'})</small> · ${b ? '브리딩 없음 <small>(Goodsell 외 2022)</small>' : '브리딩 있음 <small>(전체 이동 초점 모델)</small>'}`; }
+  $('#fpLens').innerHTML = `<b>${fp.lv.t}</b> · ${fp.v.info}<br><b>${k.name.replace(/ \(.*\)/, '')} ${L.f}mm ${stopTxt(cur().N)}</b> · ${SENSOR().name}<br>최소 초점 ${L.mod.toFixed(2)}m <small>(${esc(L.modSrc)})</small> · 포커스 링 ${Math.round(L.throw)}° <small>(${L.throwSrc})</small> · 눈금 곡선 <small>(${L.cSrc})</small> · ${L.input === 'fbw' ? '전자식 링 <small>(돌리는 속도에 따라 반응 · 가상 모델)</small>' : '기계식 링 <small>(돌린 각도만큼)</small>'} · ${b ? '브리딩 없음 <small>(Goodsell 외 2022)</small>' : '브리딩 있음 <small>(전체 이동 초점 모델)</small>'}`; }
 // the operator pans to keep the subject in frame: both people when they fit the lens, otherwise whoever must be sharp
 function fpPose(t, snap) { const s = cur(), p = fp.v.at(t), w = fp.tanH * 0.55, fit = q => ({ x: clamp(q.x, -w * q.z, w * q.z), z: q.z }); // sideways spread kept inside the frame for this lens
   p.A = fit(p.A); if (p.B) p.B = fit(p.B); Object.assign(s.A, { x: p.A.x, z: p.A.z }); if (p.B) Object.assign(s.B, { on: true, x: p.B.x, z: p.B.z });
@@ -6613,7 +6712,8 @@ $('#fp').addEventListener('change', e => { const t = e.target; if (!fp) return;
   else if (t.id === 'fpN' && fpLens) fpLens.N = +t.value; else return;
   fpStore('previo.fplens', fpLens ? fpLens : 'null'); fpList(); });
 // --- input: drag the wheel, scroll, arrow keys ---
-const fpTurn = d => { if (!fp || !fp.lv || (fp.lv.speed && fp.run && !fp.run.started)) return; const before = fp.ring; fpSync(fp.ring + d);
+const fpTurn = d => { if (!fp || !fp.lv || (fp.lv.speed && fp.run && !fp.run.started)) return; const before = fp.ring, now = performance.now(), dt = Math.min(0.25, (now - (fpTurn.t || 0)) / 1000); fpTurn.t = now;
+  fpSync(FOCUS_IN.move(fp.lens, fp.ring, d, dt));
   if ((fp.ring === 0 || fp.ring === fp.lens.throw) && before !== fp.ring) try { navigator.vibrate && navigator.vibrate(12); } catch (e) {} if (!fp.run) fpDraw(true); };
 { const w = $('#fpWheel'); let g = null;
   const ang = e => { const r = w.getBoundingClientRect(); return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)) / DEG; };
