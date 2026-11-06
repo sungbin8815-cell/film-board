@@ -949,6 +949,57 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
 .qc-sw em::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s}
 .qc-sw input:checked + span + em{background:var(--accent)} .qc-sw input:checked + span + em::after{transform:translateX(16px)}
 .qc-sw input:focus-visible + span + em{outline:2px solid var(--accent);outline-offset:2px}
+/* ---------- 포커스 연습 ---------- */
+.fp{position:fixed;inset:0;z-index:90;background:#0E1117;color:var(--ink);display:flex;flex-direction:column;padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));gap:8px}
+.fp[hidden]{display:none}
+.fp-top{display:flex;align-items:center;gap:10px;min-height:44px}
+.fp-top .btn{min-height:40px} .fp-tl{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px} .fp-tl span{font-size:12.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fp-prog{height:5px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden} .fp-prog i{display:block;height:100%;width:0;background:var(--accent)}
+.fp-time{font:600 12px var(--f-mono);color:var(--muted);white-space:nowrap}
+.fp-main{flex:1;min-height:0;display:grid;grid-template-columns:1fr 300px;gap:10px}
+.fp-mon{position:relative;min-height:0;border-radius:12px;overflow:hidden;background:#000}
+.fp-mon canvas{position:absolute;inset:0;width:100%;height:100%}
+.fp-hud{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap}
+.fp-chip{padding:5px 9px;border-radius:8px;background:rgba(14,17,23,.78);font-size:12px;color:var(--ink2)} .fp-chip b{font:700 14px var(--f-mono);color:#fff;margin-left:4px} .fp-chip[hidden]{display:none}
+.fp-meter{position:absolute;left:10px;right:10px;bottom:10px;height:22px;border-radius:8px;background:rgba(14,17,23,.78);overflow:hidden}
+.fp-meter i{position:absolute;inset:0 auto 0 0;background:rgba(229,72,77,.75);transition:width .06s linear} .fp-meter.ok i{background:rgba(52,199,89,.8)}
+.fp-meter span{position:relative;display:block;text-align:center;font:600 12px/22px var(--f-body);color:#fff} .fp-meter[hidden]{display:none}
+.fp-dir{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);padding:6px 12px;border-radius:999px;background:rgba(14,17,23,.85);font-size:13px;font-weight:600;color:#FFD166;white-space:nowrap}
+.fp-flash{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);font:800 clamp(30px,7vw,64px) "Space Grotesk",system-ui;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.7);opacity:0;pointer-events:none}
+.fp-flash.on{animation:fpflash 1s ease-out}
+@keyframes fpflash{0%{opacity:0;transform:translate(-50%,-50%) scale(1.3)}15%{opacity:1;transform:translate(-50%,-50%) scale(1)}70%{opacity:1}100%{opacity:0}}
+.fp-side{display:flex;flex-direction:column;gap:8px;min-height:0;overflow-y:auto}
+.fp-wheel{width:100%;aspect-ratio:1;max-width:300px;align-self:center;touch-action:none;cursor:grab}
+.fp-go{display:grid;grid-template-columns:1fr 1fr;gap:6px} .fp-go[hidden]{display:none} .fp-go .btn{min-height:44px}
+.fp-map{width:100%;height:150px;border-radius:10px;flex:none}
+.fp-lens{margin:0;font-size:11.5px;line-height:1.5;color:var(--muted)} .fp-lens b{color:var(--ink2)} .fp-lens small{color:var(--muted);opacity:.8}
+.fp-list,.fp-res{position:absolute;inset:12px;overflow-y:auto;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.fp-list[hidden],.fp-res[hidden]{display:none}
+.fp-list h2{margin:0;font:700 20px "Space Grotesk",var(--f-body)} .fp-note{margin:0;font-size:13px;color:var(--ink2);line-height:1.55}
+.fp-diff{display:grid;grid-template-columns:repeat(3,1fr)} .fp-diff button{display:flex;flex-direction:column;align-items:center;gap:1px;min-height:48px} .fp-diff small{font-size:10.5px;opacity:.75}
+.fp-levels{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.fp-levels button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;min-height:56px;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);cursor:pointer}
+.fp-levels button:hover{border-color:var(--accent)} .fp-levels .n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font:700 13px var(--f-mono)}
+.fp-levels span:not(.n){flex:1;min-width:0;display:flex;flex-direction:column;gap:2px} .fp-levels b{font-size:14px} .fp-levels small{font-size:12px;color:var(--muted)} .fp-levels small.lens{font-family:var(--f-mono);font-size:11px}
+.fp-levels em{font:700 13px var(--f-mono);font-style:normal;color:#FFD166}
+.fp-how{font-size:12px;color:var(--muted);line-height:1.6} .fp-how summary{cursor:pointer;color:var(--ink2);min-height:32px}
+.fp-grade{font:800 64px/1 "Space Grotesk",system-ui;text-align:center} .fp-grade.gS{color:#FFD166} .fp-grade.gA{color:#34C759} .fp-grade.gB{color:#8B9CFF} .fp-grade.gC{color:#F5A623} .fp-grade.gF{color:#E5484D}
+.fp-stats p{margin:2px 0;text-align:center;font-size:13px;color:var(--ink2)} .fp-stats b{color:#fff;font-size:15px} .fp-stats em{font-style:normal;color:#FFD166;font-weight:700}
+.fp-tips{margin:0;padding-left:18px;font-size:12.5px;color:var(--ink2);line-height:1.55}
+.fp-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap} .fp-row .btn{min-height:44px}
+@media (max-width:719px){ .fp-main{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto} .fp-mon{aspect-ratio:16/9;min-height:0} .fp-main{display:flex;flex-direction:column} .fp-side{display:grid;grid-template-columns:1fr 1fr;align-items:start;overflow:visible}
+  .fp-side{grid-template-columns:57% 1fr} .fp-wheel{grid-row:span 2;max-width:240px} .fp-map{height:110px} .fp-lens{grid-column:1/-1} .fp-list,.fp-res{position:fixed;inset:60px 8px 8px;z-index:2} }
+@media (max-height:520px) and (orientation:landscape){ .fp-main{grid-template-columns:1fr 230px} .fp-map{display:none} .fp-wheel{max-width:200px} }
+.fp-lenspick{display:flex;align-items:center;gap:6px;flex-wrap:wrap} .fp-lenspick span{font-size:12.5px;color:var(--muted);min-width:30px}
+.fp-lenspick select{flex:1 1 140px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);padding:0 10px;font:500 13px var(--f-body)}
+.fp-chal{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:56px;padding:10px 14px;border-radius:12px;border:0;cursor:pointer;color:var(--accent-ink);background:linear-gradient(120deg,var(--accent),#A78BFA)}
+.fp-chal b{font-size:15px} .fp-chal small{font-size:12px;opacity:.8}
+.fp-ct{margin:0;text-align:center;font:700 16px var(--f-body);color:var(--ink2)} .fp-total{font:800 56px/1 "Space Grotesk",system-ui;text-align:center;color:#FFD166} .fp-total small{font-size:18px;color:var(--muted)}
+.fp-rounds{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.fp-rounds li{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:10px;background:rgba(255,255,255,.03)} .fp-rounds li b{width:24px;text-align:center;font:800 18px "Space Grotesk",system-ui}
+.fp-rounds li span{flex:1;min-width:0;display:flex;flex-direction:column;font-size:13px} .fp-rounds small{font-size:11.5px;color:var(--muted)} .fp-rounds em{font:700 14px var(--f-mono);font-style:normal}
+.fp-rounds .gS{color:#FFD166} .fp-rounds .gA{color:#34C759} .fp-rounds .gB{color:#8B9CFF} .fp-rounds .gC{color:#F5A623} .fp-rounds .gF{color:#E5484D}
+.fp-lenspick select{min-width:0;max-width:100%} .fp-lenspick #fpKit{flex:1 1 100%} .fp-lenspick span{flex:1 1 100%}
 </style>
 </head>
 <body>
@@ -970,8 +1021,8 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <button id="aiBtn" role="menuitem">AI 실사 프롬프트 (ChatGPT · Higgsfield)</button><hr>
     <button id="copyBtn" role="menuitem">샷 리스트 복사</button><button id="csvBtn" role="menuitem">CSV 저장</button><button id="printBtn" role="menuitem">콘티 인쇄 · PDF</button><button id="techMenuBtn" role="menuitem" data-pro>테크비즈 시트 (현장용) · PDF</button>
     <hr><button id="shareLinkBtn" role="menuitem">링크로 공유</button><button id="expFileBtn" role="menuitem">프로젝트 파일 저장</button><button id="shareFileBtn" role="menuitem">파일 공유</button><button id="impFileBtn" role="menuitem">파일 가져오기</button>
-    <hr><button id="uiModeBtn" role="menuitem"></button><button id="tourBtn" role="menuitem">튜토리얼</button><button id="keysBtn" role="menuitem">조작키 보기 (?)</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
-    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.05 01:32</p>
+    <hr><button id="uiModeBtn" role="menuitem"></button><button id="tourBtn" role="menuitem">튜토리얼</button><button id="fpMenuBtn" role="menuitem">포커스 연습 (팔로우 포커스)</button><button id="keysBtn" role="menuitem">조작키 보기 (?)</button><button id="resetBtn" role="menuitem">처음부터 새로 시작</button>
+    <hr><button id="updBtn" role="menuitem">최신 버전 확인</button><p class="ver">버전 2026.11.07 01:09</p>
     <div id="copyFallback" hidden></div>
   </div>
 
@@ -1171,6 +1222,18 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
 <div class="rothint" id="rotHint" role="dialog" aria-labelledby="rotT"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="15" y="6" width="18" height="32" rx="3"/><path d="M8 30a16 16 0 0 0 14 12M40 18A16 16 0 0 0 26 6"/><path d="M22 42l-3-3M22 42l-3 3M26 6l3-3M26 6l3 3"/></svg>
   <b id="rotT">휴대폰을 가로로 돌려 주세요</b><p>PREVIO는 가로 화면에 맞춰져 있어요.<br>3D 세트와 모니터가 훨씬 넓게 보여요.</p><button class="btn ghost" id="rotOk">세로로 계속 쓰기</button></div>
 <input type="file" id="vrmFile" accept=".vrm" hidden>
+<div class="fp" id="fp" hidden role="dialog" aria-label="포커스 연습">
+  <header class="fp-top"><button class="btn sm ghost" id="fpLevels">단계</button><div class="fp-tl"><span id="fpWho"></span><div class="fp-prog"><i id="fpBar"></i></div></div><span class="fp-time" id="fpTime"></span><button class="btn sm ghost" id="fpExit" aria-label="포커스 연습 끝내기">나가기</button></header>
+  <div class="fp-main">
+    <div class="fp-mon"><canvas id="fpView" aria-label="카메라 모니터"></canvas><div class="fp-flash" id="fpFlash" aria-live="polite"></div>
+      <div class="fp-hud"><span class="fp-chip" id="fpRead">초점 <b id="fpFocusM">∞</b></span><span class="fp-chip" id="fpRng">거리계 <b id="fpTgtM">—</b></span></div>
+      <div class="fp-meter" id="fpMeter"><i id="fpMeterFill"></i><span id="fpMeterT"></span></div><div class="fp-dir" id="fpDir" hidden></div>
+      <div class="fp-list glass" id="fpList" hidden></div><div class="fp-res glass" id="fpRes" hidden></div></div>
+    <aside class="fp-side"><canvas class="fp-wheel" id="fpWheel" aria-label="팔로우 포커스 휠: 돌려서 초점을 옮겨요. 키보드 위·아래 화살표, 휠도 돼요."></canvas>
+      <div class="fp-go" id="fpGo" hidden><button class="btn primary" id="fpShoot">촬영 시작</button><button class="btn" id="fpReroll">새 위치</button></div>
+      <canvas class="fp-map" id="fpMap" aria-label="위에서 본 초점면과 심도"></canvas><p class="fp-lens" id="fpLens"></p></aside>
+  </div>
+</div>
 <div id="mapPrint" aria-hidden="true"></div>
 <div id="techPrint" aria-hidden="true"></div>
 <div class="modal" id="aiModal" hidden role="dialog" aria-labelledby="aiT"><div class="msheet aisheet">
@@ -1190,7 +1253,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
         <button class="hm-big" id="mcSetsBtn"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10.5L12 4l9 6.5V20H3z"/><path d="M9 20v-6h6v6"/></svg></i><b>세트 프리셋</b><small>공간 17가지로 바로 시작</small></button>
         <button class="hm-big" id="mcLoad"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></i><b>불러오기</b><small id="mcLoadT">저장한 프로젝트</small></button>
       </nav>
-      <div class="hm-pills"><button class="hm-resume" id="mcResume" hidden>이어서 작업 · <b id="mcResumeT"></b></button><button class="hm-resume hm-tut" id="mcTut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5l9-4.5 9 4.5-9 4.5zM6.5 11.2v4.3c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5v-4.3"/></svg>튜토리얼로 배우기</button></div>
+      <div class="hm-pills"><button class="hm-resume" id="mcResume" hidden>이어서 작업 · <b id="mcResumeT"></b></button><button class="hm-resume hm-tut" id="mcTut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5l9-4.5 9 4.5-9 4.5zM6.5 11.2v4.3c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5v-4.3"/></svg>튜토리얼로 배우기</button><button class="hm-resume hm-tut" id="mcFocus"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 3.5v3M20.5 12h-3"/></svg>포커스 연습</button></div>
     </div>
     <div class="hm-tools"><button class="hm-link" id="mcModeBtn"></button><button class="hm-link" id="mcAsk">문의하기</button></div>
   </div>
@@ -1227,7 +1290,7 @@ body.dragging-prop,body.dragging-prop *{cursor:grabbing!important}
     <div class="mc-row"><button class="sbtn center" id="mcCopy"><b>주소 복사</b></button><a class="sbtn primary center" id="mcSend" target="_blank" rel="noopener"><b>메일 앱으로 보내기</b></a></div>
     <div class="mc-row"><button class="sbtn center" data-back><b>돌아가기</b></button></div>
   </div>
-  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.05 01:32</span></div>
+  <div class="mc-foot"><span id="mcStat"></span><span class="ver">버전 2026.11.07 01:09</span></div>
 </div>
 
 <div class="keyhelp" id="keyHelp" role="dialog" aria-modal="true" aria-labelledby="keyHelpT" hidden><div class="kh-box glass">
@@ -1418,7 +1481,27 @@ const KIT = () => KITS.find(k => k.id === state.kit) || KITS[0];
 // magnification m (thin lens: distance = f·(2 + m + 1/m)). Estimates per lens family, not catalogue values.
 const KIT_MAG = { gm: 0.15, rfl: 0.15, art: 0.15, zs: 0.15, batis: 0.15, xf: 0.15, panchro: 0.1, vista: 0.1, pavo: 0.07, s7: 0.1, summilux: 0.1, primo70: 0.1, xeen: 0.12, vespid: 0.13, gecko: 2, free: 0.1, sig: 0.11, supreme: 0.11, cp3: 0.1, sigma: 0.1, sumire: 0.1, ultra: 0.1, s4: 0.1, master: 0.07, cookeana: 0.065, orion: 0.065, fish: 0.25 };
 const KIT_MODZ = { style: 1.22, uc2156: 0.6, uc37102: 0.68, prem80: 1.5, cne30105: 0.86, cne1460: 0.43, sig1835: 0.28, sig50100: 0.95, sig2435: 0.28, gm70200: 0.4, rf2470: 0.21, art1835: 0.28, gm2470: 0.21, gm1635: 0.22, rf70200: 0.7, prem1945: 0.5, optimo: 1.22, premista: 0.8, ultra12: 1.24, cn7: 0.85, zk: 0.85, eanam: 0.6 };
-function kitMOD(k, f) { if (k.id === 'free') return 0; if (KIT_MODZ[k.id]) return KIT_MODZ[k.id]; const m = KIT_MAG[k.id] ?? 0.1; return Math.max(0.15, f * (2 + m + 1 / m) / 1000); }
+// catalogue close focus (m, from the sensor / film plane) where a manufacturer or rental-house table could be read; anything not
+// listed here falls back to the estimate above. Focus-ring rotation (deg, ∞ stop → close-focus stop) only where it is published.
+// breath 'none': the paper by Goodsell, Blahnik & Rolland (Opt. Express 2022) notes Master Primes "showed no breathing";
+// every other lens uses the whole-lens ("Simple") focusing model, which is an assumption, not a measurement of that lens.
+const LENS_DATA = {
+  masterp: { mod: { 12: 0.40, 14: 0.35, 16: 0.35, 18: 0.35, 21: 0.35, 25: 0.35, 27: 0.35, 32: 0.35, 35: 0.35, 40: 0.40, 50: 0.50, 65: 0.65, 75: 0.80, 100: 1.00, 135: 0.95, 150: 1.50 },
+    breath: 'none', src: 'ARRI Master Prime technical data (Panavision table agrees except 100mm: 1.06m)' },
+  ultra: { mod: { 8: 0.35, 12: 0.30, 14: 0.22, 16: 0.25, 20: 0.28, 24: 0.30, 28: 0.28, 32: 0.35, 40: 0.38, 50: 0.60, 65: 0.65, 85: 0.90, 100: 1.00, 135: 1.50, 180: 2.60 },
+    src: 'ARRI Ultra Prime technical data (from the film plane)' },
+  supreme: { mod: { 21: 0.35, 25: 0.26, 29: 0.33, 35: 0.32, 50: 0.45, 65: 0.60, 85: 0.84, 100: 1.14, 135: 1.35 }, throw: 300,
+    src: 'ZEISS Supreme Prime table (21–65mm); Panavision table (85–135mm); 300° rotation from retailer listings' },
+  cp3: { mod: { 18: 0.30, 25: 0.26, 35: 0.30, 50: 0.45, 85: 1.00, 100: 0.70 }, throw: 300, src: 'retailer listings of ZEISS CP.3 (from the image plane); 300° rotation' },
+  sig: { mod: { 12: 0.35, 25: 0.35, 29: 0.35, 35: 0.35, 40: 0.35, 47: 0.45, 75: 0.65, 280: 2.18 }, src: 'ARRI Signature Prime manual (25–40mm), ARRI product page (280mm), Standard Camera (12, 47, 75mm)' },
+  sigma: { mod: { 20: 0.276, 28: 0.30, 50: 0.40, 65: 0.65, 85: 0.85 }, throw: 180, src: 'Sigma Cine FF High Speed listings (from the sensor); 180° focus rotation' },
+  s4: { mod: { 14: 0.23, 18: 0.23, 21: 0.23, 25: 0.23, 50: 0.51, 100: 0.91 }, src: 'Cooke S4/i rental tables (No Drama, Keslow)' },
+};
+const DEF_THROW = 270; // used where no rotation figure was found — a typical cine value, not that lens's own
+function kitMOD(k, f) { if (k.id === 'free') return 0; const d = LENS_DATA[k.id]; if (d && d.mod[f]) return d.mod[f]; if (KIT_MODZ[k.id]) return KIT_MODZ[k.id]; const m = KIT_MAG[k.id] ?? 0.1; return Math.max(0.15, f * (2 + m + 1 / m) / 1000); }
+// what the app knows about one lens, and how sure it is
+function lensSpec(k, f) { const d = LENS_DATA[k.id], cat = !!(d && d.mod[f]);
+  return { f, mod: kitMOD(k, f) || 0.3, throw: d && d.throw || DEF_THROW, throwKnown: !!(d && d.throw), modKnown: cat || !!KIT_MODZ[k.id], breath: d && d.breath || 'unit', src: cat ? d.src : KIT_MODZ[k.id] ? '제조사 공칭 최소 초점거리' : '추정치 (같은 계열의 전형적인 최대 배율로 계산)' }; }
 const maxT = (k, f) => !k.T ? STOPS[0] : (k.T[f] ?? k.T.d);
 // how a stop is written: cine lenses in T-stops, photo lenses in f-numbers
 const stopTxt = (N, k = KIT()) => k.stop === 'f' ? `f/${N}` : `T${N}`;
@@ -1482,7 +1565,7 @@ function optics(s) {
   const S = SENSOR(), area = imageArea(), f = s.f, N = s.N;
   // the lens can't focus nearer than its minimum focus distance (measured from the sensor plane)
   const mod = kitMOD(KIT(), f), fdm = focusDist(s), smm = Math.max(fdm * 1000, mod * 1000, f * 1.05), tooClose = fdm < mod - 0.005;
-  const v = state.breathing ? f * smm / (smm - f) : f;              // thin lens: 1/f = 1/s + 1/v
+  const v = state.breathing && (LENS_DATA[KIT().id] || {}).breath !== 'none' ? f * smm / (smm - f) : f; // thin lens: 1/f = 1/s + 1/v (Master Primes don't breathe)
   const tanH = area.iw / 2 / v, tanV = area.ih / 2 / v;
   const diag = Math.hypot(S.w, S.h), coc = diag / 1500, crop = FF_DIAG / diag;
   const Hy = f * f / (N * coc) + f;
@@ -1522,6 +1605,62 @@ function dofClass(o, bgDepth) {
   if (!isFinite(o.far) ? bgDepth >= o.near : bgDepth <= o.far) return 'deep';
   const b = blurMM(o, bgDepth), r = b / o.ih; return b <= 2 * o.coc ? 'deep' : r > 0.03 ? 'very shallow' : r > 0.012 ? 'shallow' : 'moderate';
 }
+/* ---------- focus optics: pure functions, every length in millimetres unless the name says otherwise ----------
+   Sources, kept apart from our own modelling choices:
+   · Thin-lens / paraxial geometry (textbook): 1/f = 1/u + 1/v, m = −v/u, A = f/N, H = f²/(Nc) + f, Airy d = 2.44·λ·N, FOV = 2·atan(S/2f).
+   · Blur-circle diameter, Herrmann et al., "Learning to Autofocus" (CVPR 2020) eq. 4: c = L·f/(1 − f/g) · |1/g − 1/Z|
+     (L aperture diameter, g focus distance, Z object distance). Blur is linear in inverse distance (dioptres), and its
+     absolute value is why blur alone cannot tell front-focus from back-focus (their §7.4) — dual-pixel disparity is signed.
+   · Breathing, Goodsell, Blahnik & Rolland, Optics Express 30(11) 2022, eq. 1: B = (θ_finite − θ∞)/θ∞. Their "Simple" curve is a
+     lens focused by moving the whole lens; ARRI/ZEISS Master Primes (two moving groups) "showed no breathing".
+   · Seeing blur, Petrella, Labute, Langer & Kry, i-Perception 2017: viewers judge defocus as an angle on the screen (arcmin);
+     sustained blur near 1 arcmin is noticeable (the dipper they cite sits near 1 arcmin in the fovea) and momentary blur needs
+     more to be seen the shorter it lasts (their Fig. 4). Our duration curve below follows that trend; its constants are ours.
+   Not modelled: real multi-group lens prescriptions, aberrations / spatially varying PSF, cat-eye vignetting, measured focus-scale cams. */
+const ARCMIN = 180 * 60 / Math.PI; // arcmin per radian
+const FOPT = {
+  // thin lens: image distance v for an object at u (both mm, measured from the lens); u ≤ f has no real image → Infinity
+  imageDistMm(fMm, uMm) { if (!(fMm > 0) || !(uMm > 0)) return NaN; if (!isFinite(uMm)) return fMm; return uMm > fMm ? fMm * uMm / (uMm - fMm) : Infinity; },
+  // magnification m = −v/u (negative: the real image is inverted)
+  magnification(fMm, uMm) { const v = FOPT.imageDistMm(fMm, uMm); return isFinite(v) && isFinite(uMm) ? -v / uMm : isFinite(uMm) ? -Infinity : 0; },
+  // entrance-pupil diameter from the f-number (geometric N, not a T-stop)
+  apertureMm(fMm, N) { return fMm > 0 && N > 0 ? fMm / N : NaN; },
+  // blur-circle diameter on the sensor for an object at objMm while focused at focusMm (Herrmann et al. eq. 4)
+  cocMm(fMm, N, focusMm, objMm) {
+    if (!(fMm > 0 && N > 0 && focusMm > fMm && objMm > 0)) return NaN;
+    const L = fMm / N, g = focusMm, inv = x => isFinite(x) ? 1 / x : 0;
+    return Math.max(0, L * fMm / (1 - fMm / g) * Math.abs(inv(g) - inv(objMm)));
+  },
+  hyperfocalMm(fMm, N, cMm) { return fMm > 0 && N > 0 && cMm > 0 ? fMm * fMm / (N * cMm) + fMm : NaN; },
+  // near / far limits of acceptable sharpness around focus sMm; far is Infinity at or past the hyperfocal distance
+  dofMm(fMm, N, cMm, sMm) {
+    const H = FOPT.hyperfocalMm(fMm, N, cMm); if (!isFinite(H) || !(sMm > fMm)) return { near: NaN, far: NaN, total: NaN, H };
+    const near = sMm * (H - fMm) / (H + sMm - 2 * fMm), far = sMm >= H - 1e-9 ? Infinity : sMm * (H - fMm) / (H - sMm);
+    return { near, far, total: far - near, H };
+  },
+  // diffraction: Airy-disk diameter to the first zero, ideal circular aperture, one wavelength (separate from defocus)
+  airyMm(N, lambdaNm = 550) { return N > 0 ? 2.44 * lambdaNm * 1e-6 * N : NaN; },
+  fovDeg(sensorMm, fMm) { return sensorMm > 0 && fMm > 0 ? 2 * Math.atan(sensorMm / (2 * fMm)) / DEG : NaN; },
+  // blur in pixels needs the photosite pitch: sensor width / horizontal resolution; without them there is no pixel figure
+  cocPx(cocMm, sensorWmm, resPx) { return sensorWmm > 0 && resPx > 0 ? cocMm / (sensorWmm / resPx) : NaN; },
+  // the blur as the audience sees it: its share of the frame width, times the screen's width over the viewing distance → arcmin
+  blurArcmin(cocMm, frameWmm, screenWm, viewM) { return frameWmm > 0 && viewM > 0 ? cocMm / frameWmm * (screenWm / viewM) * ARCMIN : NaN; },
+  // and back: the blur circle that reaches `arcmin` on that screen — used as the acceptable circle of confusion for a viewing
+  cocForArcmin(arcmin, frameWmm, screenWm, viewM) { return arcmin / ARCMIN * (viewM / screenWm) * frameWmm; },
+  // breathing B (eq. 1) with the sensor fixed: a lens focused by moving it whole sees θ through v, so tanθ ∝ 1/v and B = f/v − 1 = −f/u
+  breathing(fMm, uMm, kind = 'unit') { if (kind === 'none' || !isFinite(uMm)) return 0; const v = FOPT.imageDistMm(fMm, uMm); return isFinite(v) ? fMm / v - 1 : -1; },
+};
+/* Follow-focus ring. A helicoid moves the optics linearly with ring angle, and the optics must move by the thin-lens extension
+   Δ = v − f = f²/(u − f) to focus at u, so angle ∝ Δ: 0° at the infinity stop, the full throw at the close-focus stop. Real cine lenses
+   use cams that spread the marks more evenly than this; their cam curves are not published, so this is a physical model, not the
+   engraving of any particular lens. Distances here are from the sensor (film plane), as cine close-focus figures are quoted. */
+const RING = {
+  ext(fMm, uMm) { return isFinite(uMm) ? fMm * fMm / Math.max(1e-6, uMm - fMm) : 0; },
+  // ring angle (deg) for focus at uM metres; clamps to the stops
+  angle(lens, uM) { const f = lens.f, u = Math.max(uM * 1000, lens.mod * 1000), e = RING.ext(f, u), eMax = RING.ext(f, lens.mod * 1000); return eMax > 0 ? clamp(e / eMax, 0, 1) * lens.throw : 0; },
+  // focus distance (m) for a ring angle; 0° is infinity
+  dist(lens, deg) { const f = lens.f, t = clamp(deg / lens.throw, 0, 1), eMax = RING.ext(f, lens.mod * 1000); if (t <= 1e-6) return Infinity; return (f + f * f / (t * eMax)) / 1000; },
+};
 /* ---------- vectors & cameras ---------- */
 const dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
 const cross = (a, b) => ({ x: a.y * b.z - a.z * b.y, y: a.z * b.x - a.x * b.z, z: a.x * b.y - a.y * b.x });
@@ -6248,7 +6387,7 @@ if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]
 }
 $('#updBtn').onclick = () => { xMenu(false);
   if (!swReg) { location.reload(); return; }
-  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.05 01:32'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
+  toast('최신 버전을 확인하는 중…'); swReg.update().then(() => { if (!swReg.installing && !swReg.waiting) toast('지금이 최신 버전이에요 · 2026.11.07 01:09'); }).catch(() => toast('인터넷 연결을 확인해 주세요')); };
 readColors();
 // three.js is an ES module, so it lands after this script has run: start on the canvas renderer and switch when it arrives
 gl = initGL();
@@ -6261,6 +6400,242 @@ buildTicks(); buildStrip(); wsz = sizeWorld(); fitViewer(true); renderAll();
 { const bootHash = location.hash; // showStart() clears the address, so keep the link we were opened with for route()
   showStart(); store.init().catch(() => {}).then(() => { if (bootHash) setHash(bootHash); route(); }); }
 if (document.fonts) document.fonts.ready.then(() => { buildStrip(); renderAll(); });
+/* ---------- 포커스 연습: a follow-focus game on the real optics (02b-focus.js) ----------
+   A scene plays (people walking, stopping, two people trading lines); you turn a follow-focus wheel geared to the lens's focus ring.
+   The ring runs from the infinity stop to the lens's close-focus stop over its rotation (RING model). Every frame the target's
+   blur circle is computed from the lens, the stop, where focus sits and where the target's eyes are; it counts as sharp when it is
+   within the acceptable circle for the chosen screen (1 arcmin to the viewer — Petrella et al. 2017). Short blur blips need more
+   blur to be noticed than long ones (their Fig. 4), so each out-of-focus stretch is judged by its peak and length.
+   Every attempt is generated afresh (distances, sides, speeds, timing), always outside the lens's close focus.
+   The practice scene is not saved: the open project is put aside and restored on exit. */
+const FP_VIEWS = { phone: { name: '폰 화면', w: 0.14, d: 0.35 }, tv: { name: 'TV 65형', w: 1.43, d: 2.5 }, cinema: { name: '극장 스크린', w: 0.75, d: 1 } };
+const FP_DIFF = {
+  easy: { name: '쉬움', view: 'phone', rng: true, read: true, dir: true, meter: true, grace: 1 },
+  normal: { name: '보통', view: 'tv', rng: false, read: true, dir: false, meter: true, grace: 0.75 },
+  hard: { name: '어려움', view: 'cinema', rng: false, read: false, dir: false, meter: false, grace: 0.5 },
+};
+const lerp = (a, b, t) => a + (b - a) * clamp(t, 0, 1);
+/* a range never closes up: a lens that can't focus as near as the range wanted shifts it outward */
+const RND = (a, b) => a + Math.random() * (b >= a ? b - a : 0.6), LOGR = (a, b) => Math.exp(RND(Math.log(a), Math.log(Math.max(a, b)))), PICK = a => a[Math.floor(Math.random() * a.length)];
+// a path through [time, value] keys with eased moves between them (people speed up and slow down)
+const keysAt = k => t => { if (t <= k[0][0]) return k[0][1]; for (let i = 1; i < k.length; i++) if (t <= k[i][0]) { const [t0, a] = k[i - 1], [t1, b] = k[i], u = (t - t0) / (t1 - t0 || 1); return a + (b - a) * u * u * (3 - 2 * u); } return k[k.length - 1][1]; };
+// nearest a person may stand: outside the lens's close focus (with a margin), never closer than 0.7 m
+const zMinOf = L => Math.max(L.mod + 0.15, 0.7);
+// cue lists: who must be sharp from when; alternating every `gap` seconds
+const alt = (first, n, gap0, gap1) => { const c = [[0, first]]; let t = 0, k = first; for (let i = 1; i < n; i++) { t += RND(gap0, gap1); k = k === 'A' ? 'B' : 'A'; c.push([t, k]); } return { c, end: t + RND(gap0, gap1) }; };
+// shot types: default lens, and a generator that builds this attempt's action for the lens actually used (L)
+const FP_LEVELS = [
+  { id: 'still', t: '정지 피사체', d: '어디 서 있을지 몰라요. 보이면 최대한 빨리 맞춰요', kit: 'masterp', f: 50, N: 2, speed: true,
+    gen: L => { const z = LOGR(Math.max(zMinOf(L), 0.8), 9), x = RND(-0.7, 0.7); return { dur: 5, warm: 0, at: () => ({ A: { x, z } }), cues: [[0, 'A']], info: `${z.toFixed(1)}m` }; } },
+  { id: 'rack', t: '랙 포커스', d: '신호에 맞춰 앞사람 ↔ 뒷사람으로 초점을 옮겨요', kit: 'masterp', f: 50, N: 2,
+    gen: L => { const z1 = LOGR(Math.max(zMinOf(L), 1), 3.2), z2 = Math.min(10, z1 * RND(1.6, 2.6)), s = PICK([-1, 1]), q = alt(PICK(['A', 'B']), 3 + Math.floor(Math.random() * 2), 2.2, 3.4);
+      return { dur: q.end, warm: 0.8, at: () => ({ A: { x: -0.5 * s, z: z1 }, B: { x: 0.6 * s, z: z2 } }), cues: q.c, info: `${z1.toFixed(1)}m ↔ ${z2.toFixed(1)}m` }; } },
+  { id: 'walk', t: '걸어오는 인물', d: '멀리서 다가오는 인물을 놓치지 말아요', kit: 'masterp', f: 50, N: 2,
+    gen: L => { const z0 = RND(6, 9.5), z1 = RND(Math.max(zMinOf(L), 1.3), 2.6), t0 = RND(0.6, 1.4), T = RND(3.5, 6.5), x0 = RND(-0.4, 0.4), x1 = RND(-0.4, 0.4);
+      return { dur: t0 + T + 1.2, warm: 0.6, at: t => ({ A: { x: lerp(x0, x1, (t - t0) / T), z: lerp(z0, z1, (t - t0) / T) } }), cues: [[0, 'A']], info: `${z0.toFixed(1)} → ${z1.toFixed(1)}m · ${T.toFixed(1)}초` }; } },
+  { id: 'away', t: '멀어지는 인물', d: '가까이서 걸어 나가는 인물. 초점을 밀어 줘요', kit: 'masterp', f: 65, N: 2,
+    gen: L => { const z0 = RND(Math.max(zMinOf(L), 1.2), 2.2), z1 = RND(6, 9), t0 = RND(0.8, 1.6), T = RND(3.5, 6);
+      return { dur: t0 + T + 1, warm: 0.6, at: t => ({ A: { x: 0.2 * Math.sin(t), z: lerp(z0, z1, (t - t0) / T) } }), cues: [[0, 'A']], info: `${z0.toFixed(1)} → ${z1.toFixed(1)}m` }; } },
+  { id: 'diag', t: '대각선으로 지나가기', d: '옆에서 비스듬히 다가와요. 거리는 생각보다 천천히 변해요', kit: 'supreme', f: 50, N: 1.5,
+    gen: L => { const s = PICK([-1, 1]), z0 = RND(5.5, 8), z1 = RND(Math.max(zMinOf(L), 1.6), 2.8), t0 = RND(0.6, 1.2), T = RND(4, 6);
+      return { dur: t0 + T + 1, warm: 0.6, at: t => ({ A: { x: lerp(2.6 * s, -1.2 * s, (t - t0) / T), z: lerp(z0, z1, (t - t0) / T) } }), cues: [[0, 'A']], info: `${z0.toFixed(1)} → ${z1.toFixed(1)}m 대각선` }; } },
+  { id: 'run', t: '뛰어오는 인물', d: '순식간에 다가와요. 손이 먼저 움직여야 해요', kit: 'ultra', f: 40, N: 1.9,
+    gen: L => { const z0 = RND(9, 11.5), z1 = RND(Math.max(zMinOf(L), 1.6), 2.6), t0 = RND(0.8, 1.5), T = RND(2, 3);
+      return { dur: t0 + T + 1, warm: 0.5, at: t => ({ A: { x: 0.25 * Math.sin(t * 5), z: lerp(z0, z1, (t - t0) / T) } }), cues: [[0, 'A']], info: `${z0.toFixed(0)} → ${z1.toFixed(1)}m · ${T.toFixed(1)}초` }; } },
+  { id: 'stopgo', t: '멈칫멈칫', d: '걷다 서다 해요. 뒤에 다른 사람도 있어요', kit: 'ultra', f: 85, N: 1.9,
+    gen: L => { let t = 0, z = RND(7.5, 9.5); const zEnd = RND(Math.max(zMinOf(L), 1.8), 2.6), n = 3 + Math.floor(Math.random() * 2), k = [[0, z]];
+      for (let i = 1; i <= n; i++) { t += RND(0.6, 1.8); k.push([t, z]); const nz = i === n ? zEnd : z - (z - zEnd) * RND(0.25, 0.5); t += RND(0.8, 1.6); z = nz; k.push([t, z]); }
+      const f = keysAt(k), bz = RND(6, 8.5), bx = PICK([-1.1, 1.1]); return { dur: t + 1.2, warm: 0.6, at: tt => ({ A: { x: -0.2, z: f(tt) }, B: { x: bx, z: bz } }), cues: [[0, 'A']], info: `${k[0][1].toFixed(1)} → ${zEnd.toFixed(1)}m · ${n}번 멈춤` }; } },
+  { id: 'sway', t: '대화 중 흔들림', d: '망원 클로즈업. 서서 말하며 몸이 앞뒤로 흔들려요', kit: 'masterp', f: 135, N: 2,
+    gen: L => { const z = RND(Math.max(zMinOf(L) + 0.6, 2.2), 4), a = RND(0.08, 0.2), w1 = RND(0.5, 1.1), w2 = RND(1.3, 2.2), p = RND(0, 6);
+      return { dur: 7, warm: 0.8, at: t => ({ A: { x: 0.03 * Math.sin(t * w2), z: z + a * Math.sin(t * w1 * 2 * Math.PI / 2 + p) + a * 0.4 * Math.sin(t * w2 * 2 + p) } }), cues: [[0, 'A']], info: `${z.toFixed(1)}m ± ${Math.round(a * 100)}cm` }; } },
+  { id: 'close', t: '클로즈업 접근', d: '망원으로 얼굴이 가까이 다가와요. 심도가 몇 cm예요', kit: 'masterp', f: 100, N: 2.8,
+    gen: L => { const z0 = RND(3.5, 4.6), z1 = Math.max(zMinOf(L) + 0.2, RND(1.3, 1.8)), t0 = RND(0.8, 1.4), T = RND(5, 7), back = RND(0.15, 0.35);
+      return { dur: t0 + T + 2.2, warm: 0.8, at: t => ({ A: { x: 0.05 * Math.sin(t * 1.7), z: lerp(z0, z1, (t - t0) / T) + 0.04 * Math.sin(t * 2.3) + (t > t0 + T + 0.5 ? lerp(0, back, (t - t0 - T - 0.5) / 1.2) : 0) } }), cues: [[0, 'A']], info: `${z0.toFixed(1)} → ${z1.toFixed(1)}m` }; } },
+  { id: 'duo', t: '엇갈리는 두 사람', d: '한 사람은 다가오고 한 사람은 멀어지며 대사를 주고받아요', kit: 'supreme', f: 65, N: 1.5,
+    gen: L => { const a0 = RND(Math.max(zMinOf(L), 1.8), 2.8), a1 = RND(4.5, 6.2), b0 = RND(5, 6.5), b1 = RND(Math.max(zMinOf(L), 2), 3), q = alt(PICK(['A', 'B']), 4 + Math.floor(Math.random() * 2), 2.4, 3.4), T = q.end;
+      return { dur: T, warm: 0.8, at: t => ({ A: { x: -0.5, z: lerp(a0, a1, (t - 0.8) / (T - 1.5)) }, B: { x: 0.6, z: lerp(b0, b1, (t - 0.8) / (T - 1.5)) } }), cues: q.c, info: `${q.c.length}번 주고받기` }; } },
+];
+let fp = null, fpChal = null; // the running session; a score challenge in progress
+const fpStore = (k, v) => { try { localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v)); } catch (e) {} };
+const fpBest = (() => { try { return JSON.parse(localStorage.getItem('previo.fpbest') || '{}'); } catch (e) { return {}; } })();
+let fpDiff = (() => { try { return localStorage.getItem('previo.fpdiff') || 'easy'; } catch (e) { return 'easy'; } })();
+// the lens the player chose for every shot, or null = each shot type's own lens
+let fpLens = (() => { try { return JSON.parse(localStorage.getItem('previo.fplens') || 'null'); } catch (e) { return null; } })();
+const FP_KITS = () => KITS.filter(k => k.id !== 'free' && !k.fish && k.id !== 'gecko');
+const fpFocals = k => k.type === 'zoom' ? [...new Set([k.range[0], 18, 24, 35, 50, 75, 100, 135, 200, k.range[1]].filter(f => f >= k.range[0] && f <= k.range[1]))].sort((a, b) => a - b) : k.f;
+const fpLevel = id => FP_LEVELS.find(l => l.id === id);
+const fpCue = (v, t) => { let k = v.cues[0][1], since = 0; for (const [t0, w] of v.cues) if (t >= t0) { k = w; since = t0; } return { k, since }; };
+const fpLimit = (o, d) => { const v = FP_VIEWS[FP_DIFF[d].view]; return FOPT.cocForArcmin(1, o.iw, v.w, v.d); };
+const fpSeenAt = dur => Math.max(1, Math.pow(Math.max(dur, 0.007) / 0.444, -0.33));
+
+function fpScene(lv) {
+  const c = fpLens || { kit: lv.kit, f: lv.f, N: lv.N }, k = KITS.find(x => x.id === c.kit) || KITS.find(x => x.id === 'masterp'), f = kitF(c.f, k);
+  const sensor = SENSORS.find(x => x.id === (k.cover === 'S35' || k.cover === 'APS-C' ? 'alexa35' : 'alexalf')) || SENSORS[0], L = lensSpec(k, f), v = lv.gen(L);
+  const props = []; for (let z = 1; z <= 13; z += 2) props.push({ id: 'P' + z, type: 'bollard', x: -1.7, z, yaw: 0 }, { id: 'Q' + z, type: 'bollard', x: 1.9, z, yaw: 0 });
+  props.push({ id: 'L1', type: 'lamp', x: -2.6, z: 9, yaw: 90 }, { id: 'L2', type: 'lamp', x: 2.8, z: 14, yaw: 270 });
+  state = { schema: SCHEMA, title: '포커스 연습', aspect: '16:9', sensor: { ...sensor }, squeeze: k.sq || 1, breathing: true, blur: true, example: false, sel: 0, kit: k.id, lit: true, shots: [],
+    set: skyOnly({ env: 'shade', room: null, sun: { on: false, month: 10, hour: 14, north: 0, wx: 'clear' }, bg: 'street', props, lights: [] }), cast: JSON.parse(JSON.stringify(CAST0)), meta: {} };
+  const p0 = v.at(0), s = newShot({ f, N: Math.max(c.N || 2, maxT(k, f)), focus: 'M', fd: 1000, cam: { x: 0, y: 1.55, z: 0, pan: 0, tilt: -1.5, roll: 0 },
+    A: { x: p0.A.x, z: p0.A.z, face: 180 }, B: p0.B ? { on: true, x: p0.B.x, z: p0.B.z, face: 180 } : { on: false, x: 1.1, z: 0, face: 270 } });
+  state.shots = [s]; normalizeState(); fitExposure(s); return { L, v };
+}
+// --- the session ---
+function fpOpen(id) { if (fp) return; const keep = { state, projId, mode, home: !$('#startScreen').hidden };
+  if (play) stopPlay(); if (seq) stopSeq(); try { tutStop(); } catch (e) {} projId = null; hideStart();
+  fp = { keep, guide: showThirds, lv: null, run: null, ring: 0, raf: 0 }; showThirds = 'none'; $('#fp').hidden = false; document.documentElement.classList.add('fping');
+  fpList(); if (id) fpPick(id); }
+function fpClose() { if (!fp) return; fpStop(); fpChal = null; const k = fp.keep; showThirds = fp.guide; fp = null; $('#fp').hidden = true; document.documentElement.classList.remove('fping');
+  state = k.state; projId = k.projId; vsz = null; if (k.home || !state) { showStart(); return; } setMode(k.mode || '3d'); renderAll(); }
+// a new attempt: fresh random action for this shot type
+function fpPick(id) { const lv = fpLevel(id); if (!lv) return; fpStop(); fp.lv = lv; const g = fpScene(lv); fp.lens = g.L; fp.v = g.v; fp.tanH = optics(cur()).tanH;
+  setMode('mon'); vsz = null; $('#fpList').hidden = true; $('#fpRes').hidden = true; $('#fpGo').hidden = !!fpChal;
+  if (lv.speed) fpSync(fp.lens.throw * RND(0, 1)); else fpSync(fp.ring); fpPose(0, true); fpDraw(true); fpLensLine(); }
+function fpLensLine() { const L = fp.lens, k = KIT(), b = (LENS_DATA[k.id] || {}).breath === 'none';
+  $('#fpLens').innerHTML = `<b>${fp.lv.t}</b> · ${fp.v.info}<br><b>${k.name.replace(/ \(.*\)/, '')} ${L.f}mm ${stopTxt(cur().N)}</b> · ${SENSOR().name}<br>최소 초점 ${L.mod.toFixed(2)}m <small>(${esc(L.src)})</small> · 포커스 링 ${L.throw}° <small>(${L.throwKnown ? '제조사 · 판매처 표기' : '공개 수치 없음 · 기본값'})</small> · ${b ? '브리딩 없음 <small>(Goodsell 외 2022)</small>' : '브리딩 있음 <small>(전체 이동 초점 모델)</small>'}`; }
+// the operator pans to keep the subject in frame: both people when they fit the lens, otherwise whoever must be sharp
+function fpPose(t, snap) { const s = cur(), p = fp.v.at(t), w = fp.tanH * 0.55, fit = q => ({ x: clamp(q.x, -w * q.z, w * q.z), z: q.z }); // sideways spread kept inside the frame for this lens
+  p.A = fit(p.A); if (p.B) p.B = fit(p.B); Object.assign(s.A, { x: p.A.x, z: p.A.z }); if (p.B) Object.assign(s.B, { on: true, x: p.B.x, z: p.B.z });
+  const ang = q => Math.atan2(q.x, q.z) / DEG, k = fpCue(fp.v, t).k, hf = optics(s).hf / DEG, aA = ang(p.A), aB = p.B ? ang(p.B) : aA;
+  const want = p.B && Math.abs(aA - aB) < hf * 0.7 ? (aA + aB) / 2 : k === 'B' && p.B ? aB : aA;
+  s.cam.pan = +(snap ? want : s.cam.pan + (want - s.cam.pan) * 0.12).toFixed(3); }
+function fpSync(deg) { fp.ring = clamp(deg, 0, fp.lens.throw); const d = RING.dist(fp.lens, fp.ring); cur().fd = isFinite(d) ? d : 1000; }
+function fpState(t) { const s = cur(), o = optics(s), lim = fpLimit(o, fpDiff), cue = fpCue(fp.v, t), tgt = s[cue.k], z = depthTo(s, tgt), fz = o.fd, V = FP_VIEWS[FP_DIFF[fpDiff].view];
+  const c = FOPT.cocMm(o.f, o.N, fz * 1000, z * 1000), am = FOPT.blurArcmin(c, o.iw, V.w, V.d);
+  return { o, lim, cue, z, fz, c, am, sharp: c <= lim, dof: FOPT.dofMm(o.f, o.N, lim, fz * 1000) }; }
+// a take: a short countdown (focus can be set during it, except in the speed round), action, cut, result
+function fpStart() { if (!fp.lv) return; fpStop(); const cd = fpChal ? 1.6 : 2.2;
+  fp.run = { t: -cd, t0: performance.now() + cd * 1000, stats: { on: 0, tot: 0, err: 0, bias: 0, n: 0, ev: [], cur: null, peak: 0, hold: 0, holdAt: null, acq: null } };
+  $('#fpGo').hidden = true; $('#fpRes').hidden = true; fp.raf = requestAnimationFrame(fpTick); fpFlash(String(Math.ceil(cd))); }
+function fpStop() { if (fp && fp.raf) cancelAnimationFrame(fp.raf); if (fp) { fp.raf = 0; fp.run = null; } }
+function fpTick(now) { if (!fp || !fp.run) return; const R = fp.run, v = fp.v, t = (now - R.t0) / 1000;
+  if (t < 0) { const n = String(Math.ceil(-t)); if ($('#fpFlash').textContent !== n) fpFlash(n); }
+  else { if (!R.started) { R.started = true; fpFlash('액션!'); if (fp.lv.speed) { const a = RING.angle(fp.lens, depthTo(cur(), cur().A)), far = a > fp.lens.throw / 2 ? RND(0, a * 0.5) : RND(a + (fp.lens.throw - a) * 0.5, fp.lens.throw); fpSync(far); } }
+    const prev = R.t > 0 ? R.t : 0; R.t = Math.min(t, v.dur); fpPose(R.t); fpScore(R, R.t - prev); }
+  fpDraw(); if (t >= v.dur || R.done) { fpEnd(); return; } fp.raf = requestAnimationFrame(fpTick); }
+function fpScore(R, dt) { if (dt <= 0) return; const F = fpState(R.t), v = fp.v, S = R.stats;
+  if (fp.lv.speed) { // speed round: the clock runs until focus has been held for 0.6 s
+    if (F.sharp) { if (S.holdAt == null) S.holdAt = R.t - dt; S.hold += dt; if (S.hold >= 0.6) { S.acq = S.holdAt; R.done = true; } } else { S.hold = 0; S.holdAt = null; }
+    S.peak = Math.max(S.peak, F.am); return; }
+  const warm = R.t < (v.warm || 0.6) || (F.cue.since > 0 && R.t - F.cue.since < FP_DIFF[fpDiff].grace); if (warm) return;
+  S.tot += dt; S.n++; S.err += Math.abs(F.fz - F.z); S.bias += F.fz - F.z;
+  if (F.sharp) { S.on += dt; if (S.cur) { S.ev.push(S.cur); S.cur = null; } }
+  else { S.cur = S.cur || { t: R.t, dur: 0, peak: 0 }; S.cur.dur += dt; S.cur.peak = Math.max(S.cur.peak, F.am); }
+  S.peak = Math.max(S.peak, F.am); }
+// the result of one take: { grade, score, pct?, acq?, seen, err, bias, peak }
+function fpJudge(S) { if (fp.lv.speed) { const a = S.acq, score = a == null ? 0 : Math.max(0, Math.min(1000, Math.round(1150 - 300 * a)));
+    return { speed: true, acq: a, score, grade: a == null ? 'F' : a <= 0.9 ? 'S' : a <= 1.4 ? 'A' : a <= 2 ? 'B' : a <= 3 ? 'C' : 'F', peak: S.peak }; }
+  if (S.cur) S.ev.push(S.cur); const pct = S.tot ? S.on / S.tot : 0, seen = S.ev.filter(e => e.peak > fpSeenAt(e.dur));
+  return { pct, seen, score: Math.max(0, Math.round(1000 * pct - 60 * seen.length)), grade: pct >= 0.95 && !seen.length ? 'S' : pct >= 0.85 ? 'A' : pct >= 0.7 ? 'B' : pct >= 0.5 ? 'C' : 'F',
+    err: S.n ? S.err / S.n : 0, bias: S.n ? S.bias / S.n : 0, peak: S.peak, longest: seen.reduce((m, e) => Math.max(m, e.dur), 0) }; }
+function fpEnd() { const R = fp.run; fpStop(); if (!R) return; const J = fpJudge(R.stats);
+  if (fpChal) { fpChal.rows.push({ t: fp.lv.t, info: fp.v.info, lens: `${fp.lens.f}mm ${stopTxt(cur().N)}`, ...J }); fpFlash(`${J.grade} · ${J.score}`); fpDraw(true); setTimeout(fpChalNext, 1500); return; }
+  fpFlash('컷!'); const key = fp.lv.id + ':' + fpDiff, best = fpBest[key] || 0; if (J.score > best) { fpBest[key] = J.score; fpStore('previo.fpbest', fpBest); }
+  const tips = [];
+  if (J.speed) tips.push(J.acq == null ? '시간 안에 초점을 잡지 못했어요. 먼저 크게 돌려 흐림이 줄어드는 쪽을 찾아요.' : `초점까지 ${J.acq.toFixed(2)}초. 0.9초 안이면 S예요.`);
+  else { if (J.seen.length) tips.push(`관객이 알아챌 흐림 ${J.seen.length}번 (가장 긴 것 ${J.longest.toFixed(2)}초). 짧은 흔들림보다 오래 머무는 흐림이 더 잘 보여요.`);
+    if (Math.abs(J.bias) > 0.03 && J.err > 0.03) tips.push(J.bias > 0 ? '초점이 피사체 뒤에 머문 시간이 많아요 — 다가오는 사람은 한 박자 먼저 당겨 주세요.' : '초점이 피사체 앞에 머문 시간이 많아요 — 너무 일찍 당기고 있어요.');
+    if (!tips.length) tips.push(J.pct >= 0.95 ? '깔끔해요. 난이도를 올려 보세요.' : '흐림이 줄어드는 방향을 먼저 찾고, 사람의 걸음 리듬에 맞춰 돌려요.'); }
+  const main = J.speed ? `<p><b>${J.acq == null ? '—' : J.acq.toFixed(2) + '초'}</b> 만에 초점</p>` : `<p><b>${Math.round(J.pct * 100)}%</b> 초점 유지</p><p>평균 오차 <b>${Math.round(J.err * 100)}cm</b> · 가장 큰 흐림 <b>${J.peak.toFixed(1)}′</b> (관객 기준 1′)</p>`;
+  $('#fpRes').innerHTML = `<div class="fp-grade g${J.grade}">${J.grade}</div><div class="fp-stats">${main}<p><b>${J.score}</b>점 ${J.score > best ? '<em>최고 기록!</em>' : `· 최고 ${best}`}</p></div><ul class="fp-tips">${tips.map(x => `<li>${x}</li>`).join('')}</ul>
+    <div class="fp-row"><button class="btn primary" id="fpAgain">한 번 더 (새 위치)</button><button class="btn" id="fpNext">다른 샷</button><button class="btn ghost" id="fpBack">목록</button></div>`;
+  $('#fpRes').hidden = false; fpDraw(true); }
+// --- score challenge: five shot types drawn at random, back to back ---
+function fpChalStart() { const pool = FP_LEVELS.map(l => l.id).sort(() => Math.random() - 0.5); fpChal = { ids: pool.slice(0, 5), i: 0, rows: [] }; fpChalNext(); }
+function fpChalNext() { if (!fp || !fpChal) return; if (fpChal.i >= fpChal.ids.length) return fpChalEnd();
+  const id = fpChal.ids[fpChal.i++]; fpPick(id); fpFlash(`${fpChal.i}/${fpChal.ids.length} · ${fp.lv.t}`); setTimeout(() => { if (fp && fpChal) fpStart(); }, 1100); }
+function fpChalEnd() { const C = fpChal, total = C.rows.reduce((a, r) => a + r.score, 0), key = 'chal:' + fpDiff, best = fpBest[key] || 0; fpChal = null;
+  if (total > best) { fpBest[key] = total; fpStore('previo.fpbest', fpBest); }
+  $('#fpRes').innerHTML = `<h2 class="fp-ct">점수 도전 · ${FP_DIFF[fpDiff].name}</h2><div class="fp-total">${total}<small> / ${C.rows.length * 1000}</small></div><p class="fp-stats">${total > best ? '<em>최고 기록!</em>' : `최고 ${best}`}</p>
+    <ol class="fp-rounds">${C.rows.map(r => `<li><b class="g${r.grade}">${r.grade}</b><span>${r.t}<small>${r.info} · ${r.lens}</small></span><em>${r.score}</em></li>`).join('')}</ol>
+    <div class="fp-row"><button class="btn primary" id="fpChal2">다시 도전</button><button class="btn ghost" id="fpBack">목록</button></div>`;
+  $('#fpRes').hidden = false; $('#fpGo').hidden = true; }
+function fpFlash(t) { const f = $('#fpFlash'); f.textContent = t; f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); }
+// --- drawing: the monitor picture (copied from the app's own renderer), the readouts, the wheel, the overhead map ---
+function fpDraw(force) { const now = performance.now(); if (!force && now - (fpDraw.t || 0) < 30) return; fpDraw.t = now;
+  drawMonitor(); const src = $('#view'), cv = $('#fpView'), r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+  if (cv.width !== Math.round(r.width * dpr) || cv.height !== Math.round(r.height * dpr)) { cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr); }
+  const ctx = cv.getContext('2d'); ctx.fillStyle = '#000'; ctx.fillRect(0, 0, cv.width, cv.height);
+  if (src.width && src.height) { const k = Math.min(cv.width / src.width, cv.height / src.height), w = src.width * k, h = src.height * k; ctx.drawImage(src, (cv.width - w) / 2, (cv.height - h) / 2, w, h); }
+  const R = fp.run, t = R ? Math.max(0, R.t || 0) : 0, F = fpState(t), D = FP_DIFF[fpDiff];
+  $('#fpTime').textContent = fpChal ? `도전 ${fpChal.i}/${fpChal.ids.length} · ${fpChal.rows.reduce((a, r) => a + r.score, 0)}점` : `${t.toFixed(1)} / ${fp.v.dur.toFixed(1)}s`;
+  $('#fpBar').style.width = (t / fp.v.dur * 100) + '%';
+  $('#fpWho').textContent = `${fp.lv.t} · 초점 대상 ${F.cue.k === 'A' ? 'A' : 'B'}${fp.v.cues.length > 1 ? ' (신호에 맞춰 바뀌어요)' : ''}`;
+  $('#fpRead').hidden = !D.read; $('#fpFocusM').textContent = isFinite(F.fz) && F.fz < 999 ? F.fz.toFixed(2) + 'm' : '∞';
+  $('#fpRng').hidden = !D.rng; $('#fpTgtM').textContent = F.z.toFixed(2) + 'm';
+  $('#fpMeter').hidden = !D.meter;
+  if (D.meter) { const v = clamp(F.am / 3, 0, 1); $('#fpMeterFill').style.width = (v * 100) + '%'; $('#fpMeter').classList.toggle('ok', F.sharp); $('#fpMeterT').textContent = F.sharp ? '선명' : `흐림 ${F.am.toFixed(1)}′`; }
+  $('#fpDir').hidden = !D.dir || F.sharp; if (D.dir && !F.sharp) $('#fpDir').textContent = F.fz < F.z ? '초점이 앞에 있어요 → 멀리 ↻' : '초점이 뒤에 있어요 → 가까이 ↺';
+  fpWheel(); fpMap(F); }
+function fpWheel() { const cv = $('#fpWheel'), r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1), S = Math.round(Math.min(r.width, r.height) * dpr); if (!S) return;
+  if (cv.width !== S) { cv.width = cv.height = S; } const ctx = cv.getContext('2d'), c = S / 2, R0 = S * 0.46, L = fp.lens, rot = fp.ring;
+  ctx.clearRect(0, 0, S, S);
+  // the white marking disc of a follow focus; the index is the fixed notch at the top; the disc turns with the ring
+  ctx.fillStyle = '#ECEFF4'; ctx.beginPath(); ctx.arc(c, c, R0, 0, 7); ctx.fill(); ctx.strokeStyle = '#3A4252'; ctx.lineWidth = S * 0.025; ctx.stroke();
+  ctx.fillStyle = '#242B38'; ctx.beginPath(); ctx.arc(c, c, R0 * 0.36, 0, 7); ctx.fill();
+  const at = deg => -Math.PI / 2 + (deg - rot) * DEG; // disc angle on screen for a ring angle
+  ctx.save(); ctx.beginPath(); ctx.arc(c, c, R0, 0, 7); ctx.clip();
+  ctx.fillStyle = 'rgba(36,43,56,.18)'; ctx.beginPath(); ctx.moveTo(c, c); ctx.arc(c, c, R0, at(L.throw), at(360), false); ctx.closePath(); ctx.fill(); // beyond the stops
+  const dists = [Infinity, 20, 10, 6, 4, 3, 2.5, 2, 1.7, 1.5, 1.3, 1.2, 1.1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.45, 0.4, 0.35, 0.3, 0.25, 0.2].filter(d => d >= L.mod - 1e-6);
+  if (!dists.some(d => Math.abs(d - L.mod) < 1e-6)) dists.push(L.mod);
+  ctx.font = `600 ${Math.round(S * 0.05)}px "Space Grotesk", system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; let lastA = -1e9;
+  for (const d of dists) { const a = RING.angle(L, d), th = at(a); ctx.strokeStyle = '#242B38'; ctx.lineWidth = S * 0.008; ctx.beginPath(); ctx.moveTo(c + Math.cos(th) * R0 * 0.97, c + Math.sin(th) * R0 * 0.97); ctx.lineTo(c + Math.cos(th) * R0 * 0.86, c + Math.sin(th) * R0 * 0.86); ctx.stroke();
+    if (a - lastA >= 13) { lastA = a; ctx.fillStyle = '#171B24'; ctx.fillText(isFinite(d) ? (d < 1 ? d.toFixed(d < 0.5 ? 2 : 1).replace(/^0/, '') : String(d)) : '∞', c + Math.cos(th) * R0 * 0.74, c + Math.sin(th) * R0 * 0.74); } }
+  ctx.restore();
+  ctx.fillStyle = '#E5484D'; ctx.beginPath(); ctx.moveTo(c, c - R0 - S * 0.02); ctx.lineTo(c - S * 0.03, c - R0 - S * 0.07); ctx.lineTo(c + S * 0.03, c - R0 - S * 0.07); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#8B9CFF'; ctx.font = `700 ${Math.round(S * 0.06)}px "Space Grotesk", system-ui`; ctx.fillText(`${Math.round(rot)}°`, c, c); }
+function fpMap(F) { const cv = $('#fpMap'), r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1), W = Math.round(r.width * dpr), H = Math.round(r.height * dpr); if (!W || !H) return;
+  if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; } const ctx = cv.getContext('2d'), s = cur(), zMax = 11, px = (H - 18 * dpr) / zMax, cx = W / 2, y = z => H - 10 * dpr - z * px;
+  ctx.clearRect(0, 0, W, H); ctx.fillStyle = 'rgba(23,27,36,.85)'; ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(255,255,255,.08)'; ctx.lineWidth = 1; ctx.font = `${10 * dpr}px Inter, system-ui`; ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left';
+  for (let z = 1; z <= zMax; z++) { ctx.beginPath(); ctx.moveTo(0, y(z)); ctx.lineTo(W, y(z)); ctx.stroke(); if (z % 2 === 0) ctx.fillText(z + 'm', 3 * dpr, y(z) - 2 * dpr); }
+  // depth of field (acceptable for this screen) as a band, the focus plane as a line — two different things
+  const n = F.dof.near / 1000, fz = F.fz, fr = isFinite(F.dof.far) ? F.dof.far / 1000 : zMax + 1;
+  if (isFinite(n)) { ctx.fillStyle = 'rgba(139,156,255,.22)'; ctx.fillRect(0, y(Math.min(fr, zMax + 1)), W, y(n) - y(Math.min(fr, zMax + 1))); }
+  if (fz < zMax + 1) { ctx.strokeStyle = '#8B9CFF'; ctx.lineWidth = 2 * dpr; ctx.beginPath(); ctx.moveTo(0, y(fz)); ctx.lineTo(W, y(fz)); ctx.stroke(); }
+  const dot = (sb, k) => { if (!sb || (k !== 'A' && !sb.on)) return; const X = cx + sb.x * px, Y = y(sb.z); ctx.fillStyle = k === F.cue.k ? (F.sharp ? '#34C759' : '#E5484D') : 'rgba(255,255,255,.55)'; ctx.beginPath(); ctx.arc(X, Y, 5 * dpr, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(k, X, Y - 8 * dpr); };
+  dot(s.A, 'A'); dot(s.B, 'B'); ctx.fillStyle = '#ECEFF4'; ctx.beginPath(); ctx.moveTo(cx, y(0) - 6 * dpr); ctx.lineTo(cx - 6 * dpr, y(0) + 4 * dpr); ctx.lineTo(cx + 6 * dpr, y(0) + 4 * dpr); ctx.closePath(); ctx.fill(); }
+// --- the list: difficulty, lens, the challenge and every shot type ---
+function fpList() { fpChal = null; fpStop(); const kits = FP_KITS(), k = fpLens && KITS.find(x => x.id === fpLens.kit);
+  const fs = k ? fpFocals(k) : [], f = k ? kitF(fpLens.f, k) : 0, st = k ? [maxT(k, f), ...STOPS.filter(x => x > maxT(k, f) + 0.05 && x <= 8)] : [];
+  $('#fpList').innerHTML = `<h2>포커스 연습</h2><p class="fp-note">실제 렌즈 수치로 계산한 흐림을 보고 팔로우 포커스 휠을 돌려요. 관객이 화면에서 1′(각도 1분) 넘게 흐림을 보면 놓친 거예요. 매번 위치와 속도가 달라져요.</p>
+    <div class="seg kr fp-diff" role="group" aria-label="난이도">${Object.entries(FP_DIFF).map(([d, v]) => `<button data-fpd="${d}" aria-pressed="${d === fpDiff}">${v.name}<small>${FP_VIEWS[v.view].name}</small></button>`).join('')}</div>
+    <div class="fp-lenspick"><span>렌즈</span><select id="fpKit" aria-label="렌즈 키트"><option value="">샷마다 정해진 렌즈</option>${kits.map(x => `<option value="${x.id}"${k && k.id === x.id ? ' selected' : ''}>${esc(x.name)}</option>`).join('')}</select>
+      ${k ? `<select id="fpF" aria-label="초점거리">${fs.map(x => `<option value="${x}"${x === f ? ' selected' : ''}>${x}mm</option>`).join('')}</select><select id="fpN" aria-label="조리개">${st.map(x => `<option value="${x}"${x === fpLens.N ? ' selected' : ''}>${stopTxt(x, k)}</option>`).join('')}</select>` : ''}</div>
+    <button class="fp-chal" id="fpChalBtn"><b>점수 도전</b><small>샷 5개를 무작위로 이어서 · 최고 ${fpBest['chal:' + fpDiff] || 0}점</small></button>
+    <ol class="fp-levels">${FP_LEVELS.map((l, i) => { const b = fpBest[l.id + ':' + fpDiff]; return `<li><button data-fpl="${l.id}"><span class="n">${i + 1}</span><span><b>${l.t}</b><small>${l.d}</small><small class="lens">${k ? '선택한 렌즈' : `${(KITS.find(x => x.id === l.kit) || {}).name || ''} ${l.f}mm T${l.N}`}</small></span>${b ? `<em>${b}</em>` : ''}</button></li>`; }).join('')}</ol>
+    <details class="fp-how"><summary>어떻게 계산하나요?</summary><p>흐림 지름 c = (f/N)·f/(1−f/g)·|1/g − 1/Z| (Herrmann 외, CVPR 2020 식 4), 얇은 렌즈 근사. 포커스 링은 ∞ 스톱에서 최소 초점 스톱까지, 렌즈 이동량 f²/(u−f)에 비례해 돌아가는 모델이에요 (실제 렌즈의 캠 곡선은 공개되지 않아요).
+    관객 기준 1′과 짧은 흐림이 덜 보이는 경향은 Petrella 외(i-Perception 2017), Master Prime의 브리딩 없음은 Goodsell·Blahnik·Rolland(Optics Express 2022). T값을 f값처럼 계산하고, 수차 · 보케 모양 · 화면 위치별 PSF는 넣지 않았어요.</p></details>`;
+  $('#fpList').hidden = false; $('#fpGo').hidden = true; $('#fpRes').hidden = true; }
+$('#fp').addEventListener('change', e => { const t = e.target; if (!fp) return;
+  if (t.id === 'fpKit') { const k = KITS.find(x => x.id === t.value); fpLens = k ? { kit: k.id, f: kitF(50, k), N: maxT(k, kitF(50, k)) } : null; }
+  else if (t.id === 'fpF' && fpLens) { const k = KITS.find(x => x.id === fpLens.kit); fpLens.f = +t.value; fpLens.N = Math.max(fpLens.N, maxT(k, fpLens.f)); }
+  else if (t.id === 'fpN' && fpLens) fpLens.N = +t.value; else return;
+  fpStore('previo.fplens', fpLens ? fpLens : 'null'); fpList(); });
+// --- input: drag the wheel, scroll, arrow keys ---
+const fpTurn = d => { if (!fp || !fp.lv || (fp.lv.speed && fp.run && !fp.run.started)) return; const before = fp.ring; fpSync(fp.ring + d);
+  if ((fp.ring === 0 || fp.ring === fp.lens.throw) && before !== fp.ring) try { navigator.vibrate && navigator.vibrate(12); } catch (e) {} if (!fp.run) fpDraw(true); };
+{ const w = $('#fpWheel'); let g = null;
+  const ang = e => { const r = w.getBoundingClientRect(); return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)) / DEG; };
+  w.addEventListener('pointerdown', e => { e.preventDefault(); try { w.setPointerCapture(e.pointerId); } catch (x) {} g = { a: ang(e) }; });
+  w.addEventListener('pointermove', e => { if (!g) return; const a = ang(e); let d = a - g.a; if (d > 180) d -= 360; if (d < -180) d += 360; g.a = a; fpTurn(-d); }); // the disc's marks follow the finger: clockwise brings the farther marks to the index
+  const up = () => { g = null; }; w.addEventListener('pointerup', up); w.addEventListener('pointercancel', up); }
+$('#fp').addEventListener('wheel', e => { if (!fp || !fp.lv || e.target.closest('#fpList,#fpRes')) return; e.preventDefault(); fpTurn((e.deltaY > 0 ? 1 : -1) * Math.min(12, Math.abs(e.deltaY) * 0.08) * (e.shiftKey ? 0.25 : 1)); }, { passive: false });
+document.addEventListener('keydown', e => { if (!fp) return; const k = e.key; if (e.target.closest && e.target.closest('select')) return; e.stopImmediatePropagation();
+  if (k === 'Escape') { if (fp.run || fpChal) { fpStop(); fpChal = null; fpList(); } else if (!$('#fpList').hidden || !fp.lv) fpClose(); else fpList(); return; }
+  if (!fp.lv) return; const fine = e.shiftKey ? 0.25 : 1;
+  if (k === 'ArrowUp' || k === 'ArrowRight' || k === 'w' || k === 'd') { e.preventDefault(); fpTurn(3 * fine); }
+  else if (k === 'ArrowDown' || k === 'ArrowLeft' || k === 's' || k === 'a') { e.preventDefault(); fpTurn(-3 * fine); }
+  else if (k === ' ' || k === 'Enter') { e.preventDefault(); if (!fp.run && !fpChal && $('#fpList').hidden) { if (!$('#fpRes').hidden) fpPick(fp.lv.id); fpStart(); } } }, true);
+const fpFmt = d => isFinite(d) && d < 999 ? d.toFixed(2) + 'm' : '∞';
+$('#fp').addEventListener('click', e => { const b = e.target.closest('button'); if (!b || !fp) return;
+  if (b.dataset.fpd) { fpDiff = b.dataset.fpd; fpStore('previo.fpdiff', fpDiff); fpList(); return; }
+  if (b.dataset.fpl) return fpPick(b.dataset.fpl);
+  ({ fpExit: fpClose, fpShoot: fpStart, fpReroll: () => fpPick(fp.lv.id), fpChalBtn: fpChalStart, fpChal2: fpChalStart,
+    fpAgain: () => { fpPick(fp.lv.id); fpStart(); }, fpNext: () => fpPick(PICK(FP_LEVELS.filter(l => l !== fp.lv)).id), fpBack: fpList, fpLevels: fpList })[b.id]?.(); });
+addEventListener('resize', () => { if (fp && fp.lv) { vsz = null; fpDraw(true); } });
+$('#mcFocus').onclick = () => fpOpen();
+$('#fpMenuBtn').onclick = () => { xMenu(false); fpOpen(); };
 </script>
 
 </body>
